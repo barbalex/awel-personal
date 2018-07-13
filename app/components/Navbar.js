@@ -27,7 +27,7 @@ const enhance = compose(
 
 const MyNavbar = ({ open, toggle }: { open: boolean, toggle: () => void }) => (
   <Navbar color="dark" dark expand="md">
-    <NavbarBrand href="/">AWEL-Personal</NavbarBrand>
+    <NavbarBrand href="/">Personal</NavbarBrand>
     <NavbarToggler onClick={toggle} />
     <Collapse isOpen={open} navbar>
       <Nav className="ml-auto" navbar>
