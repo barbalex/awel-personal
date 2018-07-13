@@ -1,0 +1,9 @@
+version: 1.0.0
+files:
+  - url: electron-react-boilerplate-setup-1.0.0.exe
+    sha512: l+NAJrv3rpiTOjkLXf5Hn1/IObVDq2X7n9MceLq2ePZxpruCN21zfq0q0XmncnpTkSE9TOM0oXrC4zHNykZa6Q==
+    size: 36668498
+path: electron-react-boilerplate-setup-1.0.0.exe
+sha512: l+NAJrv3rpiTOjkLXf5Hn1/IObVDq2X7n9MceLq2ePZxpruCN21zfq0q0XmncnpTkSE9TOM0oXrC4zHNykZa6Q==
+sha2: 30b34d04b5eb243bc4e741c8f95bfd4b75bbf9749881c7389b03893ed859d3e2
+releaseDate: '2018-07-13T08:07:45.406Z'
