@@ -1,4 +1,4 @@
-import { types } from 'mobx-state-tree';
+import { types } from 'mobx-state-tree'
 
 export default types
   .model('Config', {
@@ -6,6 +6,6 @@ export default types
   })
   .recordActions(self => ({
     setDbPath(path) {
-      self.dbPath = path;
+      self.dbPath = path
     }
-  }));
+  }))

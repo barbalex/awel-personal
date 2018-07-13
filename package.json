@@ -32,11 +32,11 @@
     "test-e2e": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 node --trace-warnings -r babel-register ./internals/scripts/RunTests.js e2e",
     "test-watch": "npm test -- --watch"
   },
-  "browserslist": "electron 1.6",
+  "browserslist": "electron 2.0",
   "lint-staged": {
     "*.js": [
       "cross-env NODE_ENV=development eslint --cache --format=node_modules/eslint-formatter-pretty",
-      "prettier --ignore-path .eslintignore --single-quote --write",
+      "prettier --ignore-path .eslintignore --single-quote --semi false --write",
       "git add"
     ]
   },
