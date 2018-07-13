@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import Database from 'better-sqlite3';
+import 'bootstrap/dist/css/bootstrap.css';
 
 import App from './components/App';
 

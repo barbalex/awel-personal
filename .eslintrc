@@ -13,6 +13,8 @@
     "node": true
   },
   "rules": {
+    "linebreak-style": "off",
+    "no-param-reassign": "off",
     "arrow-parens": ["off"],
     "compat/compat": "error",
     "consistent-return": "off",

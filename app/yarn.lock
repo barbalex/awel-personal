@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-better-sqlite3@^4.1.4:
+better-sqlite3@4.1.4:
   version "4.1.4"
   resolved "https://registry.yarnpkg.com/better-sqlite3/-/better-sqlite3-4.1.4.tgz#9fe1dcf7b699087b98b1997cbb00261e265897e2"
   dependencies:
