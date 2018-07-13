@@ -42,7 +42,7 @@
   },
   "build": {
     "productName": "AWEL-Personal",
-    "appId": "org.develar.AWEL-Personal",
+    "appId": "ch.gabriel-software.AWEL-Personal",
     "files": [
       "dist/",
       "node_modules/",
