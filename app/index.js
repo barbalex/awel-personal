@@ -13,7 +13,10 @@ console.log('geschaefte', geschaefte);
 
 render(
   <AppContainer>
-    <App />
+    <div>
+      <div>{`id: ${geschaefte.idGeschaeft}`}</div>
+      <App />
+    </div>
   </AppContainer>,
   document.getElementById('root')
 );

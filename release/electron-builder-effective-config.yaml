@@ -1,8 +1,8 @@
 directories:
   output: release
   buildResources: resources
-productName: ElectronReact
-appId: org.develar.ElectronReact
+productName: AWEL-Personal
+appId: org.develar.AWEL-Personal
 files:
   - dist/
   - node_modules/
