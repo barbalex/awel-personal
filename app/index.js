@@ -5,19 +5,15 @@ import Database from 'better-sqlite3';
 import 'bootstrap/dist/css/bootstrap.css';
 
 import App from './components/App';
+import DbContext from './db-context';
 
 const db = new Database('C:/Users/alexa/kapla.db');
-const geschaefte = db
-  .prepare('SELECT idGeschaeft from geschaefte limit 1')
-  .get();
-console.log('geschaefte', geschaefte);
 
 render(
   <AppContainer>
-    <div>
-      <div>{`id: ${geschaefte.idGeschaeft}`}</div>
+    <DbContext.Provider value={db}>
       <App />
-    </div>
+    </DbContext.Provider>
   </AppContainer>,
   document.getElementById('root')
 );

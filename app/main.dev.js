@@ -67,6 +67,8 @@ app.on('ready', async () => {
     icon: './app/etc/person.png'
   });
 
+  mainWindow.maximize();
+
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   // @TODO: Use 'ready-to-show' event
