@@ -10,8 +10,7 @@
  *
  * @flow
  */
-import { app, BrowserWindow } from 'electron'
-import MenuBuilder from './menu'
+import { app, BrowserWindow, Menu } from 'electron'
 
 let mainWindow = null
 
@@ -85,6 +84,6 @@ app.on('ready', async () => {
     mainWindow = null
   })
 
-  const menuBuilder = new MenuBuilder(mainWindow)
-  menuBuilder.buildMenu()
+  // show no menu
+  Menu.setApplicationMenu(null)
 })
