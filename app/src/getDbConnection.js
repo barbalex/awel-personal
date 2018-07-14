@@ -12,7 +12,7 @@ export default async () => {
     db = new Database(dbPath, { fileMustExist: true })
   } catch (error) {
     if (error.code === 'SQLITE_CANTOPEN') {
-      // await user choose db file
+      // user needs to choose db file
       try {
         dbPath = await chooseDb()
       } catch (chooseError) {

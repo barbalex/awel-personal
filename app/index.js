@@ -8,8 +8,6 @@ import './app.global.css'
 import getDbConnection from './src/getDbConnection'
 
 const run = async () => {
-  // TODO:
-  // 1. get dbPath from config file or standard config value
   let db
   try {
     db = await getDbConnection()
