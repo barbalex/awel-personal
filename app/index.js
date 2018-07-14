@@ -7,18 +7,34 @@ import App from './components/App'
 import DbContext from './db-context'
 import './app.global.css'
 
-let db
-try {
-  db = new Database('C:/Users/alexa/kapla.db')
-} catch (error) {
-  console.log(error)
+const run = async () => {
+  let db
+  try {
+    db = new Database('C:/Users/alexa/kapla.db', { fileMustExist: true })
+  } catch (error) {
+    if (error.code === 'SQLITE_CANTOPEN') {
+      // TODO:
+      // 1. await user choose db file
+      // 2. check if is valid db
+      console.log('index.js, SQLITE_CANTOPEN Error')
+    } else {
+      console.log('index.js, Error:', error)
+    }
+  }
+  // TODO:
+  // fill store with db data?
+  // in the process check if is valid db
+  // if not: ask for other file
+  console.log('index.js, db:', db)
+
+  render(
+    <AppContainer>
+      <DbContext.Provider value={db}>
+        <App />
+      </DbContext.Provider>
+    </AppContainer>,
+    document.getElementById('root')
+  )
 }
 
-render(
-  <AppContainer>
-    <DbContext.Provider value={db}>
-      <App />
-    </DbContext.Provider>
-  </AppContainer>,
-  document.getElementById('root')
-)
+run()
