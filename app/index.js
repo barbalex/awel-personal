@@ -8,22 +8,22 @@ import DbContext from './db-context'
 import './app.global.css'
 
 const run = async () => {
+  // TODO:
+  // 1. get dbPath from config file or standard config value
   let db
   try {
     db = new Database('C:/Users/alexa/kapla.db', { fileMustExist: true })
   } catch (error) {
     if (error.code === 'SQLITE_CANTOPEN') {
       // TODO:
-      // 1. await user choose db file
-      // 2. check if is valid db
-      console.log('index.js, SQLITE_CANTOPEN Error')
+      // await user choose db file
+      console.log('index.js, TODO: await user choose db file')
     } else {
-      console.log('index.js, Error:', error)
+      console.log('index.js, Error opening db file:', error)
     }
   }
   // TODO:
-  // fill store with db data?
-  // in the process check if is valid db
+  // check if is valid db
   // if not: ask for other file
   console.log('index.js, db:', db)
 
