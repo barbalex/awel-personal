@@ -6,18 +6,24 @@ import Database from 'better-sqlite3'
 import App from './components/App'
 import DbContext from './db-context'
 import './app.global.css'
+import chooseDb from './src/chooseDb'
 
 const run = async () => {
   // TODO:
   // 1. get dbPath from config file or standard config value
   let db
+  let dbPath = 'C:/Users/alexa/kapla.db'
   try {
-    db = new Database('C:/Users/alexa/kapla.db', { fileMustExist: true })
+    db = new Database(dbPath, { fileMustExist: true })
   } catch (error) {
     if (error.code === 'SQLITE_CANTOPEN') {
-      // TODO:
       // await user choose db file
-      console.log('index.js, TODO: await user choose db file')
+      try {
+        dbPath = await chooseDb()
+      } catch (chooseError) {
+        return console.log('Error after choosing db:', chooseError)
+      }
+      db = new Database(dbPath, { fileMustExist: true })
     } else {
       console.log('index.js, Error opening db file:', error)
     }
