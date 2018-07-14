@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { AppContainer } from 'react-hot-loader'
+import { AppContainer as HotLoaderContainer } from 'react-hot-loader'
 import Database from 'better-sqlite3'
 
 import App from './components/App'
@@ -28,11 +28,11 @@ const run = async () => {
   console.log('index.js, db:', db)
 
   render(
-    <AppContainer>
+    <HotLoaderContainer>
       <DbContext.Provider value={db}>
         <App />
       </DbContext.Provider>
-    </AppContainer>,
+    </HotLoaderContainer>,
     document.getElementById('root')
   )
 }
