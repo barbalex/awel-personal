@@ -7,7 +7,12 @@ import App from './components/App'
 import DbContext from './db-context'
 import './app.global.css'
 
-const db = new Database('C:/Users/alexa/kapla.db')
+let db
+try {
+  db = new Database('C:/Users/alexa/kapla.db')
+} catch (error) {
+  console.log(error)
+}
 
 render(
   <AppContainer>
