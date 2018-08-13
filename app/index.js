@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { AppContainer as HotLoaderContainer } from 'react-hot-loader'
 
 import App from './components/App'
-import DbContext from './db-context'
+import DbContext from './context/db'
 import './app.global.css'
 import getDbConnection from './src/getDbConnection'
 

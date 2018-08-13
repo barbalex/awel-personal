@@ -1,7 +1,7 @@
 // @flow
 import React, { Fragment } from 'react'
 
-import DbContext from '../db-context'
+import DbContext from '../context/db'
 import Navbar from './Navbar'
 
 const App = () => (

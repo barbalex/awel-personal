@@ -19,7 +19,7 @@ import styled from 'styled-components'
 
 import { shell } from 'electron'
 
-import DbContext from '../db-context'
+import DbContext from '../context/db'
 
 const DbPath = styled.span`
   font-style: italic;
@@ -65,7 +65,8 @@ const MyNavbar = ({ open, toggle }: { open: boolean, toggle: () => void }) => (
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
-                  Datenbank wählen<br />
+                  Datenbank wählen
+                  <br />
                   <DbPath>{`Aktuell: ${db.name}`}</DbPath>
                 </DropdownItem>
                 <DropdownItem onClick={onClickIssues}>
