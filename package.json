@@ -52,7 +52,8 @@
       "package.json"
     ],
     "dmg": {
-      "contents": [{
+      "contents": [
+        {
           "x": 130,
           "y": 220
         },
@@ -194,6 +195,7 @@
     "history": "4.7.2",
     "jquery": "3.3.1",
     "mobx": "5.0.3",
+    "mobx-react": "^5.2.5",
     "mobx-state-tree": "3.1.1",
     "react": "16.4.2",
     "react-dom": "16.4.2",

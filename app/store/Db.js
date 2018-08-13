@@ -1,11 +1,11 @@
 import { types } from 'mobx-state-tree'
 
 export default types
-  .model('Config', {
-    dbPath: types.string
+  .model('Db', {
+    db: types.string
   })
   .actions(self => ({
-    setDbPath(path) {
-      self.dbPath = path
+    setDb(db) {
+      self.db = db
     }
   }))
