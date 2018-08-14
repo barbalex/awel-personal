@@ -1,4 +1,5 @@
-
+-- disable foreign keys
+-- to prevent reference errors while building schema
 PRAGMA foreign_keys = OFF;
 
 -------------------------------------------
