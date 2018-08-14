@@ -14,7 +14,9 @@ create table person (
   eintrittDatum text,
   austrittDatum text,
   status text references statusWerte(status) on update cascade on delete no action,
-  bemerkungen text
+  bemerkungen text,
+  letzteMutationZeitpunkt TEXT,
+  letzteMutationUser TEXT,
 );
 
 -------------------------------------------
@@ -42,7 +44,6 @@ create table schluessel (
 
 -------------------------------------------
 
--- wird auch für badges benutzt
 drop table if exists mobileAbo;
 create table mobileAbo (
   id integer primary key,
@@ -50,6 +51,17 @@ create table mobileAbo (
   idPerson integer references person(id) on update cascade on delete cascade,
   typ text references mobileAboTypWerte(typ) on update cascade on delete no action,
   kostenstelle text references mobileAboKostenstelleWerte(kostenstelle) on update cascade on delete no action,
+  bemerkungen text
+);
+
+-------------------------------------------
+
+drop table if exists kaderFunktion;
+create table kaderFunktion (
+  id integer primary key,
+  deleted integer default 0,
+  idPerson integer references person(id) on update cascade on delete cascade,
+  funktion text references kaderFunktionWerte(funktion) on update cascade on delete no action,
   bemerkungen text
 );
 
@@ -143,6 +155,29 @@ create index iMobileAboTypWerteSort on mobileAboTypWerte (sort);
 
 insert into
   mobileAboTypWerte(mobileAboTyp, sort)
+values
+  ('', 0),
+  ('TODO', 1);
+
+-------------------------------------------
+
+drop table if exists kaderFunktionWerte;
+create table kaderFunktionWerte (
+  funktion text unique,
+  deleted integer default 0,
+  historisch integer default 0,
+  sort integer
+);
+
+drop index if exists iKaderFunktionWerteKaderFunktion;
+create index iKaderFunktionWerteKaderFunktion on kaderFunktionWerte (funktion);
+drop index if exists iKaderFunktionWerteHistorisch;
+create index iKaderFunktionWerteHistorisch on kaderFunktionWerte (historisch);
+drop index if exists iKaderFunktionWerteSort;
+create index iKaderFunktionWerteSort on kaderFunktionWerte (sort);
+
+insert into
+  kaderFunktionWerte(kaderFunktion, sort)
 values
   ('', 0),
   ('TODO', 1);
