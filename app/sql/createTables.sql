@@ -8,7 +8,7 @@ create table person (
   telefonNr text,
   telefonNrMobile text,
   email text check (email like '%_@__%.__%'),
-  geburtsDatum text,
+  geburtDatum text,
   bueroNr text,
   abteilung text references abteilungWerte(abteilung) on update cascade on delete no action,
   kostenstelle text references kostenstelleWerte(kostenstelle) on update cascade on delete no action,
@@ -20,9 +20,16 @@ create table person (
   parkplatzBeitrag text,
   geschlecht text references geschlechtWerte(geschlecht) on update cascade on delete no action,
   bemerkungen text,
-  letzteMutationZeitpunkt TEXT,
+  letzteMutationZeit TEXT,
   letzteMutationUser TEXT
 );
+
+drop index if exists iPersonDeleted;
+create index iPersonDeleted on person (deleted);
+drop index if exists iPersonName;
+create index iPersonName on person (name);
+drop index if exists iPersonVorname;
+create index iPersonVorname on person (vorname);
 
 -------------------------------------------
 
@@ -34,6 +41,13 @@ create table link (
   url text,
   bemerkungen text
 );
+
+drop index if exists iLinkDeleted;
+create index iLinkDeleted on link (deleted);
+drop index if exists iLinkIdPerson;
+create index iLinkIdPerson on link (idPerson);
+drop index if exists iLinkUrl;
+create index iLinkUrl on link (url);
 
 -------------------------------------------
 
@@ -47,6 +61,13 @@ create table schluessel (
   bemerkungen text
 );
 
+drop index if exists iSchluesselDeleted;
+create index iSchluesselDeleted on schluessel (deleted);
+drop index if exists iSchluesselIdPerson;
+create index iSchluesselIdPerson on schluessel (idPerson);
+drop index if exists iSchluesselName;
+create index iSchluesselName on schluessel (name);
+
 -------------------------------------------
 
 drop table if exists mobileAbo;
@@ -59,6 +80,13 @@ create table mobileAbo (
   bemerkungen text
 );
 
+drop index if exists iMobileAboDeleted;
+create index iMobileAboDeleted on mobileAbo (deleted);
+drop index if exists iMobileAboIdPerson;
+create index iMobileAboIdPerson on mobileAbo (idPerson);
+drop index if exists iMobileAboTyp;
+create index iMobileAboTyp on mobileAbo (typ);
+
 -------------------------------------------
 
 drop table if exists kaderFunktion;
@@ -70,6 +98,13 @@ create table kaderFunktion (
   bemerkungen text
 );
 
+drop index if exists iKaderFunktionDeleted;
+create index iKaderFunktionDeleted on kaderFunktion (deleted);
+drop index if exists iKaderFunktionIdPerson;
+create index iKaderFunktionIdPerson on kaderFunktion (idPerson);
+drop index if exists iKaderFunktionFunktion;
+create index iKaderFunktionFunktion on kaderFunktion (funktion);
+
 -------------------------------------------
 
 drop table if exists tag;
@@ -79,6 +114,13 @@ create table tag (
   idPerson integer references person(id) on update cascade on delete cascade,
   tag text references tagWerte(tag) on update cascade on delete cascade
 );
+
+drop index if exists iTagDeleted;
+create index iTagDeleted on tag (deleted);
+drop index if exists iTagIdPerson;
+create index iTagIdPerson on tag (idPerson);
+drop index if exists iTagTag;
+create index iTagTag on tag (tag);
 
 -------------------------------------------
 
@@ -227,7 +269,7 @@ drop index if exists iKaderFunktionWerteSort;
 create index iKaderFunktionWerteSort on kaderFunktionWerte (sort);
 
 insert into
-  kaderFunktionWerte(kaderFunktion, sort)
+  kaderFunktionWerte(funktion, sort)
 values
   ('', 0),
   ('TODO', 1);
@@ -250,7 +292,7 @@ drop index if exists iMobileAboKostenstelleWerteSort;
 create index iMobileAboKostenstelleWerteSort on mobileAboKostenstelleWerte (sort);
 
 insert into
-  mobileAboKostenstelleWerte(mobileAboKostenstelle, sort)
+  mobileAboKostenstelleWerte(kostenstelle, sort)
 values
   ('', 0),
   ('TODO', 1);
@@ -277,3 +319,11 @@ insert into
 values
   ('', 0),
   ('TODO', 1);
+
+-------------------------------------------
+
+insert into
+  person(name, vorname)
+values
+  ('Tester', 'Test'),
+  ('Tester_2', 'Test_2');
