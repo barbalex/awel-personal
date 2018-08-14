@@ -12,4 +12,14 @@ create table person (
   vorgesetzt_id integer references person(id) on update cascade on delete set null,
   eintritt_datum text,
   austritt_datum text,
-)
+);
+
+-------------------------------------------
+
+DROP TABLE IF EXISTS links;
+CREATE TABLE links (
+  id_person INTEGER REFERENCES geschaefte(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  url TEXT,
+  txt TEXT,
+  PRIMARY KEY (url, id_person)
+);
