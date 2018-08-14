@@ -7,22 +7,27 @@ create table person (
   kurzzeichen text,
   telefonNr text,
   telefonNrMobile text,
+  email text check (email like '%_@__%.__%'),
+  geburtsDatum text,
   bueroNr text,
   abteilung text references abteilungWerte(abteilung) on update cascade on delete no action,
-  kostenstelle text,
+  kostenstelle text references kostenstelleWerte(kostenstelle) on update cascade on delete no action,
   vorgesetztId integer references person(id) on update cascade on delete restrict,
   eintrittDatum text,
   austrittDatum text,
   status text references statusWerte(status) on update cascade on delete no action,
+  parkplatzNr text,
+  parkplatzBeitrag text,
+  geschlecht text references geschlechtWerte(geschlecht) on update cascade on delete no action,
   bemerkungen text,
   letzteMutationZeitpunkt TEXT,
-  letzteMutationUser TEXT,
+  letzteMutationUser TEXT
 );
 
 -------------------------------------------
 
-drop table if exists links;
-create table links (
+drop table if exists link;
+create table link (
   id integer primary key,
   deleted integer default 0,
   idPerson integer references person(id) on update cascade on delete cascade,
@@ -67,6 +72,16 @@ create table kaderFunktion (
 
 -------------------------------------------
 
+drop table if exists tag;
+create table tag (
+  id integer primary key,
+  deleted integer default 0,
+  idPerson integer references person(id) on update cascade on delete cascade,
+  tag text references tagWerte(tag) on update cascade on delete cascade
+);
+
+-------------------------------------------
+
 -- boolean in sqlite is integer
 -- true = 1, false = 0
 drop table if exists statusWerte;
@@ -83,6 +98,41 @@ drop index if exists iStatusWerteHistorisch;
 create index iStatusWerteHistorisch on statusWerte (historisch);
 drop index if exists iStatusWerteSort;
 create index iStatusWerteSort on statusWerte (sort);
+
+insert into
+  statusWerte(status, sort)
+values
+  ('', 0),
+  ('aktiv', 1),
+  ('pensioniert', 2),
+  ('ehemalig', 3),
+  ('extern', 4);
+
+-------------------------------------------
+
+-- boolean in sqlite is integer
+-- true = 1, false = 0
+drop table if exists geschlechtWerte;
+create table geschlechtWerte (
+  geschlecht text primary key,
+  deleted integer default 0,
+  historisch integer default 0,
+  sort integer
+);
+
+drop index if exists iGeschlechtWerteGeschlecht;
+create index iGeschlechtWerteGeschlecht on geschlechtWerte (geschlecht);
+drop index if exists iGeschlechtWerteHistorisch;
+create index iGeschlechtWerteHistorisch on geschlechtWerte (historisch);
+drop index if exists iGeschlechtWerteSort;
+create index iGeschlechtWerteSort on geschlechtWerte (sort);
+
+insert into
+  geschlechtWerte(geschlecht, sort)
+values
+  ('', 0),
+  ('m', 1),
+  ('w', 2);
 
 -------------------------------------------
 
@@ -117,7 +167,7 @@ values
 
 drop table if exists kostenstelleWerte;
 create table kostenstelleWerte (
-  kostenstelle text unique,
+  kostenstelle text primary key,
   deleted integer default 0,
   historisch integer default 0,
   sort integer
@@ -140,7 +190,7 @@ values
 
 drop table if exists mobileAboTypWerte;
 create table mobileAboTypWerte (
-  typ text unique,
+  typ text primary key,
   deleted integer default 0,
   historisch integer default 0,
   sort integer
@@ -163,7 +213,7 @@ values
 
 drop table if exists kaderFunktionWerte;
 create table kaderFunktionWerte (
-  funktion text unique,
+  funktion text primary key,
   deleted integer default 0,
   historisch integer default 0,
   sort integer
@@ -186,7 +236,7 @@ values
 
 drop table if exists mobileAboKostenstelleWerte;
 create table mobileAboKostenstelleWerte (
-  kostenstelle text unique,
+  kostenstelle text primary key,
   deleted integer default 0,
   historisch integer default 0,
   sort integer
@@ -201,6 +251,29 @@ create index iMobileAboKostenstelleWerteSort on mobileAboKostenstelleWerte (sort
 
 insert into
   mobileAboKostenstelleWerte(mobileAboKostenstelle, sort)
+values
+  ('', 0),
+  ('TODO', 1);
+
+-------------------------------------------
+
+drop table if exists tagWerte;
+create table tagWerte (
+  tag text primary key,
+  deleted integer default 0,
+  historisch integer default 0,
+  sort integer
+);
+
+drop index if exists iTagWerteTag;
+create index iTagWerteTag on tagWerte (tag);
+drop index if exists iTagWerteHistorisch;
+create index iTagWerteHistorisch on tagWerte (historisch);
+drop index if exists iTagWerteSort;
+create index iTagWerteSort on tagWerte (sort);
+
+insert into
+  tagWerte(tag, sort)
 values
   ('', 0),
   ('TODO', 1);
