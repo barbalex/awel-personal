@@ -1,3 +1,8 @@
+
+PRAGMA foreign_keys = OFF;
+
+-------------------------------------------
+
 drop table if exists person;
 create table person (
   id integer primary key,
@@ -124,6 +129,7 @@ create index iTagTag on tag (tag);
 
 -------------------------------------------
 
+-- first werte tables
 -- boolean in sqlite is integer
 -- true = 1, false = 0
 drop table if exists statusWerte;
@@ -246,7 +252,7 @@ drop index if exists iMobileAboTypWerteSort;
 create index iMobileAboTypWerteSort on mobileAboTypWerte (sort);
 
 insert into
-  mobileAboTypWerte(mobileAboTyp, sort)
+  mobileAboTypWerte(typ, sort)
 values
   ('', 0),
   ('TODO', 1);
@@ -327,3 +333,6 @@ insert into
 values
   ('Tester', 'Test'),
   ('Tester_2', 'Test_2');
+
+
+PRAGMA foreign_keys = ON;
