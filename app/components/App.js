@@ -7,14 +7,12 @@ import Navbar from './Navbar'
 const App = () => (
   <DbContext>
     {db => {
-      const geschaefte = db
-        .prepare('SELECT idGeschaeft from geschaefte limit 1')
-        .get()
+      const personen = db.prepare('SELECT id from person limit 1').get()
 
       return (
         <Fragment>
           <Navbar />
-          <div>{`id: ${geschaefte.idGeschaeft}`}</div>
+          <div>{`id: ${personen.id}`}</div>
           <div>Hello world</div>
         </Fragment>
       )
