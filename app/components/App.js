@@ -1,19 +1,21 @@
 // @flow
-import React, { Fragment } from 'react'
-import app from 'ampersand-app'
+import React from 'react'
+import styled from 'styled-components'
 
 import Navbar from './Navbar'
+import PersonContainer from './PersonContainer'
 
-const App = () => {
-  const personen = app.db.prepare('SELECT id from person limit 1').get()
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`
 
-  return (
-    <Fragment>
-      <Navbar />
-      <div>{`id: ${personen.id}`}</div>
-      <div>Hello world</div>
-    </Fragment>
-  )
-}
+const App = () => (
+  <Container>
+    <Navbar />
+    <PersonContainer />
+  </Container>
+)
 
 export default App
