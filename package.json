@@ -187,7 +187,7 @@
     "jquery": "3.3.1",
     "mobx": "5.0.3",
     "mobx-react": "5.2.5",
-    "mobx-state-tree": "3.2.0",
+    "mobx-state-tree": "3.2.1",
     "react": "16.4.2",
     "react-dom": "16.4.2",
     "react-hot-loader": "4.3.4",
