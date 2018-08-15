@@ -6,7 +6,7 @@ import saveConfig from './saveConfig'
 
 export default async () => {
   const config = getConfig()
-  let dbPath = config.dbPath || 'C:/Users/alexa/awel-personal/personal.db'
+  let dbPath = config.dbPath || 'C:/Users/alexa/personal.db'
   let db
   try {
     db = new Database(dbPath, { fileMustExist: true })
