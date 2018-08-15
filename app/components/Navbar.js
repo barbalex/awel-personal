@@ -16,10 +16,9 @@ import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
+import app from 'ampersand-app'
 
 import { shell } from 'electron'
-
-import DbContext from '../context/db'
 
 const DbPath = styled.span`
   font-style: italic;
@@ -40,45 +39,41 @@ const enhance = compose(
 )
 
 const MyNavbar = ({ open, toggle }: { open: boolean, toggle: () => void }) => (
-  <DbContext>
-    {db => (
-      <Navbar color="dark" dark expand="md">
-        <NavbarBrand href="/">Personal</NavbarBrand>
-        <NavbarToggler onClick={toggle} />
-        <Collapse isOpen={open} navbar>
-          <Nav className="ml-auto" navbar>
-            <NavItem>
-              <NavLink href="/">Personen</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="/">Exporte</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="/">Berichte</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="/">Stammdaten</NavLink>
-            </NavItem>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav>
-                <i className="fas fa-ellipsis-v" />
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>
-                  Datenbank wählen
-                  <br />
-                  <DbPath>{`Aktuell: ${db.name}`}</DbPath>
-                </DropdownItem>
-                <DropdownItem onClick={onClickIssues}>
-                  Fehler und Wünsche melden
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          </Nav>
-        </Collapse>
-      </Navbar>
-    )}
-  </DbContext>
+  <Navbar color="dark" dark expand="md">
+    <NavbarBrand href="/">Personal</NavbarBrand>
+    <NavbarToggler onClick={toggle} />
+    <Collapse isOpen={open} navbar>
+      <Nav className="ml-auto" navbar>
+        <NavItem>
+          <NavLink href="/">Personen</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="/">Exporte</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="/">Berichte</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="/">Stammdaten</NavLink>
+        </NavItem>
+        <UncontrolledDropdown nav inNavbar>
+          <DropdownToggle nav>
+            <i className="fas fa-ellipsis-v" />
+          </DropdownToggle>
+          <DropdownMenu right>
+            <DropdownItem>
+              Datenbank wählen
+              <br />
+              <DbPath>{`Aktuell: ${app.db.name}`}</DbPath>
+            </DropdownItem>
+            <DropdownItem onClick={onClickIssues}>
+              Fehler und Wünsche melden
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+      </Nav>
+    </Collapse>
+  </Navbar>
 )
 
 export default enhance(MyNavbar)

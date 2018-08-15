@@ -52,8 +52,7 @@
       "package.json"
     ],
     "dmg": {
-      "contents": [
-        {
+      "contents": [{
           "x": 130,
           "y": 220
         },
@@ -188,6 +187,7 @@
     "webpack-merge": "4.1.4"
   },
   "dependencies": {
+    "ampersand-app": "2.0.0",
     "bootstrap": "4.1.3",
     "devtron": "1.4.0",
     "electron-debug": "2.0.0",
