@@ -32,13 +32,6 @@
     "test-watch": "npm test -- --watch"
   },
   "browserslist": "electron 3.0",
-  "lint-staged": {
-    "*.js": [
-      "cross-env NODE_ENV=development eslint --cache --format=node_modules/eslint-formatter-pretty",
-      "prettier --ignore-path .eslintignore --single-quote --semi false --trailingComma all --write",
-      "git add"
-    ]
-  },
   "build": {
     "productName": "Personal",
     "appId": "ch.gabriel-software.awel-personal",
@@ -163,7 +156,6 @@
     "husky": "0.14.3",
     "identity-obj-proxy": "3.0.0",
     "jest": "23.5.0",
-    "lint-staged": "7.2.2",
     "minimist": "1.2.0",
     "node-sass": "4.9.3",
     "npm-logical-tree": "1.2.1",
