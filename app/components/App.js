@@ -6,8 +6,6 @@ import Navbar from './Navbar'
 import PersonContainer from './PersonContainer'
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
   height: 100%;
 `
 

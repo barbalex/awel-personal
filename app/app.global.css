@@ -1,6 +1,13 @@
 @import '../node_modules/bootstrap/dist/css/bootstrap.css';
+@import '../node_modules/react-reflex/styles.css';
 html,
 body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+#root {
   height: 100%;
   width: 100%;
   margin: 0;
