@@ -7,7 +7,7 @@ import app from 'ampersand-app'
 import App from './components/App'
 import './app.global.css'
 import getDbConnection from './src/getDbConnection'
-import Store from './store/Root'
+import Store from './store'
 
 const run = async () => {
   let db

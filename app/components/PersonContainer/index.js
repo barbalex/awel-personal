@@ -12,7 +12,8 @@ const Container = styled.div`
   height: calc(100% - 56px);
 `
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
-// height: calc(100% - 56px);
+// above does not work
+// seems that navbar is not finished when PersonContainer is built
 
 const enhance = compose()
 
