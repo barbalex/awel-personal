@@ -3,18 +3,10 @@ import React from 'react'
 import styled from 'styled-components'
 import compose from 'recompose/compose'
 import { inject, observer } from 'mobx-react'
-import {
-  Col,
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText
-} from 'reactstrap'
+import { Col, Form, FormGroup, Label, Input } from 'reactstrap'
 
 const Container = styled.div`
-  padding: 10px;
+  margin: 20px;
 `
 
 const enhance = compose(
@@ -27,8 +19,8 @@ const Person = ({ store }: { store: Object }) => {
   let activeId = location[1]
   if (!isNaN(activeId)) activeId = +activeId
   const { personen } = store
-  const person = personen.find(p => p.id === activeId)
-  console.log('Person:', { location, person })
+  const person = personen.find(p => p.id === activeId) || {}
+  console.log('Person, person:', person)
 
   return (
     <Container>
@@ -38,7 +30,27 @@ const Person = ({ store }: { store: Object }) => {
             Name
           </Label>
           <Col sm={10}>
-            <Input name="name" id="name" value={person ? person.name : ''} />
+            <Input name="name" id="name" value={person.name || ''} />
+          </Col>
+        </FormGroup>
+        <FormGroup row>
+          <Label for="vorname" sm={2}>
+            Vorname
+          </Label>
+          <Col sm={10}>
+            <Input name="vorname" id="vorname" value={person.vorname || ''} />
+          </Col>
+        </FormGroup>
+        <FormGroup row>
+          <Label for="kurzzeichen" sm={2}>
+            Kurzzeichen
+          </Label>
+          <Col sm={10}>
+            <Input
+              name="kurzzeichen"
+              id="kurzzeichen"
+              value={person.kurzzeichen || ''}
+            />
           </Col>
         </FormGroup>
       </Form>
