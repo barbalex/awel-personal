@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { FixedSizeList as List } from 'react-window'
 import styled from 'styled-components'
 import compose from 'recompose/compose'
-import { inject } from 'mobx-react'
+import { inject, observer } from 'mobx-react'
 import sortBy from 'lodash/sortBy'
 
 import fetchPersonen from '../../src/fetchPersonen'
@@ -71,7 +71,10 @@ const Row = styled.div`
   return sortBy(personen, ['projekt', 'art', 'popSort', 'tpopSort'])
 } */
 
-const enhance = compose(inject('store'))
+const enhance = compose(
+  inject('store'),
+  observer
+)
 
 type Props = {
   dimensions: Object,
@@ -124,11 +127,11 @@ class PersonList extends Component<Props> {
   render() {
     const { dimensions, store } = this.props
     let { personen } = store
-    const { showDeleted } = store
+    const { showDeleted, setLocation, location } = store
     const height = isNaN(dimensions.height) ? 250 : dimensions.height
     const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
-    // const activeNodeArray = get(data, 'tree.activeNodeArray')
-    // const activeId = activeNodeArray[9]
+    let activeId = location.toJSON()[1]
+    if (!isNaN(activeId)) activeId = +activeId
     personen = sortBy(personen, ['name', 'vorname'])
     if (!showDeleted) personen = personen.filter(p => p.deleted === 0)
 
@@ -142,13 +145,12 @@ class PersonList extends Component<Props> {
         >
           {({ index, style }) => {
             const row = personen[index]
-            // const url = ['Personen', row.id]
 
             return (
               <Row
                 style={style}
-                onClick={() => console.log('TODO')}
-                // active={activeId === row.id}
+                onClick={() => setLocation(['Personen', row.id.toString()])}
+                active={activeId === row.id}
               >
                 {`${row.name} ${row.vorname}`}
               </Row>

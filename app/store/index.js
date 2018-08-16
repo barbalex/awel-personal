@@ -12,6 +12,9 @@ export default types
     showDeleted: types.optional(types.boolean, false)
   })
   .actions(self => ({
+    setLocation(location){
+      self.location = location
+    },
     setPersonen(personen) {
       self.personen = personen
     },

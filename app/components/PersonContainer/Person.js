@@ -11,7 +11,7 @@ const enhance = compose(inject('store'))
 
 const Person = ({ store }: { store: Object }) => {
   const location = store.location.toJSON()
-  console.log('Person:', { store, location })
+  // console.log('Person:', { store, location })
 
   return (
     <Container>
