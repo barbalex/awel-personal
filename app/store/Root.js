@@ -10,6 +10,9 @@ export default types
     personen: types.array(Person)
   })
   .actions(self => ({
+    setPersonen(personen) {
+      self.personen = personen
+    },
     addPerson() {
       // 1. create new Person in db, returning id
       let info

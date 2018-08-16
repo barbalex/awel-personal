@@ -13,7 +13,8 @@
     "node": true
   },
   "rules": {
-    "semi":"off",
+    "no-restricted-globals": "off",
+    "semi": "off",
     "linebreak-style": "off",
     "no-param-reassign": "off",
     "arrow-parens": ["off"],
@@ -35,7 +36,9 @@
       "order": ["type-annotations", "static-methods", "lifecycle", "everything-else", "render"]
     }],
     "react/jsx-no-bind": "off",
-    "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }],
+    "react/jsx-filename-extension": ["error", {
+      "extensions": [".js", ".jsx"]
+    }],
     "react/prefer-stateless-function": "off",
     "react/jsx-one-expression-per-line": "off"
   },

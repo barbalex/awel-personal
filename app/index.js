@@ -19,16 +19,18 @@ const run = async () => {
   // TODO:
   // check if is valid db
   // if not: ask for other file
+  const store = Store.create()
   app.extend({
     init() {
       this.db = db
+      this.store = store
     }
   })
   app.init()
 
   render(
     <HotLoaderContainer>
-      <MobxProvider store={Store.create()}>
+      <MobxProvider store={store}>
         <App />
       </MobxProvider>
     </HotLoaderContainer>,
