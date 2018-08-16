@@ -2,18 +2,22 @@
 import React from 'react'
 import app from 'ampersand-app'
 import styled from 'styled-components'
+import compose from 'recompose/compose'
+import { inject } from 'mobx-react'
 
 const Container = styled.div``
 
-const Person = () => {
-  const personen = app.db.prepare('SELECT id from person limit 1').get()
+const enhance = compose(inject('store'))
+
+const Person = ({ store }: { store: Object }) => {
+  const location = store.location.toJSON()
+  console.log('Person:', { store, location })
 
   return (
     <Container>
-      <div>{`id: ${personen.id}`}</div>
       <div>Hello world</div>
     </Container>
   )
 }
 
-export default Person
+export default enhance(Person)
