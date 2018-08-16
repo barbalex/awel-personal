@@ -149,7 +149,10 @@ class PersonList extends Component<Props> {
             return (
               <Row
                 style={style}
-                onClick={() => setLocation(['Personen', row.id.toString()])}
+                onClick={() => {
+                  console.log('List, onClick, rowId:', row.id)
+                  setLocation(['Personen', row.id.toString()])
+                }}
                 active={activeId === row.id}
               >
                 {`${row.name} ${row.vorname}`}

@@ -30,12 +30,20 @@ const enhance = compose(
   observer
 )
 
-const Person = ({ store, onBlur }: { store: Object, onBlur: () => void }) => {
-  const location = store.location.toJSON()
-  let activeId = location[1]
-  if (!isNaN(activeId)) activeId = +activeId
+const Person = ({
+  store,
+  activeId,
+  onBlur
+}: {
+  store: Object,
+  activeId: ?number,
+  onBlur: () => void
+}) => {
+  if (!activeId) return null
+
   const { personen } = store
   const person = personen.find(p => p.id === activeId) || {}
+  console.log('Person', { person, activeId })
 
   return (
     <Container>
@@ -47,7 +55,7 @@ const Person = ({ store, onBlur }: { store: Object, onBlur: () => void }) => {
           <Col sm={10}>
             <Input
               name="name"
-              id="name"
+              id={`${activeId}name`}
               defaultValue={person.name || ''}
               onBlur={onBlur}
             />
@@ -60,7 +68,7 @@ const Person = ({ store, onBlur }: { store: Object, onBlur: () => void }) => {
           <Col sm={10}>
             <Input
               name="vorname"
-              id="vorname"
+              id={`${activeId}vorname`}
               defaultValue={person.vorname || ''}
               onBlur={onBlur}
             />

@@ -23,7 +23,8 @@ const enhance = compose(
 
 const PersonContainer = ({ store }: { store: Object }) => {
   const location = store.location.toJSON()
-  const activeId = location[1]
+  let activeId = location[1]
+  if (!isNaN(activeId)) activeId = +activeId
 
   return (
     <Container>
@@ -43,7 +44,7 @@ const PersonContainer = ({ store }: { store: Object }) => {
             renderOnResizeRate={100}
             renderOnResize
           >
-            {activeId && <Person />}
+            <Person activeId={activeId} />
           </ReflexElement>
         </ReflexContainer>
       </ErrorBoundary>
