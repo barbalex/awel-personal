@@ -29,9 +29,13 @@ export default types
   .actions(self => ({
     setField({ field, value, id }) {
       const { db } = app
-      console.log('Person Store, setField:', { app, db, field, value, id })
+      try {
+        db.prepare(
+          `update person set ${field} = "${value}" where id = ${id};`
+        ).run()
+      } catch (error) {
+        return console.log(error)
+      }
       self[field] = value
-      // TODO: write to db
-      db.prepare('update person set ? = ? where id = ?;').run(field, value, id)
     }
   }))
