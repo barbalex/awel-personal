@@ -30,7 +30,19 @@ const Person = ({ store }: { store: Object }) => {
             Name
           </Label>
           <Col sm={10}>
-            <Input name="name" id="name" value={person.name || ''} />
+            <Input
+              name="name"
+              id="name"
+              defaultValue={person.name || ''}
+              onBlur={e => {
+                // TODO
+                person.setField({
+                  field: 'name',
+                  value: e.target.value,
+                  id: person.id
+                })
+              }}
+            />
           </Col>
         </FormGroup>
         <FormGroup row>

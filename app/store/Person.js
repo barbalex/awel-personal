@@ -1,4 +1,5 @@
 import { types } from 'mobx-state-tree'
+import app from 'ampersand-app'
 
 export default types
   .model('Person', {
@@ -26,8 +27,11 @@ export default types
     letzteMutationUser: types.maybeNull(types.string)
   })
   .actions(self => ({
-    setField({ field, value }) {
+    setField({ field, value, id }) {
+      const { db } = app
+      console.log('Person Store, setField:', { app, db, field, value, id })
       self[field] = value
       // TODO: write to db
+      db.prepare('update person set ? = ? where id = ?;').run(field, value, id)
     }
   }))
