@@ -2,6 +2,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import compose from 'recompose/compose'
+import withHandlers from 'recompose/withHandlers'
 import { inject, observer } from 'mobx-react'
 import { Col, Form, FormGroup, Label, Input } from 'reactstrap'
 
@@ -11,16 +12,30 @@ const Container = styled.div`
 
 const enhance = compose(
   inject('store'),
+  withHandlers({
+    onBlur: ({ store }) => e => {
+      const location = store.location.toJSON()
+      let activeId = location[1]
+      if (!isNaN(activeId)) activeId = +activeId
+      const { personen } = store
+      const person = personen.find(p => p.id === activeId) || {}
+
+      person.setField({
+        field: e.target.name,
+        value: e.target.value,
+        id: person.id
+      })
+    }
+  }),
   observer
 )
 
-const Person = ({ store }: { store: Object }) => {
+const Person = ({ store, onBlur }: { store: Object, onBlur: () => void }) => {
   const location = store.location.toJSON()
   let activeId = location[1]
   if (!isNaN(activeId)) activeId = +activeId
   const { personen } = store
   const person = personen.find(p => p.id === activeId) || {}
-  console.log('Person, person:', person)
 
   return (
     <Container>
@@ -34,14 +49,7 @@ const Person = ({ store }: { store: Object }) => {
               name="name"
               id="name"
               defaultValue={person.name || ''}
-              onBlur={e => {
-                // TODO
-                person.setField({
-                  field: 'name',
-                  value: e.target.value,
-                  id: person.id
-                })
-              }}
+              onBlur={onBlur}
             />
           </Col>
         </FormGroup>
@@ -50,7 +58,12 @@ const Person = ({ store }: { store: Object }) => {
             Vorname
           </Label>
           <Col sm={10}>
-            <Input name="vorname" id="vorname" value={person.vorname || ''} />
+            <Input
+              name="vorname"
+              id="vorname"
+              defaultValue={person.vorname || ''}
+              onBlur={onBlur}
+            />
           </Col>
         </FormGroup>
         <FormGroup row>
@@ -61,7 +74,8 @@ const Person = ({ store }: { store: Object }) => {
             <Input
               name="kurzzeichen"
               id="kurzzeichen"
-              value={person.kurzzeichen || ''}
+              defaultValue={person.kurzzeichen || ''}
+              onBlur={onBlur}
             />
           </Col>
         </FormGroup>

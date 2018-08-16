@@ -13,6 +13,11 @@
     "node": true
   },
   "rules": {
+    "flowtype/no-weak-types": [2, {
+      "any": false,
+      "Object": false,
+      "Function": false
+    }],
     "no-restricted-globals": "off",
     "semi": "off",
     "linebreak-style": "off",
