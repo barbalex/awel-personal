@@ -9,8 +9,10 @@ import Person from './Person'
 import List from './List'
 
 const Container = styled.div`
-  height: 100%;
+  height: calc(100% - 56px);
 `
+// height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
+// height: calc(100% - 56px);
 
 const enhance = compose()
 

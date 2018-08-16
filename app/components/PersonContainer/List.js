@@ -4,35 +4,29 @@ import { FixedSizeList as List } from 'react-window'
 import styled from 'styled-components'
 import compose from 'recompose/compose'
 import { inject } from 'mobx-react'
+import sortBy from 'lodash/sortBy'
 
 import fetchPersonen from '../../src/fetchPersonen'
 
 const Container = styled.div`
-  height: 100%;
   border-right: 1px solid rgb(46, 125, 50);
 `
-const OuterContainer = styled.div`
+const Row = styled.div`
   border-bottom: 1px solid rgba(46, 125, 50, 0.5);
   cursor: pointer;
   background-color: ${props => (props.active ? 'rgb(255, 250, 198)' : 'unset')};
   border-top: ${props =>
     props.active ? '1px solid rgba(46, 125, 50, 0.5)' : 'unset'};
+  height: 50px;
+  padding: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1em;
   &:hover {
     background-color: rgb(255, 250, 198);
     border-top: 1px solid rgba(46, 125, 50, 0.5);
     margin-top: -1px;
-  }
-`
-const InnerContainer = styled.div`
-  height: 62px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 15px;
-  > div {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 `
 
@@ -135,6 +129,7 @@ class PersonList extends Component<Props> {
     const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
     // const activeNodeArray = get(data, 'tree.activeNodeArray')
     // const activeId = activeNodeArray[9]
+    personen = sortBy(personen, ['name', 'vorname'])
     if (!showDeleted) personen = personen.filter(p => p.deleted === 0)
 
     return (
@@ -142,7 +137,7 @@ class PersonList extends Component<Props> {
         <List
           height={height}
           itemCount={personen.length}
-          itemSize={91}
+          itemSize={50}
           width={width}
         >
           {({ index, style }) => {
@@ -150,17 +145,13 @@ class PersonList extends Component<Props> {
             // const url = ['Personen', row.id]
 
             return (
-              <OuterContainer
+              <Row
                 style={style}
                 onClick={() => console.log('TODO')}
                 // active={activeId === row.id}
               >
-                <InnerContainer>
-                  <div>{row.name}</div>
-                  <div>{row.vorname}</div>
-                  <div>{row.kurzzeichen}</div>
-                </InnerContainer>
-              </OuterContainer>
+                {`${row.name} ${row.vorname}`}
+              </Row>
             )
           }}
         </List>
