@@ -3,8 +3,19 @@ import React from 'react'
 import styled from 'styled-components'
 import compose from 'recompose/compose'
 import { inject, observer } from 'mobx-react'
+import {
+  Col,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  FormText
+} from 'reactstrap'
 
-const Container = styled.div``
+const Container = styled.div`
+  padding: 10px;
+`
 
 const enhance = compose(
   inject('store'),
@@ -21,7 +32,16 @@ const Person = ({ store }: { store: Object }) => {
 
   return (
     <Container>
-      <div>Hello world</div>
+      <Form>
+        <FormGroup row>
+          <Label for="name" sm={2}>
+            Name
+          </Label>
+          <Col sm={10}>
+            <Input name="name" id="name" value={person ? person.name : ''} />
+          </Col>
+        </FormGroup>
+      </Form>
     </Container>
   )
 }
