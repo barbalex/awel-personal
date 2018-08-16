@@ -7,7 +7,9 @@ const { db } = app
 
 export default types
   .model({
-    personen: types.array(Person)
+    personen: types.array(Person),
+    location: types.optional(types.array(types.string), ['Personen']),
+    showDeleted: types.optional(types.boolean, false)
   })
   .actions(self => ({
     setPersonen(personen) {

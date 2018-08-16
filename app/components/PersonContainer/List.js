@@ -129,11 +129,13 @@ class PersonList extends Component<Props> {
 
   render() {
     const { dimensions, store } = this.props
-    const { personen } = store
+    let { personen } = store
+    const { showDeleted } = store
     const height = isNaN(dimensions.height) ? 250 : dimensions.height
     const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
     // const activeNodeArray = get(data, 'tree.activeNodeArray')
     // const activeId = activeNodeArray[9]
+    if (!showDeleted) personen = personen.filter(p => p.deleted === 0)
 
     return (
       <Container>
