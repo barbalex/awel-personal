@@ -275,7 +275,7 @@ const MyNavbar = ({
             </DropdownToggle>
             <DropdownMenu right>
               <DropdownItem>
-                Datenbank wählen
+                Datenbank wählen (TODO)
                 <br />
                 <DbPath>{`Aktuell: ${app.db.name}`}</DbPath>
               </DropdownItem>
