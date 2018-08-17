@@ -3,7 +3,6 @@ import {
   Collapse,
   Navbar,
   NavbarToggler,
-  NavbarBrand,
   Nav,
   NavItem,
   NavLink,
@@ -27,6 +26,11 @@ const DbPath = styled.span`
 `
 const Sup = styled.sup`
   padding-left: 3px;
+`
+const StyledNavItem = styled(NavItem)`
+  border: ${props =>
+    props.active ? '1px solid rgb(255, 255, 255, .5)' : 'unset'};
+  border-radius: 0.25rem;
 `
 
 const onClickIssues = () => {
@@ -57,19 +61,21 @@ const MyNavbar = ({
   const personen = store.personen.filter(
     p => (showDeleted ? true : p.deleted === 0)
   )
+  const location = store.location.toJSON()
+  const activeLink = location[0]
+  console.log('Navbar:', { location, activeLink })
 
   return (
     <Navbar color="dark" dark expand="md">
-      <NavbarBrand href="/">Personal</NavbarBrand>
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={open} navbar>
-        <Nav className="ml-auto" navbar>
-          <NavItem>
+        <Nav className="mr-auto" navbar>
+          <StyledNavItem active={activeLink === 'Personen'}>
             <NavLink href="/">
               Personen
               <Sup>{personen.length}</Sup>
             </NavLink>
-          </NavItem>
+          </StyledNavItem>
           <NavItem>
             <NavLink href="/">Exporte</NavLink>
           </NavItem>
@@ -79,6 +85,8 @@ const MyNavbar = ({
           <NavItem>
             <NavLink href="/">Stammdaten</NavLink>
           </NavItem>
+        </Nav>
+        <Nav className="ml-auto" navbar>
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav>
               <i className="fas fa-ellipsis-v" />
