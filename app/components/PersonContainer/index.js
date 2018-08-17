@@ -39,11 +39,7 @@ const PersonContainer = ({ store }: { store: Object }) => {
             <List />
           </ReflexElement>
           <ReflexSplitter />
-          <ReflexElement
-            propagateDimensions
-            renderOnResizeRate={100}
-            renderOnResize
-          >
+          <ReflexElement>
             <Person activeId={activeId} />
           </ReflexElement>
         </ReflexContainer>
