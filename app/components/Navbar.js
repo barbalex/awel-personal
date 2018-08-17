@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import {
   Collapse,
   Navbar,
@@ -51,7 +51,7 @@ const enhance = compose(
   withState('newPersonTooltipOpen', 'setNewPersonTooltip', false),
   withState('deletePersonTooltipOpen', 'setDeletePersonTooltip', false),
   withHandlers({
-    toggle: ({ open, setOpen }) => () => {
+    toggleNavbar: ({ open, setOpen }) => () => {
       setOpen(!open)
     },
     togglePersonenTooltip: ({
@@ -65,7 +65,16 @@ const enhance = compose(
     toggleDeletePersonTooltip: ({
       deletePersonTooltipOpen,
       setDeletePersonTooltip
-    }) => () => setDeletePersonTooltip(!deletePersonTooltipOpen)
+    }) => () => setDeletePersonTooltip(!deletePersonTooltipOpen),
+    showTab: ({ store }) => e => {
+      e.preventDefault()
+      const id = e.target.id
+      const activeLocation = store.location.toJSON()[0]
+      const newLocation = id
+      // do nothing if is same location
+      if (newLocation === activeLocation) return
+      store.setLocation([newLocation])
+    }
   }),
   observer
 )
@@ -73,23 +82,25 @@ const enhance = compose(
 const MyNavbar = ({
   store,
   open,
-  toggle,
+  toggleNavbar,
   personenTooltipOpen,
   togglePersonenTooltip,
   newPersonTooltipOpen,
   toggleNewPersonTooltip,
   deletePersonTooltipOpen,
-  toggleDeletePersonTooltip
+  toggleDeletePersonTooltip,
+  showTab
 }: {
   store: Object,
   open: boolean,
-  toggle: () => void,
+  toggleNavbar: () => void,
   personenTooltipOpen: boolean,
   togglePersonenTooltip: () => void,
   newPersonTooltipOpen: boolean,
   toggleNewPersonTooltip: () => void,
   deletePersonTooltipOpen: boolean,
-  toggleDeletePersonTooltip: () => void
+  toggleDeletePersonTooltip: () => void,
+  showTab: () => void
 }) => {
   const { showDeleted } = store
   const personen = store.personen.filter(
@@ -100,11 +111,11 @@ const MyNavbar = ({
 
   return (
     <Navbar color="dark" dark expand="md">
-      <NavbarToggler onClick={toggle} />
+      <NavbarToggler onClick={toggleNavbar} />
       <Collapse isOpen={open} navbar>
         <Nav className="mr-auto" navbar>
           <StyledNavItem active={activeLink === 'Personen'}>
-            <NavLink href="/" id="newPersonNavLink">
+            <NavLink href="/" id="Personen" onClick={showTab}>
               Personen
               <Sup>{personen.length}</Sup>
             </NavLink>
@@ -112,42 +123,46 @@ const MyNavbar = ({
               <Tooltip
                 placement="bottom"
                 isOpen={personenTooltipOpen}
-                target="newPersonNavLink"
+                target="Personen"
                 toggle={togglePersonenTooltip}
               >
                 Personen anzeigen
               </Tooltip>
             )}
-            <Button id="newPersonButton">
-              <i className="fas fa-plus" />
-            </Button>
-            <Tooltip
-              placement="bottom"
-              isOpen={newPersonTooltipOpen}
-              target="newPersonButton"
-              toggle={toggleNewPersonTooltip}
-            >
-              neue Person erstellen
-            </Tooltip>
-            <Button id="deletePersonButton">
-              <i className="fas fa-trash-alt" />
-            </Button>
-            <Tooltip
-              placement="bottom"
-              isOpen={deletePersonTooltipOpen}
-              target="deletePersonButton"
-              toggle={toggleDeletePersonTooltip}
-            >
-              aktive Person löschen
-            </Tooltip>
+            {activeLink === 'Personen' && (
+              <Fragment>
+                <Button id="newPersonButton">
+                  <i className="fas fa-plus" />
+                </Button>
+                <Tooltip
+                  placement="bottom"
+                  isOpen={newPersonTooltipOpen}
+                  target="newPersonButton"
+                  toggle={toggleNewPersonTooltip}
+                >
+                  neue Person erstellen
+                </Tooltip>
+                <Button id="deletePersonButton">
+                  <i className="fas fa-trash-alt" />
+                </Button>
+                <Tooltip
+                  placement="bottom"
+                  isOpen={deletePersonTooltipOpen}
+                  target="deletePersonButton"
+                  toggle={toggleDeletePersonTooltip}
+                >
+                  aktive Person löschen
+                </Tooltip>
+              </Fragment>
+            )}
           </StyledNavItem>
-          <NavItem>
+          <NavItem id="Exporte" onClick={showTab}>
             <NavLink href="/">Exporte</NavLink>
           </NavItem>
-          <NavItem>
+          <NavItem id="Berichte" onClick={showTab}>
             <NavLink href="/">Berichte</NavLink>
           </NavItem>
-          <NavItem>
+          <NavItem id="Stammdaten" onClick={showTab}>
             <NavLink href="/">Stammdaten</NavLink>
           </NavItem>
         </Nav>
