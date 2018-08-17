@@ -36,10 +36,10 @@ const DeletionModal = ({
     <ModalHeader toggle={close}>{store.deletionTitle}</ModalHeader>
     <ModalBody>{store.deletionMessage}</ModalBody>
     <ModalFooter>
-      <Button color="primary" onClick={remove}>
+      <Button color="primary" onClick={remove} outline>
         ja
       </Button>
-      <Button color="secondary" onClick={close}>
+      <Button color="secondary" onClick={close} outline>
         nein
       </Button>
     </ModalFooter>
