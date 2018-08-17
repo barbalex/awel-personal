@@ -74,7 +74,8 @@ const enhance = compose(
       // do nothing if is same location
       if (newLocation === activeLocation) return
       store.setLocation([newLocation])
-    }
+    },
+    addPerson: ({ store }) => () => store.addPerson()
   }),
   observer
 )
@@ -89,7 +90,8 @@ const MyNavbar = ({
   toggleNewPersonTooltip,
   deletePersonTooltipOpen,
   toggleDeletePersonTooltip,
-  showTab
+  showTab,
+  addPerson
 }: {
   store: Object,
   open: boolean,
@@ -100,7 +102,8 @@ const MyNavbar = ({
   toggleNewPersonTooltip: () => void,
   deletePersonTooltipOpen: boolean,
   toggleDeletePersonTooltip: () => void,
-  showTab: () => void
+  showTab: () => void,
+  addPerson: () => void
 }) => {
   const { showDeleted } = store
   const personen = store.personen.filter(
@@ -131,7 +134,7 @@ const MyNavbar = ({
             )}
             {activeLink === 'Personen' && (
               <Fragment>
-                <Button id="newPersonButton">
+                <Button id="newPersonButton" onClick={addPerson}>
                   <i className="fas fa-plus" />
                 </Button>
                 <Tooltip

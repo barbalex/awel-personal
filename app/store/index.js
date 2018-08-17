@@ -3,8 +3,6 @@ import app from 'ampersand-app'
 
 import Person from './Person'
 
-const { db } = app
-
 export default types
   .model({
     personen: types.array(Person),
@@ -12,13 +10,14 @@ export default types
     showDeleted: types.optional(types.boolean, false)
   })
   .actions(self => ({
-    setLocation(location){
+    setLocation(location) {
       self.location = location
     },
     setPersonen(personen) {
       self.personen = personen
     },
     addPerson() {
+      const { db } = app
       // 1. create new Person in db, returning id
       let info
       try {
@@ -27,9 +26,11 @@ export default types
         return console.log(error)
       }
       // 2. add to store
-      self.personen.unshift({ id: info.lastInsertROWID })
+      self.personen.push({ id: info.lastInsertROWID })
+      self.setLocation(['Personen', info.lastInsertROWID.toString()])
     },
     deletePerson(id) {
+      const { db } = app
       const personenBefore = self.personen
       self.personen = self.personen.filter(p => p.id !== id)
       // write to db

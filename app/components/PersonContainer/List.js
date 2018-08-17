@@ -45,9 +45,21 @@ const PersonList = ({
   const { showDeleted, setLocation } = store
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
   const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
-  let { personen } = store
-  personen = sortBy(personen, ['name', 'vorname'])
-  if (!showDeleted) personen = personen.filter(p => p.deleted === 0)
+  const personen = store.personen
+    .sort((a, b) => {
+      if (!a.name && !a.vorname) return -1
+      if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
+        return -1
+      if (
+        a.name === b.name &&
+        a.vorname &&
+        b.vorname &&
+        a.vorname.toLowerCase() < b.vorname.toLowerCase()
+      )
+        return -1
+      return 1
+    })
+    .filter(p => !showDeleted && p.deleted === 0)
 
   return (
     <Container>
@@ -66,7 +78,7 @@ const PersonList = ({
               onClick={() => setLocation(['Personen', row.id.toString()])}
               active={activeId === row.id}
             >
-              {`${row.name} ${row.vorname}`}
+              {`${row.name || ''} ${row.vorname || ''}`}
             </Row>
           )
         }}
