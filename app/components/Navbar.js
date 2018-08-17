@@ -35,7 +35,7 @@ const StyledNavItem = styled(NavItem)`
     props.active ? '1px solid rgb(255, 255, 255, .5)' : 'unset'};
   border-radius: 0.25rem;
   > button {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0) !important;
     border: unset;
   }
 `
@@ -119,6 +119,9 @@ const MyNavbar = ({
   )
   const location = store.location.toJSON()
   const activeLink = location[0]
+  const existsActivePerson = activeLink === 'Personen' && location[1]
+  const mayAddNewPerson =
+    personen.filter(p => p.deleted === 0 && !p.name && !p.vorname).length === 0
 
   return (
     <Navbar color="dark" dark expand="md">
@@ -142,28 +145,40 @@ const MyNavbar = ({
             )}
             {activeLink === 'Personen' && (
               <Fragment>
-                <Button id="newPersonButton" onClick={addPerson}>
+                <Button
+                  id="newPersonButton"
+                  onClick={addPerson}
+                  disabled={!mayAddNewPerson}
+                >
                   <i className="fas fa-plus" />
                 </Button>
-                <Tooltip
-                  placement="bottom"
-                  isOpen={newPersonTooltipOpen}
-                  target="newPersonButton"
-                  toggle={toggleNewPersonTooltip}
+                {mayAddNewPerson && (
+                  <Tooltip
+                    placement="bottom"
+                    isOpen={newPersonTooltipOpen}
+                    target="newPersonButton"
+                    toggle={toggleNewPersonTooltip}
+                  >
+                    neue Person erfassen
+                  </Tooltip>
+                )}
+                <Button
+                  id="deletePersonButton"
+                  onClick={deletePerson}
+                  disabled={!existsActivePerson}
                 >
-                  neue Person erstellen
-                </Tooltip>
-                <Button id="deletePersonButton" onClick={deletePerson}>
                   <i className="fas fa-trash-alt" />
                 </Button>
-                <Tooltip
-                  placement="bottom"
-                  isOpen={deletePersonTooltipOpen}
-                  target="deletePersonButton"
-                  toggle={toggleDeletePersonTooltip}
-                >
-                  aktive Person löschen
-                </Tooltip>
+                {existsActivePerson && (
+                  <Tooltip
+                    placement="bottom"
+                    isOpen={deletePersonTooltipOpen}
+                    target="deletePersonButton"
+                    toggle={toggleDeletePersonTooltip}
+                  >
+                    markierte Person löschen
+                  </Tooltip>
+                )}
               </Fragment>
             )}
           </StyledNavItem>

@@ -6,7 +6,6 @@ import withLifecycle from '@hocs/with-lifecycle'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { inject, observer } from 'mobx-react'
-import sortBy from 'lodash/sortBy'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Person from './Person'
@@ -34,6 +33,8 @@ const enhance = compose(
       fetchPersonen()
       // set initial active id
       // nope, better not
+      // for instance: after deleting do not show another user
+      // generally: never sho a person the user has not choosen
       /*
       let { personen } = props.store
       personen = sortBy(personen, ['name', 'vorname'])

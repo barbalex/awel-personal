@@ -8,7 +8,11 @@ export default types
     personen: types.array(Person),
     location: types.optional(types.array(types.string), ['Personen']),
     showDeleted: types.optional(types.boolean, false)
+    // deletionMessage: types.optional(types.string)
   })
+  .volatile(() => ({
+    deletionCallback: null
+  }))
   .actions(self => ({
     setLocation(location) {
       self.location = location
