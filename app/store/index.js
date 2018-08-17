@@ -30,6 +30,9 @@ export default types
     setPersonen(personen) {
       self.personen = personen
     },
+    setShowDeleted(show) {
+      self.showDeleted = show
+    },
     addPerson() {
       const { db } = app
       // 1. create new Person in db, returning id

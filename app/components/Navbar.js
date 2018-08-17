@@ -76,6 +76,31 @@ const enhance = compose(
       store.setLocation([newLocation])
     },
     addPerson: ({ store }) => () => store.addPerson(),
+    setPersonDeleted: ({ store }) => () => {
+      const {
+        setDeletionMessage,
+        setDeletionTitle,
+        setDeletionCallback,
+        personen
+      } = store
+      const location = store.location.toJSON()
+      let activeId = location[1]
+      if (!isNaN(activeId)) activeId = +activeId
+      setDeletionCallback(() => {
+        store.deletePerson(activeId)
+        setDeletionMessage(null)
+        setDeletionTitle(null)
+      })
+      const activePerson = personen.find(p => p.id === activeId)
+      setDeletionMessage(
+        `${
+          activePerson.name
+            ? `"${activePerson.name} ${activePerson.vorname}"`
+            : 'Diesen Datensatz'
+        } wirklich löschen?`
+      )
+      setDeletionTitle('Person löschen')
+    },
     deletePerson: ({ store }) => () => {
       const {
         setDeletionMessage,
@@ -100,7 +125,9 @@ const enhance = compose(
         } wirklich löschen?`
       )
       setDeletionTitle('Person löschen')
-    }
+    },
+    toggleShowDeleted: ({ store }) => () =>
+      store.setShowDeleted(!store.showDeleted)
   }),
   observer
 )
@@ -117,7 +144,8 @@ const MyNavbar = ({
   toggleDeletePersonTooltip,
   showTab,
   addPerson,
-  deletePerson
+  deletePerson,
+  toggleShowDeleted
 }: {
   store: Object,
   open: boolean,
@@ -130,7 +158,8 @@ const MyNavbar = ({
   toggleDeletePersonTooltip: () => void,
   showTab: () => void,
   addPerson: () => void,
-  deletePerson: () => void
+  deletePerson: () => void,
+  toggleShowDeleted: () => void
 }) => {
   const { showDeleted } = store
   const personen = store.personen.filter(
@@ -222,6 +251,13 @@ const MyNavbar = ({
                 <br />
                 <DbPath>{`Aktuell: ${app.db.name}`}</DbPath>
               </DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem onClick={toggleShowDeleted}>
+                {showDeleted
+                  ? 'gelöschte Datensätze verbergen'
+                  : 'gelöschte Datensätze anzeigen'}
+              </DropdownItem>
+              <DropdownItem divider />
               <DropdownItem onClick={onClickIssues}>
                 Fehler und Wünsche melden
               </DropdownItem>
