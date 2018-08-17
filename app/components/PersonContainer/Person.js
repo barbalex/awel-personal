@@ -8,7 +8,8 @@ import { Form } from 'reactstrap'
 
 import Input from '../shared/Input'
 
-const Container = styled.div`
+const Container = styled.div``
+const StyledForm = styled(Form)`
   margin: 20px;
 `
 
@@ -48,7 +49,7 @@ const Person = ({
 
   return (
     <Container>
-      <Form>
+      <StyledForm>
         <Input
           value={person.name}
           field="name"
@@ -158,7 +159,7 @@ const Person = ({
           saveToDb={saveToDb}
           type="textarea"
         />
-      </Form>
+      </StyledForm>
     </Container>
   )
 }

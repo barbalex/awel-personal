@@ -7,6 +7,7 @@ import PersonContainer from './PersonContainer'
 
 const Container = styled.div`
   height: 100%;
+  overflow: hidden;
 `
 
 const App = () => (

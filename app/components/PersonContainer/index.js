@@ -13,12 +13,18 @@ import Person from './Person'
 import List from './List'
 import fetchPersonen from '../../src/fetchPersonen'
 
-const Container = styled.div`
-  height: calc(100% - 56px);
-`
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
 // seems that navbar is not finished when PersonContainer is built
+const Container = styled.div`
+  height: calc(100% - 56px);
+`
+// seems needed to prevent unnessecary scrollbars
+const StyledReflexElement = styled(ReflexElement)`
+  > div {
+    height: unset !important;
+  }
+`
 
 const enhance = compose(
   inject('store'),
@@ -66,9 +72,9 @@ const PersonContainer = ({
             <List activeId={activeId} />
           </ReflexElement>
           <ReflexSplitter />
-          <ReflexElement>
+          <StyledReflexElement>
             <Person activeId={activeId} />
-          </ReflexElement>
+          </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>
     </Container>
