@@ -47,12 +47,17 @@ const onClickIssues = () => {
 const enhance = compose(
   inject('store'),
   withState('open', 'setOpen', false),
+  withState('personenTooltipOpen', 'setPersonenTooltip', false),
   withState('newPersonTooltipOpen', 'setNewPersonTooltip', false),
   withState('deletePersonTooltipOpen', 'setDeletePersonTooltip', false),
   withHandlers({
     toggle: ({ open, setOpen }) => () => {
       setOpen(!open)
     },
+    togglePersonenTooltip: ({
+      personenTooltipOpen,
+      setPersonenTooltip
+    }) => () => setPersonenTooltip(!personenTooltipOpen),
     toggleNewPersonTooltip: ({
       newPersonTooltipOpen,
       setNewPersonTooltip
@@ -69,6 +74,8 @@ const MyNavbar = ({
   store,
   open,
   toggle,
+  personenTooltipOpen,
+  togglePersonenTooltip,
   newPersonTooltipOpen,
   toggleNewPersonTooltip,
   deletePersonTooltipOpen,
@@ -77,6 +84,8 @@ const MyNavbar = ({
   store: Object,
   open: boolean,
   toggle: () => void,
+  personenTooltipOpen: boolean,
+  togglePersonenTooltip: () => void,
   newPersonTooltipOpen: boolean,
   toggleNewPersonTooltip: () => void,
   deletePersonTooltipOpen: boolean,
@@ -95,28 +104,38 @@ const MyNavbar = ({
       <Collapse isOpen={open} navbar>
         <Nav className="mr-auto" navbar>
           <StyledNavItem active={activeLink === 'Personen'}>
-            <NavLink href="/">
+            <NavLink href="/" id="newPersonNavLink">
               Personen
               <Sup>{personen.length}</Sup>
             </NavLink>
-            <Button id="newPersonSymbol">
+            {activeLink !== 'Personen' && (
+              <Tooltip
+                placement="bottom"
+                isOpen={personenTooltipOpen}
+                target="newPersonNavLink"
+                toggle={togglePersonenTooltip}
+              >
+                Personen anzeigen
+              </Tooltip>
+            )}
+            <Button id="newPersonButton">
               <i className="fas fa-plus" />
             </Button>
             <Tooltip
               placement="bottom"
               isOpen={newPersonTooltipOpen}
-              target="newPersonSymbol"
+              target="newPersonButton"
               toggle={toggleNewPersonTooltip}
             >
               neue Person erstellen
             </Tooltip>
-            <Button id="deletePersonSymbol">
+            <Button id="deletePersonButton">
               <i className="fas fa-trash-alt" />
             </Button>
             <Tooltip
               placement="bottom"
               isOpen={deletePersonTooltipOpen}
-              target="deletePersonSymbol"
+              target="deletePersonButton"
               toggle={toggleDeletePersonTooltip}
             >
               aktive Person löschen
