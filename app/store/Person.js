@@ -29,12 +29,11 @@ export default types
   .actions(self => ({
     setField({ field, value, id }) {
       const { db } = app
-      // escape non null values, do NOT escape null
-      const valueToSet = value || value === 0 ? `"${value}"` : 'null'
       try {
-        db.prepare(
-          `update person set ${field} = ${valueToSet} where id = ${id};`
-        ).run()
+        db.prepare(`update person set ${field} = @value where id = @id;`).run({
+          value,
+          id
+        })
       } catch (error) {
         return console.log(error)
       }
