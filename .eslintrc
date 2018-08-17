@@ -13,6 +13,9 @@
     "node": true
   },
   "rules": {
+    "react/require-default-props": [0, {
+      "forbidDefaultForRequired": false
+    }],
     "flowtype/no-weak-types": [2, {
       "any": false,
       "Object": false,
