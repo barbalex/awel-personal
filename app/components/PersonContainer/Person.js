@@ -45,7 +45,6 @@ const Person = ({
 
   const { personen } = store
   const person = personen.find(p => p.id === activeId) || {}
-  console.log('Person', { person, activeId })
 
   return (
     <Container>
