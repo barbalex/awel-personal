@@ -230,15 +230,43 @@ const MyNavbar = ({
               </Fragment>
             )}
           </StyledNavItem>
-          <NavItem id="Exporte" onClick={showTab}>
-            <NavLink href="/">Exporte</NavLink>
-          </NavItem>
-          <NavItem id="Berichte" onClick={showTab}>
-            <NavLink href="/">Berichte</NavLink>
-          </NavItem>
-          <NavItem id="Stammdaten" onClick={showTab}>
-            <NavLink href="/">Stammdaten</NavLink>
-          </NavItem>
+          <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle nav caret>
+              Exporte
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem>
+                Gefilterte Personen mit allen Feldern (TODO)
+              </DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>mehr?</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+          <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle nav caret>
+              Berichte
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem>TODO</DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>mehr?</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+          <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle nav caret>
+              Stammdaten
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem>Status (TODO)</DropdownItem>
+              <DropdownItem>Geschlecht (TODO)</DropdownItem>
+              <DropdownItem>Abteilung (TODO)</DropdownItem>
+              <DropdownItem>Kostenstelle (TODO)</DropdownItem>
+              <DropdownItem>Mobile Abo (TODO)</DropdownItem>
+              <DropdownItem>Mobile Abo Kostenstelle (TODO)</DropdownItem>
+              <DropdownItem>Kaderfunktion (TODO)</DropdownItem>
+              <DropdownItem>Tag (TODO)</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
         </Nav>
         <Nav className="ml-auto" navbar>
           <UncontrolledDropdown nav inNavbar>
