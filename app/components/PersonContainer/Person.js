@@ -111,8 +111,8 @@ const Person = ({
           saveToDb={saveToDb}
         />
         <Input
-          value={person.vorgesetzt}
-          field="vorgesetzt"
+          value={person.vorgesetztId}
+          field="vorgesetztId"
           label="Vorgesetzte(r)"
           saveToDb={saveToDb}
         />

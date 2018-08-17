@@ -16,7 +16,7 @@ const enhance = compose(
   withHandlers({
     onChange: ({ setStateValue }) => event => setStateValue(event.target.value),
     onBlur: ({ saveToDb, field }) => event =>
-      saveToDb({ value: event.target.value || null, field })
+      saveToDb({ value: event.target.value || '', field })
   }),
   withLifecycle({
     onDidUpdate(prevProps, props) {
