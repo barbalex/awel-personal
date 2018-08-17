@@ -75,7 +75,13 @@ const enhance = compose(
       if (newLocation === activeLocation) return
       store.setLocation([newLocation])
     },
-    addPerson: ({ store }) => () => store.addPerson()
+    addPerson: ({ store }) => () => store.addPerson(),
+    deletePerson: ({ store }) => () => {
+      const location = store.location.toJSON()
+      let activeId = location[1]
+      if (!isNaN(activeId)) activeId = +activeId
+      store.deletePerson(activeId)
+    }
   }),
   observer
 )
@@ -91,7 +97,8 @@ const MyNavbar = ({
   deletePersonTooltipOpen,
   toggleDeletePersonTooltip,
   showTab,
-  addPerson
+  addPerson,
+  deletePerson
 }: {
   store: Object,
   open: boolean,
@@ -103,7 +110,8 @@ const MyNavbar = ({
   deletePersonTooltipOpen: boolean,
   toggleDeletePersonTooltip: () => void,
   showTab: () => void,
-  addPerson: () => void
+  addPerson: () => void,
+  deletePerson: () => void
 }) => {
   const { showDeleted } = store
   const personen = store.personen.filter(
@@ -145,7 +153,7 @@ const MyNavbar = ({
                 >
                   neue Person erstellen
                 </Tooltip>
-                <Button id="deletePersonButton">
+                <Button id="deletePersonButton" onClick={deletePerson}>
                   <i className="fas fa-trash-alt" />
                 </Button>
                 <Tooltip

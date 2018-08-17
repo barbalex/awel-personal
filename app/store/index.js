@@ -41,5 +41,6 @@ export default types
         self.personen = personenBefore
         return console.log(error)
       }
+      self.setLocation(['Personen'])
     }
   }))

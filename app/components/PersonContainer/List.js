@@ -4,7 +4,6 @@ import { FixedSizeList as List } from 'react-window'
 import styled from 'styled-components'
 import compose from 'recompose/compose'
 import { inject, observer } from 'mobx-react'
-import sortBy from 'lodash/sortBy'
 
 const Container = styled.div`
   border-right: 1px solid rgb(46, 125, 50);
@@ -46,6 +45,7 @@ const PersonList = ({
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
   const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
   const personen = store.personen
+    .slice()
     .sort((a, b) => {
       if (!a.name && !a.vorname) return -1
       if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())

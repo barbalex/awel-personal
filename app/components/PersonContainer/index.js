@@ -30,9 +30,11 @@ const enhance = compose(
   inject('store'),
   withState('initialId', 'setInitialId', null),
   withLifecycle({
-    onDidMount(props) {
+    onDidMount() {
       fetchPersonen()
       // set initial active id
+      // nope, better not
+      /*
       let { personen } = props.store
       personen = sortBy(personen, ['name', 'vorname'])
       const { showDeleted, location } = props.store
@@ -42,6 +44,7 @@ const enhance = compose(
         const row = personen[0]
         props.setInitialId(row.id)
       }
+      */
     }
   }),
   observer
