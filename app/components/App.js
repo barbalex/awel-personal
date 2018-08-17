@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import Navbar from './Navbar'
 import PersonContainer from './PersonContainer'
+import DeletionModal from './DeletionModal'
 
 const Container = styled.div`
   height: 100%;
@@ -14,6 +15,7 @@ const App = () => (
   <Container>
     <Navbar />
     <PersonContainer />
+    <DeletionModal />
   </Container>
 )
 

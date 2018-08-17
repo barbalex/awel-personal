@@ -7,13 +7,23 @@ export default types
   .model({
     personen: types.array(Person),
     location: types.optional(types.array(types.string), ['Personen']),
-    showDeleted: types.optional(types.boolean, false)
-    // deletionMessage: types.optional(types.string)
+    showDeleted: types.optional(types.boolean, false),
+    deletionTitle: types.maybeNull(types.string),
+    deletionMessage: types.maybeNull(types.string)
   })
   .volatile(() => ({
     deletionCallback: null
   }))
   .actions(self => ({
+    setDeletionCallback(callback) {
+      self.deletionCallback = callback
+    },
+    setDeletionTitle(title) {
+      self.deletionTitle = title
+    },
+    setDeletionMessage(message) {
+      self.deletionMessage = message
+    },
     setLocation(location) {
       self.location = location
     },

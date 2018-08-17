@@ -77,10 +77,29 @@ const enhance = compose(
     },
     addPerson: ({ store }) => () => store.addPerson(),
     deletePerson: ({ store }) => () => {
+      const {
+        setDeletionMessage,
+        setDeletionTitle,
+        setDeletionCallback,
+        personen
+      } = store
       const location = store.location.toJSON()
       let activeId = location[1]
       if (!isNaN(activeId)) activeId = +activeId
-      store.deletePerson(activeId)
+      setDeletionCallback(() => {
+        store.deletePerson(activeId)
+        setDeletionMessage(null)
+        setDeletionTitle(null)
+      })
+      const activePerson = personen.find(p => p.id === activeId)
+      setDeletionMessage(
+        `${
+          activePerson.name
+            ? `"${activePerson.name} ${activePerson.vorname}"`
+            : 'Diesen Datensatz'
+        } wirklich löschen?`
+      )
+      setDeletionTitle('Person löschen')
     }
   }),
   observer
