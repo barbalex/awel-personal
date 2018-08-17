@@ -9,7 +9,9 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Button,
+  Tooltip
 } from 'reactstrap'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
@@ -28,9 +30,14 @@ const Sup = styled.sup`
   padding-left: 3px;
 `
 const StyledNavItem = styled(NavItem)`
+  display: flex;
   border: ${props =>
     props.active ? '1px solid rgb(255, 255, 255, .5)' : 'unset'};
   border-radius: 0.25rem;
+  > button {
+    background-color: rgba(0, 0, 0, 0);
+    border: unset;
+  }
 `
 
 const onClickIssues = () => {
@@ -40,10 +47,20 @@ const onClickIssues = () => {
 const enhance = compose(
   inject('store'),
   withState('open', 'setOpen', false),
+  withState('newPersonTooltipOpen', 'setNewPersonTooltip', false),
+  withState('deletePersonTooltipOpen', 'setDeletePersonTooltip', false),
   withHandlers({
     toggle: ({ open, setOpen }) => () => {
       setOpen(!open)
-    }
+    },
+    toggleNewPersonTooltip: ({
+      newPersonTooltipOpen,
+      setNewPersonTooltip
+    }) => () => setNewPersonTooltip(!newPersonTooltipOpen),
+    toggleDeletePersonTooltip: ({
+      deletePersonTooltipOpen,
+      setDeletePersonTooltip
+    }) => () => setDeletePersonTooltip(!deletePersonTooltipOpen)
   }),
   observer
 )
@@ -51,11 +68,19 @@ const enhance = compose(
 const MyNavbar = ({
   store,
   open,
-  toggle
+  toggle,
+  newPersonTooltipOpen,
+  toggleNewPersonTooltip,
+  deletePersonTooltipOpen,
+  toggleDeletePersonTooltip
 }: {
   store: Object,
   open: boolean,
-  toggle: () => void
+  toggle: () => void,
+  newPersonTooltipOpen: boolean,
+  toggleNewPersonTooltip: () => void,
+  deletePersonTooltipOpen: boolean,
+  toggleDeletePersonTooltip: () => void
 }) => {
   const { showDeleted } = store
   const personen = store.personen.filter(
@@ -63,7 +88,6 @@ const MyNavbar = ({
   )
   const location = store.location.toJSON()
   const activeLink = location[0]
-  console.log('Navbar:', { location, activeLink })
 
   return (
     <Navbar color="dark" dark expand="md">
@@ -75,6 +99,28 @@ const MyNavbar = ({
               Personen
               <Sup>{personen.length}</Sup>
             </NavLink>
+            <Button id="newPersonSymbol">
+              <i className="fas fa-plus" />
+            </Button>
+            <Tooltip
+              placement="bottom"
+              isOpen={newPersonTooltipOpen}
+              target="newPersonSymbol"
+              toggle={toggleNewPersonTooltip}
+            >
+              neue Person erstellen
+            </Tooltip>
+            <Button id="deletePersonSymbol">
+              <i className="fas fa-trash-alt" />
+            </Button>
+            <Tooltip
+              placement="bottom"
+              isOpen={deletePersonTooltipOpen}
+              target="deletePersonSymbol"
+              toggle={toggleDeletePersonTooltip}
+            >
+              aktive Person löschen
+            </Tooltip>
           </StyledNavItem>
           <NavItem>
             <NavLink href="/">Exporte</NavLink>
