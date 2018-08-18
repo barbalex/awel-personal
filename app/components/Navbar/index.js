@@ -19,7 +19,6 @@ import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import app from 'ampersand-app'
 import { inject, observer } from 'mobx-react'
-
 import { shell } from 'electron'
 
 const DbPath = styled.span`
