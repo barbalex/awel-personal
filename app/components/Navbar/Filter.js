@@ -10,7 +10,7 @@ import {
 const Filter = () => (
   <div>
     <InputGroup>
-      <Input placeholder="Volltext filtern" />
+      <Input placeholder="Volltext filtern (TODO)" />
       <Input placeholder="Felder filtern/sortieren" />
       <InputGroupAddon addonType="append" id="filterRemoveAddon">
         <span className="input-group-text">
