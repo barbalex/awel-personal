@@ -35,9 +35,15 @@ const StyledNavItem = styled(NavItem)`
   border: ${props =>
     props.active ? '1px solid rgb(255, 255, 255, .5)' : 'unset'};
   border-radius: 0.25rem;
-  > button {
-    background-color: rgba(0, 0, 0, 0) !important;
-    border: unset;
+`
+const StyledButton = styled(Button)`
+  background-color: rgba(0, 0, 0, 0) !important;
+  border: unset !important;
+`
+const MoreMenu = styled(UncontrolledDropdown)`
+  width: 40px;
+  > a {
+    padding-left: 18px !important;
   }
 `
 
@@ -194,13 +200,13 @@ const MyNavbar = ({
             )}
             {activeLink === 'Personen' && (
               <Fragment>
-                <Button
+                <StyledButton
                   id="newPersonButton"
                   onClick={addPerson}
                   disabled={!mayAddNewPerson}
                 >
                   <i className="fas fa-plus" />
-                </Button>
+                </StyledButton>
                 {mayAddNewPerson && (
                   <Tooltip
                     placement="bottom"
@@ -211,13 +217,13 @@ const MyNavbar = ({
                     neue Person erfassen
                   </Tooltip>
                 )}
-                <Button
+                <StyledButton
                   id="deletePersonButton"
                   onClick={deletePerson}
                   disabled={!existsActivePerson}
                 >
                   <i className="fas fa-trash-alt" />
-                </Button>
+                </StyledButton>
                 {existsActivePerson && (
                   <Tooltip
                     placement="bottom"
@@ -271,7 +277,7 @@ const MyNavbar = ({
         </Nav>
         <Nav className="ml-auto" navbar>
           <Filter />
-          <UncontrolledDropdown nav inNavbar>
+          <MoreMenu nav inNavbar>
             <DropdownToggle nav>
               <i className="fas fa-ellipsis-v" />
             </DropdownToggle>
@@ -292,7 +298,7 @@ const MyNavbar = ({
                 Fehler und Wünsche melden
               </DropdownItem>
             </DropdownMenu>
-          </UncontrolledDropdown>
+          </MoreMenu>
         </Nav>
       </Collapse>
     </Navbar>
