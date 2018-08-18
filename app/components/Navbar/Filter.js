@@ -6,7 +6,10 @@ const Filter = () => (
   <InputGroup>
     <Input placeholder="Volltext filtern" />
     <Input placeholder="Felder filtern/sortieren" />
-    <InputGroupAddon addonType="append">X</InputGroupAddon>
+    <InputGroupAddon addonType="append">
+      &nbsp;
+      <i className="fas fa-times" />
+    </InputGroupAddon>
   </InputGroup>
 )
 
