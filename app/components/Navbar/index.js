@@ -21,6 +21,8 @@ import app from 'ampersand-app'
 import { inject, observer } from 'mobx-react'
 import { shell } from 'electron'
 
+import Filter from './Filter'
+
 const DbPath = styled.span`
   font-style: italic;
   color: grey;
@@ -268,6 +270,7 @@ const MyNavbar = ({
           </UncontrolledDropdown>
         </Nav>
         <Nav className="ml-auto" navbar>
+          <Filter />
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav>
               <i className="fas fa-ellipsis-v" />
