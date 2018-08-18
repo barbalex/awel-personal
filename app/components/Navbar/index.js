@@ -11,7 +11,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
-  Tooltip
+  UncontrolledTooltip
 } from 'reactstrap'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
@@ -54,25 +54,10 @@ const onClickIssues = () => {
 const enhance = compose(
   inject('store'),
   withState('open', 'setOpen', false),
-  withState('personenTooltipOpen', 'setPersonenTooltip', false),
-  withState('newPersonTooltipOpen', 'setNewPersonTooltip', false),
-  withState('deletePersonTooltipOpen', 'setDeletePersonTooltip', false),
   withHandlers({
     toggleNavbar: ({ open, setOpen }) => () => {
       setOpen(!open)
     },
-    togglePersonenTooltip: ({
-      personenTooltipOpen,
-      setPersonenTooltip
-    }) => () => setPersonenTooltip(!personenTooltipOpen),
-    toggleNewPersonTooltip: ({
-      newPersonTooltipOpen,
-      setNewPersonTooltip
-    }) => () => setNewPersonTooltip(!newPersonTooltipOpen),
-    toggleDeletePersonTooltip: ({
-      deletePersonTooltipOpen,
-      setDeletePersonTooltip
-    }) => () => setDeletePersonTooltip(!deletePersonTooltipOpen),
     showTab: ({ store }) => e => {
       e.preventDefault()
       const id = e.target.id
@@ -143,12 +128,6 @@ const MyNavbar = ({
   store,
   open,
   toggleNavbar,
-  personenTooltipOpen,
-  togglePersonenTooltip,
-  newPersonTooltipOpen,
-  toggleNewPersonTooltip,
-  deletePersonTooltipOpen,
-  toggleDeletePersonTooltip,
   showTab,
   addPerson,
   deletePerson,
@@ -157,12 +136,6 @@ const MyNavbar = ({
   store: Object,
   open: boolean,
   toggleNavbar: () => void,
-  personenTooltipOpen: boolean,
-  togglePersonenTooltip: () => void,
-  newPersonTooltipOpen: boolean,
-  toggleNewPersonTooltip: () => void,
-  deletePersonTooltipOpen: boolean,
-  toggleDeletePersonTooltip: () => void,
   showTab: () => void,
   addPerson: () => void,
   deletePerson: () => void,
@@ -189,14 +162,9 @@ const MyNavbar = ({
               <Sup>{personen.length}</Sup>
             </NavLink>
             {activeLink !== 'Personen' && (
-              <Tooltip
-                placement="bottom"
-                isOpen={personenTooltipOpen}
-                target="Personen"
-                toggle={togglePersonenTooltip}
-              >
+              <UncontrolledTooltip placement="bottom" target="Personen">
                 Personen anzeigen
-              </Tooltip>
+              </UncontrolledTooltip>
             )}
             {activeLink === 'Personen' && (
               <Fragment>
@@ -208,14 +176,12 @@ const MyNavbar = ({
                   <i className="fas fa-plus" />
                 </StyledButton>
                 {mayAddNewPerson && (
-                  <Tooltip
+                  <UncontrolledTooltip
                     placement="bottom"
-                    isOpen={newPersonTooltipOpen}
                     target="newPersonButton"
-                    toggle={toggleNewPersonTooltip}
                   >
                     neue Person erfassen
-                  </Tooltip>
+                  </UncontrolledTooltip>
                 )}
                 <StyledButton
                   id="deletePersonButton"
@@ -225,14 +191,12 @@ const MyNavbar = ({
                   <i className="fas fa-trash-alt" />
                 </StyledButton>
                 {existsActivePerson && (
-                  <Tooltip
+                  <UncontrolledTooltip
                     placement="bottom"
-                    isOpen={deletePersonTooltipOpen}
                     target="deletePersonButton"
-                    toggle={toggleDeletePersonTooltip}
                   >
                     markierte Person löschen
-                  </Tooltip>
+                  </UncontrolledTooltip>
                 )}
               </Fragment>
             )}
