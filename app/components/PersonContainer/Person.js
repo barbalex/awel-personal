@@ -51,13 +51,6 @@ const Person = ({
     <Container>
       <StyledForm>
         {showDeleted && (
-          <FormGroup check row>
-            <Label check>
-              <Input type="checkbox" value={person.deleted} /> gelöscht
-            </Label>
-          </FormGroup>
-        )}
-        {showDeleted && (
           <FormGroup row>
             <Label for="checkbox2" sm={2}>
               gelöscht
@@ -65,7 +58,7 @@ const Person = ({
             <Col sm={{ size: 10 }}>
               <FormGroup check>
                 <Label check>
-                  <Input type="checkbox" id="checkbox2" />
+                  <Input type="checkbox" id="checkbox2" value={person.deleted} />
                 </Label>
               </FormGroup>
             </Col>
