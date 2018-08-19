@@ -10,7 +10,7 @@ import { Col, FormGroup, Label, Input } from 'reactstrap'
 const enhance = compose(
   withState('stateValue', 'setStateValue', ({ value }) => !!value),
   withHandlers({
-    onChange: ({ saveToDb, field, stateValue, setStateValue, value }) => () => {
+    onChange: ({ saveToDb, field, stateValue, setStateValue }) => () => {
       const newValue = !stateValue
       saveToDb({ value: newValue ? 1 : 0, field })
       return setStateValue(newValue)
