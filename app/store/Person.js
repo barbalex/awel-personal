@@ -5,26 +5,30 @@ export default types
   .model('Person', {
     id: types.integer,
     deleted: types.optional(types.integer, 0),
-    name: types.maybeNull(types.string),
-    vorname: types.maybeNull(types.string),
-    kurzzeichen: types.maybeNull(types.string),
-    telefonNr: types.maybeNull(types.string),
-    telefonNrMobile: types.maybeNull(types.string),
-    email: types.maybeNull(types.string),
-    geburtDatum: types.maybeNull(types.string),
-    bueroNr: types.maybeNull(types.string),
-    abteilung: types.maybeNull(types.string),
-    kostenstelle: types.maybeNull(types.string),
+    name: types.maybeNull(types.union(types.string, types.integer)),
+    vorname: types.maybeNull(types.union(types.string, types.integer)),
+    kurzzeichen: types.maybeNull(types.union(types.string, types.integer)),
+    telefonNr: types.maybeNull(types.union(types.string, types.integer)),
+    telefonNrMobile: types.maybeNull(types.union(types.string, types.integer)),
+    email: types.maybeNull(types.union(types.string, types.integer)),
+    geburtDatum: types.maybeNull(types.union(types.string, types.integer)),
+    bueroNr: types.maybeNull(types.union(types.string, types.integer)),
+    abteilung: types.maybeNull(types.union(types.string, types.integer)),
+    kostenstelle: types.maybeNull(types.union(types.string, types.integer)),
     vorgesetztId: types.maybeNull(types.integer),
-    eintrittDatum: types.maybeNull(types.string),
-    austrittDatum: types.maybeNull(types.string),
-    status: types.maybeNull(types.string),
-    parkplatzNr: types.maybeNull(types.string),
-    parkplatzBeitrag: types.maybeNull(types.string),
-    geschlecht: types.maybeNull(types.string),
-    bemerkungen: types.maybeNull(types.string),
-    letzteMutationZeit: types.maybeNull(types.string),
-    letzteMutationUser: types.maybeNull(types.string)
+    eintrittDatum: types.maybeNull(types.union(types.string, types.integer)),
+    austrittDatum: types.maybeNull(types.union(types.string, types.integer)),
+    status: types.maybeNull(types.union(types.string, types.integer)),
+    parkplatzNr: types.maybeNull(types.union(types.string, types.integer)),
+    parkplatzBeitrag: types.maybeNull(types.union(types.string, types.integer)),
+    geschlecht: types.maybeNull(types.union(types.string, types.integer)),
+    bemerkungen: types.maybeNull(types.union(types.string, types.integer)),
+    letzteMutationZeit: types.maybeNull(
+      types.union(types.string, types.integer)
+    ),
+    letzteMutationUser: types.maybeNull(
+      types.union(types.string, types.integer)
+    )
   })
   .actions(self => ({
     setField({ field, value, id }) {

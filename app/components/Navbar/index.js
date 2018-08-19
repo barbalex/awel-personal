@@ -68,31 +68,6 @@ const enhance = compose(
       store.setLocation([newLocation])
     },
     addPerson: ({ store }) => () => store.addPerson(),
-    setPersonDeleted: ({ store }) => () => {
-      const {
-        setDeletionMessage,
-        setDeletionTitle,
-        setDeletionCallback,
-        personen
-      } = store
-      const location = store.location.toJSON()
-      let activeId = location[1]
-      if (!isNaN(activeId)) activeId = +activeId
-      setDeletionCallback(() => {
-        store.deletePerson(activeId)
-        setDeletionMessage(null)
-        setDeletionTitle(null)
-      })
-      const activePerson = personen.find(p => p.id === activeId)
-      setDeletionMessage(
-        `${
-          activePerson.name
-            ? `"${activePerson.name} ${activePerson.vorname}"`
-            : 'Diesen Datensatz'
-        } wirklich löschen?`
-      )
-      setDeletionTitle('Person löschen')
-    },
     deletePerson: ({ store }) => () => {
       const {
         setDeletionMessage,
@@ -103,20 +78,40 @@ const enhance = compose(
       const location = store.location.toJSON()
       let activeId = location[1]
       if (!isNaN(activeId)) activeId = +activeId
-      setDeletionCallback(() => {
-        store.deletePerson(activeId)
-        setDeletionMessage(null)
-        setDeletionTitle(null)
-      })
       const activePerson = personen.find(p => p.id === activeId)
-      setDeletionMessage(
-        `${
-          activePerson.name
-            ? `"${activePerson.name} ${activePerson.vorname}"`
-            : 'Diesen Datensatz'
-        } wirklich löschen?`
-      )
-      setDeletionTitle('Person löschen')
+      if (activePerson.deleted === 1) {
+        // person.deleted is already = 1
+        // prepare true deletion
+        setDeletionCallback(() => {
+          store.deletePerson(activeId)
+          setDeletionMessage(null)
+          setDeletionTitle(null)
+        })
+        setDeletionMessage(
+          `${
+            activePerson.name
+              ? `"${activePerson.name} ${activePerson.vorname}"`
+              : 'Diesen Datensatz'
+          } wirklich endgültig und unwiederbringlich löschen?`
+        )
+        setDeletionTitle('Person unwiederbringlich löschen')
+      } else {
+        // do not true delete yet
+        // only set person.deleted = 1
+        setDeletionCallback(() => {
+          store.setPersonDeleted(activeId)
+          setDeletionMessage(null)
+          setDeletionTitle(null)
+        })
+        setDeletionMessage(
+          `${
+            activePerson.name
+              ? `"${activePerson.name} ${activePerson.vorname}"`
+              : 'Diesen Datensatz'
+          } wirklich löschen?`
+        )
+        setDeletionTitle('Person löschen')
+      }
     },
     toggleShowDeleted: ({ store }) => () =>
       store.setShowDeleted(!store.showDeleted)

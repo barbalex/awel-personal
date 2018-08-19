@@ -46,6 +46,20 @@ export default types
       self.personen.push({ id: info.lastInsertROWID })
       self.setLocation(['Personen', info.lastInsertROWID.toString()])
     },
+    setPersonDeleted(id) {
+      const { db } = app
+      const personenBefore = self.personen
+      self.personen = self.personen.filter(p => p.id !== id)
+      // write to db
+      try {
+        db.prepare(`update person set deleted = 1 where id = ?;`).run(id)
+      } catch (error) {
+        // roll back update
+        self.personen = personenBefore
+        return console.log(error)
+      }
+      self.setLocation(['Personen'])
+    },
     deletePerson(id) {
       const { db } = app
       const personenBefore = self.personen
