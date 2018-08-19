@@ -4,9 +4,9 @@ import styled from 'styled-components'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import { inject, observer } from 'mobx-react'
-import { Form } from 'reactstrap'
+import { Form, Label, Input, FormGroup, Col } from 'reactstrap'
 
-import Input from '../shared/Input'
+import MyInput from '../shared/Input'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
@@ -44,115 +44,136 @@ const Person = ({
 }) => {
   if (!activeId) return null
 
-  const { personen } = store
+  const { personen, showDeleted } = store
   const person = personen.find(p => p.id === activeId) || {}
 
   return (
     <Container>
       <StyledForm>
-        <Input
+        {showDeleted && (
+          <FormGroup check row>
+            <Label check>
+              <Input type="checkbox" value={person.deleted} /> gelöscht
+            </Label>
+          </FormGroup>
+        )}
+        {showDeleted && (
+          <FormGroup row>
+            <Label for="checkbox2" sm={2}>
+              gelöscht
+            </Label>
+            <Col sm={{ size: 10 }}>
+              <FormGroup check>
+                <Label check>
+                  <Input type="checkbox" id="checkbox2" />
+                </Label>
+              </FormGroup>
+            </Col>
+          </FormGroup>
+        )}
+        <MyInput
           value={person.name}
           field="name"
           label="Name"
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.vorname}
           field="vorname"
           label="Vorname"
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.kurzzeichen}
           field="kurzzeichen"
           label="Kurzzeichen"
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.telefonNr}
           field="telefonNr"
           label="Telefon"
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.telefonNrMobile}
           field="telefonNrMobile"
           label="Telefon mobile"
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.email}
           field="email"
           label="Email"
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.geburtDatum}
           field="geburtDatum"
           label="Geburtsdatum"
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.bueroNr}
           field="bueroNr"
           label="Büro Nr."
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.abteilung}
           field="abteilung"
           label="Abteilung"
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.kostenstelle}
           field="kostenstelle"
           label="Kostenstelle"
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.vorgesetztId}
           field="vorgesetztId"
           label="Vorgesetzte(r)"
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.eintrittDatum}
           field="eintrittDatum"
           label="Eintritt Datum"
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.austrittDatum}
           field="austrittDatum"
           label="Austritt Datum"
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.status}
           field="status"
           label="Status"
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.parkplatzNr}
           field="parkplatzNr"
           label="Parkplatz Nr."
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.parkplatzBeitrag}
           field="parkplatzBeitrag"
           label="Parkplatz Beitrag"
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.geschlecht}
           field="geschlecht"
           label="Geschlecht"
           saveToDb={saveToDb}
         />
-        <Input
+        <MyInput
           value={person.bemerkungen}
           field="bemerkungen"
           label="Bemerkungen"
