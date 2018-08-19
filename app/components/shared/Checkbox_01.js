@@ -6,6 +6,12 @@ import withState from 'recompose/withState'
 import withLifecycle from '@hocs/with-lifecycle'
 import { observer } from 'mobx-react'
 import { Col, FormGroup, Label, Input } from 'reactstrap'
+import styled from 'styled-components'
+
+const StyledInput = styled(Input)`
+  position: relative;
+  top: 10px;
+`
 
 const enhance = compose(
   withState('stateValue', 'setStateValue', ({ value }) => !!value),
@@ -44,7 +50,7 @@ const SharedCheckbox = ({
     <Col sm={{ size: 10 }}>
       <FormGroup check>
         <Label check>
-          <Input
+          <StyledInput
             id={field}
             type="checkbox"
             checked={value === 1}
