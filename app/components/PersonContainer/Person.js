@@ -4,9 +4,10 @@ import styled from 'styled-components'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import { inject, observer } from 'mobx-react'
-import { Form, Label, Input, FormGroup, Col } from 'reactstrap'
+import { Form } from 'reactstrap'
 
 import MyInput from '../shared/Input'
+import SharedCheckbox from '../shared/Checkbox_01'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
@@ -22,10 +23,12 @@ const enhance = compose(
       if (!isNaN(activeId)) activeId = +activeId
       const { personen } = store
       const person = personen.find(p => p.id === activeId) || {}
+      let valueToSave = value
+      if (!isNaN(value)) valueToSave = +value
 
       person.setField({
         field,
-        value,
+        value: valueToSave,
         id: person.id
       })
     }
@@ -51,18 +54,12 @@ const Person = ({
     <Container>
       <StyledForm>
         {showDeleted && (
-          <FormGroup row>
-            <Label for="checkbox2" sm={2}>
-              gelöscht
-            </Label>
-            <Col sm={{ size: 10 }}>
-              <FormGroup check>
-                <Label check>
-                  <Input type="checkbox" id="checkbox2" value={person.deleted} />
-                </Label>
-              </FormGroup>
-            </Col>
-          </FormGroup>
+          <SharedCheckbox
+            value={person.deleted}
+            field="deleted"
+            label="gelöscht"
+            saveToDb={saveToDb}
+          />
         )}
         <MyInput
           value={person.name}

@@ -2,13 +2,26 @@
 import React from 'react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
+import withState from 'recompose/withState'
+import withLifecycle from '@hocs/with-lifecycle'
 import { observer } from 'mobx-react'
 import { Col, FormGroup, Label, Input } from 'reactstrap'
 
 const enhance = compose(
+  withState('stateValue', 'setStateValue', ({ value }) => !!value),
   withHandlers({
-    onChange: ({ saveToDb, field }) => event =>
-      saveToDb({ value: event.target.value, field })
+    onChange: ({ saveToDb, field, stateValue, setStateValue, value }) => () => {
+      const newValue = !stateValue
+      saveToDb({ value: newValue ? 1 : 0, field })
+      return setStateValue(newValue)
+    }
+  }),
+  withLifecycle({
+    onDidUpdate(prevProps, props) {
+      if (props.value !== prevProps.value) {
+        props.setStateValue(!!props.value)
+      }
+    }
   }),
   observer
 )
@@ -31,7 +44,12 @@ const SharedCheckbox = ({
     <Col sm={{ size: 10 }}>
       <FormGroup check>
         <Label check>
-          <Input id={field} type="checkbox" value={value} onChange={onChange} />
+          <Input
+            id={field}
+            type="checkbox"
+            checked={value === 1}
+            onChange={onChange}
+          />
         </Label>
       </FormGroup>
     </Col>
