@@ -58,7 +58,7 @@ const enhance = compose(
 
 const DateField = ({
   store,
-  name,
+  field,
   label,
   change,
   blur,
@@ -103,12 +103,15 @@ const DateField = ({
         />
         <InputGroup.Addon style={datePickerAddonStyle}>
           <StyledDatePicker
-            onChange={onChangeDatePicker.bind(this, name)}
+            onChange={onChangeDatePicker.bind(this, field)}
             dateFormat="DD.MM.YYYY"
             locale="de-CH"
-            customInput={
-              <i className="far fa-calendar-alt" style={datePickerCalendarStyle} />
-            }
+            customInput={(
+              <i
+                className="far fa-calendar-alt"
+                style={datePickerCalendarStyle}
+              />
+)}
             popperPlacement="top-end"
           />
         </InputGroup.Addon>
@@ -121,7 +124,6 @@ DateField.displayName = 'DateField'
 
 DateField.propTypes = {
   store: PropTypes.object.isRequired,
-  name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   change: PropTypes.func.isRequired,
   blur: PropTypes.func.isRequired,
