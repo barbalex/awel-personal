@@ -1,19 +1,12 @@
+// @flow
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  FormGroup,
-  InputGroup,
-  FormControl,
-  ControlLabel,
-  Glyphicon,
-} from 'react-bootstrap'
+import { Col, FormGroup, Label, Input, InputGroupAddon } from 'reactstrap'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import styled from 'styled-components'
-
-import getDateValidationStateDate from '../../src/getDateValidationStateDate'
 
 moment.locale('de')
 
@@ -58,7 +51,10 @@ const StyledDatePicker = styled(DatePicker)`
   cursor: pointer;
 `
 
-const enhance = compose(inject('store'), observer)
+const enhance = compose(
+  inject('store'),
+  observer
+)
 
 const DateField = ({
   store,
@@ -67,11 +63,11 @@ const DateField = ({
   change,
   blur,
   onChangeDatePicker,
-  tabIndex,
+  tabIndex
 }) => {
   const {
     activeId,
-    geschaeftePlusFilteredAndSorted: geschaefte,
+    geschaeftePlusFilteredAndSorted: geschaefte
   } = store.geschaefte
   const geschaeft = geschaefte.find(g => g.idGeschaeft === activeId) || {}
   /**
@@ -81,44 +77,42 @@ const DateField = ({
    * for opening calendar
    */
   const datePickerAddonStyle = {
-    padding: 0,
+    padding: 0
   }
   const datePickerCalendarStyle = {
     paddingTop: 6,
     paddingBottom: 6,
     paddingLeft: 12,
-    paddingRight: 12,
+    paddingRight: 12
   }
 
   return (
-    <StyledFormGroup
-      validationState={getDateValidationStateDate(geschaeft[name])}
-    >
-      <ControlLabel>{label}</ControlLabel>
-      <InputGroup>
-        <FormControl
+    <StyledFormGroup row>
+      <Label for={field} sm={2}>
+        {label}
+      </Label>
+      <Col sm={10}>
+        <Input
+          id={field}
           type="text"
-          value={geschaeft[name] || ''}
-          name={name}
-          onChange={change}
-          onBlur={blur}
-          bsSize="small"
-          tabIndex={tabIndex}
+          name={field}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
         />
         <InputGroup.Addon style={datePickerAddonStyle}>
           <StyledDatePicker
-            // selected={moment(date, 'DD.MM.YYYY')}
             onChange={onChangeDatePicker.bind(this, name)}
-            // isClearable={true}
             dateFormat="DD.MM.YYYY"
             locale="de-CH"
             customInput={
-              <Glyphicon glyph="calendar" style={datePickerCalendarStyle} />
+              <i className="far fa-calendar-alt" style={datePickerCalendarStyle} />
             }
             popperPlacement="top-end"
           />
         </InputGroup.Addon>
-      </InputGroup>
+      </Col>
     </StyledFormGroup>
   )
 }
@@ -132,7 +126,7 @@ DateField.propTypes = {
   change: PropTypes.func.isRequired,
   blur: PropTypes.func.isRequired,
   onChangeDatePicker: PropTypes.func.isRequired,
-  tabIndex: PropTypes.number.isRequired,
+  tabIndex: PropTypes.number.isRequired
 }
 
 export default enhance(DateField)

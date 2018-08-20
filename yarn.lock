@@ -6930,6 +6930,10 @@ mobx@5.0.3:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-5.0.3.tgz#53b97f2a0f9b0dd7774c96249f81bf2d513d8e1c"
 
+moment@^2.22.2:
+  version "2.22.2"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+
 moo@^0.4.3:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/moo/-/moo-0.4.3.tgz#3f847a26f31cf625a956a87f2b10fbc013bfd10e"
@@ -8422,6 +8426,15 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.2.1, rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-datepicker@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-1.6.0.tgz#6b7a87e949f3bbd94872554be6a0119bd908a987"
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.6.0"
+    react-onclickoutside "^6.7.1"
+    react-popper "^0.9.1"
+
 react-display-name@^0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/react-display-name/-/react-display-name-0.2.4.tgz#e2a670b81d79a2204335510c01246f4c92ff12cf"
@@ -8468,6 +8481,10 @@ react-measure@^2.0.2:
     prop-types "^15.5.10"
     resize-observer-polyfill "^1.4.2"
 
+react-onclickoutside@^6.7.1:
+  version "6.7.1"
+  resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.7.1.tgz#6a5b5b8b4eae6b776259712c89c8a2b36b17be93"
+
 react-popper@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-1.0.2.tgz#0e72f338b7f15ab9f9ec884e36ae0dad78a3e301"
@@ -8482,6 +8499,13 @@ react-popper@1.0.2:
 react-popper@^0.10.4:
   version "0.10.4"
   resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.10.4.tgz#af2a415ea22291edd504678d7afda8a6ee3295aa"
+  dependencies:
+    popper.js "^1.14.1"
+    prop-types "^15.6.1"
+
+react-popper@^0.9.1:
+  version "0.9.5"
+  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.9.5.tgz#02a24ef3eec33af9e54e8358ab70eb0e331edd05"
   dependencies:
     popper.js "^1.14.1"
     prop-types "^15.6.1"
