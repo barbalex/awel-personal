@@ -2,15 +2,19 @@ import { types } from 'mobx-state-tree'
 import app from 'ampersand-app'
 
 import Person from './Person'
+import StatusWert from './StatusWert'
 
 export default types
   .model({
     personen: types.array(Person),
+    statusWerte: types.array(StatusWert),
     location: types.optional(types.array(types.string), ['Personen']),
     showDeleted: types.optional(types.boolean, false),
     deletionTitle: types.maybeNull(types.string),
     deletionMessage: types.maybeNull(types.string)
   })
+  // functions are not serializable
+  // so need to define this as volatile
   .volatile(() => ({
     deletionCallback: null
   }))
@@ -73,5 +77,22 @@ export default types
         return console.log(error)
       }
       self.setLocation(['Personen'])
+    },
+    updateField({ table, parentModel, field, value, id }) {
+      try {
+        app.db
+          .prepare(`update ${table} set ${field} = @value where id = @id;`)
+          .run({
+            value,
+            id
+          })
+      } catch (error) {
+        return console.log(error)
+      }
+      const storeObject = self[parentModel].find(o => o.id === id)
+      if (!storeObject) {
+        return console.log(`Error: no ${table} with id "${id}" found in store`)
+      }
+      storeObject[field] = value
     }
   }))

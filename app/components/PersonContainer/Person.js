@@ -37,7 +37,9 @@ const enhance = compose(
         newValue = ifIsNumericAsNumber(value)
       }
 
-      person.setField({
+      store.updateField({
+        table: 'person',
+        parentModel: 'personen',
         field,
         value: newValue,
         id: person.id
