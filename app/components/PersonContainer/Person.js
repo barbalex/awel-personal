@@ -7,7 +7,7 @@ import { inject, observer } from 'mobx-react'
 import { Form } from 'reactstrap'
 import moment from 'moment'
 
-import MyInput from '../shared/Input'
+import Input from '../shared/Input'
 import Date from '../shared/Date'
 import SharedCheckbox from '../shared/Checkbox_01'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
@@ -74,37 +74,37 @@ const Person = ({
             saveToDb={saveToDb}
           />
         )}
-        <MyInput
+        <Input
           value={person.name}
           field="name"
           label="Name"
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Input
           value={person.vorname}
           field="vorname"
           label="Vorname"
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Input
           value={person.kurzzeichen}
           field="kurzzeichen"
           label="Kurzzeichen"
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Input
           value={person.telefonNr}
           field="telefonNr"
           label="Telefon"
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Input
           value={person.telefonNrMobile}
           field="telefonNrMobile"
           label="Telefon mobile"
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Input
           value={person.email}
           field="email"
           label="Email"
@@ -116,25 +116,25 @@ const Person = ({
           label="Geburtsdatum"
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Input
           value={person.bueroNr}
           field="bueroNr"
           label="Büro Nr."
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Input
           value={person.abteilung}
           field="abteilung"
           label="Abteilung"
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Input
           value={person.kostenstelle}
           field="kostenstelle"
           label="Kostenstelle"
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Input
           value={person.vorgesetztId}
           field="vorgesetztId"
           label="Vorgesetzte(r)"
@@ -146,7 +146,7 @@ const Person = ({
           label="Eintritt Datum"
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Input
           value={person.austrittDatum}
           field="austrittDatum"
           label="Austritt Datum"
@@ -158,31 +158,31 @@ const Person = ({
           label="Austritt Datum"
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Input
           value={person.status}
           field="status"
           label="Status"
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Input
           value={person.parkplatzNr}
           field="parkplatzNr"
           label="Parkplatz Nr."
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Input
           value={person.parkplatzBeitrag}
           field="parkplatzBeitrag"
           label="Parkplatz Beitrag"
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Input
           value={person.geschlecht}
           field="geschlecht"
           label="Geschlecht"
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Input
           value={person.bemerkungen}
           field="bemerkungen"
           label="Bemerkungen"
