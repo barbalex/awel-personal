@@ -25,6 +25,15 @@ const enhance = compose(
       saveToDb({ value: newValue, field })
     }
   }),
+  withHandlers({
+    onChangeDatePicker: ({ onBlur }) => (name, date) => {
+      onBlur({
+        target: {
+          value: date
+        }
+      })
+    }
+  }),
   withLifecycle({
     onDidUpdate(prevProps, props) {
       if (props.value !== prevProps.value) {
