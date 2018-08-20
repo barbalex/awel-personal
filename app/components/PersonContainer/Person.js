@@ -21,15 +21,10 @@ const enhance = compose(
     saveToDb: ({ store }) => ({ field, value }) => {
       const location = store.location.toJSON()
       let activeId = location[1]
-      if (!isNumeric(activeId)) activeId = +activeId
+      if (isNumeric(activeId)) activeId = +activeId
       const { personen } = store
-      const person = personen.find(p => p.id === activeId) || {}
-      console.log('Person, value:', value)
-      console.log('Person, isNumeric(value):', isNumeric(value))
-      console.log(
-        'Person, value being saved:',
-        isNumeric(value) ? +value : value
-      )
+      const person = personen.find(p => p.id === activeId)
+      if (!person) throw new Error(`Person with id ${activeId} not found`)
 
       person.setField({
         field,
