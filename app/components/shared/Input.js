@@ -18,12 +18,12 @@ const enhance = compose(
     onBlur: ({ saveToDb, field, value, stateValue }) => event => {
       let newValue = event.target.value
       if (newValue === '') newValue = null
-      console.log({ value, newValue, stateValue })
+      // console.log({ value, newValue, stateValue })
       if (!newValue && !value && value !== 0 && newValue !== 0) return
-      console.log('2')
+      // console.log('2')
       // eslint-disable-next-line eqeqeq
       if (newValue === value) return
-      console.log('3')
+      // console.log('3')
       // saveToDb({ value: newValue || '', field })
       saveToDb({ value: newValue, field })
     }
