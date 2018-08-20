@@ -8,7 +8,7 @@ import { Form } from 'reactstrap'
 import moment from 'moment'
 
 import MyInput from '../shared/Input'
-import MyDate from '../shared/Date'
+import Date from '../shared/Date'
 import SharedCheckbox from '../shared/Checkbox_01'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import isDateField from '../../src/isDateField'
@@ -108,7 +108,7 @@ const Person = ({
           label="Email"
           saveToDb={saveToDb}
         />
-        <MyDate
+        <Date
           value={person.geburtDatum}
           field="geburtDatum"
           label="Geburtsdatum"
@@ -138,13 +138,19 @@ const Person = ({
           label="Vorgesetzte(r)"
           saveToDb={saveToDb}
         />
-        <MyInput
+        <Date
           value={person.eintrittDatum}
           field="eintrittDatum"
           label="Eintritt Datum"
           saveToDb={saveToDb}
         />
         <MyInput
+          value={person.austrittDatum}
+          field="austrittDatum"
+          label="Austritt Datum"
+          saveToDb={saveToDb}
+        />
+        <Date
           value={person.austrittDatum}
           field="austrittDatum"
           label="Austritt Datum"
