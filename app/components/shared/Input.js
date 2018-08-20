@@ -16,7 +16,9 @@ const enhance = compose(
   withHandlers({
     onChange: ({ setStateValue }) => event => setStateValue(event.target.value),
     onBlur: ({ saveToDb, field, value, stateValue }) => event => {
-      console.log({ value, evTValue: event.target.value, stateValue })
+      const newValue = event.target.value
+      console.log({ value, newValue, stateValue })
+      if (!newValue && !value && value !== 0 && newValue !== 0) return
       if (event.target.value == value) return
       saveToDb({ value: event.target.value || '', field })
     }

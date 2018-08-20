@@ -23,12 +23,10 @@ const enhance = compose(
       if (!isNaN(activeId)) activeId = +activeId
       const { personen } = store
       const person = personen.find(p => p.id === activeId) || {}
-      let valueToSave = value
-      if (!isNaN(value)) valueToSave = +value
 
       person.setField({
         field,
-        value: valueToSave,
+        value: !isNaN(value) ? +value : value,
         id: person.id
       })
     }
