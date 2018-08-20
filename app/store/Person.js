@@ -32,12 +32,13 @@ export default types
   })
   .actions(self => ({
     setField({ field, value, id }) {
-      const { db } = app
       try {
-        db.prepare(`update person set ${field} = @value where id = @id;`).run({
-          value,
-          id
-        })
+        app.db
+          .prepare(`update person set ${field} = @value where id = @id;`)
+          .run({
+            value,
+            id
+          })
       } catch (error) {
         return console.log(error)
       }
