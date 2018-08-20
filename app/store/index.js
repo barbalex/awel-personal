@@ -3,11 +3,13 @@ import app from 'ampersand-app'
 
 import Person from './Person'
 import StatusWert from './StatusWert'
+import GeschlechtWert from './GeschlechtWert'
 
 export default types
   .model({
     personen: types.array(Person),
     statusWerte: types.array(StatusWert),
+    geschlechtWerte: types.array(GeschlechtWert),
     location: types.optional(types.array(types.string), ['Personen']),
     showDeleted: types.optional(types.boolean, false),
     deletionTitle: types.maybeNull(types.string),
