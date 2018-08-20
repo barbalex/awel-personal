@@ -8,7 +8,7 @@ import { Form } from 'reactstrap'
 
 import MyInput from '../shared/Input'
 import SharedCheckbox from '../shared/Checkbox_01'
-import isNumeric from '../../src/isNumeric'
+import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
@@ -20,15 +20,14 @@ const enhance = compose(
   withHandlers({
     saveToDb: ({ store }) => ({ field, value }) => {
       const location = store.location.toJSON()
-      let activeId = location[1]
-      if (isNumeric(activeId)) activeId = +activeId
+      const activeId = ifIsNumericAsNumber(location[1])
       const { personen } = store
       const person = personen.find(p => p.id === activeId)
       if (!person) throw new Error(`Person with id ${activeId} not found`)
 
       person.setField({
         field,
-        value: isNumeric(value) ? +value : value,
+        value: ifIsNumericAsNumber(value),
         id: person.id
       })
     }
