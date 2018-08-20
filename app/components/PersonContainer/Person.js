@@ -8,6 +8,7 @@ import { Form } from 'reactstrap'
 
 import MyInput from '../shared/Input'
 import SharedCheckbox from '../shared/Checkbox_01'
+import isNumeric from '../../src/isNumeric'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
@@ -20,13 +21,19 @@ const enhance = compose(
     saveToDb: ({ store }) => ({ field, value }) => {
       const location = store.location.toJSON()
       let activeId = location[1]
-      if (!isNaN(activeId)) activeId = +activeId
+      if (!isNumeric(activeId)) activeId = +activeId
       const { personen } = store
       const person = personen.find(p => p.id === activeId) || {}
+      console.log('Person, value:', value)
+      console.log('Person, isNumeric(value):', isNumeric(value))
+      console.log(
+        'Person, value being saved:',
+        isNumeric(value) ? +value : value
+      )
 
       person.setField({
         field,
-        value: !isNaN(value) ? +value : value,
+        value: isNumeric(value) ? +value : value,
         id: person.id
       })
     }
