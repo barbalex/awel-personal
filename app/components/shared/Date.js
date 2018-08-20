@@ -1,11 +1,20 @@
 // @flow
 import React from 'react'
-import PropTypes from 'prop-types'
-import { Col, FormGroup, Label, Input, InputGroupAddon } from 'reactstrap'
+import {
+  Col,
+  FormGroup,
+  Label,
+  Input,
+  InputGroup,
+  InputGroupAddon
+} from 'reactstrap'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
+import withHandlers from 'recompose/withHandlers'
+import withState from 'recompose/withState'
+import withLifecycle from '@hocs/with-lifecycle'
 import styled from 'styled-components'
 
 moment.locale('de')
@@ -53,82 +62,114 @@ const StyledDatePicker = styled(DatePicker)`
 
 const enhance = compose(
   inject('store'),
+  withState('open', 'setOpen', false),
+  withState(
+    'stateValue',
+    'setStateValue',
+    ({ value }) => (value || value === 0 ? value : '')
+  ),
+  withHandlers({
+    onChange: ({ setStateValue }) => async event => {
+      setStateValue(event.target.value)
+      return null
+    },
+    onBlur: ({ saveToDb, field, value }) => event => {
+      let newValue = event.target.value
+      // save nulls if empty
+      if (newValue === '') newValue = null
+      // only save if value has changed
+      if (!newValue && !value && value !== 0 && newValue !== 0) return
+      if (newValue === value) return
+      saveToDb({ value: newValue, field })
+    },
+    openPicker: ({ setOpen }) => () => setOpen(true),
+    closePicker: ({ setOpen }) => () => setOpen(false)
+  }),
+  withHandlers({
+    onChangeDatePicker: ({ onBlur, onChange, setOpen }) => async date => {
+      const myEvent = {
+        target: {
+          value: moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')
+        }
+      }
+      await onChange(myEvent)
+      onBlur(myEvent)
+      setOpen(false)
+    }
+  }),
+  withLifecycle({
+    onDidUpdate(prevProps, props) {
+      if (props.value !== prevProps.value) {
+        const value = props.value || props.value === 0 ? props.value : ''
+        props.setStateValue(value)
+      }
+    }
+  }),
   observer
 )
 
 const DateField = ({
-  store,
+  open,
+  openPicker,
+  closePicker,
+  stateValue,
   field,
   label,
-  change,
-  blur,
+  onChange,
   onChangeDatePicker,
-  tabIndex
-}) => {
-  const {
-    activeId,
-    geschaeftePlusFilteredAndSorted: geschaefte
-  } = store.geschaefte
-  const geschaeft = geschaefte.find(g => g.idGeschaeft === activeId) || {}
-  /**
-   * need to give addon no padding
-   * and the originally addon's padding to the glyphicon
-   * to make entire addon clickable
-   * for opening calendar
-   */
-  const datePickerAddonStyle = {
-    padding: 0
-  }
-  const datePickerCalendarStyle = {
-    paddingTop: 6,
-    paddingBottom: 6,
-    paddingLeft: 12,
-    paddingRight: 12
-  }
-
-  return (
-    <StyledFormGroup row>
-      <Label for={field} sm={2}>
-        {label}
-      </Label>
-      <Col sm={10}>
+  onBlur
+}: {
+  open: boolean,
+  openPicker: () => void,
+  closePicker: () => void,
+  stateValue: number | string,
+  field: string,
+  label: string,
+  onChange: () => void,
+  onChangeDatePicker: () => void,
+  onBlur: () => void
+}) => (
+  <StyledFormGroup row>
+    <Label for={field} sm={2}>
+      {label}
+    </Label>
+    <Col sm={10}>
+      <InputGroup>
         <Input
           id={field}
           type="text"
           name={field}
-          placeholder={placeholder}
-          value={value}
+          value={stateValue}
           onChange={onChange}
           onBlur={onBlur}
         />
-        <InputGroup.Addon style={datePickerAddonStyle}>
-          <StyledDatePicker
-            onChange={onChangeDatePicker.bind(this, field)}
-            dateFormat="DD.MM.YYYY"
-            locale="de-CH"
-            customInput={(
-              <i
-                className="far fa-calendar-alt"
-                style={datePickerCalendarStyle}
-              />
-)}
-            popperPlacement="top-end"
-          />
-        </InputGroup.Addon>
-      </Col>
-    </StyledFormGroup>
-  )
-}
-
-DateField.displayName = 'DateField'
-
-DateField.propTypes = {
-  store: PropTypes.object.isRequired,
-  label: PropTypes.string.isRequired,
-  change: PropTypes.func.isRequired,
-  blur: PropTypes.func.isRequired,
-  onChangeDatePicker: PropTypes.func.isRequired,
-  tabIndex: PropTypes.number.isRequired
-}
+        <InputGroupAddon
+          addonType="append"
+          id="datePickerInputGroup"
+          onClick={openPicker}
+        >
+          <span className="input-group-text">
+            <i className="far fa-calendar-alt" />
+          </span>
+          {open && (
+            <StyledDatePicker
+              selected={
+                moment(stateValue, 'DD.MM.YYYY').isValid()
+                  ? moment(stateValue, 'DD.MM.YYYY')
+                  : null
+              }
+              onChange={onChangeDatePicker}
+              dateFormat="DD.MM.YYYY"
+              locale="de-CH"
+              withPortal
+              inline
+              onClickOutside={closePicker}
+            />
+          )}
+        </InputGroupAddon>
+      </InputGroup>
+    </Col>
+  </StyledFormGroup>
+)
 
 export default enhance(DateField)
