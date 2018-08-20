@@ -5,10 +5,12 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import { inject, observer } from 'mobx-react'
 import { Form } from 'reactstrap'
+import moment from 'moment'
 
 import MyInput from '../shared/Input'
 import SharedCheckbox from '../shared/Checkbox_01'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
+import isDateField from '../../src/isDateField'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
@@ -24,10 +26,19 @@ const enhance = compose(
       const { personen } = store
       const person = personen.find(p => p.id === activeId)
       if (!person) throw new Error(`Person with id ${activeId} not found`)
+      let newValue
+      if (isDateField(field)) {
+        if (value) newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
+        if (newValue.includes('Invalid date')) {
+          newValue = newValue.replace('Invalid date', 'Format: DD.MM.YYYY')
+        }
+      } else {
+        newValue = ifIsNumericAsNumber(value)
+      }
 
       person.setField({
         field,
-        value: ifIsNumericAsNumber(value),
+        value: newValue,
         id: person.id
       })
     }
