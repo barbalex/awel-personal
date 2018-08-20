@@ -87,12 +87,13 @@ const enhance = compose(
           setDeletionMessage(null)
           setDeletionTitle(null)
         })
+        const name = activePerson.name
+          ? `"${activePerson.name} ${activePerson.vorname}"`
+          : 'Dieser Datensatz'
+        const namer1 = activePerson.geschlecht === 'w' ? 'sie' : 'ihn'
+        const namer2 = activePerson.geschlecht === 'w' ? 'sie' : 'er'
         setDeletionMessage(
-          `${
-            activePerson.name
-              ? `"${activePerson.name} ${activePerson.vorname}"`
-              : 'Diesen Datensatz'
-          } wirklich endgültig und unwiederbringlich löschen?`
+          `${name} war schon gelöscht. Wenn Sie ${namer1} nochmals löschen, wird ${namer2} endgültig und unwiederbringlich gelöscht. Möchten Sie das?`
         )
         setDeletionTitle('Person unwiederbringlich löschen')
       } else {
