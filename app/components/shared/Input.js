@@ -15,16 +15,13 @@ const enhance = compose(
   ),
   withHandlers({
     onChange: ({ setStateValue }) => event => setStateValue(event.target.value),
-    onBlur: ({ saveToDb, field, value, stateValue }) => event => {
+    onBlur: ({ saveToDb, field, value }) => event => {
       let newValue = event.target.value
+      // save nulls if empty
       if (newValue === '') newValue = null
-      // console.log({ value, newValue, stateValue })
+      // only save if value has changed
       if (!newValue && !value && value !== 0 && newValue !== 0) return
-      // console.log('2')
-      // eslint-disable-next-line eqeqeq
       if (newValue === value) return
-      // console.log('3')
-      // saveToDb({ value: newValue || '', field })
       saveToDb({ value: newValue, field })
     }
   }),
