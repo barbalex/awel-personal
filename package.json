@@ -43,8 +43,7 @@
       "package.json"
     ],
     "dmg": {
-      "contents": [
-        {
+      "contents": [{
           "x": 130,
           "y": 220
         },
@@ -189,16 +188,16 @@
     "mobx": "5.0.3",
     "mobx-react": "5.2.5",
     "mobx-state-tree": "3.2.1",
-    "moment": "^2.22.2",
+    "moment": "2.22.2",
     "react": "16.4.2",
-    "react-datepicker": "^1.6.0",
+    "react-datepicker": "1.6.0",
     "react-dom": "16.4.2",
     "react-hot-loader": "4.3.4",
     "react-popper": "1.0.2",
     "react-reflex": "2.2.8",
     "react-router": "4.3.1",
     "react-router-dom": "4.3.1",
-    "react-select": "^2.0.0",
+    "react-select": "2.0.0",
     "react-transition-group": "2.4.0",
     "react-window": "1.1.1",
     "reactstrap": "6.4.0",
