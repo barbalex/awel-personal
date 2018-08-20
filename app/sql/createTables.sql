@@ -16,15 +16,15 @@ create table person (
   email text check (email like '%_@__%.__%'),
   geburtDatum text,
   bueroNr text,
-  abteilung text references abteilungWerte(abteilung) on update cascade on delete no action,
-  kostenstelle text references kostenstelleWerte(kostenstelle) on update cascade on delete no action,
+  abteilung text references abteilungWerte(value) on update cascade on delete no action,
+  kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
   vorgesetztId integer references person(id) on update cascade on delete restrict,
   eintrittDatum text,
   austrittDatum text,
-  status text references statusWerte(status) on update cascade on delete no action,
+  status text references statusWerte(value) on update cascade on delete no action,
   parkplatzNr text,
   parkplatzBeitrag text,
-  geschlecht text references geschlechtWerte(geschlecht) on update cascade on delete no action,
+  geschlecht text references geschlechtWerte(value) on update cascade on delete no action,
   bemerkungen text,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT
@@ -81,8 +81,8 @@ create table mobileAbo (
   id integer primary key,
   deleted integer default 0,
   idPerson integer references person(id) on update cascade on delete cascade,
-  typ text references mobileAboTypWerte(typ) on update cascade on delete no action,
-  kostenstelle text references mobileAboKostenstelleWerte(kostenstelle) on update cascade on delete no action,
+  typ text references mobileAboTypWerte(value) on update cascade on delete no action,
+  kostenstelle text references mobileAboKostenstelleWerte(value) on update cascade on delete no action,
   bemerkungen text
 );
 
@@ -100,7 +100,7 @@ create table kaderFunktion (
   id integer primary key,
   deleted integer default 0,
   idPerson integer references person(id) on update cascade on delete cascade,
-  funktion text references kaderFunktionWerte(funktion) on update cascade on delete no action,
+  funktion text references kaderFunktionWerte(value) on update cascade on delete no action,
   bemerkungen text
 );
 
@@ -118,7 +118,7 @@ create table tag (
   id integer primary key,
   deleted integer default 0,
   idPerson integer references person(id) on update cascade on delete cascade,
-  tag text references tagWerte(tag) on update cascade on delete cascade
+  tag text references tagWerte(value) on update cascade on delete cascade
 );
 
 drop index if exists iTagDeleted;
@@ -136,21 +136,21 @@ create index iTagTag on tag (tag);
 drop table if exists statusWerte;
 create table statusWerte (
   id integer primary key,
-  status text unique,
+  value text unique,
   deleted integer default 0,
-  historisch integer default 0,
+  historic integer default 0,
   sort integer
 );
 
 drop index if exists iStatusWerteStatus;
-create index iStatusWerteStatus on statusWerte (status);
+create index iStatusWerteStatus on statusWerte (value);
 drop index if exists iStatusWerteHistorisch;
-create index iStatusWerteHistorisch on statusWerte (historisch);
+create index iStatusWerteHistorisch on statusWerte (historic);
 drop index if exists iStatusWerteSort;
 create index iStatusWerteSort on statusWerte (sort);
 
 insert into
-  statusWerte(status, sort)
+  statusWerte(value, sort)
 values
   ('', 0),
   ('aktiv', 1),
@@ -165,21 +165,21 @@ values
 drop table if exists geschlechtWerte;
 create table geschlechtWerte (
   id integer primary key,
-  geschlecht text unique,
+  value text unique,
   deleted integer default 0,
-  historisch integer default 0,
+  historic integer default 0,
   sort integer
 );
 
 drop index if exists iGeschlechtWerteGeschlecht;
-create index iGeschlechtWerteGeschlecht on geschlechtWerte (geschlecht);
+create index iGeschlechtWerteGeschlecht on geschlechtWerte (value);
 drop index if exists iGeschlechtWerteHistorisch;
-create index iGeschlechtWerteHistorisch on geschlechtWerte (historisch);
+create index iGeschlechtWerteHistorisch on geschlechtWerte (historic);
 drop index if exists iGeschlechtWerteSort;
 create index iGeschlechtWerteSort on geschlechtWerte (sort);
 
 insert into
-  geschlechtWerte(geschlecht, sort)
+  geschlechtWerte(value, sort)
 values
   ('', 0),
   ('m', 1),
@@ -190,21 +190,21 @@ values
 drop table if exists abteilungWerte;
 create table abteilungWerte (
   id integer primary key,
-  abteilung text unique,
+  value text unique,
   deleted integer default 0,
-  historisch integer default 0,
+  historic integer default 0,
   sort integer
 );
 
 drop index if exists iAbteilungWerteAbteilung;
-create index iAbteilungWerteAbteilung on abteilungWerte (abteilung);
+create index iAbteilungWerteAbteilung on abteilungWerte (value);
 drop index if exists iAbteilungWerteHistorisch;
-create index iAbteilungWerteHistorisch on abteilungWerte (historisch);
+create index iAbteilungWerteHistorisch on abteilungWerte (historic);
 drop index if exists iAbteilungWerteSort;
 create index iAbteilungWerteSort on abteilungWerte (sort);
 
 insert into
-  abteilungWerte(abteilung, sort)
+  abteilungWerte(value, sort)
 values
   ('', 0),
   ('aw', 1),
@@ -220,21 +220,21 @@ values
 drop table if exists kostenstelleWerte;
 create table kostenstelleWerte (
   id integer primary key,
-  kostenstelle text unique,
+  value text unique,
   deleted integer default 0,
-  historisch integer default 0,
+  historic integer default 0,
   sort integer
 );
 
 drop index if exists iKostenstelleWerteKostenstelle;
-create index iKostenstelleWerteKostenstelle on kostenstelleWerte (kostenstelle);
+create index iKostenstelleWerteKostenstelle on kostenstelleWerte (value);
 drop index if exists iKostenstelleWerteHistorisch;
-create index iKostenstelleWerteHistorisch on kostenstelleWerte (historisch);
+create index iKostenstelleWerteHistorisch on kostenstelleWerte (historic);
 drop index if exists iKostenstelleWerteSort;
 create index iKostenstelleWerteSort on kostenstelleWerte (sort);
 
 insert into
-  kostenstelleWerte(kostenstelle, sort)
+  kostenstelleWerte(value, sort)
 values
   ('', 0),
   ('TODO', 1);
@@ -244,21 +244,21 @@ values
 drop table if exists mobileAboTypWerte;
 create table mobileAboTypWerte (
   id integer primary key,
-  typ text unique,
+  value text unique,
   deleted integer default 0,
-  historisch integer default 0,
+  historic integer default 0,
   sort integer
 );
 
 drop index if exists iMobileAboTypWerteMobileAboTyp;
-create index iMobileAboTypWerteMobileAboTyp on mobileAboTypWerte (typ);
+create index iMobileAboTypWerteMobileAboTyp on mobileAboTypWerte (value);
 drop index if exists iMobileAboTypWerteHistorisch;
-create index iMobileAboTypWerteHistorisch on mobileAboTypWerte (historisch);
+create index iMobileAboTypWerteHistorisch on mobileAboTypWerte (historic);
 drop index if exists iMobileAboTypWerteSort;
 create index iMobileAboTypWerteSort on mobileAboTypWerte (sort);
 
 insert into
-  mobileAboTypWerte(typ, sort)
+  mobileAboTypWerte(value, sort)
 values
   ('', 0),
   ('TODO', 1);
@@ -268,21 +268,21 @@ values
 drop table if exists kaderFunktionWerte;
 create table kaderFunktionWerte (
   id integer primary key,
-  funktion text unique,
+  value text unique,
   deleted integer default 0,
-  historisch integer default 0,
+  historic integer default 0,
   sort integer
 );
 
 drop index if exists iKaderFunktionWerteKaderFunktion;
-create index iKaderFunktionWerteKaderFunktion on kaderFunktionWerte (funktion);
+create index iKaderFunktionWerteKaderFunktion on kaderFunktionWerte (value);
 drop index if exists iKaderFunktionWerteHistorisch;
-create index iKaderFunktionWerteHistorisch on kaderFunktionWerte (historisch);
+create index iKaderFunktionWerteHistorisch on kaderFunktionWerte (historic);
 drop index if exists iKaderFunktionWerteSort;
 create index iKaderFunktionWerteSort on kaderFunktionWerte (sort);
 
 insert into
-  kaderFunktionWerte(funktion, sort)
+  kaderFunktionWerte(value, sort)
 values
   ('', 0),
   ('TODO', 1);
@@ -292,21 +292,21 @@ values
 drop table if exists mobileAboKostenstelleWerte;
 create table mobileAboKostenstelleWerte (
   id integer primary key,
-  kostenstelle text unique,
+  value text unique,
   deleted integer default 0,
-  historisch integer default 0,
+  historic integer default 0,
   sort integer
 );
 
 drop index if exists iMobileAboKostenstelleWerteMobileAboKostenstelle;
-create index iMobileAboKostenstelleWerteMobileAboKostenstelle on mobileAboKostenstelleWerte (kostenstelle);
+create index iMobileAboKostenstelleWerteMobileAboKostenstelle on mobileAboKostenstelleWerte (value);
 drop index if exists iMobileAboKostenstelleWerteHistorisch;
-create index iMobileAboKostenstelleWerteHistorisch on mobileAboKostenstelleWerte (historisch);
+create index iMobileAboKostenstelleWerteHistorisch on mobileAboKostenstelleWerte (historic);
 drop index if exists iMobileAboKostenstelleWerteSort;
 create index iMobileAboKostenstelleWerteSort on mobileAboKostenstelleWerte (sort);
 
 insert into
-  mobileAboKostenstelleWerte(kostenstelle, sort)
+  mobileAboKostenstelleWerte(value, sort)
 values
   ('', 0),
   ('TODO', 1);
@@ -316,21 +316,21 @@ values
 drop table if exists tagWerte;
 create table tagWerte (
   id integer primary key,
-  tag text unique,
+  value text unique,
   deleted integer default 0,
-  historisch integer default 0,
+  historic integer default 0,
   sort integer
 );
 
 drop index if exists iTagWerteTag;
-create index iTagWerteTag on tagWerte (tag);
+create index iTagWerteTag on tagWerte (value);
 drop index if exists iTagWerteHistorisch;
-create index iTagWerteHistorisch on tagWerte (historisch);
+create index iTagWerteHistorisch on tagWerte (historic);
 drop index if exists iTagWerteSort;
 create index iTagWerteSort on tagWerte (sort);
 
 insert into
-  tagWerte(tag, sort)
+  tagWerte(value, sort)
 values
   ('', 0),
   ('TODO', 1);
