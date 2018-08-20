@@ -135,7 +135,8 @@ create index iTagTag on tag (tag);
 -- true = 1, false = 0
 drop table if exists statusWerte;
 create table statusWerte (
-  status text primary key,
+  id integer primary key,
+  status text unique,
   deleted integer default 0,
   historisch integer default 0,
   sort integer
@@ -163,7 +164,8 @@ values
 -- true = 1, false = 0
 drop table if exists geschlechtWerte;
 create table geschlechtWerte (
-  geschlecht text primary key,
+  id integer primary key,
+  geschlecht text unique,
   deleted integer default 0,
   historisch integer default 0,
   sort integer
@@ -187,7 +189,8 @@ values
 
 drop table if exists abteilungWerte;
 create table abteilungWerte (
-  abteilung text primary key,
+  id integer primary key,
+  abteilung text unique,
   deleted integer default 0,
   historisch integer default 0,
   sort integer
@@ -216,7 +219,8 @@ values
 
 drop table if exists kostenstelleWerte;
 create table kostenstelleWerte (
-  kostenstelle text primary key,
+  id integer primary key,
+  kostenstelle text unique,
   deleted integer default 0,
   historisch integer default 0,
   sort integer
@@ -239,7 +243,8 @@ values
 
 drop table if exists mobileAboTypWerte;
 create table mobileAboTypWerte (
-  typ text primary key,
+  id integer primary key,
+  typ text unique,
   deleted integer default 0,
   historisch integer default 0,
   sort integer
@@ -262,7 +267,8 @@ values
 
 drop table if exists kaderFunktionWerte;
 create table kaderFunktionWerte (
-  funktion text primary key,
+  id integer primary key,
+  funktion text unique,
   deleted integer default 0,
   historisch integer default 0,
   sort integer
@@ -285,7 +291,8 @@ values
 
 drop table if exists mobileAboKostenstelleWerte;
 create table mobileAboKostenstelleWerte (
-  kostenstelle text primary key,
+  id integer primary key,
+  kostenstelle text unique,
   deleted integer default 0,
   historisch integer default 0,
   sort integer
@@ -308,7 +315,8 @@ values
 
 drop table if exists tagWerte;
 create table tagWerte (
-  tag text primary key,
+  id integer primary key,
+  tag text unique,
   deleted integer default 0,
   historisch integer default 0,
   sort integer
