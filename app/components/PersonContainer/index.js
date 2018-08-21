@@ -11,6 +11,7 @@ import ErrorBoundary from '../shared/ErrorBoundary'
 import Person from './Person'
 import List from './List'
 import fetchPersonen from '../../src/fetchPersonen'
+import fetchWerte from '../../src/fetchWerte'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
@@ -31,6 +32,8 @@ const enhance = compose(
   withLifecycle({
     onDidMount() {
       fetchPersonen()
+      fetchWerte('statusWerte')
+      fetchWerte('geschlechtWerte')
       // set initial active id
       // nope, better not
       // for instance: after deleting do not show another user
@@ -58,10 +61,12 @@ const PersonContainer = ({
   store: Object,
   initialId: ?number
 }) => {
+  const { statusWerte, geschlechtWerte } = store
   const location = store.location.toJSON()
   let activeId = initialId
   if (location[1]) activeId = location[1]
   if (!isNaN(activeId)) activeId = +activeId
+  console.log('PersonContainer', { statusWerte, geschlechtWerte })
 
   return (
     <Container>

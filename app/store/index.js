@@ -36,6 +36,9 @@ export default types
     setPersonen(personen) {
       self.personen = personen
     },
+    setWerte({ table, values }) {
+      self[table] = values
+    },
     setShowDeleted(show) {
       self.showDeleted = show
     },
