@@ -3,7 +3,6 @@ import React from 'react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
-import withLifecycle from '@hocs/with-lifecycle'
 import { observer } from 'mobx-react'
 import { Col, FormGroup, Label, Input } from 'reactstrap'
 
@@ -32,14 +31,6 @@ const enhance = compose(
           value: date
         }
       })
-    }
-  }),
-  withLifecycle({
-    onDidUpdate(prevProps, props) {
-      if (props.value !== prevProps.value) {
-        const value = props.value || props.value === 0 ? props.value : ''
-        props.setStateValue(value)
-      }
     }
   }),
   observer
