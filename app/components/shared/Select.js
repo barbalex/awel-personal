@@ -5,7 +5,8 @@ import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
 import withLifecycle from '@hocs/with-lifecycle'
 import { observer } from 'mobx-react'
-import { Col, FormGroup, Label, Input } from 'reactstrap'
+import { Col, FormGroup, Label } from 'reactstrap'
+import Select from 'react-select'
 
 const enhance = compose(
   withState(
@@ -36,11 +37,11 @@ const enhance = compose(
   observer
 )
 
-const Shared Select = ({
+const SharedSelect = ({
   stateValue,
   field,
   label,
-  type = 'text',
+  options,
   placeholder = '',
   onChange,
   onBlur
@@ -48,7 +49,7 @@ const Shared Select = ({
   stateValue: number | string,
   field: string,
   label: string,
-  type?: string,
+  options: Array<Object>,
   placeholder?: string,
   onChange: () => void,
   onBlur: () => void
@@ -58,17 +59,19 @@ const Shared Select = ({
       {label}
     </Label>
     <Col sm={10}>
-      <Input
+      <Select
         id={field}
-        type={type}
         name={field}
         placeholder={placeholder}
         value={stateValue}
+        options={options}
         onChange={onChange}
         onBlur={onBlur}
+        hideSelectedOptions
+        isClearable
       />
     </Col>
   </FormGroup>
 )
 
-export default enhance(Shared Select)
+export default enhance(SharedSelect)

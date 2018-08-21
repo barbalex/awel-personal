@@ -6,9 +6,11 @@ import withHandlers from 'recompose/withHandlers'
 import { inject, observer } from 'mobx-react'
 import { Form } from 'reactstrap'
 import moment from 'moment'
+import sortBy from 'lodash/sortBy'
 
 import Input from '../shared/Input'
 import Date from '../shared/Date'
+import Select from '../shared/Select'
 import SharedCheckbox from '../shared/Checkbox_01'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import isDateField from '../../src/isDateField'
@@ -60,8 +62,12 @@ const Person = ({
 }) => {
   if (!activeId) return null
 
-  const { personen, showDeleted } = store
+  const { personen, showDeleted, statusWerte } = store
   const person = personen.find(p => p.id === activeId) || {}
+  const statusOptions = sortBy(statusWerte, 'sort').map(w => ({
+    label: w.value,
+    value: w.id
+  }))
 
   return (
     <Container>
@@ -162,6 +168,13 @@ const Person = ({
           value={person.status}
           field="status"
           label="Status"
+          saveToDb={saveToDb}
+        />
+        <Select
+          value={person.status}
+          field="status"
+          label="Status"
+          options={statusOptions}
           saveToDb={saveToDb}
         />
         <Input

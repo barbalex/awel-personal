@@ -67,12 +67,10 @@ const PersonContainer = ({
   store: Object,
   initialId: ?number
 }) => {
-  const { statusWerte, geschlechtWerte } = store
   const location = store.location.toJSON()
   let activeId = initialId
   if (location[1]) activeId = location[1]
   if (!isNaN(activeId)) activeId = +activeId
-  console.log('PersonContainer', { statusWerte, geschlechtWerte })
 
   return (
     <Container>
