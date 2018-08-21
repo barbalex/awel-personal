@@ -62,9 +62,13 @@ const Person = ({
 }) => {
   if (!activeId) return null
 
-  const { personen, showDeleted, statusWerte } = store
+  const { personen, showDeleted, statusWerte, geschlechtWerte } = store
   const person = personen.find(p => p.id === activeId) || {}
   const statusOptions = sortBy(statusWerte, 'sort').map(w => ({
+    label: w.value,
+    value: w.value
+  }))
+  const geschlechtOptions = sortBy(geschlechtWerte, 'sort').map(w => ({
     label: w.value,
     value: w.value
   }))
@@ -194,11 +198,12 @@ const Person = ({
           label="Parkplatz Beitrag"
           saveToDb={saveToDb}
         />
-        <Input
+        <Select
           key={`${person.id}geschlecht`}
           value={person.geschlecht}
           field="geschlecht"
           label="Geschlecht"
+          options={geschlechtOptions}
           saveToDb={saveToDb}
         />
         <Input
