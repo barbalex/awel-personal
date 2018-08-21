@@ -152,7 +152,6 @@ create index iStatusWerteSort on statusWerte (sort);
 insert into
   statusWerte(value, sort)
 values
-  ('', 0),
   ('aktiv', 1),
   ('pensioniert', 2),
   ('ehemalig', 3),
@@ -181,7 +180,6 @@ create index iGeschlechtWerteSort on geschlechtWerte (sort);
 insert into
   geschlechtWerte(value, sort)
 values
-  ('', 0),
   ('m', 1),
   ('w', 2);
 
@@ -206,7 +204,6 @@ create index iAbteilungWerteSort on abteilungWerte (sort);
 insert into
   abteilungWerte(value, sort)
 values
-  ('', 0),
   ('aw', 1),
   ('di', 2),
   ('en', 3),
@@ -236,7 +233,6 @@ create index iKostenstelleWerteSort on kostenstelleWerte (sort);
 insert into
   kostenstelleWerte(value, sort)
 values
-  ('', 0),
   ('TODO', 1);
 
 -------------------------------------------
@@ -260,7 +256,6 @@ create index iMobileAboTypWerteSort on mobileAboTypWerte (sort);
 insert into
   mobileAboTypWerte(value, sort)
 values
-  ('', 0),
   ('TODO', 1);
 
 -------------------------------------------
@@ -284,7 +279,6 @@ create index iKaderFunktionWerteSort on kaderFunktionWerte (sort);
 insert into
   kaderFunktionWerte(value, sort)
 values
-  ('', 0),
   ('TODO', 1);
 
 -------------------------------------------
