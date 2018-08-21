@@ -99,6 +99,7 @@ export default types
       self.setLocation(['Personen'])
     },
     addEtikett(etikett) {
+      console.log('Store addEtikett, etikett:', etikett)
       // grab idPerson from location
       const location = self.location.toJSON()
       const idPerson = ifIsNumericAsNumber(location[1])
@@ -115,6 +116,7 @@ export default types
       self.etiketten.push({ id: info.lastInsertROWID, etikett })
     },
     deleteEtikett(etikett) {
+      console.log('Store deleteEtikett, etikett:', etikett)
       // grab idPerson from location
       const location = self.location.toJSON()
       const activeId = ifIsNumericAsNumber(location[1])

@@ -77,7 +77,7 @@ const Person = ({
     kostenstelleWerte,
     statusWerte,
     geschlechtWerte,
-    etikettWerte,
+    etikettWerte
   } = store
   const person = personen.find(p => p.id === activeId) || {}
   const abteilungOptions = sortBy(abteilungWerte, 'sort').map(w => ({
@@ -97,6 +97,13 @@ const Person = ({
     value: w.value
   }))
   const etikettenOptions = sortBy(etikettWerte, 'sort').map(w => ({
+    label: w.value,
+    value: w.value
+  }))
+  const myEtiketten = sortBy(
+    etiketten.filter(e => e.idPerson === activeId),
+    'etikett'
+  ).map(w => ({
     label: w.value,
     value: w.value
   }))
@@ -238,7 +245,7 @@ const Person = ({
         />
         <SelectMulti
           key={`${person.id}etikett`}
-          value={person.etikett}
+          value={myEtiketten}
           field="etikett"
           label="Etiketten"
           options={etikettenOptions}
@@ -249,7 +256,7 @@ const Person = ({
           key={`${person.id}bemerkungen`}
           value={person.bemerkungen}
           field="bemerkungen"
-          label="Bemerkungen"}
+          label="Bemerkungen"
           saveToDb={saveToDb}
           type="textarea"
         />

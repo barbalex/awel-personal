@@ -28,6 +28,8 @@ const enhance = compose(
   withHandlers({
     onChange: ({ addEtikett, deleteEtikett }) => (option, action) => {
       console.log('Select, onChange', { option, action })
+      if (action.action === 'select-option') addEtikett(action.value)
+      if (action.action === 'remove-value') deleteEtikett(action.value)
     }
   }),
   observer
@@ -40,7 +42,7 @@ const SharedSelectMulti = ({
   options,
   onChange
 }: {
-  value?: ?number | ?string,
+  value?: Array<?number | ?string>,
   field: string,
   label: string,
   options: Array<Object>,
