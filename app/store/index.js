@@ -9,6 +9,7 @@ import KostenstelleWert from './KostenstelleWert'
 import MobileAboTypWert from './MobileAboTypWert'
 import KaderFunktionWert from './KaderFunktionWert'
 import MobileAboKostenstelleWert from './MobileAboKostenstelleWert'
+import TagWert from './TagWert'
 
 export default types
   .model({
@@ -20,6 +21,7 @@ export default types
     mobileAboTypWerte: types.array(MobileAboTypWert),
     kaderFunktionWerte: types.array(KaderFunktionWert),
     mobileAboKostenstelleWerte: types.array(MobileAboKostenstelleWert),
+    tagWerte: types.array(TagWert),
     location: types.optional(types.array(types.string), ['Personen']),
     showDeleted: types.optional(types.boolean, false),
     deletionTitle: types.maybeNull(types.string),

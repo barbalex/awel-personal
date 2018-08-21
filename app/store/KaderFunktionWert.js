@@ -1,6 +1,6 @@
 import { types } from 'mobx-state-tree'
 
-export default types.model('MobileAboTypWert', {
+export default types.model('KaderFunktionWert', {
   id: types.integer,
   value: types.maybeNull(types.union(types.string, types.integer)),
   deleted: types.optional(types.integer, 0),

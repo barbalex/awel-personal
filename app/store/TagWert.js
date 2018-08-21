@@ -1,6 +1,6 @@
 import { types } from 'mobx-state-tree'
 
-export default types.model('MobileAboKostenstelleWert', {
+export default types.model('TagWert', {
   id: types.integer,
   value: types.maybeNull(types.union(types.string, types.integer)),
   deleted: types.optional(types.integer, 0),
