@@ -37,14 +37,14 @@ const SharedSelect = ({
   field,
   label,
   options,
-  placeholder = '',
+  isMulti = false,
   onChange
 }: {
   value?: ?number | ?string,
   field: string,
   label: string,
   options: Array<Object>,
-  placeholder?: string,
+  isMulti?: boolean,
   onChange: () => void
 }) => (
   <FormGroup row>
@@ -55,11 +55,12 @@ const SharedSelect = ({
       <StyledSelect
         id={field}
         name={field}
-        placeholder={placeholder}
+        isMulti={isMulti}
         defaultValue={options.find(o => o.value === value)}
         options={options}
         onChange={onChange}
         hideSelectedOptions
+        placeholder=""
         isClearable
         isSearchable
       />

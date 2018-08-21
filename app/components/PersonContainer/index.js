@@ -11,6 +11,7 @@ import ErrorBoundary from '../shared/ErrorBoundary'
 import Person from './Person'
 import List from './List'
 import fetchPersonen from '../../src/fetchPersonen'
+import fetchEtiketten from '../../src/fetchEtiketten'
 import fetchWerte from '../../src/fetchWerte'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
@@ -39,7 +40,8 @@ const enhance = compose(
       fetchWerte('mobileAboTypWerte')
       fetchWerte('kaderFunktionWerte')
       fetchWerte('mobileAboKostenstelleWerte')
-      fetchWerte('tagWerte')
+      fetchEtiketten()
+      fetchWerte('etikettWerte')
       // set initial active id
       // nope, better not
       // for instance: after deleting do not show another user

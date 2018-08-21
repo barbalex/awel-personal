@@ -64,11 +64,13 @@ const Person = ({
 
   const {
     personen,
+    etiketten,
     showDeleted,
     abteilungWerte,
     kostenstelleWerte,
     statusWerte,
-    geschlechtWerte
+    geschlechtWerte,
+    etikettWerte
   } = store
   const person = personen.find(p => p.id === activeId) || {}
   const abteilungOptions = sortBy(abteilungWerte, 'sort').map(w => ({
@@ -84,6 +86,10 @@ const Person = ({
     value: w.value
   }))
   const geschlechtOptions = sortBy(geschlechtWerte, 'sort').map(w => ({
+    label: w.value,
+    value: w.value
+  }))
+  const etikettenOptions = sortBy(etikettWerte, 'sort').map(w => ({
     label: w.value,
     value: w.value
   }))
@@ -221,6 +227,15 @@ const Person = ({
           field="geschlecht"
           label="Geschlecht"
           options={geschlechtOptions}
+          saveToDb={saveToDb}
+        />
+        <Select
+          key={`${person.id}etikett`}
+          value={person.etikett}
+          field="etikett"
+          label="Etiketten"
+          options={etikettenOptions}
+          isMulti
           saveToDb={saveToDb}
         />
         <Input

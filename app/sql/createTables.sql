@@ -113,20 +113,20 @@ create index iKaderFunktionFunktion on kaderFunktion (funktion);
 
 -------------------------------------------
 
-drop table if exists tag;
-create table tag (
+drop table if exists etikett;
+create table etikett (
   id integer primary key,
   deleted integer default 0,
   idPerson integer references person(id) on update cascade on delete cascade,
-  tag text references tagWerte(value) on update cascade on delete cascade
+  etikett text references etikettWerte(value) on update cascade on delete cascade
 );
 
 drop index if exists iTagDeleted;
-create index iTagDeleted on tag (deleted);
+create index iTagDeleted on etikett (deleted);
 drop index if exists iTagIdPerson;
-create index iTagIdPerson on tag (idPerson);
+create index iTagIdPerson on etikett (idPerson);
 drop index if exists iTagTag;
-create index iTagTag on tag (tag);
+create index iTagTag on etikett (etikett);
 
 -------------------------------------------
 
@@ -307,8 +307,8 @@ values
 
 -------------------------------------------
 
-drop table if exists tagWerte;
-create table tagWerte (
+drop table if exists etikettWerte;
+create table etikettWerte (
   id integer primary key,
   value text unique,
   deleted integer default 0,
@@ -317,17 +317,17 @@ create table tagWerte (
 );
 
 drop index if exists iTagWerteTag;
-create index iTagWerteTag on tagWerte (value);
+create index iTagWerteTag on etikettWerte (value);
 drop index if exists iTagWerteHistorisch;
-create index iTagWerteHistorisch on tagWerte (historic);
+create index iTagWerteHistorisch on etikettWerte (historic);
 drop index if exists iTagWerteSort;
-create index iTagWerteSort on tagWerte (sort);
+create index iTagWerteSort on etikettWerte (sort);
 
 insert into
-  tagWerte(value, sort)
+  etikettWerte(value, sort)
 values
-  ('', 0),
-  ('TODO', 1);
+  ('Fussballfan', 1),
+  ('Mointainbiker', 2);
 
 -------------------------------------------
 

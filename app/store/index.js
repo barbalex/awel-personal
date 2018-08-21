@@ -2,6 +2,7 @@ import { types } from 'mobx-state-tree'
 import app from 'ampersand-app'
 
 import Person from './Person'
+import Etikett from './Etikett'
 import StatusWert from './StatusWert'
 import GeschlechtWert from './GeschlechtWert'
 import AbteilungWert from './AbteilungWert'
@@ -14,6 +15,7 @@ import TagWert from './TagWert'
 export default types
   .model({
     personen: types.array(Person),
+    etiketten: types.array(Etikett),
     statusWerte: types.array(StatusWert),
     geschlechtWerte: types.array(GeschlechtWert),
     abteilungWerte: types.array(AbteilungWert),
@@ -47,6 +49,9 @@ export default types
     },
     setPersonen(personen) {
       self.personen = personen
+    },
+    setEtiketten(etiketten) {
+      self.etiketten = etiketten
     },
     setWerte({ table, values }) {
       self[table] = values
