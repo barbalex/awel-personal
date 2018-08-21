@@ -37,6 +37,8 @@ const enhance = compose(
       fetchWerte('abteilungWerte')
       fetchWerte('kostenstelleWerte')
       fetchWerte('mobileAboTypWerte')
+      fetchWerte('kaderFunktionWerte')
+      fetchWerte('mobileAboKostenstelleWerte')
       // set initial active id
       // nope, better not
       // for instance: after deleting do not show another user

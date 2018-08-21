@@ -7,6 +7,8 @@ import GeschlechtWert from './GeschlechtWert'
 import AbteilungWert from './AbteilungWert'
 import KostenstelleWert from './KostenstelleWert'
 import MobileAboTypWert from './MobileAboTypWert'
+import KaderFunktionWert from './KaderFunktionWert'
+import MobileAboKostenstelleWert from './MobileAboKostenstelleWert'
 
 export default types
   .model({
@@ -16,6 +18,8 @@ export default types
     abteilungWerte: types.array(AbteilungWert),
     kostenstelleWerte: types.array(KostenstelleWert),
     mobileAboTypWerte: types.array(MobileAboTypWert),
+    kaderFunktionWerte: types.array(KaderFunktionWert),
+    mobileAboKostenstelleWerte: types.array(MobileAboKostenstelleWert),
     location: types.optional(types.array(types.string), ['Personen']),
     showDeleted: types.optional(types.boolean, false),
     deletionTitle: types.maybeNull(types.string),
