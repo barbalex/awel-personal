@@ -97,6 +97,8 @@ const enhance = compose(
       setOpen(false)
     }
   }),
+  // without lifecycle state value does not immediately update
+  // after user enters new date
   withLifecycle({
     onDidUpdate(prevProps, props) {
       if (props.value !== prevProps.value) {
