@@ -62,8 +62,23 @@ const Person = ({
 }) => {
   if (!activeId) return null
 
-  const { personen, showDeleted, statusWerte, geschlechtWerte } = store
+  const {
+    personen,
+    showDeleted,
+    abteilungWerte,
+    kostenstelleWerte,
+    statusWerte,
+    geschlechtWerte
+  } = store
   const person = personen.find(p => p.id === activeId) || {}
+  const abteilungOptions = sortBy(abteilungWerte, 'sort').map(w => ({
+    label: w.value,
+    value: w.value
+  }))
+  const kostenstelleOptions = sortBy(kostenstelleWerte, 'sort').map(w => ({
+    label: w.value,
+    value: w.value
+  }))
   const statusOptions = sortBy(statusWerte, 'sort').map(w => ({
     label: w.value,
     value: w.value
@@ -141,18 +156,20 @@ const Person = ({
           label="Büro Nr."
           saveToDb={saveToDb}
         />
-        <Input
+        <Select
           key={`${person.id}abteilung`}
           value={person.abteilung}
           field="abteilung"
           label="Abteilung"
+          options={abteilungOptions}
           saveToDb={saveToDb}
         />
-        <Input
+        <Select
           key={`${person.id}kostenstelle`}
           value={person.kostenstelle}
           field="kostenstelle"
           label="Kostenstelle"
+          options={kostenstelleOptions}
           saveToDb={saveToDb}
         />
         <Input
