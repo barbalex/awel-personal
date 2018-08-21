@@ -125,7 +125,7 @@ export default types
       // write to db
       try {
         app.db
-          .prepare('delete from etikett where id = ? and etikett = ?')
+          .prepare('delete from etikett where idPerson = ? and etikett = ?')
           .run(activeId, etikett)
       } catch (error) {
         // roll back update

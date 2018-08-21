@@ -62,7 +62,7 @@ const SharedSelectMulti = ({
         onChange={onChange}
         hideSelectedOptions
         placeholder=""
-        isClearable
+        isClearable={false}
         isSearchable
         noOptionsMessage={() => '(keine)'}
       />
