@@ -66,7 +66,7 @@ const Person = ({
   const person = personen.find(p => p.id === activeId) || {}
   const statusOptions = sortBy(statusWerte, 'sort').map(w => ({
     label: w.value,
-    value: w.id
+    value: w.value
   }))
 
   return (
@@ -171,6 +171,7 @@ const Person = ({
           saveToDb={saveToDb}
         />
         <Select
+          key={`${person.id}status`}
           value={person.status}
           field="status"
           label="Status"
