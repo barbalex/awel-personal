@@ -74,6 +74,7 @@ const Person = ({
       <StyledForm>
         {showDeleted && (
           <SharedCheckbox
+            key={`${person.id}deleted`}
             value={person.deleted}
             field="deleted"
             label="gelöscht"
@@ -81,93 +82,94 @@ const Person = ({
           />
         )}
         <Input
+          key={`${person.id}name`}
           value={person.name}
           field="name"
           label="Name"
           saveToDb={saveToDb}
         />
         <Input
+          key={`${person.id}vorname`}
           value={person.vorname}
           field="vorname"
           label="Vorname"
           saveToDb={saveToDb}
         />
         <Input
+          key={`${person.id}kurzzeichen`}
           value={person.kurzzeichen}
           field="kurzzeichen"
           label="Kurzzeichen"
           saveToDb={saveToDb}
         />
         <Input
+          key={`${person.id}telefonNr`}
           value={person.telefonNr}
           field="telefonNr"
           label="Telefon"
           saveToDb={saveToDb}
         />
         <Input
+          key={`${person.id}telefonNrMobile`}
           value={person.telefonNrMobile}
           field="telefonNrMobile"
           label="Telefon mobile"
           saveToDb={saveToDb}
         />
         <Input
+          key={`${person.id}email`}
           value={person.email}
           field="email"
           label="Email"
           saveToDb={saveToDb}
         />
         <Date
+          key={`${person.id}geburtDatum`}
           value={person.geburtDatum}
           field="geburtDatum"
           label="Geburtsdatum"
           saveToDb={saveToDb}
         />
         <Input
+          key={`${person.id}bueroNr`}
           value={person.bueroNr}
           field="bueroNr"
           label="Büro Nr."
           saveToDb={saveToDb}
         />
         <Input
+          key={`${person.id}abteilung`}
           value={person.abteilung}
           field="abteilung"
           label="Abteilung"
           saveToDb={saveToDb}
         />
         <Input
+          key={`${person.id}kostenstelle`}
           value={person.kostenstelle}
           field="kostenstelle"
           label="Kostenstelle"
           saveToDb={saveToDb}
         />
         <Input
+          key={`${person.id}vorgesetztId`}
           value={person.vorgesetztId}
           field="vorgesetztId"
           label="Vorgesetzte(r)"
           saveToDb={saveToDb}
         />
         <Date
+          key={`${person.id}eintrittDatum`}
           value={person.eintrittDatum}
           field="eintrittDatum"
           label="Eintritt Datum"
           saveToDb={saveToDb}
         />
-        <Input
-          value={person.austrittDatum}
-          field="austrittDatum"
-          label="Austritt Datum"
-          saveToDb={saveToDb}
-        />
         <Date
+          key={`${person.id}austrittDatum`}
           value={person.austrittDatum}
           field="austrittDatum"
           label="Austritt Datum"
-          saveToDb={saveToDb}
-        />
-        <Input
-          value={person.status}
-          field="status"
-          label="Status"
           saveToDb={saveToDb}
         />
         <Select
@@ -179,24 +181,28 @@ const Person = ({
           saveToDb={saveToDb}
         />
         <Input
+          key={`${person.id}parkplatzNr`}
           value={person.parkplatzNr}
           field="parkplatzNr"
           label="Parkplatz Nr."
           saveToDb={saveToDb}
         />
         <Input
+          key={`${person.id}parkplatzBeitrag`}
           value={person.parkplatzBeitrag}
           field="parkplatzBeitrag"
           label="Parkplatz Beitrag"
           saveToDb={saveToDb}
         />
         <Input
+          key={`${person.id}geschlecht`}
           value={person.geschlecht}
           field="geschlecht"
           label="Geschlecht"
           saveToDb={saveToDb}
         />
         <Input
+          key={`${person.id}bemerkungen`}
           value={person.bemerkungen}
           field="bemerkungen"
           label="Bemerkungen"
