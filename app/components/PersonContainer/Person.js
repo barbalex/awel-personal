@@ -49,7 +49,7 @@ const enhance = compose(
       })
     },
     addEtikett: ({ store }) => etikett => store.addEtikett(etikett),
-    deleteEtikett: ({ store }) => etikett => store.addEtikett(etikett)
+    deleteEtikett: ({ store }) => etikett => store.deleteEtikett(etikett)
   }),
   observer
 )
@@ -103,9 +103,9 @@ const Person = ({
   const myEtiketten = sortBy(
     etiketten.filter(e => e.idPerson === activeId),
     'etikett'
-  ).map(w => ({
-    label: w.value,
-    value: w.value
+  ).map(e => ({
+    label: e.etikett,
+    value: e.etikett
   }))
 
   return (

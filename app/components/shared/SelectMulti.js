@@ -27,9 +27,9 @@ const StyledSelect = styled(Select)`
 const enhance = compose(
   withHandlers({
     onChange: ({ addEtikett, deleteEtikett }) => (option, action) => {
-      console.log('Select, onChange', { option, action })
-      if (action.action === 'select-option') addEtikett(action.value)
-      if (action.action === 'remove-value') deleteEtikett(action.value)
+      if (action.action === 'select-option') addEtikett(action.option.value)
+      if (action.action === 'remove-value')
+        deleteEtikett(action.removedValue.value)
     }
   }),
   observer
@@ -42,7 +42,7 @@ const SharedSelectMulti = ({
   options,
   onChange
 }: {
-  value?: Array<?number | ?string>,
+  value?: Array<Object>,
   field: string,
   label: string,
   options: Array<Object>,
@@ -57,7 +57,7 @@ const SharedSelectMulti = ({
         id={field}
         name={field}
         isMulti
-        defaultValue={options.find(o => o.value === value)}
+        defaultValue={value}
         options={options}
         onChange={onChange}
         hideSelectedOptions

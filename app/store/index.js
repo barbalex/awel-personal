@@ -99,7 +99,6 @@ export default types
       self.setLocation(['Personen'])
     },
     addEtikett(etikett) {
-      console.log('Store addEtikett, etikett:', etikett)
       // grab idPerson from location
       const location = self.location.toJSON()
       const idPerson = ifIsNumericAsNumber(location[1])
@@ -113,10 +112,9 @@ export default types
         return console.log(error)
       }
       // 2. add to store
-      self.etiketten.push({ id: info.lastInsertROWID, etikett })
+      self.etiketten.push({ id: info.lastInsertROWID, etikett, idPerson })
     },
     deleteEtikett(etikett) {
-      console.log('Store deleteEtikett, etikett:', etikett)
       // grab idPerson from location
       const location = self.location.toJSON()
       const activeId = ifIsNumericAsNumber(location[1])
@@ -127,7 +125,7 @@ export default types
       // write to db
       try {
         app.db
-          .prepare('delete from etiketten where id = ? and etikett = ?')
+          .prepare('delete from etikett where id = ? and etikett = ?')
           .run(activeId, etikett)
       } catch (error) {
         // roll back update
