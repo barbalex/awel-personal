@@ -11,6 +11,7 @@ import sortBy from 'lodash/sortBy'
 import Input from '../shared/Input'
 import Date from '../shared/Date'
 import Select from '../shared/Select'
+import SelectMulti from '../shared/SelectMulti'
 import SharedCheckbox from '../shared/Checkbox_01'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import isDateField from '../../src/isDateField'
@@ -46,7 +47,9 @@ const enhance = compose(
         value: newValue,
         id: person.id
       })
-    }
+    },
+    addEtikett: ({ store }) => etikett => store.addEtikett(etikett),
+    deleteEtikett: ({ store }) => etikett => store.addEtikett(etikett)
   }),
   observer
 )
@@ -54,11 +57,15 @@ const enhance = compose(
 const Person = ({
   store,
   activeId,
-  saveToDb
+  saveToDb,
+  addEtikett,
+  deleteEtikett
 }: {
   store: Object,
   activeId: ?number,
-  saveToDb: () => void
+  saveToDb: () => void,
+  addEtikett: () => void,
+  deleteEtikett: () => void
 }) => {
   if (!activeId) return null
 
@@ -70,7 +77,7 @@ const Person = ({
     kostenstelleWerte,
     statusWerte,
     geschlechtWerte,
-    etikettWerte
+    etikettWerte,
   } = store
   const person = personen.find(p => p.id === activeId) || {}
   const abteilungOptions = sortBy(abteilungWerte, 'sort').map(w => ({
@@ -229,20 +236,20 @@ const Person = ({
           options={geschlechtOptions}
           saveToDb={saveToDb}
         />
-        <Select
+        <SelectMulti
           key={`${person.id}etikett`}
           value={person.etikett}
           field="etikett"
           label="Etiketten"
           options={etikettenOptions}
-          isMulti
-          saveToDb={saveToDb}
+          addEtikett={addEtikett}
+          deleteEtikett={deleteEtikett}
         />
         <Input
           key={`${person.id}bemerkungen`}
           value={person.bemerkungen}
           field="bemerkungen"
-          label="Bemerkungen"
+          label="Bemerkungen"}
           saveToDb={saveToDb}
           type="textarea"
         />

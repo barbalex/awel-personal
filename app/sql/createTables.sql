@@ -327,7 +327,7 @@ insert into
   etikettWerte(value, sort)
 values
   ('Fussballfan', 1),
-  ('Mointainbiker', 2);
+  ('Mountainbiker', 2);
 
 -------------------------------------------
 

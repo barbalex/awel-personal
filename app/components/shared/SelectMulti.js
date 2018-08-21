@@ -26,13 +26,14 @@ const StyledSelect = styled(Select)`
 
 const enhance = compose(
   withHandlers({
-    onChange: ({ saveToDb, field }) => option =>
-      saveToDb({ value: option ? option.value : null, field })
+    onChange: ({ addEtikett, deleteEtikett }) => (option, action) => {
+      console.log('Select, onChange', { option, action })
+    }
   }),
   observer
 )
 
-const SharedSelect = ({
+const SharedSelectMulti = ({
   value,
   field,
   label,
@@ -53,6 +54,7 @@ const SharedSelect = ({
       <StyledSelect
         id={field}
         name={field}
+        isMulti
         defaultValue={options.find(o => o.value === value)}
         options={options}
         onChange={onChange}
@@ -66,4 +68,4 @@ const SharedSelect = ({
   </FormGroup>
 )
 
-export default enhance(SharedSelect)
+export default enhance(SharedSelectMulti)

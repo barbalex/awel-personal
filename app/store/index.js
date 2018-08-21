@@ -11,6 +11,7 @@ import MobileAboTypWert from './MobileAboTypWert'
 import KaderFunktionWert from './KaderFunktionWert'
 import MobileAboKostenstelleWert from './MobileAboKostenstelleWert'
 import TagWert from './TagWert'
+import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 
 export default types
   .model({
@@ -60,11 +61,10 @@ export default types
       self.showDeleted = show
     },
     addPerson() {
-      const { db } = app
       // 1. create new Person in db, returning id
       let info
       try {
-        info = db.prepare('insert into person default values').run()
+        info = app.db.prepare('insert into person default values').run()
       } catch (error) {
         return console.log(error)
       }
@@ -73,12 +73,11 @@ export default types
       self.setLocation(['Personen', info.lastInsertROWID.toString()])
     },
     setPersonDeleted(id) {
-      const { db } = app
       const personenBefore = self.personen
       self.personen = self.personen.filter(p => p.id !== id)
       // write to db
       try {
-        db.prepare(`update person set deleted = 1 where id = ?;`).run(id)
+        app.db.prepare(`update person set deleted = 1 where id = ?;`).run(id)
       } catch (error) {
         // roll back update
         self.personen = personenBefore
@@ -87,18 +86,52 @@ export default types
       self.setLocation(['Personen'])
     },
     deletePerson(id) {
-      const { db } = app
       const personenBefore = self.personen
       self.personen = self.personen.filter(p => p.id !== id)
       // write to db
       try {
-        db.prepare('delete from person where id = ?').run(id)
+        app.db.prepare('delete from person where id = ?').run(id)
       } catch (error) {
         // roll back update
         self.personen = personenBefore
         return console.log(error)
       }
       self.setLocation(['Personen'])
+    },
+    addEtikett(etikett) {
+      // grab idPerson from location
+      const location = self.location.toJSON()
+      const idPerson = ifIsNumericAsNumber(location[1])
+      // 1. create new etikett in db, returning id
+      let info
+      try {
+        info = app.db
+          .prepare('insert into etikett (idPerson, etikett) values (?, ?)')
+          .run(idPerson, etikett)
+      } catch (error) {
+        return console.log(error)
+      }
+      // 2. add to store
+      self.etiketten.push({ id: info.lastInsertROWID, etikett })
+    },
+    deleteEtikett(etikett) {
+      // grab idPerson from location
+      const location = self.location.toJSON()
+      const activeId = ifIsNumericAsNumber(location[1])
+      const etikettenBefore = self.etiketten
+      self.etiketten = self.etiketten.filter(
+        e => !(e.idPerson === activeId && e.etikett === etikett)
+      )
+      // write to db
+      try {
+        app.db
+          .prepare('delete from etiketten where id = ? and etikett = ?')
+          .run(activeId, etikett)
+      } catch (error) {
+        // roll back update
+        self.etiketten = etikettenBefore
+        return console.log(error)
+      }
     },
     updateField({ table, parentModel, field, value, id }) {
       try {
