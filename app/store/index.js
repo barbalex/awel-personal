@@ -4,12 +4,18 @@ import app from 'ampersand-app'
 import Person from './Person'
 import StatusWert from './StatusWert'
 import GeschlechtWert from './GeschlechtWert'
+import AbteilungWert from './AbteilungWert'
+import KostenstelleWert from './KostenstelleWert'
+import MobileAboTypWert from './MobileAboTypWert'
 
 export default types
   .model({
     personen: types.array(Person),
     statusWerte: types.array(StatusWert),
     geschlechtWerte: types.array(GeschlechtWert),
+    abteilungWerte: types.array(AbteilungWert),
+    kostenstelleWerte: types.array(KostenstelleWert),
+    mobileAboTypWerte: types.array(MobileAboTypWert),
     location: types.optional(types.array(types.string), ['Personen']),
     showDeleted: types.optional(types.boolean, false),
     deletionTitle: types.maybeNull(types.string),
