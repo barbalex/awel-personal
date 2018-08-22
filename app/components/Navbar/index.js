@@ -22,7 +22,7 @@ import { inject, observer } from 'mobx-react'
 import { shell } from 'electron'
 
 import Filter from './Filter'
-import tables from '../../src/tables'
+import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 
 const DbPath = styled.span`
   font-style: italic;
@@ -88,8 +88,7 @@ const enhance = compose(
         personen
       } = store
       const location = store.location.toJSON()
-      let activeId = location[1]
-      if (!isNaN(activeId)) activeId = +activeId
+      const activeId = ifIsNumericAsNumber(location[1])
       const activePerson = personen.find(p => p.id === activeId)
       if (activePerson.deleted === 1) {
         // person.deleted is already = 1
@@ -134,8 +133,7 @@ const enhance = compose(
       } = store
       const location = store.location.toJSON()
       const activeTable = location[0]
-      let activeId = location[1]
-      if (!isNaN(activeId)) activeId = +activeId
+      const activeId = ifIsNumericAsNumber(location[1])
       const activeWert = store[activeTable].find(p => p.id === activeId)
       if (activeWert.deleted === 1) {
         // deleted is already = 1
