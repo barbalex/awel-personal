@@ -115,7 +115,10 @@ const enhance = compose(
       }
     },
     toggleShowDeleted: ({ store }) => () =>
-      store.setShowDeleted(!store.showDeleted)
+      store.setShowDeleted(!store.showDeleted),
+    onClickStatusTable: ({ store }) => e => {
+      store.setLocation([e.target.name])
+    }
   }),
   observer
 )
@@ -127,7 +130,8 @@ const MyNavbar = ({
   showTab,
   addPerson,
   deletePerson,
-  toggleShowDeleted
+  toggleShowDeleted,
+  onClickStatusTable
 }: {
   store: Object,
   open: boolean,
@@ -135,7 +139,8 @@ const MyNavbar = ({
   showTab: () => void,
   addPerson: () => void,
   deletePerson: () => void,
-  toggleShowDeleted: () => void
+  toggleShowDeleted: () => void,
+  onClickStatusTable: () => void
 }) => {
   const { showDeleted } = store
   const personen = store.personen.filter(
@@ -224,16 +229,42 @@ const MyNavbar = ({
               Stammdaten
             </DropdownToggle>
             <DropdownMenu>
-              <DropdownItem onClick={() => store.setLocation(['statusWerte'])}>
-                Status (TODO)
+              <DropdownItem name="statusWerte" onClick={onClickStatusTable}>
+                Status
               </DropdownItem>
-              <DropdownItem>Geschlecht (TODO)</DropdownItem>
-              <DropdownItem>Abteilung (TODO)</DropdownItem>
-              <DropdownItem>Kostenstelle (TODO)</DropdownItem>
-              <DropdownItem>Mobile Abo (TODO)</DropdownItem>
-              <DropdownItem>Mobile Abo Kostenstelle (TODO)</DropdownItem>
-              <DropdownItem>Kaderfunktion (TODO)</DropdownItem>
-              <DropdownItem>Tag (TODO)</DropdownItem>
+              <DropdownItem name="geschlechtWerte" onClick={onClickStatusTable}>
+                Geschlecht
+              </DropdownItem>
+              <DropdownItem name="abteilungWerte" onClick={onClickStatusTable}>
+                Abteilung
+              </DropdownItem>
+              <DropdownItem
+                name="kostenstelleWerte"
+                onClick={onClickStatusTable}
+              >
+                Kostenstelle
+              </DropdownItem>
+              <DropdownItem
+                name="mobileAboTypWerte"
+                onClick={onClickStatusTable}
+              >
+                Mobile Abo
+              </DropdownItem>
+              <DropdownItem
+                name="mobileAboKostenstelleWerte"
+                onClick={onClickStatusTable}
+              >
+                Mobile Abo Kostenstelle
+              </DropdownItem>
+              <DropdownItem
+                name="kaderFunktionWerte"
+                onClick={onClickStatusTable}
+              >
+                Kaderfunktion
+              </DropdownItem>
+              <DropdownItem name="etikettWerte" onClick={onClickStatusTable}>
+                Etikett
+              </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>
