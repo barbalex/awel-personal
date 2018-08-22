@@ -13,6 +13,7 @@ import Input from '../shared/Input'
 import SharedCheckbox from '../shared/Checkbox_01'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import isDateField from '../../src/isDateField'
+import tables from '../../src/tables'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
@@ -25,29 +26,35 @@ const enhance = compose(
     saveToDb: ({ store, activeTable }) => ({ field, value }) => {
       const location = store.location.toJSON()
       const activeId = ifIsNumericAsNumber(location[1])
-      const { personen } = store
-      const person = personen.find(p => p.id === activeId)
-      if (!person) throw new Error(`Person with id ${activeId} not found`)
-      let newValue
-      if (isDateField(field)) {
-        if (value) newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
-        if (newValue.includes('Invalid date')) {
-          newValue = newValue.replace('Invalid date', 'Format: DD.MM.YYYY')
-        }
-      } else {
-        newValue = ifIsNumericAsNumber(value)
-      }
+      const {
+        showDeleted,
+        abteilungWerte,
+        kostenstelleWerte,
+        statusWerte,
+        geschlechtWerte,
+        etikettWerte,
+        mobileAboTypWerte,
+        mobileAboKostenstelleWerte,
+        kaderFunktionWerte
+      } = store
+      const data = store[activeTable]
+      const dat = data.find(d => d.id === activeId)
+      if (!dat)
+        throw new Error(
+          `keinen Datensatz in Tabelle "${activeTable}" mit id "${activeId}" gefunden.`
+        )
+
+      const newValue = ifIsNumericAsNumber(value)
+      const parentModel = tables.find(t => t.table === activeTable).parentModel
 
       store.updateField({
-        table: 'personen',
-        parentModel: 'personen',
+        table: activeTable,
+        parentModel,
         field,
         value: newValue,
-        id: person.id
+        id: dat.id
       })
-    },
-    addEtikett: ({ store }) => etikett => store.addEtikett(etikett),
-    deleteEtikett: ({ store }) => etikett => store.deleteEtikett(etikett)
+    }
   }),
   observer
 )
