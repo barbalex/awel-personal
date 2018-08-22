@@ -1,7 +1,6 @@
 // @flow
 import React from 'react'
 import compose from 'recompose/compose'
-import withState from 'recompose/withState'
 import withLifecycle from '@hocs/with-lifecycle'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
@@ -13,6 +12,7 @@ import List from './List'
 import fetchPersonen from '../../src/fetchPersonen'
 import fetchEtiketten from '../../src/fetchEtiketten'
 import fetchWerte from '../../src/fetchWerte'
+import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
@@ -29,7 +29,6 @@ const StyledReflexElement = styled(ReflexElement)`
 
 const enhance = compose(
   inject('store'),
-  withState('initialId', 'setInitialId', null),
   withLifecycle({
     onDidMount() {
       fetchPersonen()
@@ -62,17 +61,9 @@ const enhance = compose(
   observer
 )
 
-const PersonContainer = ({
-  store,
-  initialId
-}: {
-  store: Object,
-  initialId: ?number
-}) => {
+const PersonContainer = ({ store }: { store: Object }) => {
   const location = store.location.toJSON()
-  let activeId = initialId
-  if (location[1]) activeId = location[1]
-  if (!isNaN(activeId)) activeId = +activeId
+  const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
 
   return (
     <Container>
