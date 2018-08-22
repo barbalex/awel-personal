@@ -9,13 +9,15 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import { inject, observer } from 'mobx-react'
 
-import exportPersonen from './exportPersonen'
+import personenPrepareData from './personenPrepareData'
+import personenExport from './personenExport'
 
 const enhance = compose(
   inject('store'),
   withHandlers({
     onClickExportPersonen: ({ store }) => () => {
-      exportPersonen({ store })
+      const personenReadable = personenPrepareData({ store })
+      personenExport(personenReadable)
     }
   }),
   observer
