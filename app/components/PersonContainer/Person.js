@@ -81,33 +81,46 @@ const Person = ({
     etikettWerte
   } = store
   const person = personen.find(p => p.id === activeId) || {}
-  const abteilungOptions = sortBy(abteilungWerte, 'sort').map(w => ({
-    label: w.value,
-    value: w.value
-  }))
-  const kostenstelleOptions = sortBy(kostenstelleWerte, 'sort').map(w => ({
-    label: w.value,
-    value: w.value
-  }))
-  const statusOptions = sortBy(statusWerte, 'sort').map(w => ({
-    label: w.value,
-    value: w.value
-  }))
-  const geschlechtOptions = sortBy(geschlechtWerte, 'sort').map(w => ({
-    label: w.value,
-    value: w.value
-  }))
-  const etikettenOptions = sortBy(etikettWerte, 'sort').map(w => ({
-    label: w.value,
-    value: w.value
-  }))
+  // filter out options with empty values - makes no sense and errors
+  const abteilungOptions = sortBy(abteilungWerte, 'sort')
+    .filter(w => !!w.value)
+    .map(w => ({
+      label: w.value,
+      value: w.value
+    }))
+  const kostenstelleOptions = sortBy(kostenstelleWerte, 'sort')
+    .filter(w => !!w.value)
+    .map(w => ({
+      label: w.value,
+      value: w.value
+    }))
+  const statusOptions = sortBy(statusWerte, 'sort')
+    .filter(w => !!w.value)
+    .map(w => ({
+      label: w.value,
+      value: w.value
+    }))
+  const geschlechtOptions = sortBy(geschlechtWerte, 'sort')
+    .filter(w => !!w.value)
+    .map(w => ({
+      label: w.value,
+      value: w.value
+    }))
+  const etikettenOptions = sortBy(etikettWerte, 'sort')
+    .filter(w => !!w.value)
+    .map(w => ({
+      label: w.value,
+      value: w.value
+    }))
   const myEtiketten = sortBy(
     etiketten.filter(e => e.idPerson === activeId),
     'etikett'
-  ).map(e => ({
-    label: e.etikett,
-    value: e.etikett
-  }))
+  )
+    .filter(w => !!w.value)
+    .map(e => ({
+      label: e.etikett,
+      value: e.etikett
+    }))
 
   return (
     <Container>

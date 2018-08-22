@@ -57,7 +57,7 @@ const SharedSelectMulti = ({
         id={field}
         name={field}
         isMulti
-        defaultValue={value}
+        defaultValue={value || ''}
         options={options}
         onChange={onChange}
         hideSelectedOptions
