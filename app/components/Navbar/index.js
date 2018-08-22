@@ -30,6 +30,12 @@ const DbPath = styled.span`
 const Sup = styled.sup`
   padding-left: 3px;
 `
+const StamdatenContainer = styled.div`
+  display: flex;
+  border: ${props =>
+    props.active ? '1px solid rgb(255, 255, 255, .5)' : 'unset'};
+  border-radius: 0.25rem;
+`
 const StyledNavItem = styled(NavItem)`
   display: flex;
   border: ${props =>
@@ -219,7 +225,7 @@ const MyNavbar = ({
             </DropdownMenu>
           </UncontrolledDropdown>
           <UncontrolledDropdown nav inNavbar>
-            <DropdownToggle nav caret>
+            <DropdownToggle nav caret active={activeLocation === 'berichte'}>
               Berichte
             </DropdownToggle>
             <DropdownMenu>
@@ -228,60 +234,102 @@ const MyNavbar = ({
               <DropdownItem>mehr?</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
-          <UncontrolledDropdown
-            nav
-            inNavbar
-            active={activeLocation.includes('Werte')}
-          >
-            <DropdownToggle nav caret>
-              {activeLocation.includes('Werte') ? (
-                <span>
-                  {activeLocation}
-                  <Sup>{stammdatenCount}</Sup>
-                </span>
-              ) : (
-                'Stammdaten'
-              )}
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem name="statusWerte" onClick={onClickStatusTable}>
-                Status
-              </DropdownItem>
-              <DropdownItem name="geschlechtWerte" onClick={onClickStatusTable}>
-                Geschlecht
-              </DropdownItem>
-              <DropdownItem name="abteilungWerte" onClick={onClickStatusTable}>
-                Abteilung
-              </DropdownItem>
-              <DropdownItem
-                name="kostenstelleWerte"
-                onClick={onClickStatusTable}
-              >
-                Kostenstelle
-              </DropdownItem>
-              <DropdownItem
-                name="mobileAboTypWerte"
-                onClick={onClickStatusTable}
-              >
-                Mobile Abo
-              </DropdownItem>
-              <DropdownItem
-                name="mobileAboKostenstelleWerte"
-                onClick={onClickStatusTable}
-              >
-                Mobile Abo Kostenstelle
-              </DropdownItem>
-              <DropdownItem
-                name="kaderFunktionWerte"
-                onClick={onClickStatusTable}
-              >
-                Kaderfunktion
-              </DropdownItem>
-              <DropdownItem name="etikettWerte" onClick={onClickStatusTable}>
-                Etikett
-              </DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
+          <StamdatenContainer>
+            <UncontrolledDropdown
+              nav
+              inNavbar
+              active={activeLocation.includes('Werte')}
+            >
+              <DropdownToggle nav caret>
+                {activeLocation.includes('Werte') ? (
+                  <span>
+                    {activeLocation}
+                    <Sup>{stammdatenCount}</Sup>
+                  </span>
+                ) : (
+                  'Stammdaten'
+                )}
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem name="statusWerte" onClick={onClickStatusTable}>
+                  Status
+                </DropdownItem>
+                <DropdownItem
+                  name="geschlechtWerte"
+                  onClick={onClickStatusTable}
+                >
+                  Geschlecht
+                </DropdownItem>
+                <DropdownItem
+                  name="abteilungWerte"
+                  onClick={onClickStatusTable}
+                >
+                  Abteilung
+                </DropdownItem>
+                <DropdownItem
+                  name="kostenstelleWerte"
+                  onClick={onClickStatusTable}
+                >
+                  Kostenstelle
+                </DropdownItem>
+                <DropdownItem
+                  name="mobileAboTypWerte"
+                  onClick={onClickStatusTable}
+                >
+                  Mobile Abo
+                </DropdownItem>
+                <DropdownItem
+                  name="mobileAboKostenstelleWerte"
+                  onClick={onClickStatusTable}
+                >
+                  Mobile Abo Kostenstelle
+                </DropdownItem>
+                <DropdownItem
+                  name="kaderFunktionWerte"
+                  onClick={onClickStatusTable}
+                >
+                  Kaderfunktion
+                </DropdownItem>
+                <DropdownItem name="etikettWerte" onClick={onClickStatusTable}>
+                  Etikett
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+            {activeLocation.includes('Werte') && (
+              <Fragment>
+                <StyledButton
+                  id="newStammdatenButton"
+                  onClick={addPerson}
+                  disabled={!mayAddNewPerson}
+                >
+                  <i className="fas fa-plus" />
+                </StyledButton>
+                {mayAddNewPerson && (
+                  <UncontrolledTooltip
+                    placement="bottom"
+                    target="newStammdatenButton"
+                  >
+                    neuen Datensatz erfassen
+                  </UncontrolledTooltip>
+                )}
+                <StyledButton
+                  id="deleteStammdatenButton"
+                  onClick={deletePerson}
+                  disabled={!existsActivePerson}
+                >
+                  <i className="fas fa-trash-alt" />
+                </StyledButton>
+                {existsActivePerson && (
+                  <UncontrolledTooltip
+                    placement="bottom"
+                    target="deleteStammdatenButton"
+                  >
+                    markierten Datensatz löschen
+                  </UncontrolledTooltip>
+                )}
+              </Fragment>
+            )}
+          </StamdatenContainer>
         </Nav>
         <Nav className="ml-auto" navbar>
           <Filter />
