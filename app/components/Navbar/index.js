@@ -224,7 +224,9 @@ const MyNavbar = ({
               Stammdaten
             </DropdownToggle>
             <DropdownMenu>
-              <DropdownItem>Status (TODO)</DropdownItem>
+              <DropdownItem onClick={() => store.setLocation(['statusWerte'])}>
+                Status (TODO)
+              </DropdownItem>
               <DropdownItem>Geschlecht (TODO)</DropdownItem>
               <DropdownItem>Abteilung (TODO)</DropdownItem>
               <DropdownItem>Kostenstelle (TODO)</DropdownItem>

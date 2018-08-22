@@ -1,4 +1,5 @@
 // @flow
+/* eslint no-unused-vars:0 */
 import React from 'react'
 import styled from 'styled-components'
 import compose from 'recompose/compose'
@@ -70,9 +71,18 @@ const Data = ({
     kostenstelleWerte,
     statusWerte,
     geschlechtWerte,
-    etikettWerte
+    etikettWerte,
+    mobileAboTypWerte,
+    mobileAboKostenstelleWerte,
+    kaderFunktionWerte
   } = store
-  const dat = store[activeTable].find(p => p.id === activeId) || {}
+  const dat = store[activeTable].find(p => p.id === activeId)
+  if (!dat)
+    return (
+      <Container>
+        {`Sorry: keinen Datensatz in Tabelle "${activeTable}" mit id "${activeId}" gefunden.`}
+      </Container>
+    )
 
   return (
     <Container>
