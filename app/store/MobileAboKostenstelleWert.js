@@ -5,5 +5,5 @@ export default types.model('MobileAboKostenstelleWert', {
   value: types.maybe(types.union(types.string, types.integer, types.null)),
   deleted: types.optional(types.integer, 0),
   historic: types.optional(types.integer, 0),
-  sort: types.maybe(types.maybeNull(types.integer))
+  sort: types.maybe(types.union(types.integer, types.null))
 })
