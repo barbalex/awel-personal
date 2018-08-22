@@ -25,18 +25,17 @@ export default ({ personenReadable, setModalOpen, setModalMessage }) => {
       setModalOpen(true)
       // set timeout so message appears before exceljs starts working
       // and possibly blocks execution of message
-      setTimeout(() => {
+      setTimeout(async () => {
         const dataArray = getDataArrayFromExportObjects(personenReadable)
-        writeExport(path, dataArray)
-          .then(() => {
-            setModalOpen(false)
-            shell.openItem(path)
-          })
-          .catch(error => {
-            setModalMessage(`Fehler: ${error.message}`)
-            setModalOpen(true)
-            setTimeout(() => setModalOpen(false), 8000)
-          })
+        try {
+          await writeExport(path, dataArray)
+        } catch (error) {
+          setModalMessage(`Fehler: ${error.message}`)
+          setModalOpen(true)
+          setTimeout(() => setModalOpen(false), 8000)
+        }
+        setModalOpen(false)
+        shell.openItem(path)
       }, 0)
     }
   })
