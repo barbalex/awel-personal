@@ -64,7 +64,7 @@ export default types
       // 1. create new Person in db, returning id
       let info
       try {
-        info = app.db.prepare('insert into person default values').run()
+        info = app.db.prepare('insert into personen default values').run()
       } catch (error) {
         return console.log(error)
       }
@@ -77,7 +77,7 @@ export default types
       self.personen = self.personen.filter(p => p.id !== id)
       // write to db
       try {
-        app.db.prepare(`update person set deleted = 1 where id = ?;`).run(id)
+        app.db.prepare(`update personen set deleted = 1 where id = ?;`).run(id)
       } catch (error) {
         // roll back update
         self.personen = personenBefore
@@ -90,7 +90,7 @@ export default types
       self.personen = self.personen.filter(p => p.id !== id)
       // write to db
       try {
-        app.db.prepare('delete from person where id = ?').run(id)
+        app.db.prepare('delete from personen where id = ?').run(id)
       } catch (error) {
         // roll back update
         self.personen = personenBefore

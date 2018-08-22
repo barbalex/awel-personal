@@ -4,8 +4,8 @@ PRAGMA foreign_keys = OFF;
 
 -------------------------------------------
 
-drop table if exists person;
-create table person (
+drop table if exists personen;
+create table personen (
   id integer primary key,
   deleted integer default 0,
   name text,
@@ -18,7 +18,7 @@ create table person (
   bueroNr text,
   abteilung text references abteilungWerte(value) on update cascade on delete no action,
   kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
-  vorgesetztId integer references person(id) on update cascade on delete restrict,
+  vorgesetztId integer references personen(id) on update cascade on delete restrict,
   eintrittDatum text,
   austrittDatum text,
   status text references statusWerte(value) on update cascade on delete no action,
@@ -31,29 +31,29 @@ create table person (
 );
 
 drop index if exists iPersonDeleted;
-create index iPersonDeleted on person (deleted);
+create index iPersonDeleted on personen (deleted);
 drop index if exists iPersonName;
-create index iPersonName on person (name);
+create index iPersonName on personen (name);
 drop index if exists iPersonVorname;
-create index iPersonVorname on person (vorname);
+create index iPersonVorname on personen (vorname);
 
 -------------------------------------------
 
-drop table if exists link;
-create table link (
+drop table if exists links;
+create table links (
   id integer primary key,
   deleted integer default 0,
-  idPerson integer references person(id) on update cascade on delete cascade,
+  idPerson integer references personen(id) on update cascade on delete cascade,
   url text,
   bemerkungen text
 );
 
 drop index if exists iLinkDeleted;
-create index iLinkDeleted on link (deleted);
+create index iLinkDeleted on links (deleted);
 drop index if exists iLinkIdPerson;
-create index iLinkIdPerson on link (idPerson);
+create index iLinkIdPerson on links (idPerson);
 drop index if exists iLinkUrl;
-create index iLinkUrl on link (url);
+create index iLinkUrl on links (url);
 
 -------------------------------------------
 
@@ -62,7 +62,7 @@ drop table if exists schluessel;
 create table schluessel (
   id integer primary key,
   deleted integer default 0,
-  idPerson integer references person(id) on update cascade on delete cascade,
+  idPerson integer references personen(id) on update cascade on delete cascade,
   name text,
   bemerkungen text
 );
@@ -76,57 +76,57 @@ create index iSchluesselName on schluessel (name);
 
 -------------------------------------------
 
-drop table if exists mobileAbo;
-create table mobileAbo (
+drop table if exists mobileAbos;
+create table mobileAbos (
   id integer primary key,
   deleted integer default 0,
-  idPerson integer references person(id) on update cascade on delete cascade,
+  idPerson integer references personen(id) on update cascade on delete cascade,
   typ text references mobileAboTypWerte(value) on update cascade on delete no action,
   kostenstelle text references mobileAboKostenstelleWerte(value) on update cascade on delete no action,
   bemerkungen text
 );
 
 drop index if exists iMobileAboDeleted;
-create index iMobileAboDeleted on mobileAbo (deleted);
+create index iMobileAboDeleted on mobileAbos (deleted);
 drop index if exists iMobileAboIdPerson;
-create index iMobileAboIdPerson on mobileAbo (idPerson);
+create index iMobileAboIdPerson on mobileAbos (idPerson);
 drop index if exists iMobileAboTyp;
-create index iMobileAboTyp on mobileAbo (typ);
+create index iMobileAboTyp on mobileAbos (typ);
 
 -------------------------------------------
 
-drop table if exists kaderFunktion;
-create table kaderFunktion (
+drop table if exists kaderFunktionen;
+create table kaderFunktionen (
   id integer primary key,
   deleted integer default 0,
-  idPerson integer references person(id) on update cascade on delete cascade,
+  idPerson integer references personen(id) on update cascade on delete cascade,
   funktion text references kaderFunktionWerte(value) on update cascade on delete no action,
   bemerkungen text
 );
 
 drop index if exists iKaderFunktionDeleted;
-create index iKaderFunktionDeleted on kaderFunktion (deleted);
+create index iKaderFunktionDeleted on kaderFunktionen (deleted);
 drop index if exists iKaderFunktionIdPerson;
-create index iKaderFunktionIdPerson on kaderFunktion (idPerson);
+create index iKaderFunktionIdPerson on kaderFunktionen (idPerson);
 drop index if exists iKaderFunktionFunktion;
-create index iKaderFunktionFunktion on kaderFunktion (funktion);
+create index iKaderFunktionFunktion on kaderFunktionen (funktion);
 
 -------------------------------------------
 
-drop table if exists etikett;
-create table etikett (
+drop table if exists etiketten;
+create table etiketten (
   id integer primary key,
   deleted integer default 0,
-  idPerson integer references person(id) on update cascade on delete cascade,
-  etikett text references etikettWerte(value) on update cascade on delete cascade
+  idPerson integer references personen(id) on update cascade on delete cascade,
+  etiketten text references etikettWerte(value) on update cascade on delete cascade
 );
 
 drop index if exists iTagDeleted;
-create index iTagDeleted on etikett (deleted);
+create index iTagDeleted on etiketten (deleted);
 drop index if exists iTagIdPerson;
-create index iTagIdPerson on etikett (idPerson);
+create index iTagIdPerson on etiketten (idPerson);
 drop index if exists iTagTag;
-create index iTagTag on etikett (etikett);
+create index iTagTag on etiketten (etiketten);
 
 -------------------------------------------
 
@@ -332,7 +332,7 @@ values
 -------------------------------------------
 
 insert into
-  person(name, vorname)
+  personen(name, vorname)
 values
   ('Tester', 'Test'),
   ('Tester_2', 'Test_2');
