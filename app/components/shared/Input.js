@@ -42,6 +42,7 @@ const SharedInput = ({
   label,
   type = 'text',
   placeholder = '',
+  disabled = false,
   onChange,
   onBlur
 }: {
@@ -50,6 +51,7 @@ const SharedInput = ({
   label: string,
   type?: string,
   placeholder?: string,
+  disabled?: boolean,
   onChange: () => void,
   onBlur: () => void
 }) => (
@@ -63,6 +65,7 @@ const SharedInput = ({
         type={type}
         name={field}
         placeholder={placeholder}
+        disabled={disabled}
         value={stateValue}
         onChange={onChange}
         onBlur={onBlur}
