@@ -141,6 +141,7 @@ const MyNavbar = ({
   showTab,
   addPerson,
   deletePerson,
+  addWert,
   toggleShowDeleted,
   onClickStatusTable
 }: {
@@ -150,6 +151,7 @@ const MyNavbar = ({
   showTab: () => void,
   addPerson: () => void,
   deletePerson: () => void,
+  addWert: () => void,
   toggleShowDeleted: () => void,
   onClickStatusTable: () => void
 }) => {
@@ -165,6 +167,12 @@ const MyNavbar = ({
   let stammdatenCount = 0
   if (activeLocation.includes('Werte')) {
     stammdatenCount = store[activeLocation].length
+  }
+  let mayAddNewWert
+  if (activeLocation && store[activeLocation]) {
+    mayAddNewWert =
+      store[activeLocation].filter(p => p.deleted === 0 && !p.value).length ===
+      0
   }
 
   return (
@@ -308,12 +316,12 @@ const MyNavbar = ({
               <Fragment>
                 <StyledButton
                   id="newStammdatenButton"
-                  onClick={addPerson}
-                  disabled={!mayAddNewPerson}
+                  onClick={addWert}
+                  disabled={!mayAddNewWert}
                 >
                   <i className="fas fa-plus" />
                 </StyledButton>
-                {mayAddNewPerson && (
+                {mayAddNewWert && (
                   <UncontrolledTooltip
                     placement="bottom"
                     target="newStammdatenButton"
