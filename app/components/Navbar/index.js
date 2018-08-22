@@ -17,6 +17,7 @@ import { inject, observer } from 'mobx-react'
 import Filter from './Filter'
 import Stammdaten from './Stammdaten'
 import Person from './Person'
+import Export from './Export'
 import More from './More'
 
 const enhance = compose(
@@ -48,18 +49,7 @@ const MyNavbar = ({
       <Collapse isOpen={open} navbar>
         <Nav className="mr-auto" navbar>
           <Person />
-          <UncontrolledDropdown nav inNavbar>
-            <DropdownToggle nav caret>
-              Exporte
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem>
-                Gefilterte Personen mit allen Feldern (TODO)
-              </DropdownItem>
-              <DropdownItem divider />
-              <DropdownItem>mehr?</DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
+          <Export />
           <UncontrolledDropdown
             nav
             inNavbar
