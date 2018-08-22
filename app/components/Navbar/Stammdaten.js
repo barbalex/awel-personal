@@ -8,7 +8,6 @@ import {
   UncontrolledTooltip
 } from 'reactstrap'
 import compose from 'recompose/compose'
-import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import { inject, observer } from 'mobx-react'
@@ -31,7 +30,6 @@ const StyledButton = styled(Button)`
 
 const enhance = compose(
   inject('store'),
-  withState('open', 'setOpen', false),
   withHandlers({
     addWert: ({ store }) => () => {
       const location = store.location.toJSON()
