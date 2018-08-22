@@ -224,8 +224,12 @@ const MyNavbar = ({
               <DropdownItem>mehr?</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
-          <UncontrolledDropdown nav inNavbar>
-            <DropdownToggle nav caret active={activeLocation === 'berichte'}>
+          <UncontrolledDropdown
+            nav
+            inNavbar
+            active={activeLocation === 'berichte'}
+          >
+            <DropdownToggle nav caret>
               Berichte
             </DropdownToggle>
             <DropdownMenu>
