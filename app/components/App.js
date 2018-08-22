@@ -25,7 +25,7 @@ const App = ({ store }: { store: Object }) => {
     <Container>
       <Navbar />
       {activeLocation === 'Personen' && <PersonContainer />}
-      {activeLocation !== 'Personen' && <StammdatenContainer />}
+      {activeLocation.includes('Werte') && <StammdatenContainer />}
       <DeletionModal />
     </Container>
   )
