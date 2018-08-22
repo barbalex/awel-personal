@@ -147,27 +147,31 @@ const MyNavbar = ({
     p => (showDeleted ? true : p.deleted === 0)
   )
   const location = store.location.toJSON()
-  const activeLink = location[0]
-  const existsActivePerson = activeLink === 'Personen' && location[1]
+  const activeLocation = location[0]
+  const existsActivePerson = activeLocation === 'Personen' && location[1]
   const mayAddNewPerson =
     personen.filter(p => p.deleted === 0 && !p.name && !p.vorname).length === 0
+  let stammdatenCount = 0
+  if (activeLocation.includes('Werte')) {
+    stammdatenCount = store[activeLocation].length
+  }
 
   return (
     <Navbar color="dark" dark expand="lg">
       <NavbarToggler onClick={toggleNavbar} />
       <Collapse isOpen={open} navbar>
         <Nav className="mr-auto" navbar>
-          <StyledNavItem active={activeLink === 'Personen'}>
+          <StyledNavItem active={activeLocation === 'Personen'}>
             <NavLink href="/" id="Personen" onClick={showTab}>
               Personen
-              <Sup>{personen.length}</Sup>
+              {activeLocation === 'Personen' && <Sup>{personen.length}</Sup>}
             </NavLink>
-            {activeLink !== 'Personen' && (
+            {activeLocation !== 'Personen' && (
               <UncontrolledTooltip placement="bottom" target="Personen">
                 Personen anzeigen
               </UncontrolledTooltip>
             )}
-            {activeLink === 'Personen' && (
+            {activeLocation === 'Personen' && (
               <Fragment>
                 <StyledButton
                   id="newPersonButton"
@@ -224,9 +228,20 @@ const MyNavbar = ({
               <DropdownItem>mehr?</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
-          <UncontrolledDropdown nav inNavbar>
+          <UncontrolledDropdown
+            nav
+            inNavbar
+            active={activeLocation.includes('Werte')}
+          >
             <DropdownToggle nav caret>
-              Stammdaten
+              {activeLocation.includes('Werte') ? (
+                <span>
+                  {activeLocation}
+                  <Sup>{stammdatenCount}</Sup>
+                </span>
+              ) : (
+                'Stammdaten'
+              )}
             </DropdownToggle>
             <DropdownMenu>
               <DropdownItem name="statusWerte" onClick={onClickStatusTable}>
