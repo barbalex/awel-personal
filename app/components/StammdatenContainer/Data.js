@@ -1,18 +1,14 @@
 // @flow
-/* eslint no-unused-vars:0 */
 import React from 'react'
 import styled from 'styled-components'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import { inject, observer } from 'mobx-react'
 import { Form } from 'reactstrap'
-import moment from 'moment'
-import sortBy from 'lodash/sortBy'
 
 import Input from '../shared/Input'
 import SharedCheckbox from '../shared/Checkbox_01'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
-import isDateField from '../../src/isDateField'
 import tables from '../../src/tables'
 
 const Container = styled.div``
@@ -26,17 +22,6 @@ const enhance = compose(
     saveToDb: ({ store, activeTable }) => ({ field, value }) => {
       const location = store.location.toJSON()
       const activeId = ifIsNumericAsNumber(location[1])
-      const {
-        showDeleted,
-        abteilungWerte,
-        kostenstelleWerte,
-        statusWerte,
-        geschlechtWerte,
-        etikettWerte,
-        mobileAboTypWerte,
-        mobileAboKostenstelleWerte,
-        kaderFunktionWerte
-      } = store
       const data = store[activeTable]
       const dat = data.find(d => d.id === activeId)
       if (!dat)
@@ -72,17 +57,7 @@ const Data = ({
 }) => {
   if (!activeId) return null
 
-  const {
-    showDeleted,
-    abteilungWerte,
-    kostenstelleWerte,
-    statusWerte,
-    geschlechtWerte,
-    etikettWerte,
-    mobileAboTypWerte,
-    mobileAboKostenstelleWerte,
-    kaderFunktionWerte
-  } = store
+  const { showDeleted } = store
   const dat = store[activeTable].find(p => p.id === activeId)
   if (!dat)
     return (
