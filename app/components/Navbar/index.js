@@ -22,6 +22,7 @@ import { inject, observer } from 'mobx-react'
 import { shell } from 'electron'
 
 import Filter from './Filter'
+import tables from '../../src/tables'
 
 const DbPath = styled.span`
   font-style: italic;
@@ -125,6 +126,49 @@ const enhance = compose(
         setDeletionTitle('Person löschen')
       }
     },
+    deleteWert: ({ store }) => () => {
+      const {
+        setDeletionMessage,
+        setDeletionTitle,
+        setDeletionCallback
+      } = store
+      const location = store.location.toJSON()
+      const activeTable = location[0]
+      const { parentModel } = tables.find(t => t.table === activeTable)
+      let activeId = location[1]
+      if (!isNaN(activeId)) activeId = +activeId
+      const activeWert = self[parentModel].find(p => p.id === activeId)
+      if (activeWert.deleted === 1) {
+        // deleted is already = 1
+        // prepare true deletion
+        setDeletionCallback(() => {
+          store.deleteWert({ id: activeId, table: activeTable })
+          setDeletionMessage(null)
+          setDeletionTitle(null)
+        })
+        const name = activeWert.value
+          ? `"${activeWert.value}"`
+          : 'Dieser Datensatz'
+        setDeletionMessage(
+          `${name} war schon gelöscht. Wenn Sie ihn nochmals löschen, ist das endgültig und unwiederbringlich. Möchten Sie das?`
+        )
+        setDeletionTitle(`${activeTable} unwiederbringlich löschen`)
+      } else {
+        // do not true delete yet
+        // only set deleted = 1
+        setDeletionCallback(() => {
+          store.setWertDeleted({ id: activeId, table: activeTable })
+          setDeletionMessage(null)
+          setDeletionTitle(null)
+        })
+        setDeletionMessage(
+          `${
+            activeWert.value ? `"${activeWert.value}"` : 'Diesen Datensatz'
+          } wirklich löschen?`
+        )
+        setDeletionTitle(`${activeTable} löschen`)
+      }
+    },
     toggleShowDeleted: ({ store }) => () =>
       store.setShowDeleted(!store.showDeleted),
     onClickStatusTable: ({ store }) => e => {
@@ -142,6 +186,7 @@ const MyNavbar = ({
   addPerson,
   deletePerson,
   addWert,
+  deleteWert,
   toggleShowDeleted,
   onClickStatusTable
 }: {
@@ -152,6 +197,7 @@ const MyNavbar = ({
   addPerson: () => void,
   deletePerson: () => void,
   addWert: () => void,
+  deleteWert: () => void,
   toggleShowDeleted: () => void,
   onClickStatusTable: () => void
 }) => {
@@ -174,6 +220,7 @@ const MyNavbar = ({
       store[activeLocation].filter(p => p.deleted === 0 && !p.value).length ===
       0
   }
+  const existsActiveWert = activeLocation.includes('Werte') && location[1]
 
   return (
     <Navbar color="dark" dark expand="lg">
@@ -331,12 +378,12 @@ const MyNavbar = ({
                 )}
                 <StyledButton
                   id="deleteStammdatenButton"
-                  onClick={deletePerson}
-                  disabled={!existsActivePerson}
+                  onClick={deleteWert}
+                  disabled={!existsActiveWert}
                 >
                   <i className="fas fa-trash-alt" />
                 </StyledButton>
-                {existsActivePerson && (
+                {existsActiveWert && (
                   <UncontrolledTooltip
                     placement="bottom"
                     target="deleteStammdatenButton"

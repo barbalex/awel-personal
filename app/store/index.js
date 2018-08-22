@@ -86,18 +86,46 @@ export default types
       self[parentModel].push({ id: info.lastInsertROWID })
       self.setLocation([table, info.lastInsertROWID.toString()])
     },
+    setWertDeleted({ id, table }) {
+      const { parentModel } = tables.find(t => t.table === table)
+      const dat = self[parentModel].find(p => p.id === id)
+      dat.deleted = true
+      // write to db
+      try {
+        app.db.prepare(`update ${table} set deleted = 1 where id = ?;`).run(id)
+      } catch (error) {
+        // roll back update
+        dat.deleted = false
+        return console.log(error)
+      }
+      if (!self.showDeleted) self.setLocation([table])
+    },
+    deleteWert({ id, table }) {
+      const { parentModel } = tables.find(t => t.table === table)
+      const dataBefore = self[parentModel]
+      self[parentModel] = self[parentModel].filter(p => p.id !== id)
+      // write to db
+      try {
+        app.db.prepare(`delete from ${table} where id = ${id}`).run()
+      } catch (error) {
+        // roll back update
+        self[parentModel] = dataBefore
+        return console.log(error)
+      }
+      self.setLocation([table])
+    },
     setPersonDeleted(id) {
-      const personenBefore = self.personen
-      self.personen = self.personen.filter(p => p.id !== id)
+      const person = self.personen.find(p => p.id === id)
+      person.deleted = true
       // write to db
       try {
         app.db.prepare(`update personen set deleted = 1 where id = ?;`).run(id)
       } catch (error) {
         // roll back update
-        self.personen = personenBefore
+        person.deleted = false
         return console.log(error)
       }
-      self.setLocation(['Personen'])
+      if (!self.showDeleted) self.setLocation(['Personen'])
     },
     deletePerson(id) {
       const personenBefore = self.personen
