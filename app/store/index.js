@@ -12,6 +12,7 @@ import KaderFunktionWert from './KaderFunktionWert'
 import MobileAboKostenstelleWert from './MobileAboKostenstelleWert'
 import TagWert from './TagWert'
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
+import tables from '../src/tables'
 
 export default types
   .model({
@@ -71,6 +72,19 @@ export default types
       // 2. add to store
       self.personen.push({ id: info.lastInsertROWID })
       self.setLocation(['Personen', info.lastInsertROWID.toString()])
+    },
+    addWert(table) {
+      const { parentModel } = tables.find(t => t.table === table)
+      // 1. create new value in db, returning id
+      let info
+      try {
+        info = app.db.prepare(`insert into ${table} default values`).run()
+      } catch (error) {
+        return console.log(error)
+      }
+      // 2. add to store
+      self[parentModel].push({ id: info.lastInsertROWID })
+      self.setLocation([table, info.lastInsertROWID.toString()])
     },
     setPersonDeleted(id) {
       const personenBefore = self.personen

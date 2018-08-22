@@ -74,6 +74,11 @@ const enhance = compose(
       store.setLocation([newLocation])
     },
     addPerson: ({ store }) => () => store.addPerson(),
+    addWert: ({ store }) => () => {
+      const location = store.location.toJSON()
+      const activeTable = location[0]
+      store.addWert(activeTable)
+    },
     deletePerson: ({ store }) => () => {
       const {
         setDeletionMessage,
@@ -238,7 +243,7 @@ const MyNavbar = ({
               <DropdownItem>mehr?</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
-          <StamdatenContainer>
+          <StamdatenContainer active={activeLocation.includes('Werte')}>
             <UncontrolledDropdown
               nav
               inNavbar
@@ -313,7 +318,7 @@ const MyNavbar = ({
                     placement="bottom"
                     target="newStammdatenButton"
                   >
-                    neuen Datensatz erfassen
+                    neuen Wert erfassen
                   </UncontrolledTooltip>
                 )}
                 <StyledButton
@@ -328,7 +333,7 @@ const MyNavbar = ({
                     placement="bottom"
                     target="deleteStammdatenButton"
                   >
-                    markierten Datensatz löschen
+                    markierten Wert löschen
                   </UncontrolledTooltip>
                 )}
               </Fragment>
