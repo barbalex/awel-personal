@@ -153,7 +153,7 @@ const MyNavbar = ({
     personen.filter(p => p.deleted === 0 && !p.name && !p.vorname).length === 0
 
   return (
-    <Navbar color="dark" dark expand="md">
+    <Navbar color="dark" dark expand="lg">
       <NavbarToggler onClick={toggleNavbar} />
       <Collapse isOpen={open} navbar>
         <Nav className="mr-auto" navbar>
