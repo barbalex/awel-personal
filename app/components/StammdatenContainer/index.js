@@ -51,7 +51,7 @@ const StammdatenContainer = ({ store }: { store: Object }) => {
   const data = store[activeTable]
   const dat = data.find(d => d.id === activeId)
   // pass list the active dat's props to enable instant updates
-  const datJson = dat ? dat.toJSON() : {}
+  const datJson = dat || {}
 
   return (
     <Container>
