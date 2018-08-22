@@ -12,7 +12,6 @@ import KaderFunktionWert from './KaderFunktionWert'
 import MobileAboKostenstelleWert from './MobileAboKostenstelleWert'
 import TagWert from './TagWert'
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
-import tables from '../src/tables'
 
 export default types
   .model({
@@ -74,7 +73,6 @@ export default types
       self.setLocation(['Personen', info.lastInsertROWID.toString()])
     },
     addWert(table) {
-      const { parentModel } = tables.find(t => t.table === table)
       // 1. create new value in db, returning id
       let info
       try {
@@ -83,61 +81,54 @@ export default types
         return console.log(error)
       }
       // 2. add to store
-      self[parentModel].push({ id: info.lastInsertROWID })
+      self[table].push({ id: info.lastInsertROWID })
       self.setLocation([table, info.lastInsertROWID.toString()])
     },
     setWertDeleted({ id, table }) {
-      const { parentModel } = tables.find(t => t.table === table)
-      const dat = self[parentModel].find(p => p.id === id)
-      dat.deleted = true
       // write to db
       try {
         app.db.prepare(`update ${table} set deleted = 1 where id = ?;`).run(id)
       } catch (error) {
-        // roll back update
-        dat.deleted = false
         return console.log(error)
       }
+      // write to store
+      const dat = self[table].find(p => p.id === id)
+      dat.deleted = 1
       if (!self.showDeleted) self.setLocation([table])
     },
     deleteWert({ id, table }) {
-      const { parentModel } = tables.find(t => t.table === table)
-      const dataBefore = self[parentModel]
-      self[parentModel] = self[parentModel].filter(p => p.id !== id)
       // write to db
       try {
         app.db.prepare(`delete from ${table} where id = ${id}`).run()
       } catch (error) {
-        // roll back update
-        self[parentModel] = dataBefore
         return console.log(error)
       }
+      // write to store
+      self[table] = self[table].filter(p => p.id !== id)
       self.setLocation([table])
     },
     setPersonDeleted(id) {
-      const person = self.personen.find(p => p.id === id)
-      person.deleted = true
       // write to db
       try {
         app.db.prepare(`update personen set deleted = 1 where id = ?;`).run(id)
       } catch (error) {
-        // roll back update
-        person.deleted = false
         return console.log(error)
       }
+      // write to store
+      const person = self.personen.find(p => p.id === id)
+      person.deleted = 1
       if (!self.showDeleted) self.setLocation(['Personen'])
     },
     deletePerson(id) {
-      const personenBefore = self.personen
-      self.personen = self.personen.filter(p => p.id !== id)
       // write to db
       try {
         app.db.prepare('delete from personen where id = ?').run(id)
       } catch (error) {
         // roll back update
-        self.personen = personenBefore
         return console.log(error)
       }
+      // write to store
+      self.personen = self.personen.filter(p => p.id !== id)
       self.setLocation(['Personen'])
     },
     addEtikett(etikett) {
@@ -160,20 +151,18 @@ export default types
       // grab idPerson from location
       const location = self.location.toJSON()
       const activeId = ifIsNumericAsNumber(location[1])
-      const etikettenBefore = self.etiketten
-      self.etiketten = self.etiketten.filter(
-        e => !(e.idPerson === activeId && e.etikett === etikett)
-      )
       // write to db
       try {
         app.db
           .prepare('delete from etiketten where idPerson = ? and etikett = ?')
           .run(activeId, etikett)
       } catch (error) {
-        // roll back update
-        self.etiketten = etikettenBefore
         return console.log(error)
       }
+      // write to store
+      self.etiketten = self.etiketten.filter(
+        e => !(e.idPerson === activeId && e.etikett === etikett)
+      )
     },
     updateField({ table, parentModel, field, value, id }) {
       try {

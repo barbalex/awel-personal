@@ -134,10 +134,9 @@ const enhance = compose(
       } = store
       const location = store.location.toJSON()
       const activeTable = location[0]
-      const { parentModel } = tables.find(t => t.table === activeTable)
       let activeId = location[1]
       if (!isNaN(activeId)) activeId = +activeId
-      const activeWert = self[parentModel].find(p => p.id === activeId)
+      const activeWert = store[activeTable].find(p => p.id === activeId)
       if (activeWert.deleted === 1) {
         // deleted is already = 1
         // prepare true deletion
