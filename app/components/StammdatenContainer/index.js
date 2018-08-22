@@ -5,11 +5,13 @@ import withLifecycle from '@hocs/with-lifecycle'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { inject, observer } from 'mobx-react'
+import { getSnapshot } from 'mobx-state-tree'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Data from './Data'
 import List from './List'
 import fetchWerte from '../../src/fetchWerte'
+import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
@@ -45,8 +47,11 @@ const enhance = compose(
 const StammdatenContainer = ({ store }: { store: Object }) => {
   const location = store.location.toJSON()
   const activeTable = location[0]
-  let activeId = location[1]
-  if (!isNaN(activeId)) activeId = +activeId
+  const activeId = ifIsNumericAsNumber(location[1])
+  const data = store[activeTable]
+  const dat = data.find(d => d.id === activeId)
+  // pass list the active dat's props to enable instant updates
+  const datJson = dat ? dat.toJSON() : {}
 
   return (
     <Container>
@@ -58,7 +63,7 @@ const StammdatenContainer = ({ store }: { store: Object }) => {
             renderOnResizeRate={100}
             renderOnResize
           >
-            <List activeId={activeId} activeTable={activeTable} />
+            <List activeId={activeId} activeTable={activeTable} {...datJson} />
           </ReflexElement>
           <ReflexSplitter />
           <StyledReflexElement>
