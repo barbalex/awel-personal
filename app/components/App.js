@@ -21,6 +21,7 @@ const enhance = compose(
 
 const App = ({ store }: { store: Object }) => {
   const activeLocation = store.location.toJSON()[0]
+
   return (
     <Container>
       <Navbar />
