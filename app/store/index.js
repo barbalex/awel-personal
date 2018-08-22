@@ -106,7 +106,7 @@ export default types
       let info
       try {
         info = app.db
-          .prepare('insert into etikett (idPerson, etikett) values (?, ?)')
+          .prepare('insert into etiketten (idPerson, etikett) values (?, ?)')
           .run(idPerson, etikett)
       } catch (error) {
         return console.log(error)
@@ -125,7 +125,7 @@ export default types
       // write to db
       try {
         app.db
-          .prepare('delete from etikett where idPerson = ? and etikett = ?')
+          .prepare('delete from etiketten where idPerson = ? and etikett = ?')
           .run(activeId, etikett)
       } catch (error) {
         // roll back update

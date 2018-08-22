@@ -41,7 +41,7 @@ const enhance = compose(
       }
 
       store.updateField({
-        table: 'person',
+        table: 'personen',
         parentModel: 'personen',
         field,
         value: newValue,

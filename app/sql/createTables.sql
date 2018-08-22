@@ -118,7 +118,7 @@ create table etiketten (
   id integer primary key,
   deleted integer default 0,
   idPerson integer references personen(id) on update cascade on delete cascade,
-  etiketten text references etikettWerte(value) on update cascade on delete cascade
+  etikett text references etikettWerte(value) on update cascade on delete cascade
 );
 
 drop index if exists iTagDeleted;
@@ -126,7 +126,7 @@ create index iTagDeleted on etiketten (deleted);
 drop index if exists iTagIdPerson;
 create index iTagIdPerson on etiketten (idPerson);
 drop index if exists iTagTag;
-create index iTagTag on etiketten (etiketten);
+create index iTagTag on etiketten (etikett);
 
 -------------------------------------------
 
