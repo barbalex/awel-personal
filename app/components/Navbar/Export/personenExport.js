@@ -9,9 +9,9 @@ import getDataArrayFromExportObjects from './getDataArrayFromExportObjects'
 
 const { dialog } = remote
 
-export default (geschaefte, messageShow) => {
+export default ({ personenReadable, setModalOpen, setModalMessage }) => {
   const dialogOptions = {
-    title: 'exportierte Geschäfte speichern',
+    title: 'exportierte Personen speichern',
     filters: [
       {
         name: 'Excel-Datei',
@@ -21,19 +21,21 @@ export default (geschaefte, messageShow) => {
   }
   dialog.showSaveDialog(dialogOptions, path => {
     if (path) {
-      messageShow(true, 'Der Export wird aufgebaut...', '')
+      setModalMessage('Der Export wird aufgebaut...')
+      setModalOpen(true)
       // set timeout so message appears before exceljs starts working
       // and possibly blocks execution of message
       setTimeout(() => {
-        const dataArray = getDataArrayFromExportObjects(geschaefte)
+        const dataArray = getDataArrayFromExportObjects(personenReadable)
         writeExport(path, dataArray)
           .then(() => {
-            messageShow(false, '', '')
+            setModalOpen(false)
             shell.openItem(path)
           })
           .catch(error => {
-            messageShow(true, 'Fehler:', error)
-            setTimeout(() => messageShow(false, '', ''), 8000)
+            setModalMessage(`Fehler: ${error.message}`)
+            setModalOpen(true)
+            setTimeout(() => setModalOpen(false), 8000)
           })
       }, 0)
     }

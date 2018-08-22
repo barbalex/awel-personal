@@ -1,12 +1,15 @@
 import React from 'react'
 import {
-  UncontrolledDropdown,
-  DropdownToggle,
+  DropdownItem,
   DropdownMenu,
-  DropdownItem
+  DropdownToggle,
+  Modal,
+  ModalBody,
+  UncontrolledDropdown
 } from 'reactstrap'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
+import withState from 'recompose/withState'
 import { inject, observer } from 'mobx-react'
 
 import personenPrepareData from './personenPrepareData'
@@ -14,19 +17,28 @@ import personenExport from './personenExport'
 
 const enhance = compose(
   inject('store'),
+  withState('modalOpen', 'setModalOpen', false),
+  withState('modalMessage', 'setModalMessage', ''),
   withHandlers({
-    onClickExportPersonen: ({ store }) => () => {
+    onClickExportPersonen: ({ store, setModalOpen, setModalMessage }) => () => {
       const personenReadable = personenPrepareData({ store })
-      personenExport(personenReadable)
-    }
+      personenExport({ personenReadable, setModalOpen, setModalMessage })
+    },
+    toggleModal: ({ modalOpen, setModalOpen }) => () => setModalOpen(!modalOpen)
   }),
   observer
 )
 
 const Export = ({
-  onClickExportPersonen
+  onClickExportPersonen,
+  modalOpen,
+  toggleModal,
+  modalMessage
 }: {
-  onClickExportPersonen: () => void
+  onClickExportPersonen: () => void,
+  modalOpen: boolean,
+  toggleModal: () => void,
+  modalMessage?: string
 }) => (
   <UncontrolledDropdown nav inNavbar>
     <DropdownToggle nav caret>
@@ -39,6 +51,9 @@ const Export = ({
       <DropdownItem divider />
       <DropdownItem>mehr?</DropdownItem>
     </DropdownMenu>
+    <Modal isOpen={modalOpen} toggle={toggleModal}>
+      <ModalBody>{modalMessage}</ModalBody>
+    </Modal>
   </UncontrolledDropdown>
 )
 
