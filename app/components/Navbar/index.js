@@ -312,8 +312,14 @@ const MyNavbar = ({
                 )}
               </DropdownToggle>
               <DropdownMenu>
-                <DropdownItem name="statusWerte" onClick={onClickStatusTable}>
-                  Status
+                <DropdownItem
+                  name="abteilungWerte"
+                  onClick={onClickStatusTable}
+                >
+                  Abteilung
+                </DropdownItem>
+                <DropdownItem name="etikettWerte" onClick={onClickStatusTable}>
+                  Etikett
                 </DropdownItem>
                 <DropdownItem
                   name="geschlechtWerte"
@@ -322,10 +328,10 @@ const MyNavbar = ({
                   Geschlecht
                 </DropdownItem>
                 <DropdownItem
-                  name="abteilungWerte"
+                  name="kaderFunktionWerte"
                   onClick={onClickStatusTable}
                 >
-                  Abteilung
+                  Kaderfunktion
                 </DropdownItem>
                 <DropdownItem
                   name="kostenstelleWerte"
@@ -337,7 +343,7 @@ const MyNavbar = ({
                   name="mobileAboTypWerte"
                   onClick={onClickStatusTable}
                 >
-                  Mobile Abo
+                  Mobile Abo Typ
                 </DropdownItem>
                 <DropdownItem
                   name="mobileAboKostenstelleWerte"
@@ -345,14 +351,8 @@ const MyNavbar = ({
                 >
                   Mobile Abo Kostenstelle
                 </DropdownItem>
-                <DropdownItem
-                  name="kaderFunktionWerte"
-                  onClick={onClickStatusTable}
-                >
-                  Kaderfunktion
-                </DropdownItem>
-                <DropdownItem name="etikettWerte" onClick={onClickStatusTable}>
-                  Etikett
+                <DropdownItem name="statusWerte" onClick={onClickStatusTable}>
+                  Status
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
