@@ -75,7 +75,7 @@ const PersonContainer = ({ store }: { store: Object }) => {
       <ErrorBoundary>
         <ReflexContainer orientation="vertical">
           <ReflexElement
-            flex={0.33}
+            flex={0.25}
             propagateDimensions
             renderOnResizeRate={100}
             renderOnResize
