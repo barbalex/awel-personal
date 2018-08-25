@@ -12,6 +12,9 @@ import List from './List'
 import fetchPersonen from '../../src/fetchPersonen'
 import fetchEtiketten from '../../src/fetchEtiketten'
 import fetchLinks from '../../src/fetchLinks'
+import fetchSchluessel from '../../src/fetchSchluessel'
+import fetchMobileAbos from '../../src/fetchMobileAbos'
+import fetchKaderFunktionen from '../../src/fetchKaderFunktionen'
 import fetchWerte from '../../src/fetchWerte'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 
@@ -43,6 +46,9 @@ const enhance = compose(
       fetchEtiketten()
       fetchWerte('etikettWerte')
       fetchLinks()
+      fetchSchluessel()
+      fetchMobileAbos()
+      fetchKaderFunktionen()
       // set initial active id
       // nope, better not
       // for instance: after deleting do not show another user

@@ -16,6 +16,7 @@ import SharedCheckbox from '../../shared/Checkbox_01'
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
 import isDateField from '../../../src/isDateField'
 import Links from './Links'
+import Schluessels from './Schluessels'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
@@ -284,6 +285,7 @@ const Person = ({
           type="textarea"
         />
         <Links />
+        <Schluessels />
       </StyledForm>
     </Container>
   )

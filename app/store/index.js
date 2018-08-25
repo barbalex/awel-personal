@@ -7,6 +7,9 @@ import GeschlechtWert from './GeschlechtWert'
 import KaderFunktionWert from './KaderFunktionWert'
 import KostenstelleWert from './KostenstelleWert'
 import Link from './Link'
+import Schluessel from './Schluessel'
+import MobileAbo from './MobileAbo'
+import KaderFunktion from './KaderFunktion'
 import MobileAboKostenstelleWert from './MobileAboKostenstelleWert'
 import MobileAboTypWert from './MobileAboTypWert'
 import Person from './Person'
@@ -24,6 +27,9 @@ export default types
     kaderFunktionWerte: types.array(KaderFunktionWert),
     kostenstelleWerte: types.array(KostenstelleWert),
     links: types.array(Link),
+    schluessel: types.array(Schluessel),
+    mobileAbos: types.array(MobileAbo),
+    kaderFunktionen: types.array(KaderFunktion),
     location: types.optional(types.array(types.string), ['Personen']),
     mobileAboKostenstelleWerte: types.array(MobileAboKostenstelleWert),
     mobileAboTypWerte: types.array(MobileAboTypWert),
@@ -58,6 +64,15 @@ export default types
     },
     setLinks(links) {
       self.links = links
+    },
+    setSchluessel(schluessel) {
+      self.schluessel = schluessel
+    },
+    setMobileAbos(mobileAbos) {
+      self.mobileAbos = mobileAbos
+    },
+    setKaderFunktionen(kaderFunktionen) {
+      self.kaderFunktionen = kaderFunktionen
     },
     setWerte({ table, values }) {
       self[table] = values
@@ -194,6 +209,84 @@ export default types
       }
       // write to store
       self.links = self.links.filter(e => !(e.id === id))
+    },
+    addSchluessel() {
+      // grab idPerson from location
+      const location = self.location.toJSON()
+      const idPerson = ifIsNumericAsNumber(location[1])
+      // 1. create new link in db, returning id
+      let info
+      try {
+        info = app.db
+          .prepare('insert into schluessel (idPerson) values (?)')
+          .run(idPerson)
+      } catch (error) {
+        return console.log(error)
+      }
+      // 2. add to store
+      self.schluessel.push({ id: info.lastInsertROWID })
+    },
+    deleteSchluessel(id) {
+      // write to db
+      try {
+        app.db.prepare('delete from schluessel where id = ?').run(id)
+      } catch (error) {
+        return console.log(error)
+      }
+      // write to store
+      self.schluessel = self.schluessel.filter(e => !(e.id === id))
+    },
+    addMobileAbo() {
+      // grab idPerson from location
+      const location = self.location.toJSON()
+      const idPerson = ifIsNumericAsNumber(location[1])
+      // 1. create new link in db, returning id
+      let info
+      try {
+        info = app.db
+          .prepare('insert into mobileAbos (idPerson) values (?)')
+          .run(idPerson)
+      } catch (error) {
+        return console.log(error)
+      }
+      // 2. add to store
+      self.mobileAbos.push({ id: info.lastInsertROWID })
+    },
+    deleteMobileAbo(id) {
+      // write to db
+      try {
+        app.db.prepare('delete from mobileAbos where id = ?').run(id)
+      } catch (error) {
+        return console.log(error)
+      }
+      // write to store
+      self.mobileAbos = self.mobileAbos.filter(e => !(e.id === id))
+    },
+    addKaderFunktion() {
+      // grab idPerson from location
+      const location = self.location.toJSON()
+      const idPerson = ifIsNumericAsNumber(location[1])
+      // 1. create new link in db, returning id
+      let info
+      try {
+        info = app.db
+          .prepare('insert into kaderFunktionen (idPerson) values (?)')
+          .run(idPerson)
+      } catch (error) {
+        return console.log(error)
+      }
+      // 2. add to store
+      self.kaderFunktionen.push({ id: info.lastInsertROWID })
+    },
+    deleteKaderFunktion(id) {
+      // write to db
+      try {
+        app.db.prepare('delete from kaderFunktionen where id = ?').run(id)
+      } catch (error) {
+        return console.log(error)
+      }
+      // write to store
+      self.kaderFunktionen = self.kaderFunktionen.filter(e => !(e.id === id))
     },
     updateField({ table, parentModel, field, value, id }) {
       try {
