@@ -54,7 +54,7 @@ const RemoveGlyphiconDiv = styled.div`
   grid-column: 2 / span 1;
   margin-top: -2px;
   display: ${props => (props['data-ispdf'] ? 'none' : 'block')};
-  color: red;
+  color: #cccccc;
   font-size: 18px;
   cursor: pointer;
   display: ${props => (props['data-ispdf'] ? 'none' : 'block')};
@@ -101,7 +101,6 @@ const LinksComponent = ({
   const location = store.location.toJSON()
   if (!location[1]) throw new Error(`no id found`)
   const activePersonenId = ifIsNumericAsNumber(location[1])
-  console.log('Links, render:', { activePersonenId, links: store.links })
   const myLinks = store.links.filter(l => l.idPerson === activePersonenId)
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
