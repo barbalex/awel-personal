@@ -108,7 +108,7 @@ const LinksComponent = ({
   return (
     <FormGroup row>
       <Label for="links" sm={2}>
-        Links
+        Datei-Links
       </Label>
       <Col sm={10}>
         <Container data-ispdf={isPdf} name="links">
