@@ -8,13 +8,13 @@ import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
 
-import Input from '../shared/Input'
-import Date from '../shared/Date'
-import Select from '../shared/Select'
-import SelectMulti from '../shared/SelectMulti'
-import SharedCheckbox from '../shared/Checkbox_01'
-import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
-import isDateField from '../../src/isDateField'
+import Input from '../../shared/Input'
+import Date from '../../shared/Date'
+import Select from '../../shared/Select'
+import SelectMulti from '../../shared/SelectMulti'
+import SharedCheckbox from '../../shared/Checkbox_01'
+import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
+import isDateField from '../../../src/isDateField'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
