@@ -15,6 +15,7 @@ import SelectMulti from '../../shared/SelectMulti'
 import SharedCheckbox from '../../shared/Checkbox_01'
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
 import isDateField from '../../../src/isDateField'
+import Links from './Links'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
@@ -274,6 +275,7 @@ const Person = ({
           saveToDb={saveToDb}
           type="textarea"
         />
+        <Links />
       </StyledForm>
     </Container>
   )

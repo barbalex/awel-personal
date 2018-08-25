@@ -56,6 +56,9 @@ export default types
     setEtiketten(etiketten) {
       self.etiketten = etiketten
     },
+    setLinks(links) {
+      self.links = links
+    },
     setWerte({ table, values }) {
       self[table] = values
     },
@@ -167,7 +170,6 @@ export default types
       )
     },
     addLink(url) {
-      console.log('store, addLink, url:', url)
       // grab idPerson from location
       const location = self.location.toJSON()
       const idPerson = ifIsNumericAsNumber(location[1])
@@ -184,7 +186,6 @@ export default types
       self.links.push({ id: info.lastInsertROWID, url, idPerson })
     },
     deleteLink(id) {
-      console.log('store, deleteLink, id:', id)
       // write to db
       try {
         app.db.prepare('delete from links where id = ?').run(id)

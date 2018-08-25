@@ -11,6 +11,7 @@ import Person from './Person'
 import List from './List'
 import fetchPersonen from '../../src/fetchPersonen'
 import fetchEtiketten from '../../src/fetchEtiketten'
+import fetchLinks from '../../src/fetchLinks'
 import fetchWerte from '../../src/fetchWerte'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 
@@ -41,6 +42,7 @@ const enhance = compose(
       fetchWerte('mobileAboKostenstelleWerte')
       fetchEtiketten()
       fetchWerte('etikettWerte')
+      fetchLinks()
       // set initial active id
       // nope, better not
       // for instance: after deleting do not show another user

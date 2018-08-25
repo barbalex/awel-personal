@@ -105,6 +105,7 @@ const LinksComponent = ({
   const location = store.location.toJSON()
   if (!location[1]) throw new Error(`no id found`)
   const activePersonenId = ifIsNumericAsNumber(location[1])
+  console.log('Links, render:', { activePersonenId, links: store.links })
   const myLinks = store.links.filter(l => l.idPerson === activePersonenId)
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
@@ -128,8 +129,9 @@ const LinksComponent = ({
             </UrlDiv>
             <RemoveGlyphiconDiv
               data-ispdf={isPdf}
-              onClick={store.deleteLink.bind(link.id)}
+              onClick={() => store.deleteLink(link.id)}
               title="Link entfernen"
+              id={link.id}
             >
               <i className="fas fa-times" />
             </RemoveGlyphiconDiv>
