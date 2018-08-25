@@ -44,8 +44,7 @@ create table links (
   id integer primary key,
   deleted integer default 0,
   idPerson integer references personen(id) on update cascade on delete cascade,
-  url text,
-  bemerkungen text
+  url text
 );
 
 drop index if exists iLinkDeleted;

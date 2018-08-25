@@ -1,34 +1,36 @@
 import { types } from 'mobx-state-tree'
 import app from 'ampersand-app'
 
-import Person from './Person'
-import Etikett from './Etikett'
-import StatusWert from './StatusWert'
-import GeschlechtWert from './GeschlechtWert'
 import AbteilungWert from './AbteilungWert'
-import KostenstelleWert from './KostenstelleWert'
-import MobileAboTypWert from './MobileAboTypWert'
+import Etikett from './Etikett'
+import GeschlechtWert from './GeschlechtWert'
 import KaderFunktionWert from './KaderFunktionWert'
+import KostenstelleWert from './KostenstelleWert'
+import Link from './Link'
 import MobileAboKostenstelleWert from './MobileAboKostenstelleWert'
+import MobileAboTypWert from './MobileAboTypWert'
+import Person from './Person'
+import StatusWert from './StatusWert'
 import TagWert from './TagWert'
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 
 export default types
   .model({
-    personen: types.array(Person),
-    etiketten: types.array(Etikett),
-    statusWerte: types.array(StatusWert),
-    geschlechtWerte: types.array(GeschlechtWert),
     abteilungWerte: types.array(AbteilungWert),
-    kostenstelleWerte: types.array(KostenstelleWert),
-    mobileAboTypWerte: types.array(MobileAboTypWert),
-    kaderFunktionWerte: types.array(KaderFunktionWert),
-    mobileAboKostenstelleWerte: types.array(MobileAboKostenstelleWert),
-    tagWerte: types.array(TagWert),
-    location: types.optional(types.array(types.string), ['Personen']),
-    showDeleted: types.optional(types.boolean, false),
+    deletionMessage: types.maybeNull(types.string),
     deletionTitle: types.maybeNull(types.string),
-    deletionMessage: types.maybeNull(types.string)
+    etiketten: types.array(Etikett),
+    geschlechtWerte: types.array(GeschlechtWert),
+    kaderFunktionWerte: types.array(KaderFunktionWert),
+    kostenstelleWerte: types.array(KostenstelleWert),
+    links: types.array(Link),
+    location: types.optional(types.array(types.string), ['Personen']),
+    mobileAboKostenstelleWerte: types.array(MobileAboKostenstelleWert),
+    mobileAboTypWerte: types.array(MobileAboTypWert),
+    personen: types.array(Person),
+    showDeleted: types.optional(types.boolean, false),
+    statusWerte: types.array(StatusWert),
+    tagWerte: types.array(TagWert)
   })
   // functions are not serializable
   // so need to define this as volatile
@@ -163,6 +165,34 @@ export default types
       self.etiketten = self.etiketten.filter(
         e => !(e.idPerson === activeId && e.etikett === etikett)
       )
+    },
+    addLink(url) {
+      console.log('store, addLink, url:', url)
+      // grab idPerson from location
+      const location = self.location.toJSON()
+      const idPerson = ifIsNumericAsNumber(location[1])
+      // 1. create new link in db, returning id
+      let info
+      try {
+        info = app.db
+          .prepare('insert into links (idPerson, url) values (?, ?)')
+          .run(idPerson, url)
+      } catch (error) {
+        return console.log(error)
+      }
+      // 2. add to store
+      self.links.push({ id: info.lastInsertROWID, url, idPerson })
+    },
+    deleteLink(id) {
+      console.log('store, deleteLink, id:', id)
+      // write to db
+      try {
+        app.db.prepare('delete from links where id = ?').run(id)
+      } catch (error) {
+        return console.log(error)
+      }
+      // write to store
+      self.links = self.links.filter(e => !(e.id === id))
     },
     updateField({ table, parentModel, field, value, id }) {
       try {
