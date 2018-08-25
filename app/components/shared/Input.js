@@ -48,7 +48,7 @@ const SharedInput = ({
 }: {
   stateValue: number | string,
   field: string,
-  label: string,
+  label?: string,
   type?: string,
   placeholder?: string,
   disabled?: boolean,

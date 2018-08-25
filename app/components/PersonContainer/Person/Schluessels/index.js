@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
-import { Col, FormGroup, Label, Button } from 'reactstrap'
+import { Col, FormGroup, Label, Button, Input } from 'reactstrap'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 
@@ -50,17 +50,39 @@ const Delete = styled.div`
 const enhance = compose(
   inject('store'),
   withHandlers({
-    onNew: ({ store }) => () => store.addSchluessel()
+    onNew: ({ store }) => () => store.addSchluessel(),
+    onBlur: ({ store }) => event => {
+      const field = event.target.name
+      const value = event.target.value || null
+      const location = store.location.toJSON()
+      if (!location[1]) throw new Error(`no id found`)
+      const activeId = ifIsNumericAsNumber(location[1])
+      const { schluessel: schluessels } = store
+      const schluessel = schluessels.find(p => p.id === activeId)
+      if (!schluessel) {
+        throw new Error(`Schluessel with id ${activeId} not found`)
+      }
+      const newValue = ifIsNumericAsNumber(value)
+      store.updateField({
+        table: 'schluessel',
+        parentModel: 'schluessel',
+        field,
+        value: newValue,
+        id: schluessel.id
+      })
+    }
   }),
   observer
 )
 
 const SchluesselComponent = ({
   store,
-  onNew
+  onNew,
+  onBlur
 }: {
   store: Object,
-  onNew: () => void
+  onNew: () => void,
+  onBlur: () => void
 }) => {
   const location = store.location.toJSON()
   if (!location[1]) throw new Error(`no id found`)
@@ -83,8 +105,22 @@ const SchluesselComponent = ({
         <Container data-ispdf={isPdf} name="schluessel">
           {schluessels.map(schluessel => (
             <Row key={`${schluessel.id}`} data-ispdf={isPdf}>
-              <Name>{schluessel.name}</Name>
-              <Bemerkungen>{schluessel.bemerkungen}</Bemerkungen>
+              <Name>
+                <Input
+                  key={`${schluessel.id}name`}
+                  name="name"
+                  defaultValue={schluessel.name}
+                  onBlur={onBlur}
+                />
+              </Name>
+              <Bemerkungen>
+                <Input
+                  key={`${schluessel.id}bemerkungen`}
+                  name="bemerkungen"
+                  defaultValue={schluessel.bemerkungen}
+                  onBlur={onBlur}
+                />
+              </Bemerkungen>
               <Delete
                 data-ispdf={isPdf}
                 onClick={() => store.deleteSchluessel(schluessel.id)}
