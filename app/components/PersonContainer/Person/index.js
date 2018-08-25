@@ -83,6 +83,13 @@ const Person = ({
   } = store
   const person = personen.find(p => p.id === activeId) || {}
   // filter out options with empty values - makes no sense and errors
+  const personOptions = sortBy(personen, ['name', 'vorname'])
+    .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
+    .filter(w => w.id !== person.id)
+    .map(w => ({
+      label: `${w.name} ${w.vorname}`,
+      value: w.id
+    }))
   const abteilungOptions = sortBy(abteilungWerte, 'sort')
     .filter(w => !!w.value)
     .map(w => ({
@@ -207,11 +214,12 @@ const Person = ({
           options={kostenstelleOptions}
           saveToDb={saveToDb}
         />
-        <Input
+        <Select
           key={`${person.id}vorgesetztId`}
           value={person.vorgesetztId}
           field="vorgesetztId"
           label="Vorgesetzte(r)"
+          options={personOptions}
           saveToDb={saveToDb}
         />
         <Date
