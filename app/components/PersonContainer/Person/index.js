@@ -130,6 +130,7 @@ const Person = ({
       label: e.etikett,
       value: e.etikett
     }))
+  console.log('Person rendering')
 
   return (
     <Container>

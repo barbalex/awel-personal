@@ -70,11 +70,18 @@ const enhance = compose(
 )
 
 const PersonContainer = ({ store }: { store: Object }) => {
+  const { schluessel } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const person = store.personen.find(p => p.id === activeId)
   // pass list the active person's props to enable instant updates
   const personJson = person ? person.toJSON() : {}
+  const mySchluessel = schluessel.filter(s => s.personId === activeId)
+  console.log('PersonContainer', {
+    mySchluessel,
+    schluessel: schluessel.toJSON(),
+    activeId
+  })
 
   return (
     <Container>
@@ -90,7 +97,7 @@ const PersonContainer = ({ store }: { store: Object }) => {
           </ReflexElement>
           <ReflexSplitter />
           <StyledReflexElement>
-            <Person activeId={activeId} />
+            <Person activeId={activeId} sl={mySchluessel.map(s => s.id)} />
           </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>

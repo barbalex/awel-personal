@@ -14,6 +14,9 @@ const Container = styled.div`
   border-bottom: none;
   font-size: ${props => (props['data-ispdf'] ? '10px' : 'inherit')};
 `
+const StyledButton = styled(Button)`
+  margin-top: 5px;
+`
 
 const enhance = compose(
   inject('store'),
@@ -41,6 +44,7 @@ const SchluesselComponent = ({
   const mayAddNew =
     schluessels.length === 0 ||
     !schluessels.map(s => s.name).some(n => n === null)
+  console.log('Schluessels rendering')
 
   return (
     <FormGroup row>
@@ -53,9 +57,9 @@ const SchluesselComponent = ({
             <Schluessel key={schluessel.id} id={schluessel.id} />
           ))}
           {mayAddNew && (
-            <Button color="primary" onClick={onNew} outline>
-              neu
-            </Button>
+            <StyledButton onClick={onNew} outline>
+              neuer Schlüssel
+            </StyledButton>
           )}
         </Container>
       </Col>

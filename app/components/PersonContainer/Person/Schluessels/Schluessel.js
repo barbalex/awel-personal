@@ -11,12 +11,11 @@ import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 const Row = styled.div`
   grid-column: 1;
   display: grid;
-  grid-template-columns: 1fr 1fr 20px;
+  grid-template-columns: ${props =>
+    props['data-ispdf'] ? '1fr 1fr' : '1fr 1fr 20px'};
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
-  padding: 3px;
-  align-items: center;
-  min-height: ${props => (props['data-ispdf'] ? 0 : '35px')};
+  padding: 3px 0;
   &:first-of-type {
     border-top: thin solid #cccccc;
   }
@@ -26,20 +25,18 @@ const Row = styled.div`
 `
 const Name = styled.div`
   grid-column: 1 / span 1;
-  grid-column: 1;
 `
 const Bemerkungen = styled.div`
   grid-column: 2 / span 1;
-  grid-column: 2;
 `
 const Delete = styled.div`
-  grid-column: 2 / span 1;
-  margin-top: -2px;
-  display: ${props => (props['data-ispdf'] ? 'none' : 'block')};
+  grid-column: 3 / span 1;
+  margin-top: auto;
+  margin-bottom: auto;
+  text-align: center;
   color: #cccccc;
   font-size: 18px;
   cursor: pointer;
-  display: ${props => (props['data-ispdf'] ? 'none' : 'block')};
 `
 
 const enhance = compose(
@@ -78,6 +75,7 @@ const SchluesselComponent = ({
   const schluessel = store.schluessel.find(s => s.id === id)
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
+  console.log('Schluessel rendering')
 
   return (
     <Row key={`${id}`} data-ispdf={isPdf}>
@@ -97,14 +95,16 @@ const SchluesselComponent = ({
           onBlur={onBlur}
         />
       </Bemerkungen>
-      <Delete
-        data-ispdf={isPdf}
-        onClick={() => store.deleteSchluessel(id)}
-        title="Schluessel entfernen"
-        id={id}
-      >
-        <i className="fas fa-times" />
-      </Delete>
+      {!isPdf && (
+        <Delete
+          data-ispdf={isPdf}
+          onClick={() => store.deleteSchluessel(id)}
+          title="Schluessel entfernen"
+          id={id}
+        >
+          <i className="fas fa-times" />
+        </Delete>
+      )}
     </Row>
   )
 }
