@@ -75,7 +75,7 @@ const SchluesselComponent = ({
   id: number,
   onBlur: () => void
 }) => {
-  const schluessel = store.schluessel.filter(s => s.id === id)
+  const schluessel = store.schluessel.find(s => s.id === id)
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
 
