@@ -1,5 +1,5 @@
-// flow-typed signature: 6aa5d29d24b67e7e4ce909303141ffee
-// flow-typed version: 123fc9bb3c/styled-components_v3.x.x/flow_>=v0.75.x
+// flow-typed signature: 7170a83be03bbdcd4e80b9dc910cb18d
+// flow-typed version: a92e9b07d7/styled-components_v3.x.x/flow_>=v0.75.x
 
 // @flow
 
@@ -111,7 +111,7 @@ type $npm$styledComponents$WithTheme =
   & $npm$styledComponents$WithThemeReactComponentFunctionalUndefinedDefaultProps
 
 // ---- MISC ----
-type $npm$styledComponents$Theme = {[key: string]: mixed};
+type $npm$styledComponents$Theme = $ReadOnly<{[key: string]: mixed}>;
 type $npm$styledComponents$ThemeProviderProps = {
   theme: $npm$styledComponents$Theme | ((outerTheme: $npm$styledComponents$Theme) => void)
 };
