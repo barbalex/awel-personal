@@ -224,7 +224,7 @@ export default types
         return console.log(error)
       }
       // 2. add to store
-      self.schluessel.push({ id: info.lastInsertROWID })
+      self.schluessel.push({ id: info.lastInsertROWID, idPerson })
     },
     deleteSchluessel(id) {
       // write to db
@@ -250,7 +250,7 @@ export default types
         return console.log(error)
       }
       // 2. add to store
-      self.mobileAbos.push({ id: info.lastInsertROWID })
+      self.mobileAbos.push({ id: info.lastInsertROWID, idPerson })
     },
     deleteMobileAbo(id) {
       // write to db
@@ -276,7 +276,7 @@ export default types
         return console.log(error)
       }
       // 2. add to store
-      self.kaderFunktionen.push({ id: info.lastInsertROWID })
+      self.kaderFunktionen.push({ id: info.lastInsertROWID, idPerson })
     },
     deleteKaderFunktion(id) {
       // write to db
