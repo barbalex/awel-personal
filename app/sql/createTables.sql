@@ -44,7 +44,9 @@ create table links (
   id integer primary key,
   deleted integer default 0,
   idPerson integer references personen(id) on update cascade on delete cascade,
-  url text
+  url text,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
 );
 
 drop index if exists iLinkDeleted;
@@ -63,7 +65,9 @@ create table schluessel (
   deleted integer default 0,
   idPerson integer references personen(id) on update cascade on delete cascade,
   name text,
-  bemerkungen text
+  bemerkungen text,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
 );
 
 drop index if exists iSchluesselDeleted;
@@ -82,7 +86,9 @@ create table mobileAbos (
   idPerson integer references personen(id) on update cascade on delete cascade,
   typ text references mobileAboTypWerte(value) on update cascade on delete no action,
   kostenstelle text references mobileAboKostenstelleWerte(value) on update cascade on delete no action,
-  bemerkungen text
+  bemerkungen text,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
 );
 
 drop index if exists iMobileAboDeleted;
@@ -100,7 +106,9 @@ create table kaderFunktionen (
   deleted integer default 0,
   idPerson integer references personen(id) on update cascade on delete cascade,
   funktion text references kaderFunktionWerte(value) on update cascade on delete no action,
-  bemerkungen text
+  bemerkungen text,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
 );
 
 drop index if exists iKaderFunktionDeleted;
@@ -117,7 +125,9 @@ create table etiketten (
   id integer primary key,
   deleted integer default 0,
   idPerson integer references personen(id) on update cascade on delete cascade,
-  etikett text references etikettWerte(value) on update cascade on delete cascade
+  etikett text references etikettWerte(value) on update cascade on delete cascade,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
 );
 
 drop index if exists iTagDeleted;

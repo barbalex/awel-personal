@@ -295,10 +295,14 @@ export default types
     updateField({ table, parentModel, field, value, id }) {
       try {
         app.db
-          .prepare(`update ${table} set ${field} = @value where id = @id;`)
+          .prepare(
+            `update ${table} set ${field} = @value, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`
+          )
           .run({
             value,
-            id
+            id,
+            user: self.username,
+            time: Date.now()
           })
       } catch (error) {
         return console.log(error)
