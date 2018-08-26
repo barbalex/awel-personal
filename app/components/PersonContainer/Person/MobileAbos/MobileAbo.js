@@ -34,6 +34,10 @@ const Kostenstelle = styled.div`
 const Bemerkungen = styled.div`
   grid-column: 3 / span 1;
 `
+const DeleteContainer = styled.div`
+  margin-top: auto;
+  margin-bottom: auto;
+`
 const Delete = styled.div`
   grid-column: 3 / span 1;
   margin-top: auto;
@@ -66,6 +70,22 @@ const enhance = compose(
         value: newValue,
         id: mobileAbo.id
       })
+    },
+    onChangeSelect: ({ store, id }) => ({ field, value }) => {
+      console.log('MobileAbo, onChangeSelect', { id, field, value })
+      const { mobileAbos } = store
+      const mobileAbo = mobileAbos.find(p => p.id === id)
+      if (!mobileAbo) {
+        throw new Error(`MobileAbo with id ${id} not found`)
+      }
+      const newValue = ifIsNumericAsNumber(value)
+      store.updateField({
+        table: 'mobileAbos',
+        parentModel: 'mobileAbos',
+        field,
+        value: newValue,
+        id: mobileAbo.id
+      })
     }
   }),
   observer
@@ -74,11 +94,13 @@ const enhance = compose(
 const MobileAbo = ({
   store,
   id,
-  onBlur
+  onBlur,
+  onChangeSelect
 }: {
   store: Object,
   id: number,
-  onBlur: () => void
+  onBlur: () => void,
+  onChangeSelect: () => void
 }) => {
   const mobileAbo = store.mobileAbos.find(s => s.id === id)
   // TODO: refactor when pdf is built
@@ -109,7 +131,7 @@ const MobileAbo = ({
           field="typ"
           label="Typ"
           options={mobileAboTypOptions}
-          saveToDb={onBlur}
+          saveToDb={onChangeSelect}
         />
       </Typ>
       <Kostenstelle>
@@ -119,7 +141,7 @@ const MobileAbo = ({
           field="kostenstelle"
           label="Kostenstelle"
           options={mobileAboKostenstelleOptions}
-          saveToDb={onBlur}
+          saveToDb={onChangeSelect}
         />
       </Kostenstelle>
       <Bemerkungen>
@@ -133,7 +155,7 @@ const MobileAbo = ({
         />
       </Bemerkungen>
       {!isPdf && (
-        <div>
+        <DeleteContainer>
           <Delete
             data-ispdf={isPdf}
             onClick={() => store.deleteMobileAbo(id)}
@@ -147,7 +169,7 @@ const MobileAbo = ({
           >
             mobile Abo entfernen
           </UncontrolledTooltip>
-        </div>
+        </DeleteContainer>
       )}
     </Row>
   )
