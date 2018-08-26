@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { Input, UncontrolledTooltip } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 
-import Select from './Select'
+import Select from '../Select'
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 
 const Row = styled.div`
@@ -57,29 +57,28 @@ const enhance = compose(
     onBlur: ({ store, id }) => event => {
       const field = event.target.name
       const value = event.target.value || null
-      const { mobileAbo: mobileAbos } = store
+      const { mobileAbos, updateField } = store
       const mobileAbo = mobileAbos.find(p => p.id === id)
       if (!mobileAbo) {
         throw new Error(`MobileAbo with id ${id} not found`)
       }
       const newValue = ifIsNumericAsNumber(value)
-      store.updateField({
-        table: 'mobileAbo',
-        parentModel: 'mobileAbo',
+      updateField({
+        table: 'mobileAbos',
+        parentModel: 'mobileAbos',
         field,
         value: newValue,
         id: mobileAbo.id
       })
     },
     onChangeSelect: ({ store, id }) => ({ field, value }) => {
-      console.log('MobileAbo, onChangeSelect', { id, field, value })
-      const { mobileAbos } = store
+      const { mobileAbos, updateField } = store
       const mobileAbo = mobileAbos.find(p => p.id === id)
       if (!mobileAbo) {
         throw new Error(`MobileAbo with id ${id} not found`)
       }
       const newValue = ifIsNumericAsNumber(value)
-      store.updateField({
+      updateField({
         table: 'mobileAbos',
         parentModel: 'mobileAbos',
         field,
