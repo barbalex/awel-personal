@@ -18,6 +18,7 @@ import isDateField from '../../../src/isDateField'
 import Links from './Links'
 import Schluessels from './Schluessels'
 import MobileAbos from './MobileAbos'
+import KaderFunktionen from './KaderFunktionen'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
@@ -288,6 +289,7 @@ const Person = ({
         <Links />
         <Schluessels />
         <MobileAbos />
+        <KaderFunktionen />
       </StyledForm>
     </Container>
   )
