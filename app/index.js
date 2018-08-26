@@ -3,6 +3,7 @@ import { render } from 'react-dom'
 import { AppContainer as HotLoaderContainer } from 'react-hot-loader'
 import { Provider as MobxProvider } from 'mobx-react'
 import app from 'ampersand-app'
+import username from 'username'
 
 import App from './components/App'
 import './app.global.css'
@@ -27,6 +28,14 @@ const run = async () => {
     }
   })
   app.init()
+
+  let user
+  try {
+    user = await username()
+  } catch (error) {
+    console.log('Error accessing username:', error.message)
+  }
+  if (user) store.setUsername(user)
 
   render(
     <HotLoaderContainer>

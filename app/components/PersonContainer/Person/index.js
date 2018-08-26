@@ -82,7 +82,8 @@ const Person = ({
     kostenstelleWerte,
     statusWerte,
     geschlechtWerte,
-    etikettWerte
+    etikettWerte,
+    username
   } = store
   const person = personen.find(p => p.id === activeId) || {}
   // filter out options with empty values - makes no sense and errors
@@ -132,6 +133,7 @@ const Person = ({
       label: e.etikett,
       value: e.etikett
     }))
+  console.log('Person, username:', username)
 
   return (
     <Container>

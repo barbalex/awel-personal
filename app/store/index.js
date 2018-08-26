@@ -30,13 +30,14 @@ export default types
     schluessel: types.array(Schluessel),
     mobileAbos: types.array(MobileAbo),
     kaderFunktionen: types.array(KaderFunktion),
-    location: types.optional(types.array(types.string), ['Personen']),
     mobileAboKostenstelleWerte: types.array(MobileAboKostenstelleWert),
     mobileAboTypWerte: types.array(MobileAboTypWert),
     personen: types.array(Person),
+    location: types.optional(types.array(types.string), ['Personen']),
     showDeleted: types.optional(types.boolean, false),
     statusWerte: types.array(StatusWert),
-    tagWerte: types.array(TagWert)
+    tagWerte: types.array(TagWert),
+    username: types.maybe(types.string)
   })
   // functions are not serializable
   // so need to define this as volatile
@@ -44,6 +45,9 @@ export default types
     deletionCallback: null
   }))
   .actions(self => ({
+    setUsername(name) {
+      self.username = name
+    },
     setDeletionCallback(callback) {
       self.deletionCallback = callback
     },
