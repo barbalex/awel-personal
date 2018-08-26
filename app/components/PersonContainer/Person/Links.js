@@ -6,7 +6,7 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
-import { Col, FormGroup, Label } from 'reactstrap'
+import { Col, FormGroup, Label, UncontrolledTooltip } from 'reactstrap'
 
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
 
@@ -57,13 +57,16 @@ const RemoveGlyphiconDiv = styled.div`
   color: #cccccc;
   font-size: 18px;
   cursor: pointer;
-  display: ${props => (props['data-ispdf'] ? 'none' : 'block')};
+  &:hover {
+    color: rgba(146, 146, 146, 1);
+  }
 `
 const DropzoneContainer = styled.div`
   grid-area: dropzone;
   width: 100%;
   height: 100%;
   display: ${props => (props['data-ispdf'] ? 'none' : 'block')};
+  cursor: pointer;
 `
 const StyledDropzone = styled(Dropzone)`
   width: 100%;
@@ -129,11 +132,16 @@ const LinksComponent = ({
                 <RemoveGlyphiconDiv
                   data-ispdf={isPdf}
                   onClick={() => store.deleteLink(link.id)}
-                  title="Link entfernen"
-                  id={link.id}
+                  id={`removeLinkIcon${link.id}`}
                 >
                   <i className="fas fa-times" />
                 </RemoveGlyphiconDiv>
+                <UncontrolledTooltip
+                  placement="left"
+                  target={`removeLinkIcon${link.id}`}
+                >
+                  Link entfernen
+                </UncontrolledTooltip>
               </Field>
             ))}
           </Links>

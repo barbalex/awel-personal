@@ -17,6 +17,7 @@ import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
 import isDateField from '../../../src/isDateField'
 import Links from './Links'
 import Schluessels from './Schluessels'
+import MobileAbos from './MobileAbos'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
@@ -130,7 +131,6 @@ const Person = ({
       label: e.etikett,
       value: e.etikett
     }))
-  console.log('Person rendering')
 
   return (
     <Container>
@@ -287,6 +287,7 @@ const Person = ({
         />
         <Links />
         <Schluessels />
+        <MobileAbos />
       </StyledForm>
     </Container>
   )

@@ -1,18 +1,20 @@
 // @flow
-import React, { Fragment } from 'react'
+import React from 'react'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import { Input, UncontrolledTooltip } from 'reactstrap'
+import sortBy from 'lodash/sortBy'
 
+import Select from './Select'
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 
 const Row = styled.div`
   grid-column: 1;
   display: grid;
   grid-template-columns: ${props =>
-    props['data-ispdf'] ? '1fr 1fr' : '1fr 1fr 20px'};
+    props['data-ispdf'] ? '1fr 1fr 1fr' : '1fr 1fr 1fr 20px'};
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
   padding: 3px 0;
@@ -23,11 +25,14 @@ const Row = styled.div`
     background-color: rgba(0, 0, 0, 0.05);
   }
 `
-const Name = styled.div`
+const Typ = styled.div`
   grid-column: 1 / span 1;
 `
-const Bemerkungen = styled.div`
+const Kostenstelle = styled.div`
   grid-column: 2 / span 1;
+`
+const Bemerkungen = styled.div`
+  grid-column: 3 / span 1;
 `
 const Delete = styled.div`
   grid-column: 3 / span 1;
@@ -48,25 +53,25 @@ const enhance = compose(
     onBlur: ({ store, id }) => event => {
       const field = event.target.name
       const value = event.target.value || null
-      const { schluessel: schluessels } = store
-      const schluessel = schluessels.find(p => p.id === id)
-      if (!schluessel) {
-        throw new Error(`Schluessel with id ${id} not found`)
+      const { mobileAbo: mobileAbos } = store
+      const mobileAbo = mobileAbos.find(p => p.id === id)
+      if (!mobileAbo) {
+        throw new Error(`MobileAbo with id ${id} not found`)
       }
       const newValue = ifIsNumericAsNumber(value)
       store.updateField({
-        table: 'schluessel',
-        parentModel: 'schluessel',
+        table: 'mobileAbo',
+        parentModel: 'mobileAbo',
         field,
         value: newValue,
-        id: schluessel.id
+        id: mobileAbo.id
       })
     }
   }),
   observer
 )
 
-const SchluesselComponent = ({
+const MobileAbo = ({
   store,
   id,
   onBlur
@@ -75,49 +80,77 @@ const SchluesselComponent = ({
   id: number,
   onBlur: () => void
 }) => {
-  const schluessel = store.schluessel.find(s => s.id === id)
+  const mobileAbo = store.mobileAbos.find(s => s.id === id)
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
+  const { mobileAboTypWerte, mobileAboKostenstelleWerte } = store
+  const mobileAboTypOptions = sortBy(mobileAboTypWerte, 'sort')
+    .filter(w => !!w.value)
+    .map(w => ({
+      label: w.value,
+      value: w.value
+    }))
+  const mobileAboKostenstelleOptions = sortBy(
+    mobileAboKostenstelleWerte,
+    'sort'
+  )
+    .filter(w => !!w.value)
+    .map(w => ({
+      label: w.value,
+      value: w.value
+    }))
 
   return (
     <Row key={`${id}`} data-ispdf={isPdf}>
-      <Name>
-        <Input
-          key={`${id}name`}
-          name="name"
-          defaultValue={schluessel.name}
-          onBlur={onBlur}
+      <Typ>
+        <Select
+          key={`${id}typ`}
+          value={mobileAbo.typ}
+          field="typ"
+          label="Typ"
+          options={mobileAboTypOptions}
+          saveToDb={onBlur}
         />
-      </Name>
+      </Typ>
+      <Kostenstelle>
+        <Select
+          key={`${id}kostenstelle`}
+          value={mobileAbo.kostenstelle}
+          field="kostenstelle"
+          label="Kostenstelle"
+          options={mobileAboKostenstelleOptions}
+          saveToDb={onBlur}
+        />
+      </Kostenstelle>
       <Bemerkungen>
         <Input
           key={`${id}bemerkungen`}
           name="bemerkungen"
-          defaultValue={schluessel.bemerkungen}
+          defaultValue={mobileAbo.bemerkungen}
           onBlur={onBlur}
           type="textarea"
           rows={1}
         />
       </Bemerkungen>
       {!isPdf && (
-        <Fragment>
+        <div>
           <Delete
             data-ispdf={isPdf}
-            onClick={() => store.deleteSchluessel(id)}
-            id={`deleteSchluesselIcon${id}`}
+            onClick={() => store.deleteMobileAbo(id)}
+            id={`deleteMobileAboIcon${id}`}
           >
             <i className="fas fa-times" />
           </Delete>
           <UncontrolledTooltip
             placement="left"
-            target={`deleteSchluesselIcon${id}`}
+            target={`deleteMobileAboIcon${id}`}
           >
-            Schlüssel entfernen
+            mobile Abo entfernen
           </UncontrolledTooltip>
-        </Fragment>
+        </div>
       )}
     </Row>
   )
 }
 
-export default enhance(SchluesselComponent)
+export default enhance(MobileAbo)
