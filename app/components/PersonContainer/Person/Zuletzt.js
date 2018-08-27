@@ -4,6 +4,8 @@ import React from 'react'
 import moment from 'moment'
 import { Col, FormGroup, Label } from 'reactstrap'
 
+moment.locale('de')
+
 const Zuletzt = ({ person }: { person: Object }) => (
   <FormGroup row>
     <Label for="letzteAenderung" sm={2}>
@@ -15,7 +17,7 @@ const Zuletzt = ({ person }: { person: Object }) => (
           moment.unix(person.letzteMutationZeit / 1000).isValid()
             ? moment
                 .unix(person.letzteMutationZeit / 1000)
-                .format('DD.MM.YYYY hh:mm')
+                .format('DD.MM.YYYY H:mm')
             : ''
         }, ${person.letzteMutationUser || ''}`}
       </div>
