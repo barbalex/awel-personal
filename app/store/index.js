@@ -88,7 +88,11 @@ export default types
       // 1. create new Person in db, returning id
       let info
       try {
-        info = app.db.prepare('insert into personen default values').run()
+        info = app.db
+          .prepare(
+            'insert into personen (letzteMutationUser, letzteMutationZeit) values (@user, @zeit)'
+          )
+          .run({ user: self.username, zeit: Date.now() })
       } catch (error) {
         return console.log(error)
       }
@@ -134,7 +138,11 @@ export default types
     setPersonDeleted(id) {
       // write to db
       try {
-        app.db.prepare(`update personen set deleted = 1 where id = ?;`).run(id)
+        app.db
+          .prepare(
+            `update personen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`
+          )
+          .run({ id, user: self.username, time: Date.now() })
       } catch (error) {
         return console.log(error)
       }
@@ -163,8 +171,10 @@ export default types
       let info
       try {
         info = app.db
-          .prepare('insert into etiketten (idPerson, etikett) values (?, ?)')
-          .run(idPerson, etikett)
+          .prepare(
+            'insert into etiketten (idPerson, etikett, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)'
+          )
+          .run(idPerson, etikett, self.username, Date.now())
       } catch (error) {
         return console.log(error)
       }
@@ -196,8 +206,10 @@ export default types
       let info
       try {
         info = app.db
-          .prepare('insert into links (idPerson, url) values (?, ?)')
-          .run(idPerson, url)
+          .prepare(
+            'insert into links (idPerson, url,letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)'
+          )
+          .run(idPerson, url, self.username, Date.now())
       } catch (error) {
         return console.log(error)
       }
@@ -222,8 +234,10 @@ export default types
       let info
       try {
         info = app.db
-          .prepare('insert into schluessel (idPerson) values (?)')
-          .run(idPerson)
+          .prepare(
+            'insert into schluessel (idPerson, letzteMutationUser, letzteMutationZeit) values (?,?,?)'
+          )
+          .run(idPerson, self.username, Date.now())
       } catch (error) {
         return console.log(error)
       }
@@ -248,8 +262,10 @@ export default types
       let info
       try {
         info = app.db
-          .prepare('insert into mobileAbos (idPerson) values (?)')
-          .run(idPerson)
+          .prepare(
+            'insert into mobileAbos (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)'
+          )
+          .run(idPerson, self.username, Date.now())
       } catch (error) {
         return console.log(error)
       }
@@ -274,8 +290,10 @@ export default types
       let info
       try {
         info = app.db
-          .prepare('insert into kaderFunktionen (idPerson) values (?)')
-          .run(idPerson)
+          .prepare(
+            'insert into kaderFunktionen (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)'
+          )
+          .run(idPerson, self.username, Date.now())
       } catch (error) {
         return console.log(error)
       }
