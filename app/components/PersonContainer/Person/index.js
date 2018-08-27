@@ -19,6 +19,7 @@ import Links from './Links'
 import Schluessels from './Schluessels'
 import MobileAbos from './MobileAbos'
 import KaderFunktionen from './KaderFunktionen'
+import Zuletzt from './Zuletzt'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
@@ -292,6 +293,7 @@ const Person = ({
         <Schluessels />
         <MobileAbos />
         <KaderFunktionen />
+        <Zuletzt person={person}/>
       </StyledForm>
     </Container>
   )
