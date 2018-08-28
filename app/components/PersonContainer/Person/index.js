@@ -293,7 +293,7 @@ const Person = ({
         <Schluessels />
         <MobileAbos />
         <KaderFunktionen />
-        <Zuletzt person={person}/>
+        <Zuletzt />
       </StyledForm>
     </Container>
   )
