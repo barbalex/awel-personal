@@ -97,7 +97,11 @@ export default types
         return console.log(error)
       }
       // 2. add to store
-      self.personen.push({ id: info.lastInsertROWID })
+      self.personen.push({
+        id: info.lastInsertROWID,
+        letzteMutationUser: self.username,
+        letzteMutationZeit: Date.now()
+      })
       self.setLocation(['Personen', info.lastInsertROWID.toString()])
     },
     addWert(table) {
@@ -149,6 +153,8 @@ export default types
       // write to store
       const person = self.personen.find(p => p.id === id)
       person.deleted = 1
+      person.letzteMutationUser = self.username
+      person.letzteMutationZeit = Date.now()
       if (!self.showDeleted) self.setLocation(['Personen'])
     },
     deletePerson(id) {
@@ -179,24 +185,32 @@ export default types
         return console.log(error)
       }
       // 2. add to store
-      self.etiketten.push({ id: info.lastInsertROWID, etikett, idPerson })
+      self.etiketten.push({
+        id: info.lastInsertROWID,
+        etikett,
+        idPerson,
+        letzteMutationUser: self.username,
+        letzteMutationZeit: Date.now()
+      })
+      self.updatePersonsMutation(idPerson)
     },
     deleteEtikett(etikett) {
       // grab idPerson from location
       const location = self.location.toJSON()
-      const activeId = ifIsNumericAsNumber(location[1])
+      const idPerson = ifIsNumericAsNumber(location[1])
       // write to db
       try {
         app.db
           .prepare('delete from etiketten where idPerson = ? and etikett = ?')
-          .run(activeId, etikett)
+          .run(idPerson, etikett)
       } catch (error) {
         return console.log(error)
       }
       // write to store
       self.etiketten = self.etiketten.filter(
-        e => !(e.idPerson === activeId && e.etikett === etikett)
+        e => !(e.idPerson === idPerson && e.etikett === etikett)
       )
+      self.updatePersonsMutation(idPerson)
     },
     addLink(url) {
       // grab idPerson from location
@@ -207,14 +221,21 @@ export default types
       try {
         info = app.db
           .prepare(
-            'insert into links (idPerson, url,letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)'
+            'insert into links (idPerson, url, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)'
           )
           .run(idPerson, url, self.username, Date.now())
       } catch (error) {
         return console.log(error)
       }
       // 2. add to store
-      self.links.push({ id: info.lastInsertROWID, url, idPerson })
+      self.links.push({
+        id: info.lastInsertROWID,
+        url,
+        idPerson,
+        letzteMutationUser: self.username,
+        letzteMutationZeit: Date.now()
+      })
+      self.updatePersonsMutation(idPerson)
     },
     deleteLink(id) {
       // write to db
@@ -225,6 +246,10 @@ export default types
       }
       // write to store
       self.links = self.links.filter(e => !(e.id === id))
+      // set persons letzteMutation
+      const location = self.location.toJSON()
+      const idPerson = ifIsNumericAsNumber(location[1])
+      self.updatePersonsMutation(idPerson)
     },
     addSchluessel() {
       // grab idPerson from location
@@ -242,7 +267,13 @@ export default types
         return console.log(error)
       }
       // 2. add to store
-      self.schluessel.push({ id: info.lastInsertROWID, idPerson })
+      self.schluessel.push({
+        id: info.lastInsertROWID,
+        idPerson,
+        letzteMutationUser: self.username,
+        letzteMutationZeit: Date.now()
+      })
+      self.updatePersonsMutation(idPerson)
     },
     deleteSchluessel(id) {
       // write to db
@@ -253,6 +284,10 @@ export default types
       }
       // write to store
       self.schluessel = self.schluessel.filter(e => !(e.id === id))
+      // set persons letzteMutation
+      const location = self.location.toJSON()
+      const idPerson = ifIsNumericAsNumber(location[1])
+      self.updatePersonsMutation(idPerson)
     },
     addMobileAbo() {
       // grab idPerson from location
@@ -270,7 +305,13 @@ export default types
         return console.log(error)
       }
       // 2. add to store
-      self.mobileAbos.push({ id: info.lastInsertROWID, idPerson })
+      self.mobileAbos.push({
+        id: info.lastInsertROWID,
+        idPerson,
+        letzteMutationUser: self.username,
+        letzteMutationZeit: Date.now()
+      })
+      self.updatePersonsMutation(idPerson)
     },
     deleteMobileAbo(id) {
       // write to db
@@ -281,6 +322,10 @@ export default types
       }
       // write to store
       self.mobileAbos = self.mobileAbos.filter(e => !(e.id === id))
+      // set persons letzteMutation
+      const location = self.location.toJSON()
+      const idPerson = ifIsNumericAsNumber(location[1])
+      self.updatePersonsMutation(idPerson)
     },
     addKaderFunktion() {
       // grab idPerson from location
@@ -298,7 +343,13 @@ export default types
         return console.log(error)
       }
       // 2. add to store
-      self.kaderFunktionen.push({ id: info.lastInsertROWID, idPerson })
+      self.kaderFunktionen.push({
+        id: info.lastInsertROWID,
+        idPerson,
+        letzteMutationUser: self.username,
+        letzteMutationZeit: Date.now()
+      })
+      self.updatePersonsMutation(idPerson)
     },
     deleteKaderFunktion(id) {
       // write to db
@@ -309,6 +360,10 @@ export default types
       }
       // write to store
       self.kaderFunktionen = self.kaderFunktionen.filter(e => !(e.id === id))
+      // set persons letzteMutation
+      const location = self.location.toJSON()
+      const idPerson = ifIsNumericAsNumber(location[1])
+      self.updatePersonsMutation(idPerson)
     },
     updateField({ table, parentModel, field, value, id }) {
       try {
@@ -330,5 +385,42 @@ export default types
         return console.log(`Error: no ${table} with id "${id}" found in store`)
       }
       storeObject[field] = value
+      storeObject.letzteMutationUser = self.username
+      storeObject.letzteMutationZeit = Date.now()
+      console.log('Store, parentModel:', parentModel)
+      if (
+        [
+          'links',
+          'schluessel',
+          'mobileAbos',
+          'kaderFunktionen',
+          'etiketten'
+        ].includes(parentModel)
+      ) {
+        // set persons letzteMutation
+        const location = self.location.toJSON()
+        const idPerson = ifIsNumericAsNumber(location[1])
+        self.updatePersonsMutation(idPerson)
+      }
+    },
+    updatePersonsMutation(idPerson) {
+      // in db
+      try {
+        app.db
+          .prepare(
+            `update personen set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`
+          )
+          .run({
+            user: self.username,
+            time: Date.now(),
+            id: idPerson
+          })
+      } catch (error) {
+        return console.log(error)
+      }
+      // in store
+      const person = self.personen.find(p => p.id === idPerson)
+      person.letzteMutationUser = self.username
+      person.letzteMutationZeit = Date.now()
     }
   }))
