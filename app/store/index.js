@@ -387,7 +387,6 @@ export default types
       storeObject[field] = value
       storeObject.letzteMutationUser = self.username
       storeObject.letzteMutationZeit = Date.now()
-      console.log('Store, parentModel:', parentModel)
       if (
         [
           'links',
