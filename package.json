@@ -43,7 +43,8 @@
       "package.json"
     ],
     "dmg": {
-      "contents": [{
+      "contents": [
+        {
           "x": 130,
           "y": 220
         },
@@ -107,9 +108,9 @@
   },
   "devDependencies": {
     "babel-core": "6.26.3",
-    "babel-eslint": "8.2.6",
+    "babel-eslint": "9.0.0",
     "babel-jest": "23.4.2",
-    "babel-loader": "7.1.5",
+    "babel-loader": "^7.1.5",
     "babel-plugin-add-module-exports": "0.2.1",
     "babel-plugin-dev-expression": "0.2.1",
     "babel-plugin-flow-runtime": "0.17.0",
