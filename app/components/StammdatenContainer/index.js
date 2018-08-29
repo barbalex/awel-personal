@@ -5,7 +5,6 @@ import withLifecycle from '@hocs/with-lifecycle'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { inject, observer } from 'mobx-react'
-import { getSnapshot } from 'mobx-state-tree'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Data from './Data'
@@ -29,8 +28,9 @@ const StyledReflexElement = styled(ReflexElement)`
 const enhance = compose(
   inject('store'),
   withLifecycle({
-    onDidMount() {
-      // TODO: fetch only needed?
+    onDidMount({ store }) {
+      const { setWatchMutations } = store
+      setWatchMutations(false)
       fetchWerte('statusWerte')
       fetchWerte('geschlechtWerte')
       fetchWerte('abteilungWerte')
@@ -39,6 +39,7 @@ const enhance = compose(
       fetchWerte('kaderFunktionWerte')
       fetchWerte('mobileAboKostenstelleWerte')
       fetchWerte('etikettWerte')
+      setWatchMutations(true)
     }
   }),
   observer
