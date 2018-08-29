@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import {
   UncontrolledDropdown,
   DropdownToggle,
@@ -31,19 +31,23 @@ const enhance = compose(
   inject('store'),
   withHandlers({
     toggleShowDeleted: ({ store }) => () =>
-      store.setShowDeleted(!store.showDeleted)
+      store.setShowDeleted(!store.showDeleted),
+    showMutations: ({ store }) => () => store.setLocation(['mutations'])
   }),
   observer
 )
 
 const More = ({
   store,
-  toggleShowDeleted
+  toggleShowDeleted,
+  showMutations
 }: {
   store: Object,
-  toggleShowDeleted: () => void
+  toggleShowDeleted: () => void,
+  showMutations: () => void
 }) => {
-  const { showDeleted } = store
+  const { showDeleted, location } = store
+  const activeLocation = location.toJSON()[0]
 
   return (
     <MoreMenu nav inNavbar>
@@ -56,6 +60,14 @@ const More = ({
           <br />
           <DbPath>{`Aktuell: ${app.db.name}`}</DbPath>
         </DropdownItem>
+        {!activeLocation !== 'mutations' && (
+          <Fragment>
+            <DropdownItem divider />
+            <DropdownItem onClick={showMutations}>
+              Daten-Änderungen anzeigen
+            </DropdownItem>
+          </Fragment>
+        )}
         <DropdownItem divider />
         <DropdownItem onClick={toggleShowDeleted}>
           {showDeleted

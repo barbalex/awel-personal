@@ -8,6 +8,7 @@ import Navbar from './Navbar'
 import PersonContainer from './PersonContainer'
 import StammdatenContainer from './StammdatenContainer'
 import DeletionModal from './DeletionModal'
+import Mutations from './Mutations'
 
 const Container = styled.div`
   height: 100%;
@@ -27,6 +28,7 @@ const App = ({ store }: { store: Object }) => {
       <Navbar />
       {activeLocation === 'Personen' && <PersonContainer />}
       {activeLocation.includes('Werte') && <StammdatenContainer />}
+      {activeLocation === 'mutations' && <Mutations />}
       <DeletionModal />
     </Container>
   )
