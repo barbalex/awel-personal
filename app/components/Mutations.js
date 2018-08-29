@@ -39,7 +39,7 @@ const Row = styled.div`
   text-overflow: ellipsis;
   line-height: 1em;
   display: grid;
-  grid-template-columns: 160px 90px 100px 60px 100px 190px 1fr;
+  grid-template-columns: 170px 90px 100px 230px 90px 190px 1fr;
   justify-content: flex-start;
   &:hover {
     background-color: rgb(255, 250, 198);
@@ -114,7 +114,6 @@ const Mutations = ({ store }: { store: Object }) => {
         value: valueToShow
       }
     })
-  // const activeMutation = store.mutations.find(p => p.id === activeId)
 
   if (mutations.length === 0) {
     return <NoDataContainer>Es gibt noch keine Änderungen</NoDataContainer>
