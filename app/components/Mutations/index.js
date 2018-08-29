@@ -10,17 +10,12 @@ import { inject, observer } from 'mobx-react'
 import { FixedSizeList as List } from 'react-window'
 import sortBy from 'lodash/sortBy'
 import moment from 'moment'
-import {
-  Button,
-  UncontrolledTooltip,
-  InputGroup,
-  InputGroupAddon,
-  Input
-} from 'reactstrap'
+import { Button, UncontrolledTooltip } from 'reactstrap'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import fetchMutations from '../../src/fetchMutations'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
+import Filter from './Filter'
 
 moment.locale('de')
 
@@ -30,10 +25,6 @@ moment.locale('de')
 const Container = styled.div`
   height: calc(100% - 56px);
 `
-const NoDataContainer = styled.div`
-  height: calc(100% - 56px);
-  padding: 15px;
-`
 const Row = styled.div`
   border-bottom: 1px solid rgba(46, 125, 50, 0.5);
   cursor: pointer;
@@ -42,7 +33,7 @@ const Row = styled.div`
     props.active ? '1px solid rgba(46, 125, 50, 0.5)' : 'unset'};
   padding: 15px 8px;
   display: grid;
-  grid-template-columns: 170px 90px 100px 230px 90px 190px 1fr 50px;
+  grid-template-columns: 170px 110px 110px 230px 110px 190px 1fr 50px;
   justify-content: flex-start;
   &:hover {
     background-color: rgb(255, 250, 198);
@@ -81,15 +72,6 @@ const RevertButton = styled(Button)`
   padding-bottom: 3px !important;
   margin-top: -5px;
 `
-const FilterInputGroup = styled(InputGroup)`
-  margin-top: 3px;
-  width: 100%;
-`
-const EmptyAddon = styled(InputGroupAddon)`
-  > span {
-    background-color: white !important;
-  }
-`
 
 const enhance = compose(
   inject('store'),
@@ -107,7 +89,23 @@ const enhance = compose(
     },
     onChangeZeitFilter: ({ setZeitFilter }) => e =>
       setZeitFilter(e.target.value),
-    emptyZeitFilter: ({ setZeitFilter }) => () => setZeitFilter(null)
+    emptyZeitFilter: ({ setZeitFilter }) => () => setZeitFilter(null),
+    onChangeUserFilter: ({ setUserFilter }) => e =>
+      setUserFilter(e.target.value),
+    emptyUserFilter: ({ setUserFilter }) => () => setUserFilter(null),
+    onChangeOpFilter: ({ setOpFilter }) => e => setOpFilter(e.target.value),
+    emptyOpFilter: ({ setOpFilter }) => () => setOpFilter(null),
+    onChangeTableFilter: ({ setTableFilter }) => e =>
+      setTableFilter(e.target.value),
+    emptyTableFilter: ({ setTableFilter }) => () => setTableFilter(null),
+    onChangeIdFilter: ({ setIdFilter }) => e => setIdFilter(e.target.value),
+    emptyIdFilter: ({ setIdFilter }) => () => setIdFilter(null),
+    onChangeFieldFilter: ({ setFieldFilter }) => e =>
+      setFieldFilter(e.target.value),
+    emptyFieldFilter: ({ setFieldFilter }) => () => setFieldFilter(null),
+    onChangeValueFilter: ({ setValueFilter }) => e =>
+      setValueFilter(e.target.value),
+    emptyValueFilter: ({ setValueFilter }) => () => setValueFilter(null)
   }),
   withLifecycle({
     onDidMount() {
@@ -123,6 +121,18 @@ const Mutations = ({
   zeitFilter,
   onChangeZeitFilter,
   emptyZeitFilter,
+  onChangeUserFilter,
+  emptyUserFilter,
+  onChangeOpFilter,
+  emptyOpFilter,
+  onChangeTableFilter,
+  emptyTableFilter,
+  onChangeIdFilter,
+  emptyIdFilter,
+  onChangeFieldFilter,
+  emptyFieldFilter,
+  onChangeValueFilter,
+  emptyValueFilter,
   userFilter,
   opFilter,
   tableFilter,
@@ -135,10 +145,22 @@ const Mutations = ({
   zeitFilter?: ?string,
   onChangeZeitFilter: () => void,
   emptyZeitFilter: () => void,
+  onChangeUserFilter: () => void,
+  emptyUserFilter: () => void,
+  onChangeOpFilter: () => void,
+  emptyOpFilter: () => void,
+  onChangeTableFilter: () => void,
+  emptyTableFilter: () => void,
+  onChangeIdFilter: () => void,
+  emptyIdFilter: () => void,
+  onChangeFieldFilter: () => void,
+  emptyFieldFilter: () => void,
+  onChangeValueFilter: () => void,
+  emptyValueFilter: () => void,
   userFilter?: ?string,
   opFilter?: ?string,
   tableFilter?: ?string,
-  idFilter?: ?number,
+  idFilter?: ?string,
   fieldFilter?: ?string,
   valueFilter?: ?string
 }) => {
@@ -194,21 +216,23 @@ const Mutations = ({
         (r.tableName &&
           r.tableName.toLowerCase().includes(tableFilter.toLowerCase()))
     )
-    .filter(r => !idFilter || (r.rowId && r.rowId === idFilter))
+    // .filter(r => !idFilter || (r.rowId && r.rowId === idFilter))
+    .filter(
+      r => !idFilter || (r.rowId && r.rowId.toString().includes(idFilter))
+    )
     .filter(
       r =>
         !fieldFilter ||
         (r.field && r.field.toLowerCase().includes(fieldFilter.toLowerCase()))
     )
-    .filter(
-      r =>
-        !valueFilter ||
-        (r.value && r.value.toLowerCase().includes(valueFilter.toLowerCase()))
-    )
-
-  if (mutations.length === 0) {
-    return <NoDataContainer>Es gibt noch keine Änderungen</NoDataContainer>
-  }
+    .filter(r => {
+      if (!valueFilter) return true
+      if (!r.value) return false
+      if (!isNaN(r.value)) return r.value.toString().includes(valueFilter)
+      return (
+        r.value && r.value.toLowerCase().includes(valueFilter.toLowerCase())
+      )
+    })
 
   return (
     <ErrorBoundary>
@@ -216,42 +240,59 @@ const Mutations = ({
         <TitleRow>
           <Time>
             <div>Zeit</div>
-            <div>
-              <FilterInputGroup size="sm">
-                <Input
-                  value={zeitFilter || ''}
-                  placeholder="filtern"
-                  onChange={onChangeZeitFilter}
-                />
-                <EmptyAddon
-                  addonType="append"
-                  id="filterRemoveAddon"
-                  onClick={emptyZeitFilter}
-                >
-                  <span className="input-group-text">
-                    <i className="fas fa-times" />
-                  </span>
-                </EmptyAddon>
-              </FilterInputGroup>
-            </div>
+            <Filter
+              value={zeitFilter}
+              onChange={onChangeZeitFilter}
+              empty={emptyZeitFilter}
+            />
           </Time>
           <User>
             <div>Benutzer</div>
+            <Filter
+              value={userFilter}
+              onChange={onChangeUserFilter}
+              empty={emptyUserFilter}
+            />
           </User>
           <Op>
             <div>Operation</div>
+            <Filter
+              value={opFilter}
+              onChange={onChangeOpFilter}
+              empty={emptyOpFilter}
+            />
           </Op>
           <Model>
             <div>Tabelle</div>
+            <Filter
+              value={tableFilter}
+              onChange={onChangeTableFilter}
+              empty={emptyTableFilter}
+            />
           </Model>
           <Id>
             <div>ID</div>
+            <Filter
+              value={idFilter}
+              onChange={onChangeIdFilter}
+              empty={emptyIdFilter}
+            />
           </Id>
           <FieldName>
             <div>Feldname</div>
+            <Filter
+              value={fieldFilter}
+              onChange={onChangeFieldFilter}
+              empty={emptyFieldFilter}
+            />
           </FieldName>
           <Value>
             <div>Wert</div>
+            <Filter
+              value={valueFilter}
+              onChange={onChangeValueFilter}
+              empty={emptyValueFilter}
+            />
           </Value>
         </TitleRow>
         <List
@@ -263,12 +304,6 @@ const Mutations = ({
           {({ index, style }) => {
             const row = mutations[index]
             const { id, time, user, tableName, rowId, field, op, value } = row
-
-            console.log({
-              zeitFilter,
-              rTime: time,
-              time: moment.unix(time / 1000).format('YYYY.MM.DD HH:mm:ss')
-            })
 
             return (
               <Row
