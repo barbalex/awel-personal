@@ -120,7 +120,10 @@ const myTypes = types
       const { username } = self
       const zeit = Date.now()
       const { op, path, value: valueIn } = patch
-      const value = JSON.stringify(valueIn)
+      const value =
+        valueIn !== null && typeof valueIn === 'object'
+          ? JSON.stringify(valueIn)
+          : valueIn
       try {
         info = app.db
           .prepare(
