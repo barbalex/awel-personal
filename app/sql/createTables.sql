@@ -170,7 +170,9 @@ create table statusWerte (
   value text unique,
   deleted integer default 0,
   historic integer default 0,
-  sort integer
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
 );
 
 drop index if exists iStatusWerteStatus;
@@ -198,7 +200,9 @@ create table geschlechtWerte (
   value text unique,
   deleted integer default 0,
   historic integer default 0,
-  sort integer
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
 );
 
 drop index if exists iGeschlechtWerteGeschlecht;
@@ -222,7 +226,9 @@ create table abteilungWerte (
   value text unique,
   deleted integer default 0,
   historic integer default 0,
-  sort integer
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
 );
 
 drop index if exists iAbteilungWerteAbteilung;
@@ -251,7 +257,9 @@ create table kostenstelleWerte (
   value text unique,
   deleted integer default 0,
   historic integer default 0,
-  sort integer
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
 );
 
 drop index if exists iKostenstelleWerteKostenstelle;
@@ -274,7 +282,9 @@ create table mobileAboTypWerte (
   value text unique,
   deleted integer default 0,
   historic integer default 0,
-  sort integer
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
 );
 
 drop index if exists iMobileAboTypWerteMobileAboTyp;
@@ -297,7 +307,9 @@ create table kaderFunktionWerte (
   value text unique,
   deleted integer default 0,
   historic integer default 0,
-  sort integer
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
 );
 
 drop index if exists iKaderFunktionWerteKaderFunktion;
@@ -320,7 +332,9 @@ create table mobileAboKostenstelleWerte (
   value text unique,
   deleted integer default 0,
   historic integer default 0,
-  sort integer
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
 );
 
 drop index if exists iMobileAboKostenstelleWerteMobileAboKostenstelle;
@@ -344,7 +358,9 @@ create table etikettWerte (
   value text unique,
   deleted integer default 0,
   historic integer default 0,
-  sort integer
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
 );
 
 drop index if exists iTagWerteTag;
