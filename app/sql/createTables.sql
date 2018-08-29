@@ -144,9 +144,10 @@ create table mutations (
   id integer primary key,
   time TEXT,
   user TEXT,
-  model TEXT,
   op TEXT,
-  path TEXT,
+  tableName TEXT,
+  rowId integer,
+  field TEXT,
   value TEXT
 );
 
@@ -154,10 +155,14 @@ drop index if exists iMutationsTime;
 create index iMutationsTime on mutations (time);
 drop index if exists iMutationsUser;
 create index iMutationsUser on mutations (user);
-drop index if exists iMutationsModel;
-create index iMutationsModel on mutations (model);
 drop index if exists iMutationsOp;
 create index iMutationsOp on mutations (op);
+drop index if exists iMutationsTableName;
+create index iMutationsTableName on mutations (tableName);
+drop index if exists iMutationsRowId;
+create index iMutationsRowId on mutations (rowId);
+drop index if exists iMutationsField;
+create index iMutationsField on mutations (field);
 
 -------------------------------------------
 

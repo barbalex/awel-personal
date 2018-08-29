@@ -1,23 +1,16 @@
 /* eslint-disable no-nested-ternary */
 // @flow
-import React from 'react'
+import React, { Fragment } from 'react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
+import withState from 'recompose/withState'
 import withLifecycle from '@hocs/with-lifecycle'
 import styled from 'styled-components'
 import { inject, observer } from 'mobx-react'
-import { splitJsonPath } from 'mobx-state-tree'
 import { FixedSizeList as List } from 'react-window'
 import sortBy from 'lodash/sortBy'
 import moment from 'moment'
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  UncontrolledTooltip
-} from 'reactstrap'
+import { Button, UncontrolledTooltip } from 'reactstrap'
 
 import ErrorBoundary from './shared/ErrorBoundary'
 import fetchMutations from '../src/fetchMutations'
@@ -41,12 +34,7 @@ const Row = styled.div`
   background-color: ${props => (props.active ? 'rgb(255, 250, 198)' : 'unset')};
   border-top: ${props =>
     props.active ? '1px solid rgba(46, 125, 50, 0.5)' : 'unset'};
-  height: 50px;
   padding: 15px 8px;
-  white-space: nowrap;
-  overflow: auto;
-  text-overflow: ellipsis;
-  line-height: 1em;
   display: grid;
   grid-template-columns: 170px 90px 100px 230px 90px 190px 1fr 50px;
   justify-content: flex-start;
@@ -65,6 +53,9 @@ const TitleRow = styled(Row)`
 `
 const Field = styled.div`
   padding: 0 10px;
+  line-height: 1em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `
 const Time = styled(Field)``
 const User = styled(Field)``
@@ -84,13 +75,17 @@ const RevertButton = styled(Button)`
 
 const enhance = compose(
   inject('store'),
+  withState('zeitFilter', 'setZeitFilter', null),
+  withState('userFilter', 'setUserFilter', null),
+  withState('opFilter', 'setOpFilter', null),
+  withState('tableFilter', 'setTableFilter', null),
+  withState('idFilter', 'setIdFilter', null),
+  withState('fieldFilter', 'setFieldFilter', null),
+  withState('valueFilter', 'setValueFilter', null),
   withHandlers({
     revert: ({ store }) => e => {
       const id = +e.target.dataset.id
-      const { mutations } = store
-      const mutation = mutations.find(m => m.id === id)
-      if (!mutation) throw new Error(`Keine Mutation mit id ${id} gefunden`)
-      console.log('TODO:', { id, mutation })
+      store.revertMutation(id)
     }
   }),
   withLifecycle({
@@ -103,10 +98,24 @@ const enhance = compose(
 
 const Mutations = ({
   store,
-  revert
+  revert,
+  zeitFilter,
+  userFilter,
+  opFilter,
+  tableFilter,
+  idFilter,
+  fieldFilter,
+  valueFilter
 }: {
   store: Object,
-  revert: () => void
+  revert: () => void,
+  zeitFilter?: ?string,
+  userFilter?: ?string,
+  opFilter?: ?string,
+  tableFilter?: ?string,
+  idFilter?: ?number,
+  fieldFilter?: ?string,
+  valueFilter?: ?string
 }) => {
   const { setLocation, mutations: rawMutations } = store
   const location = store.location.toJSON()
@@ -114,8 +123,7 @@ const Mutations = ({
   const mutations = sortBy(rawMutations.slice(), 'id')
     .reverse()
     .map(m => {
-      const { id, time, user, model, op, path, value } = m
-      const [rowId, field] = splitJsonPath(path)
+      const { id, time, user, op, tableName, rowId, field, value } = m
       const rowIdToShow = op === 'add' ? JSON.parse(value).id : rowId
       let valueToShow = value
       if (!value && value !== 0) {
@@ -138,12 +146,21 @@ const Mutations = ({
         time: moment.unix(time / 1000).format('YYYY.MM.DD HH:mm:ss'),
         user,
         op,
-        model,
+        tableName,
         rowId: rowIdToShow,
         field,
         value: valueToShow
       }
     })
+    .filter(
+      r =>
+        !zeitFilter ||
+        (r.time &&
+          moment
+            .unix(r.time / 1000)
+            .format('YYYY.MM.DD HH:mm:ss')
+            .includes(zeitFilter))
+    )
 
   if (mutations.length === 0) {
     return <NoDataContainer>Es gibt noch keine Änderungen</NoDataContainer>
@@ -169,7 +186,7 @@ const Mutations = ({
         >
           {({ index, style }) => {
             const row = mutations[index]
-            const { id, time, user, model, rowId, field, op, value } = row
+            const { id, time, user, tableName, rowId, field, op, value } = row
 
             return (
               <Row
@@ -180,24 +197,28 @@ const Mutations = ({
                 <Time>{time}</Time>
                 <User>{user}</User>
                 <Op>{op}</Op>
-                <Model>{model}</Model>
+                <Model>{tableName}</Model>
                 <Id>{rowId}</Id>
                 <FieldName>{field}</FieldName>
                 <Value>{value || ''}</Value>
-                <RevertButton
-                  id={`revertButton${id}`}
-                  data-id={id}
-                  onClick={revert}
-                  outline
-                >
-                  <i className="fas fa-undo" data-id={id} />
-                </RevertButton>
-                <UncontrolledTooltip
-                  placement="left"
-                  target={`revertButton${id}`}
-                >
-                  wiederherstellen
-                </UncontrolledTooltip>
+                {op === 'replace' && (
+                  <Fragment>
+                    <RevertButton
+                      id={`revertButton${id}`}
+                      data-id={id}
+                      onClick={revert}
+                      outline
+                    >
+                      <i className="fas fa-undo" data-id={id} />
+                    </RevertButton>
+                    <UncontrolledTooltip
+                      placement="left"
+                      target={`revertButton${id}`}
+                    >
+                      wiederherstellen
+                    </UncontrolledTooltip>
+                  </Fragment>
+                )}
               </Row>
             )
           }}

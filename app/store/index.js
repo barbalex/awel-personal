@@ -1,4 +1,4 @@
-import { types } from 'mobx-state-tree'
+import { types, splitJsonPath } from 'mobx-state-tree'
 import app from 'ampersand-app'
 
 import AbteilungWert from './AbteilungWert'
@@ -98,20 +98,47 @@ const myTypes = types
     revertMutation(mutationId) {
       const { mutations } = self
       const mutation = mutations.find(m => m.id === mutationId)
-      console.log('revertMutation', { mutation })
-      const { op } = mutation
+      if (!mutation) throw new Error(`Keine Mutation mit id ${id} gefunden`)
+      const { id, op, tableName, rowId, field, value } = mutation
       switch (op) {
         case 'replace':
           // 1. check if dataset still exists, warn and exit if not
+          self[tableName].find(d => d.id === rowId)
+          if (!rowId) {
+            throw new Error(
+              `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr`
+            )
+          }
           // 2. update value
+          self.updateField({
+            table: tableName,
+            parentModel: tableName,
+            field,
+            value,
+            id: rowId
+          })
           break
         case 'add':
+          // not in use
           // 1. check if dataset still exists, warn and exit if not
+          self[tableName].find(d => d.id === rowId)
+          if (!rowId) {
+            throw new Error(
+              `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr. Daher wird er nicht gelöscht`
+            )
+          }
           // 2. remove dataset
+          // write to db
+          try {
+            app.db.prepare(`delete from ${tableName} where id = ${rowId}`).run()
+          } catch (error) {
+            return console.log(error)
+          }
+          // write to store
+          self[tableName] = self[tableName].filter(p => p.id !== rowId)
           break
         case 'remove':
-          // 1. check if dataset does not exist, warn and exit if does
-          // 2. add dataset
+          // no way to undo this as onPatch happens _after_ deletion
           break
         default:
         // do nothing
@@ -137,13 +164,22 @@ const myTypes = types
       })
       self.setLocation(['Personen', info.lastInsertROWID.toString()])
     },
-    addMutation({ model, patch }) {
+    addMutation({ tableName, patch }) {
       if (!self.watchMutations) return
-      // 1. create new Person in db, returning id
+
       let info
       const { username } = self
-      const zeit = Date.now()
+      const time = Date.now()
       const { op, path, value: valueIn } = patch
+      const [index, field] = splitJsonPath(path)
+      console.log('Store, addMutation', { tableName, patch })
+      // do not document mutation documentation
+      if (field && field.includes('letzteMutation')) return
+      // no way to remember all values as onPatch happens _after_ deletion
+      if (op === 'remove') return
+      // find real object in store
+      const storeObject = self[tableName][index]
+      const rowId = storeObject.id
       const value =
         valueIn !== null && typeof valueIn === 'object'
           ? JSON.stringify(valueIn)
@@ -151,14 +187,15 @@ const myTypes = types
       try {
         info = app.db
           .prepare(
-            'insert into mutations (time, user, model, op, path, value) values (@zeit, @username, @model, @op, @path, @value)'
+            'insert into mutations (time, user, op, tableName, rowId, field, value) values (@time, @username, @op, @tableName, @rowId, @field, @value)'
           )
           .run({
             username,
-            zeit,
-            model,
+            time,
+            tableName,
             op,
-            path,
+            rowId,
+            field,
             value
           })
       } catch (error) {
@@ -167,10 +204,12 @@ const myTypes = types
       // 2. add to store
       self.mutations.push({
         id: info.lastInsertROWID,
+        time,
         user: username,
-        time: zeit,
         op,
-        path,
+        tableName,
+        rowId,
+        field,
         value
       })
     },
@@ -437,6 +476,13 @@ const myTypes = types
       self.updatePersonsMutation(idPerson)
     },
     updateField({ table, parentModel, field, value, id }) {
+      console.log('Store, updateField:', {
+        table,
+        parentModel,
+        field,
+        value,
+        id
+      })
       try {
         app.db
           .prepare(
