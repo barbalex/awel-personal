@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import compose from 'recompose/compose'
 import { inject, observer } from 'mobx-react'
 import { UncontrolledTooltip } from 'reactstrap'
+import Mutations from '../Mutations'
 
 const Container = styled.div`
   border-right: 1px solid rgb(46, 125, 50);

@@ -53,9 +53,13 @@ const Mutations = ({ store }: { store: Object }) => {
   const { setLocation, mutations: rawMutations } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-  const mutations = sortBy(rawMutations.slice(), 'time')
+  const mutations = sortBy(rawMutations.slice(), 'id')
   // const activeMutation = store.mutations.find(p => p.id === activeId)
-  console.log('Mutations', { mutations, store, rawMutations })
+
+  if (mutations.length === 0)
+    return <Container>Es gibt noch keine Änderungen</Container>
+
+  console.log('Mutations, mutations', mutations)
 
   return (
     <Container>
@@ -68,6 +72,7 @@ const Mutations = ({ store }: { store: Object }) => {
         >
           {({ index, style }) => {
             const row = mutations[index]
+            console.log('row:', row)
 
             return (
               <Row
@@ -75,21 +80,7 @@ const Mutations = ({ store }: { store: Object }) => {
                 onClick={() => setLocation(['mutations', row.id.toString()])}
                 active={activeId === row.id}
               >
-                {`${row.name || ''} ${row.vorname || ''}`}
-                {row.deleted === 1 && (
-                  <Fragment>
-                    <i
-                      className="fas fa-trash-alt"
-                      id={`deletedIcon${row.id}`}
-                    />
-                    <UncontrolledTooltip
-                      placement="left"
-                      target={`deletedIcon${row.id}`}
-                    >
-                      Diese Person wurde gelöscht
-                    </UncontrolledTooltip>
-                  </Fragment>
-                )}
+                {row.id}
               </Row>
             )
           }}
