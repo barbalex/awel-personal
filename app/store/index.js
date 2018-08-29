@@ -12,6 +12,7 @@ import MobileAbo from './MobileAbo'
 import KaderFunktion from './KaderFunktion'
 import MobileAboKostenstelleWert from './MobileAboKostenstelleWert'
 import MobileAboTypWert from './MobileAboTypWert'
+import EtikettWert from './EtikettWert'
 import Person from './Person'
 import Mutation from './Mutation'
 import StatusWert from './StatusWert'
@@ -33,6 +34,7 @@ const myTypes = types
     kaderFunktionen: types.array(KaderFunktion),
     mobileAboKostenstelleWerte: types.array(MobileAboKostenstelleWert),
     mobileAboTypWerte: types.array(MobileAboTypWert),
+    etikettWerte: types.array(EtikettWert),
     personen: types.array(Person),
     mutations: types.array(Mutation),
     location: types.optional(types.array(types.string), ['Personen']),
