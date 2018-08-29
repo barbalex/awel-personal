@@ -67,7 +67,7 @@ const MyNavbar = ({
           <Stammdaten />
         </Nav>
         <Nav className="ml-auto" navbar>
-          <Filter />
+          {activeLocation === 'Personen' && <Filter />}
           <More />
         </Nav>
       </Collapse>
