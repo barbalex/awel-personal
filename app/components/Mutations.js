@@ -10,7 +10,14 @@ import { splitJsonPath } from 'mobx-state-tree'
 import { FixedSizeList as List } from 'react-window'
 import sortBy from 'lodash/sortBy'
 import moment from 'moment'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  UncontrolledTooltip
+} from 'reactstrap'
 
 import ErrorBoundary from './shared/ErrorBoundary'
 import fetchMutations from '../src/fetchMutations'
@@ -177,9 +184,20 @@ const Mutations = ({
                 <Id>{rowId}</Id>
                 <FieldName>{field}</FieldName>
                 <Value>{value || ''}</Value>
-                <RevertButton data-id={id} onClick={revert} outline>
+                <RevertButton
+                  id={`revertButton${id}`}
+                  data-id={id}
+                  onClick={revert}
+                  outline
+                >
                   <i className="fas fa-undo" data-id={id} />
                 </RevertButton>
+                <UncontrolledTooltip
+                  placement="left"
+                  target={`revertButton${id}`}
+                >
+                  wiederherstellen
+                </UncontrolledTooltip>
               </Row>
             )
           }}
