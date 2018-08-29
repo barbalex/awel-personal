@@ -2,6 +2,7 @@
 // @flow
 import React from 'react'
 import compose from 'recompose/compose'
+import withHandlers from 'recompose/withHandlers'
 import withLifecycle from '@hocs/with-lifecycle'
 import styled from 'styled-components'
 import { inject, observer } from 'mobx-react'
@@ -9,6 +10,7 @@ import { splitJsonPath } from 'mobx-state-tree'
 import { FixedSizeList as List } from 'react-window'
 import sortBy from 'lodash/sortBy'
 import moment from 'moment'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 
 import ErrorBoundary from './shared/ErrorBoundary'
 import fetchMutations from '../src/fetchMutations'
@@ -39,7 +41,7 @@ const Row = styled.div`
   text-overflow: ellipsis;
   line-height: 1em;
   display: grid;
-  grid-template-columns: 170px 90px 100px 230px 90px 190px 1fr;
+  grid-template-columns: 170px 90px 100px 230px 90px 190px 1fr 50px;
   justify-content: flex-start;
   &:hover {
     background-color: rgb(255, 250, 198);
@@ -66,9 +68,24 @@ const Id = styled(Field)`
 `
 const FieldName = styled(Field)``
 const Value = styled(Field)``
+const RevertButton = styled(Button)`
+  font-size: 0.8rem !important;
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+  margin-top: -5px;
+`
 
 const enhance = compose(
   inject('store'),
+  withHandlers({
+    revert: ({ store }) => e => {
+      const id = +e.target.dataset.id
+      const { mutations } = store
+      const mutation = mutations.find(m => m.id === id)
+      if (!mutation) throw new Error(`Keine Mutation mit id ${id} gefunden`)
+      console.log('TODO:', { id, mutation })
+    }
+  }),
   withLifecycle({
     onDidMount() {
       fetchMutations()
@@ -77,7 +94,13 @@ const enhance = compose(
   observer
 )
 
-const Mutations = ({ store }: { store: Object }) => {
+const Mutations = ({
+  store,
+  revert
+}: {
+  store: Object,
+  revert: () => void
+}) => {
   const { setLocation, mutations: rawMutations } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
@@ -154,6 +177,9 @@ const Mutations = ({ store }: { store: Object }) => {
                 <Id>{rowId}</Id>
                 <FieldName>{field}</FieldName>
                 <Value>{value || ''}</Value>
+                <RevertButton data-id={id} onClick={revert} outline>
+                  <i className="fas fa-undo" data-id={id} />
+                </RevertButton>
               </Row>
             )
           }}

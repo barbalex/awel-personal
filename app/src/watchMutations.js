@@ -48,6 +48,5 @@ export default () => {
   onPatch(mobileAboKostenstelleWerte, patch =>
     addMutation({ model: 'mobileAboKostenstelleWerte', patch })
   )
-  console.log('etikettWerte:', { store, etikettWerte })
   onPatch(etikettWerte, patch => addMutation({ model: 'etikettWerte', patch }))
 }

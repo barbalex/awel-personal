@@ -95,6 +95,28 @@ const myTypes = types
     setWatchMutations(bool) {
       self.watchMutations = bool
     },
+    revertMutation(mutationId) {
+      const { mutations } = self
+      const mutation = mutations.find(m => m.id === mutationId)
+      console.log('revertMutation', { mutation })
+      const { op } = mutation
+      switch (op) {
+        case 'replace':
+          // 1. check if dataset still exists, warn and exit if not
+          // 2. update value
+          break
+        case 'add':
+          // 1. check if dataset still exists, warn and exit if not
+          // 2. remove dataset
+          break
+        case 'remove':
+          // 1. check if dataset does not exist, warn and exit if does
+          // 2. add dataset
+          break
+        default:
+        // do nothing
+      }
+    },
     addPerson() {
       // 1. create new Person in db, returning id
       let info
