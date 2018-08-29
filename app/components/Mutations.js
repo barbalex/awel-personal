@@ -5,9 +5,9 @@ import compose from 'recompose/compose'
 import withLifecycle from '@hocs/with-lifecycle'
 import styled from 'styled-components'
 import { inject, observer } from 'mobx-react'
+import { splitJsonPath } from 'mobx-state-tree'
 import { FixedSizeList as List } from 'react-window'
 import sortBy from 'lodash/sortBy'
-import ReactJson from 'react-json-view'
 import moment from 'moment'
 
 import ErrorBoundary from './shared/ErrorBoundary'
@@ -33,13 +33,13 @@ const Row = styled.div`
   border-top: ${props =>
     props.active ? '1px solid rgba(46, 125, 50, 0.5)' : 'unset'};
   height: 50px;
-  padding: 15px;
+  padding: 15px 8px;
   white-space: nowrap;
   overflow: auto;
   text-overflow: ellipsis;
   line-height: 1em;
-  display: flex;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: 160px 90px 100px 60px 100px 190px 1fr;
   justify-content: flex-start;
   &:hover {
     background-color: rgb(255, 250, 198);
@@ -47,24 +47,25 @@ const Row = styled.div`
     margin-top: -1px;
   }
 `
-const Id = styled.div`
-  width: 60px;
+const TitleRow = styled(Row)`
+  font-weight: 700;
+  padding: 8px;
+  height: 33px;
+  overflow: hidden;
+  background-color: rgba(239, 239, 239, 1);
 `
-const Time = styled.div`
-  width: 160px;
+const Field = styled.div`
+  padding: 0 10px;
 `
-const User = styled.div`
-  width: 90px;
+const Time = styled(Field)``
+const User = styled(Field)``
+const Model = styled(Field)``
+const Op = styled(Field)``
+const Id = styled(Field)`
+  text-align: end;
 `
-const Model = styled.div`
-  width: 100px;
-`
-const Op = styled.div`
-  width: 100px;
-`
-const Path = styled.div`
-  width: 190px;
-`
+const FieldName = styled(Field)``
+const Value = styled(Field)``
 
 const enhance = compose(
   inject('store'),
@@ -80,7 +81,39 @@ const Mutations = ({ store }: { store: Object }) => {
   const { setLocation, mutations: rawMutations } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-  const mutations = sortBy(rawMutations.slice(), 'id').reverse()
+  const mutations = sortBy(rawMutations.slice(), 'id')
+    .reverse()
+    .map(m => {
+      const { id, time, user, model, op, path, value } = m
+      const [rowId, field] = splitJsonPath(path)
+      const rowIdToShow = op === 'add' ? JSON.parse(value).id : rowId
+      let valueToShow = value
+      if (!value && value !== 0) {
+        valueToShow = null
+      } else if (!isNaN(value)) {
+        // is a number
+        if (value > 1530000000000 && moment.unix(value / 1000).isValid()) {
+          // is a date
+          valueToShow = moment.unix(time / 1000).format('YYYY.MM.DD H:mm:ss')
+        } else {
+          // is ab integer
+          // prevent showing .0
+          valueToShow = +value
+        }
+      } else if (value[0] === '{') {
+        valueToShow = null
+      }
+      return {
+        id,
+        time: moment.unix(time / 1000).format('YYYY.MM.DD HH:mm:ss'),
+        user,
+        op,
+        model,
+        rowId: rowIdToShow,
+        field,
+        value: valueToShow
+      }
+    })
   // const activeMutation = store.mutations.find(p => p.id === activeId)
 
   if (mutations.length === 0) {
@@ -90,15 +123,24 @@ const Mutations = ({ store }: { store: Object }) => {
   return (
     <ErrorBoundary>
       <Container>
+        <TitleRow>
+          <Time>Zeit</Time>
+          <User>Benutzer</User>
+          <Op>Operation</Op>
+          <Model>Tabelle</Model>
+          <Id>ID</Id>
+          <FieldName>Feldname</FieldName>
+          <Value>Wert</Value>
+        </TitleRow>
         <List
           height={window.innerHeight - 56}
           itemCount={mutations.length}
-          itemSize={100}
+          itemSize={50}
           width={window.innerWidth}
         >
           {({ index, style }) => {
             const row = mutations[index]
-            const { id, time, user, model, op, path, value } = row
+            const { id, time, user, model, rowId, field, op, value } = row
 
             return (
               <Row
@@ -106,24 +148,13 @@ const Mutations = ({ store }: { store: Object }) => {
                 onClick={() => setLocation(['mutations', id.toString()])}
                 active={activeId === id}
               >
-                <Id>{id}</Id>
-                <Time>
-                  {moment.unix(time / 1000).format('DD.MM.YYYY H:mm:ss')}
-                </Time>
+                <Time>{time}</Time>
                 <User>{user}</User>
-                <Model>{model}</Model>
                 <Op>{op}</Op>
-                <Path>{path}</Path>
-                {value[0] === '{' ? (
-                  <ReactJson src={JSON.parse(value)} />
-                ) : moment.unix(value / 1000).isValid() &&
-                value > 1530000000000 ? (
-                  <div>
-                    {moment.unix(time / 1000).format('DD.MM.YYYY H:mm:ss')}
-                  </div>
-                ) : (
-                  <div>{value || ''}</div>
-                )}
+                <Model>{model}</Model>
+                <Id>{rowId}</Id>
+                <FieldName>{field}</FieldName>
+                <Value>{value || ''}</Value>
               </Row>
             )
           }}
