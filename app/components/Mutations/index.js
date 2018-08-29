@@ -10,11 +10,17 @@ import { inject, observer } from 'mobx-react'
 import { FixedSizeList as List } from 'react-window'
 import sortBy from 'lodash/sortBy'
 import moment from 'moment'
-import { Button, UncontrolledTooltip } from 'reactstrap'
+import {
+  Button,
+  UncontrolledTooltip,
+  InputGroup,
+  InputGroupAddon,
+  Input
+} from 'reactstrap'
 
-import ErrorBoundary from './shared/ErrorBoundary'
-import fetchMutations from '../src/fetchMutations'
-import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
+import ErrorBoundary from '../shared/ErrorBoundary'
+import fetchMutations from '../../src/fetchMutations'
+import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 
 moment.locale('de')
 
@@ -47,9 +53,12 @@ const Row = styled.div`
 const TitleRow = styled(Row)`
   font-weight: 700;
   padding: 8px;
-  height: 33px;
   overflow: hidden;
   background-color: rgba(239, 239, 239, 1);
+  > div > div {
+    display: flex;
+    flex-direction: column;
+  }
 `
 const Field = styled.div`
   padding: 0 10px;
@@ -72,6 +81,15 @@ const RevertButton = styled(Button)`
   padding-bottom: 3px !important;
   margin-top: -5px;
 `
+const FilterInputGroup = styled(InputGroup)`
+  margin-top: 3px;
+  width: 100%;
+`
+const EmptyAddon = styled(InputGroupAddon)`
+  > span {
+    background-color: white !important;
+  }
+`
 
 const enhance = compose(
   inject('store'),
@@ -86,7 +104,10 @@ const enhance = compose(
     revert: ({ store }) => e => {
       const id = +e.target.dataset.id
       store.revertMutation(id)
-    }
+    },
+    onChangeZeitFilter: ({ setZeitFilter }) => e =>
+      setZeitFilter(e.target.value),
+    emptyZeitFilter: ({ setZeitFilter }) => () => setZeitFilter(null)
   }),
   withLifecycle({
     onDidMount() {
@@ -100,6 +121,8 @@ const Mutations = ({
   store,
   revert,
   zeitFilter,
+  onChangeZeitFilter,
+  emptyZeitFilter,
   userFilter,
   opFilter,
   tableFilter,
@@ -110,6 +133,8 @@ const Mutations = ({
   store: Object,
   revert: () => void,
   zeitFilter?: ?string,
+  onChangeZeitFilter: () => void,
+  emptyZeitFilter: () => void,
   userFilter?: ?string,
   opFilter?: ?string,
   tableFilter?: ?string,
@@ -152,14 +177,33 @@ const Mutations = ({
         value: valueToShow
       }
     })
+    .filter(r => !zeitFilter || (r.time && r.time.includes(zeitFilter)))
     .filter(
       r =>
-        !zeitFilter ||
-        (r.time &&
-          moment
-            .unix(r.time / 1000)
-            .format('YYYY.MM.DD HH:mm:ss')
-            .includes(zeitFilter))
+        !userFilter ||
+        (r.user && r.user.toLowerCase().includes(userFilter.toLowerCase()))
+    )
+    .filter(
+      r =>
+        !opFilter ||
+        (r.op && r.op.toLowerCase().includes(opFilter.toLowerCase()))
+    )
+    .filter(
+      r =>
+        !tableFilter ||
+        (r.tableName &&
+          r.tableName.toLowerCase().includes(tableFilter.toLowerCase()))
+    )
+    .filter(r => !idFilter || (r.rowId && r.rowId === idFilter))
+    .filter(
+      r =>
+        !fieldFilter ||
+        (r.field && r.field.toLowerCase().includes(fieldFilter.toLowerCase()))
+    )
+    .filter(
+      r =>
+        !valueFilter ||
+        (r.value && r.value.toLowerCase().includes(valueFilter.toLowerCase()))
     )
 
   if (mutations.length === 0) {
@@ -170,13 +214,45 @@ const Mutations = ({
     <ErrorBoundary>
       <Container>
         <TitleRow>
-          <Time>Zeit</Time>
-          <User>Benutzer</User>
-          <Op>Operation</Op>
-          <Model>Tabelle</Model>
-          <Id>ID</Id>
-          <FieldName>Feldname</FieldName>
-          <Value>Wert</Value>
+          <Time>
+            <div>Zeit</div>
+            <div>
+              <FilterInputGroup size="sm">
+                <Input
+                  value={zeitFilter || ''}
+                  placeholder="filtern"
+                  onChange={onChangeZeitFilter}
+                />
+                <EmptyAddon
+                  addonType="append"
+                  id="filterRemoveAddon"
+                  onClick={emptyZeitFilter}
+                >
+                  <span className="input-group-text">
+                    <i className="fas fa-times" />
+                  </span>
+                </EmptyAddon>
+              </FilterInputGroup>
+            </div>
+          </Time>
+          <User>
+            <div>Benutzer</div>
+          </User>
+          <Op>
+            <div>Operation</div>
+          </Op>
+          <Model>
+            <div>Tabelle</div>
+          </Model>
+          <Id>
+            <div>ID</div>
+          </Id>
+          <FieldName>
+            <div>Feldname</div>
+          </FieldName>
+          <Value>
+            <div>Wert</div>
+          </Value>
         </TitleRow>
         <List
           height={window.innerHeight - 56}
@@ -187,6 +263,12 @@ const Mutations = ({
           {({ index, style }) => {
             const row = mutations[index]
             const { id, time, user, tableName, rowId, field, op, value } = row
+
+            console.log({
+              zeitFilter,
+              rTime: time,
+              time: moment.unix(time / 1000).format('YYYY.MM.DD HH:mm:ss')
+            })
 
             return (
               <Row
