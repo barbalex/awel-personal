@@ -9,6 +9,7 @@ import App from './components/App'
 import './app.global.css'
 import getDbConnection from './src/getDbConnection'
 import Store from './store'
+import watchMutations from './src/watchMutations'
 
 const run = async () => {
   let db
@@ -28,6 +29,8 @@ const run = async () => {
     }
   })
   app.init()
+
+  watchMutations()
 
   let user
   try {

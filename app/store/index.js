@@ -13,11 +13,12 @@ import KaderFunktion from './KaderFunktion'
 import MobileAboKostenstelleWert from './MobileAboKostenstelleWert'
 import MobileAboTypWert from './MobileAboTypWert'
 import Person from './Person'
+import Mutation from './Mutation'
 import StatusWert from './StatusWert'
 import TagWert from './TagWert'
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 
-export default types
+const myTypes = types
   .model({
     abteilungWerte: types.array(AbteilungWert),
     deletionMessage: types.maybeNull(types.string),
@@ -33,11 +34,13 @@ export default types
     mobileAboKostenstelleWerte: types.array(MobileAboKostenstelleWert),
     mobileAboTypWerte: types.array(MobileAboTypWert),
     personen: types.array(Person),
+    mutations: types.array(Mutation),
     location: types.optional(types.array(types.string), ['Personen']),
     showDeleted: types.optional(types.boolean, false),
     statusWerte: types.array(StatusWert),
     tagWerte: types.array(TagWert),
-    username: types.maybe(types.string)
+    username: types.maybe(types.string),
+    watchMutations: types.optional(types.boolean, false)
   })
   // functions are not serializable
   // so need to define this as volatile
@@ -63,6 +66,9 @@ export default types
     setPersonen(personen) {
       self.personen = personen
     },
+    setMutations(mutations) {
+      self.mutations = mutations
+    },
     setEtiketten(etiketten) {
       self.etiketten = etiketten
     },
@@ -84,6 +90,9 @@ export default types
     setShowDeleted(show) {
       self.showDeleted = show
     },
+    setWatchMutations(bool) {
+      self.watchMutations = bool
+    },
     addPerson() {
       // 1. create new Person in db, returning id
       let info
@@ -103,6 +112,40 @@ export default types
         letzteMutationZeit: Date.now()
       })
       self.setLocation(['Personen', info.lastInsertROWID.toString()])
+    },
+    addMutation({ model, patch }) {
+      if (!self.watchMutations) return
+      // 1. create new Person in db, returning id
+      let info
+      const { username } = self
+      const zeit = Date.now()
+      const { op, path, value: valueIn } = patch
+      const value = JSON.stringify(valueIn)
+      try {
+        info = app.db
+          .prepare(
+            'insert into mutations (time, user, model, op, path, value) values (@zeit, @username, @model, @op, @path, @value)'
+          )
+          .run({
+            username,
+            zeit,
+            model,
+            op,
+            path,
+            value
+          })
+      } catch (error) {
+        return console.log(error)
+      }
+      // 2. add to store
+      self.mutations.push({
+        id: info.lastInsertROWID,
+        user: username,
+        time: zeit,
+        op,
+        path,
+        value
+      })
     },
     addWert(table) {
       // 1. create new value in db, returning id
@@ -158,6 +201,7 @@ export default types
       if (!self.showDeleted) self.setLocation(['Personen'])
     },
     deletePerson(id) {
+      console.log('Store, deletePerson with id:', id)
       // write to db
       try {
         app.db.prepare('delete from personen where id = ?').run(id)
@@ -423,3 +467,5 @@ export default types
       person.letzteMutationZeit = Date.now()
     }
   }))
+
+export default myTypes

@@ -139,6 +139,28 @@ create index iTagTag on etiketten (etikett);
 
 -------------------------------------------
 
+drop table if exists mutations;
+create table mutations (
+  id integer primary key,
+  time TEXT,
+  user TEXT,
+  model TEXT,
+  op TEXT,
+  path TEXT,
+  value TEXT
+);
+
+drop index if exists iMutationTime;
+create index iMutationTime on etiketten (time);
+drop index if exists iMutationUser;
+create index iMutationUser on etiketten (user);
+drop index if exists iMutationModel;
+create index iMutationModel on etiketten (model);
+drop index if exists iMutationOp;
+create index iMutationOp on etiketten (op);
+
+-------------------------------------------
+
 -- first werte tables
 -- boolean in sqlite is integer
 -- true = 1, false = 0
