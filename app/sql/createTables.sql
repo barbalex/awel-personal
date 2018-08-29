@@ -150,14 +150,14 @@ create table mutations (
   value TEXT
 );
 
-drop index if exists iMutationTime;
-create index iMutationTime on etiketten (time);
-drop index if exists iMutationUser;
-create index iMutationUser on etiketten (user);
-drop index if exists iMutationModel;
-create index iMutationModel on etiketten (model);
-drop index if exists iMutationOp;
-create index iMutationOp on etiketten (op);
+drop index if exists iMutationsTime;
+create index iMutationsTime on mutations (time);
+drop index if exists iMutationsUser;
+create index iMutationsUser on mutations (user);
+drop index if exists iMutationsModel;
+create index iMutationsModel on mutations (model);
+drop index if exists iMutationsOp;
+create index iMutationsOp on mutations (op);
 
 -------------------------------------------
 
