@@ -3,6 +3,7 @@ import { UndoManager } from 'mst-middlewares'
 import app from 'ampersand-app'
 import findIndex from 'lodash/findIndex'
 import flatten from 'lodash/flatten'
+import findLast from 'lodash/findLast'
 
 import AbteilungWert from './AbteilungWert'
 import Etikett from './Etikett'
@@ -197,11 +198,10 @@ const myTypes = types
         const [index, field] = splitJsonPath(path)
         // do not document mutation documentation
         if (field && field.includes('letzteMutation')) return
-        // no way to remember all values as onPatch happens _after_ deletion
-        // if (op === 'remove') return
-        // find real object in store
-        // const storeObject = self[tableName][index]
-        // const rowId = storeObject.id
+        let value =
+          valueIn !== null && typeof valueIn === 'object'
+            ? JSON.stringify(valueIn)
+            : valueIn
         let rowId
         switch (op) {
           case 'add':
@@ -216,18 +216,18 @@ const myTypes = types
              * so how get id or better value of removed dataset?
              * Is it maybe possible to get this from undoManager's history?
              */
-            const changes = undoManager.history.toJSON()
+            const historyChanges = undoManager.history.toJSON()
             const historyInversePatches = flatten(
-              changes.map(c => c.inversePatches)
+              historyChanges.map(c => c.inversePatches)
             )
-            const historyInversePatch = historyInversePatches.find(
+            const historyInversePatch = findLast(
+              historyInversePatches,
               p => p.op === 'add' && p.path === `/${tableName}/${index}`
             )
+            value = historyInversePatch.value
             console.log('HOWTO?:', {
-              changes,
-              historyInversePatches,
               historyInversePatch,
-              path: `/${tableName}/${index}`
+              value
             })
             break
           }
@@ -239,10 +239,6 @@ const myTypes = types
           default:
           // do nothing
         }
-        const value =
-          valueIn !== null && typeof valueIn === 'object'
-            ? JSON.stringify(valueIn)
-            : valueIn
         try {
           info = app.db
             .prepare(
