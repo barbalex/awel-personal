@@ -24,35 +24,47 @@ export default () => {
   onPatch(personen, (patch, inversePatch) =>
     addMutation({ tableName: 'personen', patch, inversePatch })
   )
-  onPatch(links, patch => addMutation({ tableName: 'links', patch }))
-  onPatch(schluessel, patch => addMutation({ tableName: 'schluessel', patch }))
-  onPatch(mobileAbos, patch => addMutation({ tableName: 'mobileAbos', patch }))
-  onPatch(kaderFunktionen, patch =>
-    addMutation({ tableName: 'kaderFunktionen', patch })
+  onPatch(links, (patch, inversePatch) =>
+    addMutation({ tableName: 'links', patch, inversePatch })
   )
-  onPatch(etiketten, patch => addMutation({ tableName: 'etiketten', patch }))
-  onPatch(statusWerte, patch =>
-    addMutation({ tableName: 'statusWerte', patch })
+  onPatch(schluessel, (patch, inversePatch) =>
+    addMutation({ tableName: 'schluessel', patch, inversePatch })
   )
-  onPatch(geschlechtWerte, patch =>
-    addMutation({ tableName: 'geschlechtWerte', patch })
+  onPatch(mobileAbos, (patch, inversePatch) =>
+    addMutation({ tableName: 'mobileAbos', patch, inversePatch })
   )
-  onPatch(abteilungWerte, patch =>
-    addMutation({ tableName: 'abteilungWerte', patch })
+  onPatch(kaderFunktionen, (patch, inversePatch) =>
+    addMutation({ tableName: 'kaderFunktionen', patch, inversePatch })
   )
-  onPatch(kostenstelleWerte, patch =>
-    addMutation({ tableName: 'kostenstelleWerte', patch })
+  onPatch(etiketten, (patch, inversePatch) =>
+    addMutation({ tableName: 'etiketten', patch, inversePatch })
   )
-  onPatch(mobileAboTypWerte, patch =>
-    addMutation({ tableName: 'mobileAboTypWerte', patch })
+  onPatch(statusWerte, (patch, inversePatch) =>
+    addMutation({ tableName: 'statusWerte', patch, inversePatch })
   )
-  onPatch(kaderFunktionWerte, patch =>
-    addMutation({ tableName: 'kaderFunktionWerte', patch })
+  onPatch(geschlechtWerte, (patch, inversePatch) =>
+    addMutation({ tableName: 'geschlechtWerte', patch, inversePatch })
   )
-  onPatch(mobileAboKostenstelleWerte, patch =>
-    addMutation({ tableName: 'mobileAboKostenstelleWerte', patch })
+  onPatch(abteilungWerte, (patch, inversePatch) =>
+    addMutation({ tableName: 'abteilungWerte', patch, inversePatch })
   )
-  onPatch(etikettWerte, patch =>
-    addMutation({ tableName: 'etikettWerte', patch })
+  onPatch(kostenstelleWerte, (patch, inversePatch) =>
+    addMutation({ tableName: 'kostenstelleWerte', patch, inversePatch })
+  )
+  onPatch(mobileAboTypWerte, (patch, inversePatch) =>
+    addMutation({ tableName: 'mobileAboTypWerte', patch, inversePatch })
+  )
+  onPatch(kaderFunktionWerte, (patch, inversePatch) =>
+    addMutation({ tableName: 'kaderFunktionWerte', patch, inversePatch })
+  )
+  onPatch(mobileAboKostenstelleWerte, (patch, inversePatch) =>
+    addMutation({
+      tableName: 'mobileAboKostenstelleWerte',
+      patch,
+      inversePatch
+    })
+  )
+  onPatch(etikettWerte, (patch, inversePatch) =>
+    addMutation({ tableName: 'etikettWerte', patch, inversePatch })
   )
 }
