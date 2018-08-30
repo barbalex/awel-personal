@@ -4,6 +4,9 @@ import app from 'ampersand-app'
 import findIndex from 'lodash/findIndex'
 import flatten from 'lodash/flatten'
 import findLast from 'lodash/findLast'
+import keys from 'lodash/keys'
+import lValues from 'lodash/values'
+import filter from 'lodash/filter'
 
 import AbteilungWert from './AbteilungWert'
 import Etikett from './Etikett'
@@ -125,7 +128,7 @@ const myTypes = types
             const dataset = self[tableName].find(d => d.id === rowId)
             if (!dataset) {
               throw new Error(
-                `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr`
+                `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr. Daher wird er nicht aktualisiert`
               )
             }
             // 2. update value
@@ -162,24 +165,32 @@ const myTypes = types
           }
           case 'remove': {
             // not in use
-            // 1. check if dataset still exists, warn and exit if not
+            // 1. check if dataset exists, warn and exit if does
             const dataset = self[tableName].find(d => d.id === rowId)
-            if (!dataset) {
+            if (dataset) {
               throw new Error(
-                `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr. Daher wird er nicht gelöscht`
+                `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert. Daher wird er nicht wiederhergestellt`
               )
             }
-            // 2. remove dataset
+            // 2. add dataset
             // write to db
+            const previousObject = JSON.parse(previousValue)
+            // need to remove keys with value null
+            Object.keys(previousObject).forEach(
+              key => previousObject[key] == null && delete previousObject[key]
+            )
+            const objectKeys = keys(previousObject).join()
+            const objectValues = lValues(previousObject)
+            const sql = `insert into ${tableName} (${objectKeys}) values (${objectValues
+              .map(() => '?')
+              .join()})`
             try {
-              app.db
-                .prepare(`delete from ${tableName} where id = ${rowId}`)
-                .run()
+              app.db.prepare(sql).run(...objectValues)
             } catch (error) {
               return console.log(error)
             }
             // write to store
-            self[tableName] = self[tableName].filter(p => p.id !== rowId)
+            self[tableName].push(previousObject)
             break
           }
           default:
@@ -249,13 +260,6 @@ const myTypes = types
                   historyInversePatches,
                   p => p.op === 'add' && p.path === `/${tableName}/${index}`
                 ) || {}
-              console.log('Store, addMutation?:', {
-                tableName,
-                patch,
-                inversePatch,
-                historyInversePatch,
-                previousValue: historyInversePatch.value
-              })
               previousValue = JSON.stringify(historyInversePatch.value)
               rowId = historyInversePatch.value.id
               break
@@ -264,19 +268,11 @@ const myTypes = types
               const storeObject = self[tableName][index]
               rowId = storeObject.id
               previousValue = inversePatch.value
-              console.log('Store, addMutation?:', {
-                tableName,
-                patch,
-                inversePatch
-              })
               break
             }
             default:
             // do nothing
           }
-          console.log('Store, addMutation:', {
-            previousValue
-          })
           try {
             info = app.db
               .prepare(

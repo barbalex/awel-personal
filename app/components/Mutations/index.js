@@ -73,13 +73,19 @@ const Id = styled(Field)`
   text-align: end;
 `
 const FieldName = styled(Field)``
-const Value = styled(Field)``
-const PreviousValue = styled(Field)``
+const Value = styled(Field)`
+  overflow: auto;
+`
+const PreviousValue = styled(Field)`
+  overflow: auto;
+`
 const RevertButton = styled(Button)`
   font-size: 0.8rem !important;
   padding-top: 3px !important;
   padding-bottom: 3px !important;
   margin-top: -5px;
+  height: 27px;
+  align-self: center;
 `
 
 const enhance = compose(
@@ -132,7 +138,7 @@ const enhance = compose(
 const getValueToShow = value => {
   let valueToShow = value
   if (!value && value !== 0) {
-    valueToShow = null
+    valueToShow = ''
   } else if (!isNaN(value)) {
     // is a number
     if (value > 1530000000000 && moment.unix(value / 1000).isValid()) {
@@ -144,7 +150,7 @@ const getValueToShow = value => {
       valueToShow = +value
     }
   } else if (value[0] === '{') {
-    valueToShow = JSON.parse(JSON.stringify(value, 2))
+    valueToShow = value
   }
   return valueToShow
 }
@@ -395,7 +401,7 @@ const Mutations = ({
                         displayDataTypes={false}
                       />
                     ) : (
-                      previousValue || ''
+                      previousValue
                     )}
                   </PreviousValue>
                   <Value>
@@ -407,27 +413,23 @@ const Mutations = ({
                         displayDataTypes={false}
                       />
                     ) : (
-                      value || ''
+                      value
                     )}
                   </Value>
-                  {op === 'replace' && (
-                    <Fragment>
-                      <RevertButton
-                        id={`revertButton${id}`}
-                        data-id={id}
-                        onClick={revert}
-                        outline
-                      >
-                        <i className="fas fa-undo" data-id={id} />
-                      </RevertButton>
-                      <UncontrolledTooltip
-                        placement="left"
-                        target={`revertButton${id}`}
-                      >
-                        wiederherstellen
-                      </UncontrolledTooltip>
-                    </Fragment>
-                  )}
+                  <RevertButton
+                    id={`revertButton${id}`}
+                    data-id={id}
+                    onClick={revert}
+                    outline
+                  >
+                    <i className="fas fa-undo" data-id={id} />
+                  </RevertButton>
+                  <UncontrolledTooltip
+                    placement="left"
+                    target={`revertButton${id}`}
+                  >
+                    alten Wert wiederherstellen
+                  </UncontrolledTooltip>
                 </Row>
               )
             }}
