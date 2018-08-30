@@ -28,9 +28,7 @@ const StyledReflexElement = styled(ReflexElement)`
 const enhance = compose(
   inject('store'),
   withLifecycle({
-    onDidMount({ store }) {
-      const { setWatchMutations } = store
-      setWatchMutations(false)
+    onDidMount() {
       fetchWerte('statusWerte')
       fetchWerte('geschlechtWerte')
       fetchWerte('abteilungWerte')
@@ -39,7 +37,6 @@ const enhance = compose(
       fetchWerte('kaderFunktionWerte')
       fetchWerte('mobileAboKostenstelleWerte')
       fetchWerte('etikettWerte')
-      setWatchMutations(true)
     }
   }),
   observer

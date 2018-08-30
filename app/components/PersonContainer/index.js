@@ -34,9 +34,7 @@ const StyledReflexElement = styled(ReflexElement)`
 const enhance = compose(
   inject('store'),
   withLifecycle({
-    onDidMount({ store }) {
-      const { setWatchMutations } = store
-      setWatchMutations(false)
+    onDidMount() {
       fetchPersonen()
       fetchWerte('statusWerte')
       fetchWerte('geschlechtWerte')
@@ -51,7 +49,6 @@ const enhance = compose(
       fetchWerte('mobileAboKostenstelleWerte')
       fetchWerte('mobileAboTypWerte')
       fetchKaderFunktionen()
-      setWatchMutations(true)
       // set initial active id
       // nope, better not
       // for instance: after deleting do not show another user

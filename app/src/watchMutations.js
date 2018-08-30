@@ -21,7 +21,9 @@ export default () => {
     mobileAboKostenstelleWerte,
     etikettWerte
   } = store
-  onPatch(personen, patch => addMutation({ tableName: 'personen', patch }))
+  onPatch(personen, (patch, inversePatch) =>
+    addMutation({ tableName: 'personen', patch, inversePatch })
+  )
   onPatch(links, patch => addMutation({ tableName: 'links', patch }))
   onPatch(schluessel, patch => addMutation({ tableName: 'schluessel', patch }))
   onPatch(mobileAbos, patch => addMutation({ tableName: 'mobileAbos', patch }))

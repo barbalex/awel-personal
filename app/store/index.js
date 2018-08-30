@@ -66,34 +66,45 @@ const myTypes = types
       self.location = location
     },
     setPersonen(personen) {
+      self.watchMutations = false
       self.personen = personen
+      self.watchMutations = true
     },
     setMutations(mutations) {
       self.mutations = mutations
     },
     setEtiketten(etiketten) {
+      self.watchMutations = false
       self.etiketten = etiketten
+      self.watchMutations = true
     },
     setLinks(links) {
+      self.watchMutations = false
       self.links = links
+      self.watchMutations = true
     },
     setSchluessel(schluessel) {
+      self.watchMutations = false
       self.schluessel = schluessel
+      self.watchMutations = true
     },
     setMobileAbos(mobileAbos) {
+      self.watchMutations = false
       self.mobileAbos = mobileAbos
+      self.watchMutations = true
     },
     setKaderFunktionen(kaderFunktionen) {
+      self.watchMutations = false
       self.kaderFunktionen = kaderFunktionen
+      self.watchMutations = true
     },
     setWerte({ table, values }) {
+      self.watchMutations = false
       self[table] = values
+      self.watchMutations = true
     },
     setShowDeleted(show) {
       self.showDeleted = show
-    },
-    setWatchMutations(bool) {
-      self.watchMutations = bool
     },
     revertMutation(mutationId) {
       const { mutations } = self
@@ -164,22 +175,40 @@ const myTypes = types
       })
       self.setLocation(['Personen', info.lastInsertROWID.toString()])
     },
-    addMutation({ tableName, patch }) {
+    addMutation({ tableName, patch, inversePatch }) {
+      // watchMutations is false while data is loaded from server
+      // as these additions should not be added to mutations
       if (!self.watchMutations) return
+      console.log('Store, addMutation', { tableName, patch, inversePatch })
 
       let info
       const { username } = self
       const time = Date.now()
       const { op, path, value: valueIn } = patch
       const [index, field] = splitJsonPath(path)
-      console.log('Store, addMutation', { tableName, patch })
       // do not document mutation documentation
       if (field && field.includes('letzteMutation')) return
       // no way to remember all values as onPatch happens _after_ deletion
-      if (op === 'remove') return
+      // if (op === 'remove') return
       // find real object in store
-      const storeObject = self[tableName][index]
-      const rowId = storeObject.id
+      // const storeObject = self[tableName][index]
+      // const rowId = storeObject.id
+      let rowId
+      switch (op) {
+        case 'add':
+          rowId = valueIn.id
+          break
+        case 'remove':
+          rowId = inversePatch.value.id
+          break
+        case 'replace': {
+          const storeObject = self[tableName][index]
+          rowId = storeObject.id
+          break
+        }
+        default:
+        // do nothing
+      }
       const value =
         valueIn !== null && typeof valueIn === 'object'
           ? JSON.stringify(valueIn)

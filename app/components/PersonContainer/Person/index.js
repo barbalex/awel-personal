@@ -39,7 +39,7 @@ const enhance = compose(
       let newValue
       if (isDateField(field)) {
         if (value) newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
-        if (newValue.includes('Invalid date')) {
+        if (newValue && newValue.includes('Invalid date')) {
           newValue = newValue.replace('Invalid date', 'Format: DD.MM.YYYY')
         }
       } else {
