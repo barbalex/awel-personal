@@ -7,10 +7,11 @@ import withState from 'recompose/withState'
 import withLifecycle from '@hocs/with-lifecycle'
 import styled from 'styled-components'
 import { inject, observer } from 'mobx-react'
-import { FixedSizeList as List } from 'react-window'
+import { VariableSizeList as List } from 'react-window'
 import sortBy from 'lodash/sortBy'
 import moment from 'moment'
 import { Button, UncontrolledTooltip } from 'reactstrap'
+import ReactJson from 'react-json-view'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import fetchMutations from '../../src/fetchMutations'
@@ -23,7 +24,7 @@ moment.locale('de')
 // above does not work
 // seems that navbar is not finished when Mutations is built
 const Container = styled.div`
-  height: calc(100% - 56px);
+  height: calc(100vh - 56px);
 `
 const Row = styled.div`
   border-bottom: 1px solid rgba(46, 125, 50, 0.5);
@@ -33,13 +34,14 @@ const Row = styled.div`
     props.active ? '1px solid rgba(46, 125, 50, 0.5)' : 'unset'};
   padding: 15px 8px;
   display: grid;
-  grid-template-columns: 170px 110px 110px 230px 110px 190px 1fr 1fr 50px;
-  justify-content: flex-start;
+  grid-template-columns: 150px 100px 100px 200px 100px 160px 1fr 1fr 50px;
   &:hover {
     background-color: rgb(255, 250, 198);
     border-top: 1px solid rgba(46, 125, 50, 0.5);
     margin-top: -1px;
   }
+  overflow: hidden;
+  overflow-x: auto;
 `
 const TitleRow = styled(Row)`
   font-weight: 700;
@@ -51,11 +53,17 @@ const TitleRow = styled(Row)`
     flex-direction: column;
   }
 `
+const ListDiv = styled.div`
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: calc(100vh - 56px - 65px);
+`
 const Field = styled.div`
   padding: 0 10px;
   line-height: 1em;
   white-space: nowrap;
   text-overflow: ellipsis;
+  font-size: 14px;
 `
 const Time = styled(Field)``
 const User = styled(Field)``
@@ -270,6 +278,11 @@ const Mutations = ({
           .includes(previousValueFilter.toLowerCase())
       )
     })
+  const rowHeights = mutations.map(m => {
+    if (m.value && m.value[0] === '{') return 176
+    if (m.previousValue && m.previousValue[0] === '{') return 176
+    return 50
+  })
 
   return (
     <ErrorBoundary>
@@ -340,62 +353,86 @@ const Mutations = ({
             />
           </Value>
         </TitleRow>
-        <List
-          height={window.innerHeight - 56}
-          itemCount={mutations.length}
-          itemSize={50}
-          width={window.innerWidth}
-        >
-          {({ index, style }) => {
-            const row = mutations[index]
-            const {
-              id,
-              time,
-              user,
-              tableName,
-              rowId,
-              field,
-              op,
-              value,
-              previousValue
-            } = row
+        <ListDiv>
+          <List
+            height={window.innerHeight - 56}
+            itemCount={mutations.length}
+            itemSize={index => rowHeights[index] || 50}
+            width={window.innerWidth}
+          >
+            {({ index, style }) => {
+              const row = mutations[index]
+              const {
+                id,
+                time,
+                user,
+                tableName,
+                rowId,
+                field,
+                op,
+                value,
+                previousValue
+              } = row
 
-            return (
-              <Row
-                style={style}
-                onClick={() => setLocation(['mutations', id.toString()])}
-                active={activeId === id}
-              >
-                <Time>{time}</Time>
-                <User>{user}</User>
-                <Op>{op}</Op>
-                <Model>{tableName}</Model>
-                <Id>{rowId}</Id>
-                <FieldName>{field}</FieldName>
-                <PreviousValue>{previousValue || ''}</PreviousValue>
-                <Value>{value || ''}</Value>
-                {op === 'replace' && (
-                  <Fragment>
-                    <RevertButton
-                      id={`revertButton${id}`}
-                      data-id={id}
-                      onClick={revert}
-                      outline
-                    >
-                      <i className="fas fa-undo" data-id={id} />
-                    </RevertButton>
-                    <UncontrolledTooltip
-                      placement="left"
-                      target={`revertButton${id}`}
-                    >
-                      wiederherstellen
-                    </UncontrolledTooltip>
-                  </Fragment>
-                )}
-              </Row>
-            )
-          }}
-        </List>
+              return (
+                <Row
+                  style={style}
+                  onClick={() => setLocation(['mutations', id.toString()])}
+                  active={activeId === id}
+                >
+                  <Time>{time}</Time>
+                  <User>{user}</User>
+                  <Op>{op}</Op>
+                  <Model>{tableName}</Model>
+                  <Id>{rowId}</Id>
+                  <FieldName>{field}</FieldName>
+                  <PreviousValue>
+                    {previousValue && previousValue[0] === '{' ? (
+                      <ReactJson
+                        src={JSON.parse(previousValue)}
+                        name={null}
+                        displayObjectSize={false}
+                        displayDataTypes={false}
+                      />
+                    ) : (
+                      previousValue || ''
+                    )}
+                  </PreviousValue>
+                  <Value>
+                    {value && value[0] === '{' ? (
+                      <ReactJson
+                        src={JSON.parse(value)}
+                        name={null}
+                        displayObjectSize={false}
+                        displayDataTypes={false}
+                      />
+                    ) : (
+                      value || ''
+                    )}
+                  </Value>
+                  {op === 'replace' && (
+                    <Fragment>
+                      <RevertButton
+                        id={`revertButton${id}`}
+                        data-id={id}
+                        onClick={revert}
+                        outline
+                      >
+                        <i className="fas fa-undo" data-id={id} />
+                      </RevertButton>
+                      <UncontrolledTooltip
+                        placement="left"
+                        target={`revertButton${id}`}
+                      >
+                        wiederherstellen
+                      </UncontrolledTooltip>
+                    </Fragment>
+                  )}
+                </Row>
+              )
+            }}
+          </List>
+        </ListDiv>
       </Container>
     </ErrorBoundary>
   )

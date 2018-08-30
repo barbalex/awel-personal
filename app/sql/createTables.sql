@@ -6,7 +6,9 @@ PRAGMA foreign_keys = OFF;
 
 drop table if exists personen;
 create table personen (
-  id integer primary key,
+  -- use autoincrement to prevent unused id's from being reused
+  -- because: may be recreated when undoing deletion
+  id integer primary key autoincrement,
   deleted integer default 0,
   name text,
   vorname text,
@@ -41,7 +43,7 @@ create index iPersonVorname on personen (vorname);
 
 drop table if exists links;
 create table links (
-  id integer primary key,
+  id integer primary key autoincrement,
   deleted integer default 0,
   idPerson integer references personen(id) on update cascade on delete cascade,
   url text,
@@ -61,7 +63,7 @@ create index iLinkUrl on links (url);
 -- wird auch für badges benutzt
 drop table if exists schluessel;
 create table schluessel (
-  id integer primary key,
+  id integer primary key autoincrement,
   deleted integer default 0,
   idPerson integer references personen(id) on update cascade on delete cascade,
   name text,
@@ -81,7 +83,7 @@ create index iSchluesselName on schluessel (name);
 
 drop table if exists mobileAbos;
 create table mobileAbos (
-  id integer primary key,
+  id integer primary key autoincrement,
   deleted integer default 0,
   idPerson integer references personen(id) on update cascade on delete cascade,
   typ text references mobileAboTypWerte(value) on update cascade on delete no action,
@@ -102,7 +104,7 @@ create index iMobileAboTyp on mobileAbos (typ);
 
 drop table if exists kaderFunktionen;
 create table kaderFunktionen (
-  id integer primary key,
+  id integer primary key autoincrement,
   deleted integer default 0,
   idPerson integer references personen(id) on update cascade on delete cascade,
   funktion text references kaderFunktionWerte(value) on update cascade on delete no action,
@@ -122,7 +124,7 @@ create index iKaderFunktionFunktion on kaderFunktionen (funktion);
 
 drop table if exists etiketten;
 create table etiketten (
-  id integer primary key,
+  id integer primary key autoincrement,
   deleted integer default 0,
   idPerson integer references personen(id) on update cascade on delete cascade,
   etikett text references etikettWerte(value) on update cascade on delete cascade,
@@ -141,7 +143,7 @@ create index iTagTag on etiketten (etikett);
 
 drop table if exists mutations;
 create table mutations (
-  id integer primary key,
+  id integer primary key autoincrement,
   time TEXT,
   user TEXT,
   op TEXT,
@@ -176,7 +178,7 @@ create index iMutationsPreviousValue on mutations (previousValue);
 -- true = 1, false = 0
 drop table if exists statusWerte;
 create table statusWerte (
-  id integer primary key,
+  id integer primary key autoincrement,
   value text unique,
   deleted integer default 0,
   historic integer default 0,
@@ -206,7 +208,7 @@ values
 -- true = 1, false = 0
 drop table if exists geschlechtWerte;
 create table geschlechtWerte (
-  id integer primary key,
+  id integer primary key autoincrement,
   value text unique,
   deleted integer default 0,
   historic integer default 0,
@@ -232,7 +234,7 @@ values
 
 drop table if exists abteilungWerte;
 create table abteilungWerte (
-  id integer primary key,
+  id integer primary key autoincrement,
   value text unique,
   deleted integer default 0,
   historic integer default 0,
@@ -263,7 +265,7 @@ values
 
 drop table if exists kostenstelleWerte;
 create table kostenstelleWerte (
-  id integer primary key,
+  id integer primary key autoincrement,
   value text unique,
   deleted integer default 0,
   historic integer default 0,
@@ -288,7 +290,7 @@ values
 
 drop table if exists mobileAboTypWerte;
 create table mobileAboTypWerte (
-  id integer primary key,
+  id integer primary key autoincrement,
   value text unique,
   deleted integer default 0,
   historic integer default 0,
@@ -313,7 +315,7 @@ values
 
 drop table if exists kaderFunktionWerte;
 create table kaderFunktionWerte (
-  id integer primary key,
+  id integer primary key autoincrement,
   value text unique,
   deleted integer default 0,
   historic integer default 0,
@@ -338,7 +340,7 @@ values
 
 drop table if exists mobileAboKostenstelleWerte;
 create table mobileAboKostenstelleWerte (
-  id integer primary key,
+  id integer primary key autoincrement,
   value text unique,
   deleted integer default 0,
   historic integer default 0,
@@ -364,7 +366,7 @@ values
 
 drop table if exists etikettWerte;
 create table etikettWerte (
-  id integer primary key,
+  id integer primary key autoincrement,
   value text unique,
   deleted integer default 0,
   historic integer default 0,

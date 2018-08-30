@@ -118,12 +118,12 @@ const myTypes = types
         const { mutations } = self
         const mutation = mutations.find(m => m.id === mutationId)
         if (!mutation) throw new Error(`Keine Mutation mit id ${id} gefunden`)
-        const { id, op, tableName, rowId, field, value } = mutation
+        const { id, op, tableName, rowId, field, previousValue } = mutation
         switch (op) {
-          case 'replace':
+          case 'replace': {
             // 1. check if dataset still exists, warn and exit if not
-            self[tableName].find(d => d.id === rowId)
-            if (!rowId) {
+            const dataset = self[tableName].find(d => d.id === rowId)
+            if (!dataset) {
               throw new Error(
                 `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr`
               )
@@ -133,15 +133,16 @@ const myTypes = types
               table: tableName,
               parentModel: tableName,
               field,
-              value,
+              value: previousValue,
               id: rowId
             })
             break
-          case 'add':
+          }
+          case 'add': {
             // not in use
             // 1. check if dataset still exists, warn and exit if not
-            self[tableName].find(d => d.id === rowId)
-            if (!rowId) {
+            const dataset = self[tableName].find(d => d.id === rowId)
+            if (!dataset) {
               throw new Error(
                 `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr. Daher wird er nicht gelöscht`
               )
@@ -158,9 +159,29 @@ const myTypes = types
             // write to store
             self[tableName] = self[tableName].filter(p => p.id !== rowId)
             break
-          case 'remove':
-            // no way to undo this as onPatch happens _after_ deletion
+          }
+          case 'remove': {
+            // not in use
+            // 1. check if dataset still exists, warn and exit if not
+            const dataset = self[tableName].find(d => d.id === rowId)
+            if (!dataset) {
+              throw new Error(
+                `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr. Daher wird er nicht gelöscht`
+              )
+            }
+            // 2. remove dataset
+            // write to db
+            try {
+              app.db
+                .prepare(`delete from ${tableName} where id = ${rowId}`)
+                .run()
+            } catch (error) {
+              return console.log(error)
+            }
+            // write to store
+            self[tableName] = self[tableName].filter(p => p.id !== rowId)
             break
+          }
           default:
           // do nothing
         }
