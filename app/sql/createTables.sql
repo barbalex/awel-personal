@@ -148,7 +148,8 @@ create table mutations (
   tableName TEXT,
   rowId integer,
   field TEXT,
-  value TEXT
+  value TEXT,
+  previousValue TEXT
 );
 
 drop index if exists iMutationsTime;
@@ -163,6 +164,10 @@ drop index if exists iMutationsRowId;
 create index iMutationsRowId on mutations (rowId);
 drop index if exists iMutationsField;
 create index iMutationsField on mutations (field);
+drop index if exists iMutationsValue;
+create index iMutationsValue on mutations (value);
+drop index if exists iMutationsPreviousValue;
+create index iMutationsPreviousValue on mutations (previousValue);
 
 -------------------------------------------
 

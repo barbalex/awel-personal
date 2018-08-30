@@ -8,5 +8,8 @@ export default types.model('Mutation', {
   op: types.maybe(types.union(types.string, types.integer, types.null)),
   rowId: types.maybe(types.union(types.integer, types.null)),
   field: types.maybe(types.union(types.string, types.integer, types.null)),
-  value: types.maybe(types.union(types.string, types.integer, types.null))
+  value: types.maybe(types.union(types.string, types.integer, types.null)),
+  previousValue: types.maybe(
+    types.union(types.string, types.integer, types.null)
+  )
 })

@@ -33,7 +33,7 @@ const Row = styled.div`
     props.active ? '1px solid rgba(46, 125, 50, 0.5)' : 'unset'};
   padding: 15px 8px;
   display: grid;
-  grid-template-columns: 170px 110px 110px 230px 110px 190px 1fr 50px;
+  grid-template-columns: 170px 110px 110px 230px 110px 190px 1fr 1fr 50px;
   justify-content: flex-start;
   &:hover {
     background-color: rgb(255, 250, 198);
@@ -66,6 +66,7 @@ const Id = styled(Field)`
 `
 const FieldName = styled(Field)``
 const Value = styled(Field)``
+const PreviousValue = styled(Field)``
 const RevertButton = styled(Button)`
   font-size: 0.8rem !important;
   padding-top: 3px !important;
@@ -82,6 +83,7 @@ const enhance = compose(
   withState('idFilter', 'setIdFilter', null),
   withState('fieldFilter', 'setFieldFilter', null),
   withState('valueFilter', 'setValueFilter', null),
+  withState('previousValueFilter', 'setPreviousValueFilter', null),
   withHandlers({
     revert: ({ store }) => e => {
       const id = +e.target.dataset.id
@@ -105,7 +107,11 @@ const enhance = compose(
     emptyFieldFilter: ({ setFieldFilter }) => () => setFieldFilter(null),
     onChangeValueFilter: ({ setValueFilter }) => e =>
       setValueFilter(e.target.value),
-    emptyValueFilter: ({ setValueFilter }) => () => setValueFilter(null)
+    emptyValueFilter: ({ setValueFilter }) => () => setValueFilter(null),
+    onChangePreviousValueFilter: ({ setPreviousValueFilter }) => e =>
+      setPreviousValueFilter(e.target.value),
+    emptyPreviousValueFilter: ({ setPreviousValueFilter }) => () =>
+      setPreviousValueFilter(null)
   }),
   withLifecycle({
     onDidMount() {
@@ -114,6 +120,26 @@ const enhance = compose(
   }),
   observer
 )
+
+const getValueToShow = value => {
+  let valueToShow = value
+  if (!value && value !== 0) {
+    valueToShow = null
+  } else if (!isNaN(value)) {
+    // is a number
+    if (value > 1530000000000 && moment.unix(value / 1000).isValid()) {
+      // is a date
+      valueToShow = moment.unix(value / 1000).format('YYYY.MM.DD H:mm:ss')
+    } else {
+      // is ab integer
+      // prevent showing .0
+      valueToShow = +value
+    }
+  } else if (value[0] === '{') {
+    valueToShow = JSON.parse(JSON.stringify(value, 2))
+  }
+  return valueToShow
+}
 
 const Mutations = ({
   store,
@@ -133,12 +159,15 @@ const Mutations = ({
   emptyFieldFilter,
   onChangeValueFilter,
   emptyValueFilter,
+  onChangePreviousValueFilter,
+  emptyPreviousValueFilter,
   userFilter,
   opFilter,
   tableFilter,
   idFilter,
   fieldFilter,
-  valueFilter
+  valueFilter,
+  previousValueFilter
 }: {
   store: Object,
   revert: () => void,
@@ -157,12 +186,15 @@ const Mutations = ({
   emptyFieldFilter: () => void,
   onChangeValueFilter: () => void,
   emptyValueFilter: () => void,
+  onChangePreviousValueFilter: () => void,
+  emptyPreviousValueFilter: () => void,
   userFilter?: ?string,
   opFilter?: ?string,
   tableFilter?: ?string,
   idFilter?: ?string,
   fieldFilter?: ?string,
-  valueFilter?: ?string
+  valueFilter?: ?string,
+  previousValueFilter?: ?string
 }) => {
   const { setLocation, mutations: rawMutations } = store
   const location = store.location.toJSON()
@@ -170,33 +202,27 @@ const Mutations = ({
   const mutations = sortBy(rawMutations.slice(), 'id')
     .reverse()
     .map(m => {
-      const { id, time, user, op, tableName, rowId, field, value } = m
-      const rowIdToShow = op === 'add' ? JSON.parse(value).id : rowId
-      let valueToShow = value
-      if (!value && value !== 0) {
-        valueToShow = null
-      } else if (!isNaN(value)) {
-        // is a number
-        if (value > 1530000000000 && moment.unix(value / 1000).isValid()) {
-          // is a date
-          valueToShow = moment.unix(time / 1000).format('YYYY.MM.DD H:mm:ss')
-        } else {
-          // is ab integer
-          // prevent showing .0
-          valueToShow = +value
-        }
-      } else if (value[0] === '{') {
-        valueToShow = null
-      }
+      const {
+        id,
+        time,
+        user,
+        op,
+        tableName,
+        rowId,
+        field,
+        value,
+        previousValue
+      } = m
       return {
         id,
         time: moment.unix(time / 1000).format('YYYY.MM.DD HH:mm:ss'),
         user,
         op,
         tableName,
-        rowId: rowIdToShow,
+        rowId: op === 'add' ? JSON.parse(value).id : rowId,
         field,
-        value: valueToShow
+        value: getValueToShow(value),
+        previousValue: getValueToShow(previousValue)
       }
     })
     .filter(r => !zeitFilter || (r.time && r.time.includes(zeitFilter)))
@@ -230,6 +256,18 @@ const Mutations = ({
       if (!isNaN(r.value)) return r.value.toString().includes(valueFilter)
       return (
         r.value && r.value.toLowerCase().includes(valueFilter.toLowerCase())
+      )
+    })
+    .filter(r => {
+      if (!previousValueFilter) return true
+      if (!r.previousValue) return false
+      if (!isNaN(r.previousValue))
+        return r.previousValue.toString().includes(previousValueFilter)
+      return (
+        r.previousValue &&
+        r.previousValue
+          .toLowerCase()
+          .includes(previousValueFilter.toLowerCase())
       )
     })
 
@@ -285,8 +323,16 @@ const Mutations = ({
               empty={emptyFieldFilter}
             />
           </FieldName>
+          <PreviousValue>
+            <div>Alter Wert</div>
+            <Filter
+              value={previousValueFilter}
+              onChange={onChangePreviousValueFilter}
+              empty={emptyPreviousValueFilter}
+            />
+          </PreviousValue>
           <Value>
-            <div>Wert</div>
+            <div>Neuer Wert</div>
             <Filter
               value={valueFilter}
               onChange={onChangeValueFilter}
@@ -302,7 +348,17 @@ const Mutations = ({
         >
           {({ index, style }) => {
             const row = mutations[index]
-            const { id, time, user, tableName, rowId, field, op, value } = row
+            const {
+              id,
+              time,
+              user,
+              tableName,
+              rowId,
+              field,
+              op,
+              value,
+              previousValue
+            } = row
 
             return (
               <Row
@@ -316,6 +372,7 @@ const Mutations = ({
                 <Model>{tableName}</Model>
                 <Id>{rowId}</Id>
                 <FieldName>{field}</FieldName>
+                <PreviousValue>{previousValue || ''}</PreviousValue>
                 <Value>{value || ''}</Value>
                 {op === 'replace' && (
                   <Fragment>

@@ -189,84 +189,108 @@ const myTypes = types
         // watchMutations is false while data is loaded from server
         // as these additions should not be added to mutations
         if (!self.watchMutations) return
-        console.log('Store, addMutation', { tableName, patch, inversePatch })
+        // need to wait for undoManager to list deletion
+        setTimeout(() => {
+          let info
+          const { username } = self
+          const time = Date.now()
+          const { op, path, value: valueIn } = patch
+          const [index, field] = splitJsonPath(path)
+          // do not document mutation documentation
+          if (field && field.includes('letzteMutation')) return
+          let previousValue = null
+          const value =
+            valueIn !== null && typeof valueIn === 'object'
+              ? JSON.stringify(valueIn)
+              : valueIn
+          let rowId
 
-        let info
-        const { username } = self
-        const time = Date.now()
-        const { op, path, value: valueIn } = patch
-        const [index, field] = splitJsonPath(path)
-        // do not document mutation documentation
-        if (field && field.includes('letzteMutation')) return
-        let value =
-          valueIn !== null && typeof valueIn === 'object'
-            ? JSON.stringify(valueIn)
-            : valueIn
-        let rowId
-        switch (op) {
-          case 'add':
-            rowId = valueIn.id
-            break
-          case 'remove': {
-            /**
-             * Problem:
-             * - inversePatch is undefined
-             * - patch has no value
-             * - self[tableName][index] was already removed
-             * so how get id or better value of removed dataset?
-             * Is it maybe possible to get this from undoManager's history?
-             */
-            const historyChanges = undoManager.history.toJSON()
-            const historyInversePatches = flatten(
-              historyChanges.map(c => c.inversePatches)
-            )
-            const historyInversePatch = findLast(
-              historyInversePatches,
-              p => p.op === 'add' && p.path === `/${tableName}/${index}`
-            )
-            value = historyInversePatch.value
-            console.log('HOWTO?:', {
-              historyInversePatch,
-              value
-            })
-            break
+          switch (op) {
+            case 'add':
+              rowId = valueIn.id
+              break
+            case 'remove': {
+              /**
+               * Problem:
+               * - inversePatch is undefined
+               * - patch has no value
+               * - self[tableName][index] was already removed
+               * so how get id or better value of removed dataset?
+               * Is it maybe possible to get this from undoManager's history?
+               */
+
+              const historyChanges = undoManager.history.toJSON()
+              const historyInversePatches = flatten(
+                historyChanges.map(c => c.inversePatches)
+              )
+              const historyInversePatch =
+                findLast(
+                  historyInversePatches,
+                  p => p.op === 'add' && p.path === `/${tableName}/${index}`
+                ) || {}
+              console.log('Store, addMutation?:', {
+                tableName,
+                patch,
+                inversePatch,
+                historyInversePatch,
+                previousValue: historyInversePatch.value
+              })
+              previousValue = JSON.stringify(historyInversePatch.value)
+              rowId = historyInversePatch.value.id
+              break
+            }
+            case 'replace': {
+              const storeObject = self[tableName][index]
+              rowId = storeObject.id
+              previousValue = inversePatch.value
+              console.log('Store, addMutation?:', {
+                tableName,
+                patch,
+                inversePatch
+              })
+              break
+            }
+            default:
+            // do nothing
           }
-          case 'replace': {
-            const storeObject = self[tableName][index]
-            rowId = storeObject.id
-            break
+          console.log('Store, addMutation:', {
+            previousValue
+          })
+          try {
+            info = app.db
+              .prepare(
+                'insert into mutations (time, user, op, tableName, rowId, field, value, previousValue) values (@time, @username, @op, @tableName, @rowId, @field, @value, @previousValue)'
+              )
+              .run({
+                username,
+                time,
+                tableName,
+                op,
+                rowId,
+                field,
+                value,
+                previousValue
+              })
+          } catch (error) {
+            return console.log(error)
           }
-          default:
-          // do nothing
-        }
-        try {
-          info = app.db
-            .prepare(
-              'insert into mutations (time, user, op, tableName, rowId, field, value) values (@time, @username, @op, @tableName, @rowId, @field, @value)'
-            )
-            .run({
-              username,
-              time,
-              tableName,
-              op,
-              rowId,
-              field,
-              value
-            })
-        } catch (error) {
-          return console.log(error)
-        }
-        // 2. add to store
-        self.mutations.push({
-          id: info.lastInsertROWID,
-          time,
-          user: username,
-          op,
-          tableName,
-          rowId,
-          field,
-          value
+          // 2. add to store
+          // need to call other action as this happens inside timeout
+          self.mutate({
+            id: info.lastInsertROWID,
+            time,
+            user: username,
+            op,
+            tableName,
+            rowId,
+            field,
+            value,
+            previousValue
+          })
         })
+      },
+      mutate(mutation) {
+        self.mutations.push(mutation)
       },
       addWert(table) {
         // 1. create new value in db, returning id
