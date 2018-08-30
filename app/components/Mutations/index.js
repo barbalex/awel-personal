@@ -361,7 +361,7 @@ const Mutations = ({
         </TitleRow>
         <ListDiv>
           <List
-            height={window.innerHeight - 56}
+            height={window.innerHeight - 56 - 65}
             itemCount={mutations.length}
             itemSize={index => rowHeights[index] || 50}
             width={window.innerWidth}
