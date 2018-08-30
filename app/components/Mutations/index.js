@@ -216,7 +216,6 @@ const Mutations = ({
         (r.tableName &&
           r.tableName.toLowerCase().includes(tableFilter.toLowerCase()))
     )
-    // .filter(r => !idFilter || (r.rowId && r.rowId === idFilter))
     .filter(
       r => !idFilter || (r.rowId && r.rowId.toString().includes(idFilter))
     )
