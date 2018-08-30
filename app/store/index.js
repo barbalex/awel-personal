@@ -6,7 +6,6 @@ import flatten from 'lodash/flatten'
 import findLast from 'lodash/findLast'
 import keys from 'lodash/keys'
 import lValues from 'lodash/values'
-import filter from 'lodash/filter'
 
 import AbteilungWert from './AbteilungWert'
 import Etikett from './Etikett'
@@ -160,7 +159,10 @@ const myTypes = types
               return console.log(error)
             }
             // write to store
-            self[tableName] = self[tableName].filter(p => p.id !== rowId)
+            self[tableName].splice(
+              findIndex(self[tableName], p => p.id === rowId),
+              1
+            )
             break
           }
           case 'remove': {
@@ -236,7 +238,6 @@ const myTypes = types
               ? JSON.stringify(valueIn)
               : valueIn
           let rowId
-
           switch (op) {
             case 'add':
               rowId = valueIn.id
@@ -248,9 +249,9 @@ const myTypes = types
                * - patch has no value
                * - self[tableName][index] was already removed
                * so how get id or better value of removed dataset?
-               * Is it maybe possible to get this from undoManager's history?
+               * Solution: get this from undoManager's history
+               * But: need to setTimeout to let undoManager catch up
                */
-
               const historyChanges = undoManager.history.toJSON()
               const historyInversePatches = flatten(
                 historyChanges.map(c => c.inversePatches)
@@ -313,12 +314,23 @@ const myTypes = types
         // 1. create new value in db, returning id
         let info
         try {
-          info = app.db.prepare(`insert into ${table} default values`).run()
+          info = app.db
+            .prepare(
+              `insert into ${table} (letzteMutationUser,letzteMutationZeit) values (@letzteMutationUser,@letzteMutationZeit)`
+            )
+            .run({
+              letzteMutationUser: self.username,
+              letzteMutationZeit: Date.now()
+            })
         } catch (error) {
           return console.log(error)
         }
         // 2. add to store
-        self[table].push({ id: info.lastInsertROWID })
+        self[table].push({
+          id: info.lastInsertROWID,
+          letzteMutationUser: self.username,
+          letzteMutationZeit: Date.now()
+        })
         self.setLocation([table, info.lastInsertROWID.toString()])
       },
       setWertDeleted({ id, table }) {
@@ -343,7 +355,7 @@ const myTypes = types
           return console.log(error)
         }
         // write to store
-        self[table] = self[table].filter(p => p.id !== id)
+        self[table].splice(findIndex(self[table], p => p.id === id), 1)
         self.setLocation([table])
       },
       setPersonDeleted(id) {
@@ -365,7 +377,6 @@ const myTypes = types
         if (!self.showDeleted) self.setLocation(['Personen'])
       },
       deletePerson(id) {
-        console.log('Store, deletePerson with id:', id)
         // write to db
         try {
           app.db.prepare('delete from personen where id = ?').run(id)
@@ -420,15 +431,12 @@ const myTypes = types
           return console.log(error)
         }
         // write to store
-        /* self.etiketten.splice(
-        findIndex(
-          self.etiketten,
-          e => e.idPerson === idPerson && e.etikett === etikett
-        ),
-        1
-      ) */
-        self.etiketten = self.etiketten.filter(
-          e => !(e.idPerson === idPerson && e.etikett === etikett)
+        self.etiketten.splice(
+          findIndex(
+            self.etiketten,
+            e => e.idPerson === idPerson && e.etikett === etikett
+          ),
+          1
         )
         self.updatePersonsMutation(idPerson)
       },
@@ -465,7 +473,7 @@ const myTypes = types
           return console.log(error)
         }
         // write to store
-        self.links = self.links.filter(e => !(e.id === id))
+        self.links.splice(findIndex(self.links, p => p.id === id), 1)
         // set persons letzteMutation
         const location = self.location.toJSON()
         const idPerson = ifIsNumericAsNumber(location[1])
@@ -503,7 +511,7 @@ const myTypes = types
           return console.log(error)
         }
         // write to store
-        self.schluessel = self.schluessel.filter(e => !(e.id === id))
+        self.schluessel.splice(findIndex(self.schluessel, p => p.id === id), 1)
         // set persons letzteMutation
         const location = self.location.toJSON()
         const idPerson = ifIsNumericAsNumber(location[1])
@@ -541,7 +549,7 @@ const myTypes = types
           return console.log(error)
         }
         // write to store
-        self.mobileAbos = self.mobileAbos.filter(e => !(e.id === id))
+        self.mobileAbos.splice(findIndex(self.mobileAbos, p => p.id === id), 1)
         // set persons letzteMutation
         const location = self.location.toJSON()
         const idPerson = ifIsNumericAsNumber(location[1])
@@ -579,20 +587,16 @@ const myTypes = types
           return console.log(error)
         }
         // write to store
-        self.kaderFunktionen = self.kaderFunktionen.filter(e => !(e.id === id))
+        self.kaderFunktionen.splice(
+          findIndex(self.kaderFunktionen, p => p.id === id),
+          1
+        )
         // set persons letzteMutation
         const location = self.location.toJSON()
         const idPerson = ifIsNumericAsNumber(location[1])
         self.updatePersonsMutation(idPerson)
       },
       updateField({ table, parentModel, field, value, id }) {
-        console.log('Store, updateField:', {
-          table,
-          parentModel,
-          field,
-          value,
-          id
-        })
         try {
           app.db
             .prepare(
