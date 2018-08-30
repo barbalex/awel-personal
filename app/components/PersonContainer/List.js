@@ -5,7 +5,6 @@ import styled from 'styled-components'
 import compose from 'recompose/compose'
 import { inject, observer } from 'mobx-react'
 import { UncontrolledTooltip } from 'reactstrap'
-import { undoManager } from '../../store'
 
 const Container = styled.div`
   border-right: 1px solid rgb(46, 125, 50);
@@ -67,8 +66,6 @@ const PersonList = ({
       if (!showDeleted) return p.deleted === 0
       return true
     })
-  const changes = undoManager.history.toJSON()
-  console.log('Person List, render, changes:', changes)
 
   return (
     <Container>
