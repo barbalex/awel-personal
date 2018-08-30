@@ -83,8 +83,7 @@ const Person = ({
     kostenstelleWerte,
     statusWerte,
     geschlechtWerte,
-    etikettWerte,
-    username
+    etikettWerte
   } = store
   const person = personen.find(p => p.id === activeId) || {}
   // filter out options with empty values - makes no sense and errors

@@ -43,8 +43,7 @@
       "package.json"
     ],
     "dmg": {
-      "contents": [
-        {
+      "contents": [{
           "x": 130,
           "y": 220
         },
@@ -191,7 +190,7 @@
     "mobx-react": "5.2.5",
     "mobx-state-tree": "3.2.4",
     "moment": "2.22.2",
-    "mst-middlewares": "^3.2.4",
+    "mst-middlewares": "3.2.4",
     "react": "16.4.2",
     "react-datepicker": "1.6.0",
     "react-dom": "16.4.2",
