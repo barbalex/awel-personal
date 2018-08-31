@@ -128,7 +128,7 @@ const Person = ({
     etiketten.filter(e => e.idPerson === activeId),
     'etikett'
   )
-    .filter(w => !!w.value)
+    .filter(w => !!w.etikett)
     .map(e => ({
       label: e.etikett,
       value: e.etikett
