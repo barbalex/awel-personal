@@ -1,4 +1,4 @@
-// flow-typed signature: 1666252f1053608ec313f69b6029ae46
+// flow-typed signature: 7ba74ade329ba40a002475302a547a3f
 // flow-typed version: b80967946f/babel-register_v6.x.x/flow_>=v0.30.x
 
 declare module 'babel-register' {
@@ -34,7 +34,7 @@ declare module 'babel-register' {
     sourceMaps?: boolean | 'inline' | 'both',
     sourceMapTarget?: string,
     sourceRoot?: string,
-    sourceType?: 'script' | 'module' |��'unambiguous',
+    sourceType?: 'script' | 'module' | 'unambiguous',
     wrapPluginVisitorMethod?: null | (pluginAlias: string, visitorType: string, callback: Function) => boolean,
     extensions?: Array<string>,
     cache?: boolean,
