@@ -70,6 +70,9 @@ const myTypes = types
       setFilter({ model, value }) {
         self[model] = value
       },
+      setShowFilter(value) {
+        self.showFilter = value
+      },
       setUsername(name) {
         self.username = name
       },
