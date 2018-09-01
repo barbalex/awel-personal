@@ -33,7 +33,7 @@ const enhance = compose(
       const location = store.location.toJSON()
       if (!location[1]) throw new Error(`no id found`)
       const activeId = ifIsNumericAsNumber(location[1])
-      const { personen, showFilter } = store
+      const { personen, filterPerson, showFilter, setFilter } = store
       const person = personen.find(p => p.id === activeId)
       if (!person) throw new Error(`Person with id ${activeId} not found`)
       let newValue
@@ -47,15 +47,19 @@ const enhance = compose(
       }
 
       if (showFilter) {
-
+        setFilter({
+          model: 'filterPersonen',
+          value: { ...filterPerson, ...{ field: newValue } }
+        })
       } else {
-      store.updateField({
-        table: 'personen',
-        parentModel: 'personen',
-        field,
-        value: newValue,
-        id: person.id
-      })}
+        store.updateField({
+          table: 'personen',
+          parentModel: 'personen',
+          field,
+          value: newValue,
+          id: person.id
+        })
+      }
     },
     addEtikett: ({ store }) => etikett => store.addEtikett(etikett),
     deleteEtikett: ({ store }) => etikett => store.deleteEtikett(etikett)
