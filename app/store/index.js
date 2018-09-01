@@ -55,7 +55,8 @@ const myTypes = types
     filterLink: types.maybe(Link),
     filterSchluessel: types.maybe(Schluessel),
     filterMobileAbo: types.maybe(MobileAbo),
-    filterKaderFunktion: types.maybe(KaderFunktion)
+    filterKaderFunktion: types.maybe(KaderFunktion),
+    showFilter: types.optional(types.boolean, false),
   })
   // functions are not serializable
   // so need to define this as volatile
