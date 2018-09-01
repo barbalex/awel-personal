@@ -67,23 +67,8 @@ const myTypes = types
     setUndoManager(self)
 
     return {
-      setFilterPerson(value) {
-        self.filterPerson = value
-      },
-      setFilterEtikett(value) {
-        self.filterEtikett = value
-      },
-      setFilterLink(value) {
-        self.filterLink = value
-      },
-      setFilterSchluessel(value) {
-        self.filterSchluessel = value
-      },
-      setFilterMobileAbo(value) {
-        self.filterMobileAbo = value
-      },
-      setFilterKaderFunktion(value) {
-        self.filterKaderFunktion = value
+      setFilter({ model, value }) {
+        self[model] = value
       },
       setUsername(name) {
         self.username = name
