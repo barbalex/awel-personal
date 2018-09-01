@@ -56,7 +56,7 @@ const myTypes = types
     filterSchluessel: types.maybe(Schluessel),
     filterMobileAbo: types.maybe(MobileAbo),
     filterKaderFunktion: types.maybe(KaderFunktion),
-    showFilter: types.optional(types.boolean, false),
+    showFilter: types.optional(types.boolean, false)
   })
   // functions are not serializable
   // so need to define this as volatile
@@ -67,6 +67,24 @@ const myTypes = types
     setUndoManager(self)
 
     return {
+      setFilterPerson(value) {
+        self.filterPerson = value
+      },
+      setFilterEtikett(value) {
+        self.filterEtikett = value
+      },
+      setFilterLink(value) {
+        self.filterLink = value
+      },
+      setFilterSchluessel(value) {
+        self.filterSchluessel = value
+      },
+      setFilterMobileAbo(value) {
+        self.filterMobileAbo = value
+      },
+      setFilterKaderFunktion(value) {
+        self.filterKaderFunktion = value
+      },
       setUsername(name) {
         self.username = name
       },
