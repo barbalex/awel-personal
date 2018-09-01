@@ -21,7 +21,9 @@ import MobileAbos from './MobileAbos'
 import KaderFunktionen from './KaderFunktionen'
 import Zuletzt from './Zuletzt'
 
-const Container = styled.div``
+const Container = styled.div`
+  background-color: ${props => (props.showfilter ? 'yellow' : 'rgba(0,0,0,0)')};
+`
 const StyledForm = styled(Form)`
   margin: 20px;
 `
@@ -90,7 +92,8 @@ const Person = ({
     kostenstelleWerte,
     statusWerte,
     geschlechtWerte,
-    etikettWerte
+    etikettWerte,
+    showFilter
   } = store
   const person = personen.find(p => p.id === activeId) || {}
   // filter out options with empty values - makes no sense and errors
@@ -142,7 +145,7 @@ const Person = ({
     }))
 
   return (
-    <Container>
+    <Container showfilter={showFilter}>
       <StyledForm>
         {showDeleted && (
           <SharedCheckbox
