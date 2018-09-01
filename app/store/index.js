@@ -58,6 +58,29 @@ const myTypes = types
     filterKaderFunktion: types.maybe(KaderFunktion),
     showFilter: types.optional(types.boolean, false)
   })
+  .views(self => ({
+    get personenFiltered() {
+      let personen = self.personen.toJSON()
+      const filterPerson = self.filterPerson
+      Object.keys(filterPerson).forEach(key => {
+        if (filterPerson[key] || filterPerson[key] === 0) {
+          personen = personen.filter(p => {
+            if (!filterPerson[key]) return true
+            if (!p[key]) return false
+            return p[key]
+              .toString()
+              .toLowerCase()
+              .includes(filterPerson[key].toString().toLowerCase())
+          })
+        }
+      })
+      personen = personen.filter(p => {
+        if (!self.showDeleted) return p.deleted === 0
+        return true
+      })
+      return personen
+    }
+  }))
   // functions are not serializable
   // so need to define this as volatile
   .volatile(() => ({

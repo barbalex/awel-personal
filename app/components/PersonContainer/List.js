@@ -48,36 +48,18 @@ const PersonList = ({
   const { showDeleted, setLocation, showFilter, filterPerson } = store
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
   const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
-  let personen = store.personen
-    .slice()
-    .sort((a, b) => {
-      if (!a.name && !a.vorname) return -1
-      if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
-        return -1
-      if (
-        a.name === b.name &&
-        a.vorname &&
-        b.vorname &&
-        a.vorname.toLowerCase() < b.vorname.toLowerCase()
-      )
-        return -1
-      return 1
-    })
-    .filter(p => {
-      if (!showDeleted) return p.deleted === 0
-      return true
-    })
-  Object.keys(filterPerson).forEach(key => {
-    if (filterPerson[key] || filterPerson[key] === 0) {
-      personen = personen.filter(p => {
-        if (!filterPerson[key]) return true
-        if (!p[key]) return false
-        return p[key]
-          .toString()
-          .toLowerCase()
-          .includes(filterPerson[key].toString().toLowerCase())
-      })
-    }
+  const personen = store.personenFiltered.slice().sort((a, b) => {
+    if (!a.name && !a.vorname) return -1
+    if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
+      return -1
+    if (
+      a.name === b.name &&
+      a.vorname &&
+      b.vorname &&
+      a.vorname.toLowerCase() < b.vorname.toLowerCase()
+    )
+      return -1
+    return 1
   })
 
   return (
