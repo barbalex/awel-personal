@@ -50,8 +50,8 @@ const enhance = compose(
 
       if (showFilter) {
         setFilter({
-          model: 'filterPersonen',
-          value: { ...filterPerson, ...{ field: newValue } }
+          model: 'filterPerson',
+          value: { ...filterPerson, ...{ [field]: newValue } }
         })
       } else {
         store.updateField({
@@ -93,13 +93,23 @@ const Person = ({
     statusWerte,
     geschlechtWerte,
     etikettWerte,
-    showFilter
+    showFilter,
+    filterPerson
   } = store
-  const person = personen.find(p => p.id === activeId) || {}
+
+  let person
+  if (showFilter) {
+    person = filterPerson
+  } else {
+    person = personen.find(p => p.id === activeId)
+    if (!person) person = {}
+  }
+  console.log('Person, render, person:', person.toJSON())
+  const personId = showFilter ? '' : person.id
   // filter out options with empty values - makes no sense and errors
   const personOptions = sortBy(personen, ['name', 'vorname'])
     .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-    .filter(w => w.id !== person.id)
+    .filter(w => !showFilter && w.id !== person.id)
     .map(w => ({
       label: `${w.name} ${w.vorname}`,
       value: w.id
@@ -149,7 +159,7 @@ const Person = ({
       <StyledForm>
         {showDeleted && (
           <SharedCheckbox
-            key={`${person.id}deleted`}
+            key={`${personId}deleted`}
             value={person.deleted}
             field="deleted"
             label="gelöscht"
@@ -157,63 +167,63 @@ const Person = ({
           />
         )}
         <Input
-          key={`${person.id}name`}
+          key={`${personId}name`}
           value={person.name}
           field="name"
           label="Name"
           saveToDb={saveToDb}
         />
         <Input
-          key={`${person.id}vorname`}
+          key={`${personId}vorname`}
           value={person.vorname}
           field="vorname"
           label="Vorname"
           saveToDb={saveToDb}
         />
         <Input
-          key={`${person.id}kurzzeichen`}
+          key={`${personId}kurzzeichen`}
           value={person.kurzzeichen}
           field="kurzzeichen"
           label="Kurzzeichen"
           saveToDb={saveToDb}
         />
         <Input
-          key={`${person.id}telefonNr`}
+          key={`${personId}telefonNr`}
           value={person.telefonNr}
           field="telefonNr"
           label="Telefon"
           saveToDb={saveToDb}
         />
         <Input
-          key={`${person.id}telefonNrMobile`}
+          key={`${personId}telefonNrMobile`}
           value={person.telefonNrMobile}
           field="telefonNrMobile"
           label="Telefon mobile"
           saveToDb={saveToDb}
         />
         <Input
-          key={`${person.id}email`}
+          key={`${personId}email`}
           value={person.email}
           field="email"
           label="Email"
           saveToDb={saveToDb}
         />
         <Date
-          key={`${person.id}geburtDatum`}
+          key={`${personId}geburtDatum`}
           value={person.geburtDatum}
           field="geburtDatum"
           label="Geburtsdatum"
           saveToDb={saveToDb}
         />
         <Input
-          key={`${person.id}bueroNr`}
+          key={`${personId}bueroNr`}
           value={person.bueroNr}
           field="bueroNr"
           label="Büro Nr."
           saveToDb={saveToDb}
         />
         <Select
-          key={`${person.id}abteilung`}
+          key={`${personId}abteilung`}
           value={person.abteilung}
           field="abteilung"
           label="Abteilung"
@@ -221,7 +231,7 @@ const Person = ({
           saveToDb={saveToDb}
         />
         <Select
-          key={`${person.id}kostenstelle`}
+          key={`${personId}kostenstelle`}
           value={person.kostenstelle}
           field="kostenstelle"
           label="Kostenstelle"
@@ -229,7 +239,7 @@ const Person = ({
           saveToDb={saveToDb}
         />
         <Select
-          key={`${person.id}vorgesetztId`}
+          key={`${personId}vorgesetztId`}
           value={person.vorgesetztId}
           field="vorgesetztId"
           label="Vorgesetzte(r)"
@@ -237,21 +247,21 @@ const Person = ({
           saveToDb={saveToDb}
         />
         <Date
-          key={`${person.id}eintrittDatum`}
+          key={`${personId}eintrittDatum`}
           value={person.eintrittDatum}
           field="eintrittDatum"
           label="Eintritt Datum"
           saveToDb={saveToDb}
         />
         <Date
-          key={`${person.id}austrittDatum`}
+          key={`${personId}austrittDatum`}
           value={person.austrittDatum}
           field="austrittDatum"
           label="Austritt Datum"
           saveToDb={saveToDb}
         />
         <Select
-          key={`${person.id}status`}
+          key={`${personId}status`}
           value={person.status}
           field="status"
           label="Status"
@@ -259,21 +269,21 @@ const Person = ({
           saveToDb={saveToDb}
         />
         <Input
-          key={`${person.id}parkplatzNr`}
+          key={`${personId}parkplatzNr`}
           value={person.parkplatzNr}
           field="parkplatzNr"
           label="Parkplatz Nr."
           saveToDb={saveToDb}
         />
         <Input
-          key={`${person.id}parkplatzBeitrag`}
+          key={`${personId}parkplatzBeitrag`}
           value={person.parkplatzBeitrag}
           field="parkplatzBeitrag"
           label="Parkplatz Beitrag"
           saveToDb={saveToDb}
         />
         <Select
-          key={`${person.id}geschlecht`}
+          key={`${personId}geschlecht`}
           value={person.geschlecht}
           field="geschlecht"
           label="Geschlecht"
@@ -281,7 +291,7 @@ const Person = ({
           saveToDb={saveToDb}
         />
         <SelectMulti
-          key={`${person.id}etikett`}
+          key={`${personId}etikett`}
           value={myEtiketten}
           field="etikett"
           label="Etiketten"
@@ -290,7 +300,7 @@ const Person = ({
           deleteEtikett={deleteEtikett}
         />
         <Input
-          key={`${person.id}bemerkungen`}
+          key={`${personId}bemerkungen`}
           value={person.bemerkungen}
           field="bemerkungen"
           label="Bemerkungen"

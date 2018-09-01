@@ -50,7 +50,7 @@ const myTypes = types
     username: types.maybe(types.string),
     watchMutations: types.optional(types.boolean, false),
     history: types.optional(UndoManager, {}),
-    filterPerson: types.maybe(Person),
+    filterPerson: types.optional(Person, {}),
     filterEtikett: types.maybe(Etikett),
     filterLink: types.maybe(Link),
     filterSchluessel: types.maybe(Schluessel),

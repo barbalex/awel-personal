@@ -30,6 +30,9 @@ const run = async () => {
   })
   app.init()
 
+  // expose store to console
+  window.store = store
+
   watchMutations()
 
   let user
