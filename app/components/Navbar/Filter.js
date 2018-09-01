@@ -27,7 +27,13 @@ const enhance = compose(
   observer
 )
 
-const Filter = ({ toggleShowFilter }: { toggleShowFilter: () => void }) => (
+const Filter = ({
+  store,
+  toggleShowFilter
+}: {
+  store: Object,
+  toggleShowFilter: () => void
+}) => (
   <div>
     <InputGroup>
       <Input placeholder="Volltext filtern (TODO)" />
@@ -36,7 +42,7 @@ const Filter = ({ toggleShowFilter }: { toggleShowFilter: () => void }) => (
           <i className="fas fa-times" />
         </VolltextFilterRemoveAddon>
         <InputGroupText id="filterAddon" onClick={toggleShowFilter}>
-          <i className="fas fa-times" />
+          <i className="fas fa-filter" />
         </InputGroupText>
       </InputGroupAddon>
       <UncontrolledTooltip
@@ -46,7 +52,7 @@ const Filter = ({ toggleShowFilter }: { toggleShowFilter: () => void }) => (
         Volltext-Filter entfernen
       </UncontrolledTooltip>
       <UncontrolledTooltip placement="bottom" target="filterAddon">
-        Nach Felden filtern
+        {store.showFilter ? 'Daten bearbeiten' : 'Nach Felden filtern'}
       </UncontrolledTooltip>
     </InputGroup>
   </div>
