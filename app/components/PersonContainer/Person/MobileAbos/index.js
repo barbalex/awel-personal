@@ -52,8 +52,9 @@ const MobileAboComponent = ({
   store: Object,
   onNew: () => void
 }) => {
+  const { showFilter } = store
   const location = store.location.toJSON()
-  if (!location[1]) throw new Error(`no id found`)
+  if (!location[1] && !showFilter) throw new Error(`no id found`)
   const activePersonenId = ifIsNumericAsNumber(location[1])
   const mobileAbos = store.mobileAbos.filter(
     s => s.idPerson === activePersonenId

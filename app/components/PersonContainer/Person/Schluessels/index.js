@@ -42,15 +42,16 @@ const enhance = compose(
   observer
 )
 
-const SchluesselComponent = ({
+const SchluesselsComponent = ({
   store,
   onNew
 }: {
   store: Object,
   onNew: () => void
 }) => {
+  const { showFilter } = store
   const location = store.location.toJSON()
-  if (!location[1]) throw new Error(`no id found`)
+  if (!location[1] && !showFilter) throw new Error(`no id found`)
   const activePersonenId = ifIsNumericAsNumber(location[1])
   const schluessels = store.schluessel.filter(
     s => s.idPerson === activePersonenId
@@ -89,4 +90,4 @@ const SchluesselComponent = ({
   )
 }
 
-export default enhance(SchluesselComponent)
+export default enhance(SchluesselsComponent)

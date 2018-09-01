@@ -21,10 +21,10 @@ const enhance = compose(
 )
 
 const Zuletzt = ({ store }: { store: Object }) => {
+  const { personen } = store
   const location = store.location.toJSON()
   if (!location[1]) throw new Error(`no id found`)
   const activeId = ifIsNumericAsNumber(location[1])
-  const { personen } = store
   const person = personen.find(p => p.id === activeId)
 
   return (

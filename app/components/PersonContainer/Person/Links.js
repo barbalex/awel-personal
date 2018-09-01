@@ -101,8 +101,9 @@ const LinksComponent = ({
   store: Object,
   onDrop: () => void
 }) => {
+  const { showFilter } = store
   const location = store.location.toJSON()
-  if (!location[1]) throw new Error(`no id found`)
+  if (!location[1] && !showFilter) throw new Error(`no id found`)
   const activePersonenId = ifIsNumericAsNumber(location[1])
   const myLinks = store.links.filter(l => l.idPerson === activePersonenId)
   // TODO: refactor when pdf is built

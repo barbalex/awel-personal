@@ -32,12 +32,13 @@ const enhance = compose(
   inject('store'),
   withHandlers({
     saveToDb: ({ store }) => ({ field, value }) => {
+      const { personen, filterPerson, showFilter, setFilter } = store
       const location = store.location.toJSON()
       if (!location[1]) throw new Error(`no id found`)
       const activeId = ifIsNumericAsNumber(location[1])
-      const { personen, filterPerson, showFilter, setFilter } = store
       const person = personen.find(p => p.id === activeId)
-      if (!person) throw new Error(`Person with id ${activeId} not found`)
+      if (!person && !showFilter)
+        throw new Error(`Person with id ${activeId} not found`)
       let newValue
       if (isDateField(field)) {
         if (value) newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
@@ -82,8 +83,6 @@ const Person = ({
   addEtikett: () => void,
   deleteEtikett: () => void
 }) => {
-  if (!activeId) return null
-
   const {
     personen,
     etiketten,
@@ -96,6 +95,7 @@ const Person = ({
     showFilter,
     filterPerson
   } = store
+  if (!showFilter && !activeId) return null
 
   let person
   if (showFilter) {
@@ -311,7 +311,7 @@ const Person = ({
         <Schluessels />
         <MobileAbos />
         <KaderFunktionen />
-        <Zuletzt />
+        {!showFilter && <Zuletzt />}
       </StyledForm>
     </Container>
   )

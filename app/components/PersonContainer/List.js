@@ -45,7 +45,7 @@ const PersonList = ({
   store: Object,
   activeId: ?number
 }) => {
-  const { setLocation, showFilter } = store
+  const { setLocation, showFilter, setShowFilter } = store
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
   const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
   const personen = store.personenFiltered
@@ -64,8 +64,11 @@ const PersonList = ({
           return (
             <Row
               style={style}
-              onClick={() => setLocation(['Personen', row.id.toString()])}
-              active={activeId === row.id}
+              onClick={() => {
+                setLocation(['Personen', row.id.toString()])
+                if (showFilter) setShowFilter(false)
+              }}
+              active={!showFilter && activeId === row.id}
             >
               {`${row.name || ''} ${row.vorname || ''}`}
               {row.deleted === 1 && (
