@@ -45,10 +45,10 @@ const PersonList = ({
   store: Object,
   activeId: ?number
 }) => {
-  const { showDeleted, setLocation, showFilter } = store
+  const { showDeleted, setLocation, showFilter, filterPerson } = store
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
   const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
-  const personen = store.personen
+  let personen = store.personen
     .slice()
     .sort((a, b) => {
       if (!a.name && !a.vorname) return -1
@@ -67,6 +67,18 @@ const PersonList = ({
       if (!showDeleted) return p.deleted === 0
       return true
     })
+  Object.keys(filterPerson).forEach(key => {
+    if (filterPerson[key] || filterPerson[key] === 0) {
+      personen = personen.filter(p => {
+        if (!filterPerson[key]) return true
+        if (!p[key]) return false
+        return p[key]
+          .toString()
+          .toLowerCase()
+          .includes(filterPerson[key].toString().toLowerCase())
+      })
+    }
+  })
 
   return (
     <Container showfilter={showFilter}>

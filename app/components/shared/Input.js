@@ -3,17 +3,17 @@ import React from 'react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
-import { observer } from 'mobx-react'
+import { inject, observer } from 'mobx-react'
 import { Col, FormGroup, Label, Input } from 'reactstrap'
 
 const enhance = compose(
+  inject('store'),
   withState(
     'stateValue',
     'setStateValue',
     ({ value }) => (value || value === 0 ? value : '')
   ),
   withHandlers({
-    onChange: ({ setStateValue }) => event => setStateValue(event.target.value),
     onBlur: ({ saveToDb, field, value }) => event => {
       let newValue = event.target.value
       // save nulls if empty
@@ -25,6 +25,13 @@ const enhance = compose(
     }
   }),
   withHandlers({
+    onChange: ({ setStateValue, store, onBlur }) => event => {
+      setStateValue(event.target.value)
+      if (store.showFilter) {
+        // call onBlur to immediately update filters
+        onBlur(event)
+      }
+    },
     onChangeDatePicker: ({ onBlur }) => (name, date) => {
       onBlur({
         target: {
