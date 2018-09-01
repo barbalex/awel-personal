@@ -45,7 +45,7 @@ const PersonList = ({
   store: Object,
   activeId: ?number
 }) => {
-  const { showDeleted, setLocation, showFilter, filterPerson } = store
+  const { setLocation, showFilter } = store
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
   const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
   const personen = store.personenFiltered.slice().sort((a, b) => {
