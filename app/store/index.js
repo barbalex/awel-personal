@@ -74,10 +74,24 @@ const myTypes = types
           })
         }
       })
-      personen = personen.filter(p => {
-        if (!self.showDeleted) return p.deleted === 0
-        return true
-      })
+      personen = personen
+        .filter(p => {
+          if (!self.showDeleted) return p.deleted === 0
+          return true
+        })
+        .sort((a, b) => {
+          if (!a.name && !a.vorname) return -1
+          if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
+            return -1
+          if (
+            a.name === b.name &&
+            a.vorname &&
+            b.vorname &&
+            a.vorname.toLowerCase() < b.vorname.toLowerCase()
+          )
+            return -1
+          return 1
+        })
       return personen
     }
   }))

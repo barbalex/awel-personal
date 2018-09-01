@@ -48,19 +48,7 @@ const PersonList = ({
   const { setLocation, showFilter } = store
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
   const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
-  const personen = store.personenFiltered.slice().sort((a, b) => {
-    if (!a.name && !a.vorname) return -1
-    if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
-      return -1
-    if (
-      a.name === b.name &&
-      a.vorname &&
-      b.vorname &&
-      a.vorname.toLowerCase() < b.vorname.toLowerCase()
-    )
-      return -1
-    return 1
-  })
+  const personen = store.personenFiltered
 
   return (
     <Container showfilter={showFilter}>
