@@ -49,7 +49,13 @@ const myTypes = types
     tagWerte: types.array(TagWert),
     username: types.maybe(types.string),
     watchMutations: types.optional(types.boolean, false),
-    history: types.optional(UndoManager, {})
+    history: types.optional(UndoManager, {}),
+    filterPerson: types.maybe(Person),
+    filterEtikett: types.maybe(Etikett),
+    filterLink: types.maybe(Link),
+    filterSchluessel: types.maybe(Schluessel),
+    filterMobileAbo: types.maybe(MobileAbo),
+    filterKaderFunktion: types.maybe(KaderFunktion)
   })
   // functions are not serializable
   // so need to define this as volatile
