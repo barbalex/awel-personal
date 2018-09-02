@@ -4,15 +4,16 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
-import { Input, UncontrolledTooltip } from 'reactstrap'
+import { UncontrolledTooltip } from 'reactstrap'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
+import InputWithoutLabel from '../../../shared/InputWithoutLabel'
 
 const Row = styled.div`
   grid-column: 1;
   display: grid;
   grid-template-columns: ${props =>
-    props['data-ispdf'] ? '1fr 1fr' : '1fr 1fr 20px'};
+    props.nosymbol ? '1fr 1fr' : '1fr 1fr 20px'};
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
   padding: 3px 0;
@@ -45,9 +46,7 @@ const Delete = styled.div`
 const enhance = compose(
   inject('store'),
   withHandlers({
-    onBlur: ({ store, id }) => event => {
-      const field = event.target.name
-      const value = event.target.value || null
+    onBlur: ({ store, id }) => ({ field, value }) => {
       const {
         schluessel: schluessels,
         showFilter,
@@ -86,34 +85,40 @@ const SchluesselComponent = ({
   onBlur
 }: {
   store: Object,
-  id: number,
+  id: number | string,
   onBlur: () => void
 }) => {
-  const schluessel = store.schluessel.find(s => s.id === id)
+  const { showFilter, filterSchluessel } = store
+  let schluessel
+  if (showFilter) {
+    schluessel = filterSchluessel
+  } else {
+    schluessel = store.schluessel.find(s => s.id === id)
+  }
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
 
   return (
-    <Row key={`${id}`} data-ispdf={isPdf}>
+    <Row key={`${id}`} nosymbol={isPdf || showFilter}>
       <Name>
-        <Input
+        <InputWithoutLabel
           key={`${id}name`}
-          name="name"
-          defaultValue={schluessel.name}
-          onBlur={onBlur}
+          value={schluessel.name}
+          field="name"
+          saveToDb={onBlur}
         />
       </Name>
       <Bemerkungen>
-        <Input
+        <InputWithoutLabel
           key={`${id}bemerkungen`}
-          name="bemerkungen"
-          defaultValue={schluessel.bemerkungen}
-          onBlur={onBlur}
+          value={schluessel.bemerkungen}
+          field="bemerkungen"
+          saveToDb={onBlur}
           type="textarea"
           rows={1}
         />
       </Bemerkungen>
-      {!isPdf && (
+      {!(isPdf || showFilter) && (
         <Fragment>
           <Delete
             data-ispdf={isPdf}

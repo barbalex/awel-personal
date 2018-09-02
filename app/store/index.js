@@ -60,8 +60,8 @@ const myTypes = types
   })
   .views(self => ({
     get personenFiltered() {
+      const { filterSchluessel, filterPerson } = self
       let personen = self.personen.toJSON()
-      const filterPerson = self.filterPerson
       Object.keys(filterPerson).forEach(key => {
         if (filterPerson[key] || filterPerson[key] === 0) {
           personen = personen.filter(p => {
@@ -74,11 +74,13 @@ const myTypes = types
           })
         }
       })
-      const { filterSchluessel } = self
-      let schluessel = self.schluessel.toJSON()
+      let schluessel = self.schluessel.toJSON().filter(p => {
+        if (!self.showDeleted) return p.deleted === 0
+        return true
+      })
       let schluesselIsFiltered = false
       Object.keys(filterSchluessel).forEach(key => {
-        if (filterSchluessel[key] || filterSchluessel[key] === 0) {
+        if (filterSchluessel[key]) {
           schluesselIsFiltered = true
           schluessel = schluessel.filter(p => {
             if (!filterSchluessel[key]) return true
@@ -125,6 +127,7 @@ const myTypes = types
 
     return {
       setFilter({ model, value }) {
+        console.log('Store, setFilter', { model, value })
         self[model] = value
       },
       setShowFilter(value) {

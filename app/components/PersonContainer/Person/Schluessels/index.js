@@ -82,7 +82,10 @@ const SchluesselsComponent = ({
             </Row>
           )}
           {schluessels.map(schluessel => (
-            <Schluessel key={schluessel.id || 1} id={schluessel.id || 1} />
+            <Schluessel
+              key={schluessel.id || 'filter'}
+              id={schluessel.id || 'filter'}
+            />
           ))}
           {mayAddNew && (
             <StyledButton onClick={onNew} outline>

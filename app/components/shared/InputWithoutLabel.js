@@ -4,7 +4,7 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
 import { inject, observer } from 'mobx-react'
-import { Col, FormGroup, Label, Input } from 'reactstrap'
+import { Input } from 'reactstrap'
 
 const enhance = compose(
   inject('store'),
@@ -36,11 +36,11 @@ const enhance = compose(
   observer
 )
 
-const SharedInput = ({
+const SharedInputWithoutLabel = ({
   stateValue,
   field,
-  label,
   type = 'text',
+  rows = 1,
   placeholder = '',
   disabled = false,
   onChange,
@@ -48,30 +48,24 @@ const SharedInput = ({
 }: {
   stateValue: number | string,
   field: string,
-  label?: string,
   type?: string,
+  rows?: number,
   placeholder?: string,
   disabled?: boolean,
   onChange: () => void,
   onBlur: () => void
 }) => (
-  <FormGroup row>
-    <Label for={field} sm={2}>
-      {label}
-    </Label>
-    <Col sm={10}>
-      <Input
-        id={field}
-        type={type}
-        name={field}
-        placeholder={placeholder}
-        disabled={disabled}
-        value={stateValue}
-        onChange={onChange}
-        onBlur={onBlur}
-      />
-    </Col>
-  </FormGroup>
+  <Input
+    id={field}
+    type={type}
+    name={field}
+    placeholder={placeholder}
+    disabled={disabled}
+    value={stateValue}
+    onChange={onChange}
+    onBlur={onBlur}
+    rows={rows}
+  />
 )
 
-export default enhance(SharedInput)
+export default enhance(SharedInputWithoutLabel)
