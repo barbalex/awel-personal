@@ -21,9 +21,7 @@ import MobileAbos from './MobileAbos'
 import KaderFunktionen from './KaderFunktionen'
 import Zuletzt from './Zuletzt'
 
-const Container = styled.div`
-  background-color: ${props => (props.showfilter ? 'yellow' : 'rgba(0,0,0,0)')};
-`
+const Container = styled.div``
 const StyledForm = styled(Form)`
   margin: 20px;
 `

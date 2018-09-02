@@ -22,10 +22,12 @@ import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 // above does not work
 // seems that navbar is not finished when PersonContainer is built
 const Container = styled.div`
-  height: calc(100% - 56px);
+  height: calc(100vh - 56px);
 `
 // seems needed to prevent unnessecary scrollbars
 const StyledReflexElement = styled(ReflexElement)`
+  background-color: ${props => (props.showfilter ? 'yellow' : 'rgba(0,0,0,0)')};
+  overflow-x: hidden !important;
   > div {
     height: unset !important;
   }
@@ -70,9 +72,10 @@ const enhance = compose(
 )
 
 const PersonContainer = ({ store }: { store: Object }) => {
+  const { showFilter, personen } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-  const person = store.personen.find(p => p.id === activeId)
+  const person = personen.find(p => p.id === activeId)
   // pass list the active person's props to enable instant updates
   const personJson = person ? person.toJSON() : {}
 
@@ -89,7 +92,7 @@ const PersonContainer = ({ store }: { store: Object }) => {
             <List activeId={activeId} {...personJson} />
           </ReflexElement>
           <ReflexSplitter />
-          <StyledReflexElement>
+          <StyledReflexElement showfilter={showFilter}>
             <Person activeId={activeId} />
           </StyledReflexElement>
         </ReflexContainer>

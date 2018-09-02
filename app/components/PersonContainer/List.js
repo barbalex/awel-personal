@@ -8,7 +8,6 @@ import { UncontrolledTooltip } from 'reactstrap'
 
 const Container = styled.div`
   border-right: 1px solid rgb(46, 125, 50);
-  background-color: ${props => (props.showfilter ? 'yellow' : 'rgba(0,0,0,0)')};
 `
 const Row = styled.div`
   border-bottom: 1px solid rgba(46, 125, 50, 0.5);
@@ -51,7 +50,7 @@ const PersonList = ({
   const personen = store.personenFiltered
 
   return (
-    <Container showfilter={showFilter}>
+    <Container>
       <List
         height={height}
         itemCount={personen.length}
