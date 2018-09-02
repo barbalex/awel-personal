@@ -65,7 +65,6 @@ const SchluesselsComponent = ({
     !showFilter &&
     (schluessels.length === 0 ||
       !schluessels.map(s => s.name).some(n => n === null))
-  console.log('Schluessels:', { filterSchluessel, schluessels })
 
   return (
     <FormGroup row>

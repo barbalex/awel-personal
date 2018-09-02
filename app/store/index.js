@@ -60,7 +60,12 @@ const myTypes = types
   })
   .views(self => ({
     get personenFiltered() {
-      const { filterSchluessel, filterPerson } = self
+      const {
+        filterSchluessel,
+        filterMobileAbo,
+        filterKaderFunktion,
+        filterPerson
+      } = self
       let personen = self.personen.toJSON()
       Object.keys(filterPerson).forEach(key => {
         if (filterPerson[key] || filterPerson[key] === 0) {
@@ -92,6 +97,42 @@ const myTypes = types
           })
         }
       })
+      let mobileAbos = self.mobileAbos.toJSON().filter(p => {
+        if (!self.showDeleted) return p.deleted === 0
+        return true
+      })
+      let mobileAbosIsFiltered = false
+      Object.keys(filterMobileAbo).forEach(key => {
+        if (filterMobileAbo[key]) {
+          mobileAbosIsFiltered = true
+          mobileAbos = mobileAbos.filter(p => {
+            if (!filterMobileAbo[key]) return true
+            if (!p[key]) return false
+            return p[key]
+              .toString()
+              .toLowerCase()
+              .includes(filterMobileAbo[key].toString().toLowerCase())
+          })
+        }
+      })
+      let kaderFunktionen = self.kaderFunktionen.toJSON().filter(p => {
+        if (!self.showDeleted) return p.deleted === 0
+        return true
+      })
+      let kaderFunktionenIsFiltered = false
+      Object.keys(filterKaderFunktion).forEach(key => {
+        if (filterKaderFunktion[key]) {
+          kaderFunktionenIsFiltered = true
+          kaderFunktionen = kaderFunktionen.filter(p => {
+            if (!filterKaderFunktion[key]) return true
+            if (!p[key]) return false
+            return p[key]
+              .toString()
+              .toLowerCase()
+              .includes(filterKaderFunktion[key].toString().toLowerCase())
+          })
+        }
+      })
       personen = personen
         .filter(p => {
           if (!self.showDeleted) return p.deleted === 0
@@ -100,6 +141,14 @@ const myTypes = types
         .filter(p => {
           if (!schluesselIsFiltered) return true
           return schluessel.filter(s => s.idPerson === p.id).length > 0
+        })
+        .filter(p => {
+          if (!mobileAbosIsFiltered) return true
+          return mobileAbos.filter(s => s.idPerson === p.id).length > 0
+        })
+        .filter(p => {
+          if (!kaderFunktionenIsFiltered) return true
+          return kaderFunktionen.filter(s => s.idPerson === p.id).length > 0
         })
         .sort((a, b) => {
           if (!a.name && !a.vorname) return -1

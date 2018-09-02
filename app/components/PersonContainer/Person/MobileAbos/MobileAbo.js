@@ -4,17 +4,18 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
-import { Input, UncontrolledTooltip } from 'reactstrap'
+import { UncontrolledTooltip } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 
 import Select from '../Select'
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
+import InputWithoutLabel from '../../../shared/InputWithoutLabel'
 
 const Row = styled.div`
   grid-column: 1;
   display: grid;
   grid-template-columns: ${props =>
-    props['data-ispdf'] ? '1fr 1fr 1fr' : '1fr 1fr 1fr 20px'};
+    props.nosymbol ? '1fr 1fr 1fr' : '1fr 1fr 1fr 20px'};
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
   padding: 3px 0;
@@ -54,37 +55,65 @@ const Delete = styled.div`
 const enhance = compose(
   inject('store'),
   withHandlers({
-    onBlur: ({ store, id }) => event => {
-      const field = event.target.name
-      const value = event.target.value || null
-      const { mobileAbos, updateField } = store
-      const mobileAbo = mobileAbos.find(p => p.id === id)
-      if (!mobileAbo) {
-        throw new Error(`MobileAbo with id ${id} not found`)
-      }
+    onBlur: ({ store, id }) => ({ field, value }) => {
+      const {
+        mobileAbos,
+        updateField,
+        showFilter,
+        filterMobileAbo,
+        setFilter
+      } = store
       const newValue = ifIsNumericAsNumber(value)
-      updateField({
-        table: 'mobileAbos',
-        parentModel: 'mobileAbos',
-        field,
-        value: newValue,
-        id: mobileAbo.id
-      })
+      let mobileAbo
+      if (showFilter) {
+        mobileAbo = filterMobileAbo
+        setFilter({
+          model: 'filterMobileAbo',
+          value: { ...filterMobileAbo, ...{ [field]: newValue } }
+        })
+      } else {
+        mobileAbo = mobileAbos.find(p => p.id === id)
+        if (!mobileAbo) {
+          throw new Error(`MobileAbo with id ${id} not found`)
+        }
+        updateField({
+          table: 'mobileAbos',
+          parentModel: 'mobileAbos',
+          field,
+          value: newValue,
+          id: mobileAbo.id
+        })
+      }
     },
     onChangeSelect: ({ store, id }) => ({ field, value }) => {
-      const { mobileAbos, updateField } = store
-      const mobileAbo = mobileAbos.find(p => p.id === id)
-      if (!mobileAbo) {
-        throw new Error(`MobileAbo with id ${id} not found`)
-      }
+      const {
+        mobileAbos,
+        updateField,
+        showFilter,
+        setFilter,
+        filterMobileAbo
+      } = store
       const newValue = ifIsNumericAsNumber(value)
-      updateField({
-        table: 'mobileAbos',
-        parentModel: 'mobileAbos',
-        field,
-        value: newValue,
-        id: mobileAbo.id
-      })
+      let mobileAbo
+      if (showFilter) {
+        mobileAbo = filterMobileAbo
+        setFilter({
+          model: 'filterMobileAbo',
+          value: { ...filterMobileAbo, ...{ [field]: newValue } }
+        })
+      } else {
+        mobileAbo = mobileAbos.find(p => p.id === id)
+        if (!mobileAbo) {
+          throw new Error(`MobileAbo with id ${id} not found`)
+        }
+        updateField({
+          table: 'mobileAbos',
+          parentModel: 'mobileAbos',
+          field,
+          value: newValue,
+          id: mobileAbo.id
+        })
+      }
     }
   }),
   observer
@@ -97,14 +126,25 @@ const MobileAbo = ({
   onChangeSelect
 }: {
   store: Object,
-  id: number,
+  id: number | string,
   onBlur: () => void,
   onChangeSelect: () => void
 }) => {
-  const mobileAbo = store.mobileAbos.find(s => s.id === id)
+  const {
+    showFilter,
+    mobileAbos,
+    mobileAboTypWerte,
+    mobileAboKostenstelleWerte,
+    filterMobileAbo
+  } = store
+  let mobileAbo
+  if (showFilter) {
+    mobileAbo = filterMobileAbo
+  } else {
+    mobileAbo = mobileAbos.find(s => s.id === id)
+  }
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
-  const { mobileAboTypWerte, mobileAboKostenstelleWerte } = store
   const mobileAboTypOptions = sortBy(mobileAboTypWerte, 'sort')
     .filter(w => !!w.value)
     .map(w => ({
@@ -122,7 +162,7 @@ const MobileAbo = ({
     }))
 
   return (
-    <Row key={`${id}`} data-ispdf={isPdf}>
+    <Row key={`${id}`} nosymbol={isPdf || showFilter}>
       <Typ>
         <Select
           key={`${id}typ`}
@@ -144,16 +184,16 @@ const MobileAbo = ({
         />
       </Kostenstelle>
       <Bemerkungen>
-        <Input
+        <InputWithoutLabel
           key={`${id}bemerkungen`}
-          name="bemerkungen"
-          defaultValue={mobileAbo.bemerkungen}
-          onBlur={onBlur}
+          value={mobileAbo.bemerkungen}
+          field="bemerkungen"
+          saveToDb={onBlur}
           type="textarea"
           rows={1}
         />
       </Bemerkungen>
-      {!isPdf && (
+      {!(isPdf || showFilter) && (
         <DeleteContainer>
           <Delete
             data-ispdf={isPdf}

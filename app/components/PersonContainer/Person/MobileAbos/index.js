@@ -45,25 +45,30 @@ const enhance = compose(
   observer
 )
 
-const MobileAboComponent = ({
+const MobileAbosComponent = ({
   store,
   onNew
 }: {
   store: Object,
   onNew: () => void
 }) => {
-  const { showFilter } = store
+  const { showFilter, filterMobileAbo } = store
   const location = store.location.toJSON()
   if (!location[1] && !showFilter) throw new Error(`no id found`)
   const activePersonenId = ifIsNumericAsNumber(location[1])
-  const mobileAbos = store.mobileAbos.filter(
-    s => s.idPerson === activePersonenId
-  )
+  let mobileAbos
+  if (showFilter) {
+    mobileAbos = [filterMobileAbo]
+  } else {
+    mobileAbos = store.mobileAbos.filter(s => s.idPerson === activePersonenId)
+  }
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
   const mayAddNew =
-    mobileAbos.length === 0 ||
-    !mobileAbos.map(s => s.name).some(n => n === null)
+    !showFilter &&
+    (mobileAbos.length === 0 ||
+      !mobileAbos.map(s => s.name).some(n => n === null))
+  console.log('MobileAbos, mayAddNew:', mayAddNew)
 
   return (
     <FormGroup row>
@@ -81,7 +86,10 @@ const MobileAboComponent = ({
             </Row>
           )}
           {mobileAbos.map(mobileAbo => (
-            <MobileAbo key={mobileAbo.id} id={mobileAbo.id} />
+            <MobileAbo
+              key={mobileAbo.id || 'filter'}
+              id={mobileAbo.id || 'filter'}
+            />
           ))}
           {mayAddNew && (
             <StyledButton onClick={onNew} outline>
@@ -94,4 +102,4 @@ const MobileAboComponent = ({
   )
 }
 
-export default enhance(MobileAboComponent)
+export default enhance(MobileAbosComponent)
