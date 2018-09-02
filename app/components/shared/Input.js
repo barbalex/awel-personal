@@ -41,6 +41,7 @@ const SharedInput = ({
   field,
   label,
   type = 'text',
+  rows = 1,
   placeholder = '',
   disabled = false,
   onChange,
@@ -50,6 +51,7 @@ const SharedInput = ({
   field: string,
   label?: string,
   type?: string,
+  rows?: number,
   placeholder?: string,
   disabled?: boolean,
   onChange: () => void,
@@ -69,6 +71,7 @@ const SharedInput = ({
         value={stateValue}
         onChange={onChange}
         onBlur={onBlur}
+        rows={rows}
       />
     </Col>
   </FormGroup>
