@@ -54,15 +54,13 @@ const enhance = compose(
         setFilter
       } = store
       const newValue = ifIsNumericAsNumber(value)
-      let schluessel
       if (showFilter) {
-        schluessel = filterSchluessel
         setFilter({
           model: 'filterSchluessel',
           value: { ...filterSchluessel, ...{ [field]: newValue } }
         })
       } else {
-        schluessel = schluessels.find(p => p.id === id)
+        const schluessel = schluessels.find(p => p.id === id)
         if (!schluessel) {
           throw new Error(`Schluessel with id ${id} not found`)
         }

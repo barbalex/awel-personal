@@ -42,25 +42,31 @@ const enhance = compose(
   observer
 )
 
-const KaderFunktionComponent = ({
+const KaderFunktionenComponent = ({
   store,
   onNew
 }: {
   store: Object,
   onNew: () => void
 }) => {
-  const { showFilter } = store
+  const { showFilter, filterKaderFunktion } = store
   const location = store.location.toJSON()
   if (!location[1] && !showFilter) throw new Error(`no id found`)
   const activePersonenId = ifIsNumericAsNumber(location[1])
-  const kaderFunktionen = store.kaderFunktionen.filter(
-    s => s.idPerson === activePersonenId
-  )
+  let kaderFunktionen
+  if (showFilter) {
+    kaderFunktionen = [filterKaderFunktion]
+  } else {
+    kaderFunktionen = store.kaderFunktionen.filter(
+      s => s.idPerson === activePersonenId
+    )
+  }
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
   const mayAddNew =
-    kaderFunktionen.length === 0 ||
-    !kaderFunktionen.map(s => s.name).some(n => n === null)
+    !showFilter &&
+    (kaderFunktionen.length === 0 ||
+      !kaderFunktionen.map(s => s.name).some(n => n === null))
 
   return (
     <FormGroup row>
@@ -77,7 +83,10 @@ const KaderFunktionComponent = ({
             </Row>
           )}
           {kaderFunktionen.map(kaderFunktion => (
-            <KaderFunktion key={kaderFunktion.id} id={kaderFunktion.id} />
+            <KaderFunktion
+              key={kaderFunktion.id || 'filter'}
+              id={kaderFunktion.id || 'filter'}
+            />
           ))}
           {mayAddNew && (
             <StyledButton onClick={onNew} outline>
@@ -90,4 +99,4 @@ const KaderFunktionComponent = ({
   )
 }
 
-export default enhance(KaderFunktionComponent)
+export default enhance(KaderFunktionenComponent)

@@ -64,15 +64,13 @@ const enhance = compose(
         setFilter
       } = store
       const newValue = ifIsNumericAsNumber(value)
-      let mobileAbo
       if (showFilter) {
-        mobileAbo = filterMobileAbo
         setFilter({
           model: 'filterMobileAbo',
           value: { ...filterMobileAbo, ...{ [field]: newValue } }
         })
       } else {
-        mobileAbo = mobileAbos.find(p => p.id === id)
+        const mobileAbo = mobileAbos.find(p => p.id === id)
         if (!mobileAbo) {
           throw new Error(`MobileAbo with id ${id} not found`)
         }
@@ -94,15 +92,13 @@ const enhance = compose(
         filterMobileAbo
       } = store
       const newValue = ifIsNumericAsNumber(value)
-      let mobileAbo
       if (showFilter) {
-        mobileAbo = filterMobileAbo
         setFilter({
           model: 'filterMobileAbo',
           value: { ...filterMobileAbo, ...{ [field]: newValue } }
         })
       } else {
-        mobileAbo = mobileAbos.find(p => p.id === id)
+        const mobileAbo = mobileAbos.find(p => p.id === id)
         if (!mobileAbo) {
           throw new Error(`MobileAbo with id ${id} not found`)
         }

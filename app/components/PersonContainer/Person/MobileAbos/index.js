@@ -68,7 +68,6 @@ const MobileAbosComponent = ({
     !showFilter &&
     (mobileAbos.length === 0 ||
       !mobileAbos.map(s => s.name).some(n => n === null))
-  console.log('MobileAbos, mayAddNew:', mayAddNew)
 
   return (
     <FormGroup row>
