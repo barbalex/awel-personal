@@ -69,7 +69,7 @@ const PersonList = ({
               }}
               active={!showFilter && activeId === row.id}
             >
-              {`${row.name || ''} ${row.vorname || ''}`}
+              <div>{`${row.name || ''} ${row.vorname || ''}`}</div>
               {row.deleted === 1 && (
                 <Fragment>
                   <i className="fas fa-trash-alt" id={`deletedIcon${row.id}`} />
