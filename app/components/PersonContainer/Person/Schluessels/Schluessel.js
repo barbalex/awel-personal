@@ -48,19 +48,33 @@ const enhance = compose(
     onBlur: ({ store, id }) => event => {
       const field = event.target.name
       const value = event.target.value || null
-      const { schluessel: schluessels } = store
-      const schluessel = schluessels.find(p => p.id === id)
-      if (!schluessel) {
-        throw new Error(`Schluessel with id ${id} not found`)
-      }
+      const {
+        schluessel: schluessels,
+        showFilter,
+        filterSchluessel,
+        setFilter
+      } = store
       const newValue = ifIsNumericAsNumber(value)
-      store.updateField({
-        table: 'schluessel',
-        parentModel: 'schluessel',
-        field,
-        value: newValue,
-        id: schluessel.id
-      })
+      let schluessel
+      if (showFilter) {
+        schluessel = filterSchluessel
+        setFilter({
+          model: 'filterSchluessel',
+          value: { ...filterSchluessel, ...{ [field]: newValue } }
+        })
+      } else {
+        schluessel = schluessels.find(p => p.id === id)
+        if (!schluessel) {
+          throw new Error(`Schluessel with id ${id} not found`)
+        }
+        store.updateField({
+          table: 'schluessel',
+          parentModel: 'schluessel',
+          field,
+          value: newValue,
+          id: schluessel.id
+        })
+      }
     }
   }),
   observer

@@ -51,11 +51,11 @@ const myTypes = types
     watchMutations: types.optional(types.boolean, false),
     history: types.optional(UndoManager, {}),
     filterPerson: types.optional(Person, {}),
-    filterEtikett: types.maybe(Etikett),
-    filterLink: types.maybe(Link),
-    filterSchluessel: types.maybe(Schluessel),
-    filterMobileAbo: types.maybe(MobileAbo),
-    filterKaderFunktion: types.maybe(KaderFunktion),
+    filterEtikett: types.optional(Etikett, {}),
+    filterLink: types.optional(Link, {}),
+    filterSchluessel: types.optional(Schluessel, {}),
+    filterMobileAbo: types.optional(MobileAbo, {}),
+    filterKaderFunktion: types.optional(KaderFunktion, {}),
     showFilter: types.optional(types.boolean, false)
   })
   .views(self => ({
@@ -71,6 +71,22 @@ const myTypes = types
               .toString()
               .toLowerCase()
               .includes(filterPerson[key].toString().toLowerCase())
+          })
+        }
+      })
+      const filterSchluessel = self.filterSchluessel
+      Object.keys(filterSchluessel).forEach(key => {
+        if (filterSchluessel[key] || filterSchluessel[key] === 0) {
+          personen = personen.filter(p => {
+            // TODO
+            // get schluessel of person
+            // find out if any persons schluessel fulfills filter
+            if (!filterSchluessel[key]) return true
+            if (!p[key]) return false
+            return p[key]
+              .toString()
+              .toLowerCase()
+              .includes(filterSchluessel[key].toString().toLowerCase())
           })
         }
       })

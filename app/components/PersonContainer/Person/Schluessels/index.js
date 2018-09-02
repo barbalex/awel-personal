@@ -49,18 +49,23 @@ const SchluesselsComponent = ({
   store: Object,
   onNew: () => void
 }) => {
-  const { showFilter } = store
+  const { showFilter, filterSchluessel } = store
   const location = store.location.toJSON()
   if (!location[1] && !showFilter) throw new Error(`no id found`)
   const activePersonenId = ifIsNumericAsNumber(location[1])
-  const schluessels = store.schluessel.filter(
-    s => s.idPerson === activePersonenId
-  )
+  let schluessels
+  if (showFilter) {
+    schluessels = [filterSchluessel]
+  } else {
+    schluessels = store.schluessel.filter(s => s.idPerson === activePersonenId)
+  }
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
   const mayAddNew =
-    schluessels.length === 0 ||
-    !schluessels.map(s => s.name).some(n => n === null)
+    !showFilter &&
+    (schluessels.length === 0 ||
+      !schluessels.map(s => s.name).some(n => n === null))
+  console.log('Schluessels:', { filterSchluessel, schluessels })
 
   return (
     <FormGroup row>
@@ -77,7 +82,7 @@ const SchluesselsComponent = ({
             </Row>
           )}
           {schluessels.map(schluessel => (
-            <Schluessel key={schluessel.id} id={schluessel.id} />
+            <Schluessel key={schluessel.id || 1} id={schluessel.id || 1} />
           ))}
           {mayAddNew && (
             <StyledButton onClick={onNew} outline>
