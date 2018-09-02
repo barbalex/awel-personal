@@ -74,13 +74,13 @@ const myTypes = types
           })
         }
       })
-      const filterSchluessel = self.filterSchluessel
+      const { filterSchluessel } = self
+      let schluessel = self.schluessel.toJSON()
+      let schluesselIsFiltered = false
       Object.keys(filterSchluessel).forEach(key => {
         if (filterSchluessel[key] || filterSchluessel[key] === 0) {
-          personen = personen.filter(p => {
-            // TODO
-            // get schluessel of person
-            // find out if any persons schluessel fulfills filter
+          schluesselIsFiltered = true
+          schluessel = schluessel.filter(p => {
             if (!filterSchluessel[key]) return true
             if (!p[key]) return false
             return p[key]
@@ -94,6 +94,10 @@ const myTypes = types
         .filter(p => {
           if (!self.showDeleted) return p.deleted === 0
           return true
+        })
+        .filter(p => {
+          if (!schluesselIsFiltered) return true
+          return schluessel.filter(s => s.idPerson === p.id).length > 0
         })
         .sort((a, b) => {
           if (!a.name && !a.vorname) return -1
