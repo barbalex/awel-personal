@@ -34,7 +34,7 @@ const enhance = compose(
     saveToDb: ({ store }) => ({ field, value }) => {
       const { personen, filterPerson, showFilter, setFilter } = store
       const location = store.location.toJSON()
-      if (!location[1]) throw new Error(`no id found`)
+      if (!location[1] && !showFilter) throw new Error(`no id found`)
       const activeId = ifIsNumericAsNumber(location[1])
       const person = personen.find(p => p.id === activeId)
       if (!person && !showFilter)
