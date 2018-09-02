@@ -104,7 +104,7 @@ const Person = ({
     person = personen.find(p => p.id === activeId)
     if (!person) person = {}
   }
-  console.log('Person, render, person:', person.toJSON())
+  // console.log('Person, render, person:', person.toJSON())
   const personId = showFilter ? '' : person.id
   // filter out options with empty values - makes no sense and errors
   const personOptions = sortBy(personen, ['name', 'vorname'])
