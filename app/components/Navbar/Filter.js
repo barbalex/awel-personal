@@ -42,7 +42,7 @@ const Filter = ({
           <i className="fas fa-times" />
         </VolltextFilterRemoveAddon>
         <InputGroupText id="filterAddon" onClick={toggleShowFilter}>
-          <i className="fas fa-filter" />
+          <i className={`fas ${store.showFilter ? 'fa-edit' : 'fa-filter'}`} />
         </InputGroupText>
       </InputGroupAddon>
       <UncontrolledTooltip
