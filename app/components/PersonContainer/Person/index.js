@@ -305,7 +305,7 @@ const Person = ({
           saveToDb={saveToDb}
           type="textarea"
         />
-        <Links />
+        {!showFilter && <Links />}
         <Schluessels />
         <MobileAbos />
         <KaderFunktionen />
