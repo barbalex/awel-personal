@@ -56,7 +56,10 @@ const myTypes = types
     filterSchluessel: types.optional(Schluessel, {}),
     filterMobileAbo: types.optional(MobileAbo, {}),
     filterKaderFunktion: types.optional(KaderFunktion, {}),
-    showFilter: types.optional(types.boolean, false)
+    showFilter: types.optional(types.boolean, false),
+    filterFulltext: types.maybe(
+      types.union(types.string, types.integer, types.null)
+    )
   })
   .views(self => ({
     get existsFilter() {
@@ -193,6 +196,32 @@ const myTypes = types
           if (!etikettenIsFiltered) return true
           return etiketten.filter(s => s.idPerson === p.id).length > 0
         })
+        .filter(p => {
+          const { filterFulltext } = self
+          if (!filterFulltext) return true
+          // now check for any value if includes
+          // TODO: get all schluessel, mobileAbo, kaderFunktion, etiketten
+          const schluesselValues = flatten(
+            self.schluessel
+              .filter(s => s.idPerson === p.id)
+              .map(s => Object.values(s))
+          )
+          console.log({
+            p,
+            schluesselValues,
+            schluessel: self.schluessel.toJSON()
+          })
+          return (
+            [...Object.values(p), flatten(schluesselValues)].filter(v => {
+              if (!v) return false
+              if (!v.toString()) return false
+              return v
+                .toString()
+                .toLowerCase()
+                .includes(filterFulltext.toString().toLowerCase())
+            }).length > 0
+          )
+        })
         .sort((a, b) => {
           if (!a.name && !a.vorname) return -1
           if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
@@ -220,6 +249,11 @@ const myTypes = types
     return {
       setFilter({ model, value }) {
         self[model] = value
+        if (self.filterFulltext) self.filterFulltext = null
+      },
+      setFilterFulltext(value) {
+        self.filterFulltext = value
+        if (value && self.existsFilter) self.emptyFilter()
       },
       emptyFilter() {
         self.filterPerson = {}

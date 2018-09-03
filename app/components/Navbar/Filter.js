@@ -22,25 +22,40 @@ const enhance = compose(
     toggleShowFilter: ({ store }) => () => {
       const { showFilter, setShowFilter } = store
       setShowFilter(!showFilter)
-    }
+    },
+    onChangeFilterFulltext: ({ store }) => e =>
+      store.setFilterFulltext(e.target.value),
+    onEmptyFilterFulltext: ({ store }) => () => store.setFilterFulltext(null)
   }),
   observer
 )
 
 const Filter = ({
   store,
-  toggleShowFilter
+  toggleShowFilter,
+  onChangeFilterFulltext,
+  onEmptyFilterFulltext
 }: {
   store: Object,
-  toggleShowFilter: () => void
+  toggleShowFilter: () => void,
+  onChangeFilterFulltext: () => void,
+  onEmptyFilterFulltext: () => void
 }) => (
   <div>
     <InputGroup>
-      <Input placeholder="Volltext filtern (TODO)" />
+      <Input
+        placeholder="Volltext filtern (TODO)"
+        onChange={onChangeFilterFulltext}
+      />
       <InputGroupAddon addonType="append">
-        <VolltextFilterRemoveAddon id="volltextFilterRemoveAddon">
-          <i className="fas fa-times" />
-        </VolltextFilterRemoveAddon>
+        {store.fulltextFilter && (
+          <VolltextFilterRemoveAddon
+            id="volltextFilterRemoveAddon"
+            onClick={onEmptyFilterFulltext}
+          >
+            <i className="fas fa-times" />
+          </VolltextFilterRemoveAddon>
+        )}
         <InputGroupText id="filterAddon" onClick={toggleShowFilter}>
           <i className={`fas ${store.showFilter ? 'fa-edit' : 'fa-filter'}`} />
         </InputGroupText>
@@ -50,12 +65,14 @@ const Filter = ({
           </InputGroupText>
         )}
       </InputGroupAddon>
-      <UncontrolledTooltip
-        placement="bottom"
-        target="volltextFilterRemoveAddon"
-      >
-        Volltext-Filter entfernen
-      </UncontrolledTooltip>
+      {store.fulltextFilter && (
+        <UncontrolledTooltip
+          placement="bottom"
+          target="volltextFilterRemoveAddon"
+        >
+          Volltext-Filter leeren
+        </UncontrolledTooltip>
+      )}
       <UncontrolledTooltip placement="bottom" target="filterAddon">
         {store.showFilter ? 'Daten bearbeiten' : 'Nach Felden filtern'}
       </UncontrolledTooltip>
