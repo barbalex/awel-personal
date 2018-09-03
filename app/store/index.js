@@ -90,7 +90,7 @@ const myTypes = types
         filterEtikett,
         filterPerson
       } = self
-      let personen = self.personen.toJSON()
+      let personen = self.personen
       Object.keys(filterPerson).forEach(key => {
         if (filterPerson[key] || filterPerson[key] === 0) {
           personen = personen.filter(p => {
@@ -103,7 +103,7 @@ const myTypes = types
           })
         }
       })
-      let schluessel = self.schluessel.toJSON().filter(p => {
+      let schluessel = self.schluessel.filter(p => {
         if (!self.showDeleted) return p.deleted === 0
         return true
       })
@@ -121,7 +121,7 @@ const myTypes = types
           })
         }
       })
-      let mobileAbos = self.mobileAbos.toJSON().filter(p => {
+      let mobileAbos = self.mobileAbos.filter(p => {
         if (!self.showDeleted) return p.deleted === 0
         return true
       })
@@ -139,7 +139,7 @@ const myTypes = types
           })
         }
       })
-      let kaderFunktionen = self.kaderFunktionen.toJSON().filter(p => {
+      let kaderFunktionen = self.kaderFunktionen.filter(p => {
         if (!self.showDeleted) return p.deleted === 0
         return true
       })
@@ -157,7 +157,7 @@ const myTypes = types
           })
         }
       })
-      let etiketten = self.etiketten.toJSON().filter(p => {
+      let etiketten = self.etiketten.filter(p => {
         if (!self.showDeleted) return p.deleted === 0
         return true
       })
@@ -200,19 +200,35 @@ const myTypes = types
           const { filterFulltext } = self
           if (!filterFulltext) return true
           // now check for any value if includes
-          // TODO: get all schluessel, mobileAbo, kaderFunktion, etiketten
+          const personValues = Object.values(p)
           const schluesselValues = flatten(
             self.schluessel
               .filter(s => s.idPerson === p.id)
               .map(s => Object.values(s))
           )
-          console.log({
-            p,
-            schluesselValues,
-            schluessel: self.schluessel.toJSON()
-          })
+          const mobileAboValues = flatten(
+            self.mobileAbos
+              .filter(s => s.idPerson === p.id)
+              .map(s => Object.values(s))
+          )
+          const kaderFunktionValues = flatten(
+            self.kaderFunktionen
+              .filter(s => s.idPerson === p.id)
+              .map(s => Object.values(s))
+          )
+          const etikettValues = flatten(
+            self.etiketten
+              .filter(s => s.idPerson === p.id)
+              .map(s => Object.values(s))
+          )
           return (
-            [...Object.values(p), flatten(schluesselValues)].filter(v => {
+            [
+              ...personValues,
+              schluesselValues,
+              mobileAboValues,
+              kaderFunktionValues,
+              etikettValues
+            ].filter(v => {
               if (!v) return false
               if (!v.toString()) return false
               return v
@@ -458,7 +474,7 @@ const myTypes = types
                * Solution: get this from undoManager's history
                * But: need to setTimeout to let undoManager catch up
                */
-              const historyChanges = undoManager.history.toJSON()
+              const historyChanges = undoManager.history
               const historyInversePatches = flatten(
                 historyChanges.map(c => c.inversePatches)
               )
@@ -601,7 +617,7 @@ const myTypes = types
       },
       addEtikett(etikett) {
         // grab idPerson from location
-        const location = self.location.toJSON()
+        const location = self.location
         const idPerson = ifIsNumericAsNumber(location[1])
         // 1. create new etikett in db, returning id
         let info
@@ -626,7 +642,7 @@ const myTypes = types
       },
       deleteEtikett(etikett) {
         // grab idPerson from location
-        const location = self.location.toJSON()
+        const location = self.location
         const idPerson = ifIsNumericAsNumber(location[1])
         // write to db
         try {
@@ -648,7 +664,7 @@ const myTypes = types
       },
       addLink(url) {
         // grab idPerson from location
-        const location = self.location.toJSON()
+        const location = self.location
         const idPerson = ifIsNumericAsNumber(location[1])
         // 1. create new link in db, returning id
         let info
@@ -681,13 +697,13 @@ const myTypes = types
         // write to store
         self.links.splice(findIndex(self.links, p => p.id === id), 1)
         // set persons letzteMutation
-        const location = self.location.toJSON()
+        const location = self.location
         const idPerson = ifIsNumericAsNumber(location[1])
         self.updatePersonsMutation(idPerson)
       },
       addSchluessel() {
         // grab idPerson from location
-        const location = self.location.toJSON()
+        const location = self.location
         const idPerson = ifIsNumericAsNumber(location[1])
         // 1. create new link in db, returning id
         let info
@@ -719,13 +735,13 @@ const myTypes = types
         // write to store
         self.schluessel.splice(findIndex(self.schluessel, p => p.id === id), 1)
         // set persons letzteMutation
-        const location = self.location.toJSON()
+        const location = self.location
         const idPerson = ifIsNumericAsNumber(location[1])
         self.updatePersonsMutation(idPerson)
       },
       addMobileAbo() {
         // grab idPerson from location
-        const location = self.location.toJSON()
+        const location = self.location
         const idPerson = ifIsNumericAsNumber(location[1])
         // 1. create new link in db, returning id
         let info
@@ -757,13 +773,13 @@ const myTypes = types
         // write to store
         self.mobileAbos.splice(findIndex(self.mobileAbos, p => p.id === id), 1)
         // set persons letzteMutation
-        const location = self.location.toJSON()
+        const location = self.location
         const idPerson = ifIsNumericAsNumber(location[1])
         self.updatePersonsMutation(idPerson)
       },
       addKaderFunktion() {
         // grab idPerson from location
-        const location = self.location.toJSON()
+        const location = self.location
         const idPerson = ifIsNumericAsNumber(location[1])
         // 1. create new link in db, returning id
         let info
@@ -798,7 +814,7 @@ const myTypes = types
           1
         )
         // set persons letzteMutation
-        const location = self.location.toJSON()
+        const location = self.location
         const idPerson = ifIsNumericAsNumber(location[1])
         self.updatePersonsMutation(idPerson)
       },
@@ -836,7 +852,7 @@ const myTypes = types
           ].includes(parentModel)
         ) {
           // set persons letzteMutation
-          const location = self.location.toJSON()
+          const location = self.location
           const idPerson = ifIsNumericAsNumber(location[1])
           self.updatePersonsMutation(idPerson)
         }
