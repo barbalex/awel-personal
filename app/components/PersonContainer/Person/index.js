@@ -178,15 +178,15 @@ const Person = ({
       label: w.value,
       value: w.value
     }))
-  // eslint-disable-next-line no-nested-ternary
-  const myEtiketten = showFilter
-    ? filterEtikett.etikett
-    : sortBy(etiketten.filter(e => e.idPerson === activeId), 'etikett')
-        .filter(w => !!w.etikett)
-        .map(e => ({
-          label: e.etikett,
-          value: e.etikett
-        }))
+  const myEtiketten = sortBy(
+    etiketten.filter(e => e.idPerson === activeId),
+    'etikett'
+  )
+    .filter(w => !!w.etikett)
+    .map(e => ({
+      label: e.etikett,
+      value: e.etikett
+    }))
 
   return (
     <Container showfilter={showFilter}>
@@ -330,7 +330,7 @@ const Person = ({
         {showFilter ? (
           <Select
             key={`${personId}${existsFilter ? 1 : 0}etikett`}
-            value={myEtiketten}
+            value={filterEtikett.etikett}
             field="etikett"
             label="Etikett"
             options={etikettenOptions}
