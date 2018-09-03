@@ -44,7 +44,7 @@ const Filter = ({
   <div>
     <InputGroup>
       <Input
-        placeholder="Volltext filtern (TODO)"
+        placeholder="Volltext filtern"
         onChange={onChangeFilterFulltext}
         value={store.filterFulltext || ''}
       />

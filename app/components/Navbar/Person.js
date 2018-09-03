@@ -27,7 +27,7 @@ const enhance = compose(
     showTab: ({ store }) => e => {
       e.preventDefault()
       const id = e.target.id
-      const activeLocation = store.location.toJSON()[0]
+      const activeLocation = store.location[0]
       const newLocation = id
       // do nothing if is same location
       if (newLocation === activeLocation) return
@@ -41,7 +41,7 @@ const enhance = compose(
         setDeletionCallback,
         personen
       } = store
-      const location = store.location.toJSON()
+      const location = store.location
       const activeId = ifIsNumericAsNumber(location[1])
       const activePerson = personen.find(p => p.id === activeId)
       if (activePerson.deleted === 1) {
@@ -94,21 +94,23 @@ const Person = ({
   addPerson: () => void,
   deletePerson: () => void
 }) => {
-  const { showDeleted } = store
-  const personen = store.personen.filter(
-    p => (showDeleted ? true : p.deleted === 0)
-  )
+  const { showDeleted, personenFiltered, personen } = store
   const location = store.location.toJSON()
   const activeLocation = location[0]
   const existsActivePerson = activeLocation === 'Personen' && location[1]
   const mayAddNewPerson =
-    personen.filter(p => p.deleted === 0 && !p.name && !p.vorname).length === 0
+    personenFiltered.filter(p => !p.name && !p.vorname).length === 0
+  const personenSum = showDeleted
+    ? personen.length
+    : personen.filter(p => p.deleted === 0).length
 
   return (
     <StyledNavItem active={activeLocation === 'Personen'}>
       <NavLink href="/" id="Personen" onClick={showTab}>
         Personen
-        {activeLocation === 'Personen' && <Sup>{personen.length}</Sup>}
+        {activeLocation === 'Personen' && (
+          <Sup>{`${personenFiltered.length}/${personenSum}`}</Sup>
+        )}
       </NavLink>
       {activeLocation !== 'Personen' && (
         <UncontrolledTooltip placement="bottom" target="Personen">
