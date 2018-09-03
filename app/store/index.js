@@ -200,26 +200,36 @@ const myTypes = types
           const { filterFulltext } = self
           if (!filterFulltext) return true
           // now check for any value if includes
-          const personValues = Object.values(p)
+          const personValues = Object.entries(p)
+            .filter(e => e[0] !== 'id')
+            .map(e => e[1])
           const schluesselValues = flatten(
-            self.schluessel
-              .filter(s => s.idPerson === p.id)
-              .map(s => Object.values(s))
+            self.schluessel.filter(s => s.idPerson === p.id).map(s =>
+              Object.entries(s)
+                .filter(e => e[0] !== 'id')
+                .map(e => e[1])
+            )
           )
           const mobileAboValues = flatten(
-            self.mobileAbos
-              .filter(s => s.idPerson === p.id)
-              .map(s => Object.values(s))
+            self.mobileAbos.filter(s => s.idPerson === p.id).map(s =>
+              Object.entries(s)
+                .filter(e => e[0] !== 'id')
+                .map(e => e[1])
+            )
           )
           const kaderFunktionValues = flatten(
-            self.kaderFunktionen
-              .filter(s => s.idPerson === p.id)
-              .map(s => Object.values(s))
+            self.kaderFunktionen.filter(s => s.idPerson === p.id).map(s =>
+              Object.entries(s)
+                .filter(e => e[0] !== 'id')
+                .map(e => e[1])
+            )
           )
           const etikettValues = flatten(
-            self.etiketten
-              .filter(s => s.idPerson === p.id)
-              .map(s => Object.values(s))
+            self.etiketten.filter(s => s.idPerson === p.id).map(s =>
+              Object.entries(s)
+                .filter(e => e[0] !== 'id')
+                .map(e => e[1])
+            )
           )
           return (
             [
