@@ -44,6 +44,11 @@ const Filter = ({
         <InputGroupText id="filterAddon" onClick={toggleShowFilter}>
           <i className={`fas ${store.showFilter ? 'fa-edit' : 'fa-filter'}`} />
         </InputGroupText>
+        {store.existsFilter && (
+          <InputGroupText id="emptyFilterAddon" onClick={store.emptyFilter}>
+            <i className="fas fa-times" />
+          </InputGroupText>
+        )}
       </InputGroupAddon>
       <UncontrolledTooltip
         placement="bottom"
@@ -54,6 +59,11 @@ const Filter = ({
       <UncontrolledTooltip placement="bottom" target="filterAddon">
         {store.showFilter ? 'Daten bearbeiten' : 'Nach Felden filtern'}
       </UncontrolledTooltip>
+      {store.existsFilter && (
+        <UncontrolledTooltip placement="bottom" target="emptyFilterAddon">
+          Filter leeren
+        </UncontrolledTooltip>
+      )}
     </InputGroup>
   </div>
 )

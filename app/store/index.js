@@ -59,6 +59,26 @@ const myTypes = types
     showFilter: types.optional(types.boolean, false)
   })
   .views(self => ({
+    get existsFilter() {
+      const {
+        filterPerson,
+        filterEtikett,
+        filterLink,
+        filterSchluessel,
+        filterMobileAbo,
+        filterKaderFunktion
+      } = self
+      return (
+        [
+          ...Object.values(filterPerson),
+          ...Object.values(filterEtikett),
+          ...Object.values(filterLink),
+          ...Object.values(filterSchluessel),
+          ...Object.values(filterMobileAbo),
+          ...Object.values(filterKaderFunktion)
+        ].filter(v => v).length > 0
+      )
+    },
     get personenFiltered() {
       const {
         filterSchluessel,
@@ -176,8 +196,15 @@ const myTypes = types
 
     return {
       setFilter({ model, value }) {
-        console.log('Store, setFilter', { model, value })
         self[model] = value
+      },
+      emptyFilter() {
+        self.filterPerson = {}
+        self.filterEtikett = {}
+        self.filterLink = {}
+        self.filterSchluessel = {}
+        self.filterMobileAbo = {}
+        self.filterKaderFunktion = {}
       },
       setShowFilter(value) {
         self.showFilter = value

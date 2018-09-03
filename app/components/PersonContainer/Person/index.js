@@ -91,7 +91,8 @@ const Person = ({
     geschlechtWerte,
     etikettWerte,
     showFilter,
-    filterPerson
+    filterPerson,
+    existsFilter
   } = store
   if (!showFilter && !activeId) return null
 
@@ -102,7 +103,7 @@ const Person = ({
     person = personen.find(p => p.id === activeId)
     if (!person) person = {}
   }
-  // console.log('Person, render, person:', person.toJSON())
+  console.log('Person, render, person:', person.toJSON())
   const personId = showFilter ? '' : person.id
   // filter out options with empty values - makes no sense and errors
   const personOptions = sortBy(personen, ['name', 'vorname'])
@@ -221,7 +222,10 @@ const Person = ({
           saveToDb={saveToDb}
         />
         <Select
-          key={`${personId}abteilung`}
+          // change id when filter changes
+          // only works for select because rerenders the input
+          // which takes focus out which is bad in regular input
+          key={`${personId}${existsFilter ? 1 : 0}abteilung`}
           value={person.abteilung}
           field="abteilung"
           label="Abteilung"
@@ -229,7 +233,7 @@ const Person = ({
           saveToDb={saveToDb}
         />
         <Select
-          key={`${personId}kostenstelle`}
+          key={`${personId}${existsFilter ? 1 : 0}kostenstelle`}
           value={person.kostenstelle}
           field="kostenstelle"
           label="Kostenstelle"
@@ -237,7 +241,7 @@ const Person = ({
           saveToDb={saveToDb}
         />
         <Select
-          key={`${personId}vorgesetztId`}
+          key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
           value={person.vorgesetztId}
           field="vorgesetztId"
           label="Vorgesetzte(r)"
@@ -245,21 +249,21 @@ const Person = ({
           saveToDb={saveToDb}
         />
         <Date
-          key={`${personId}eintrittDatum`}
+          key={`${personId}${existsFilter ? 1 : 0}eintrittDatum`}
           value={person.eintrittDatum}
           field="eintrittDatum"
           label="Eintritt Datum"
           saveToDb={saveToDb}
         />
         <Date
-          key={`${personId}austrittDatum`}
+          key={`${personId}${existsFilter ? 1 : 0}austrittDatum`}
           value={person.austrittDatum}
           field="austrittDatum"
           label="Austritt Datum"
           saveToDb={saveToDb}
         />
         <Select
-          key={`${personId}status`}
+          key={`${personId}${existsFilter ? 1 : 0}status`}
           value={person.status}
           field="status"
           label="Status"
@@ -281,7 +285,7 @@ const Person = ({
           saveToDb={saveToDb}
         />
         <Select
-          key={`${personId}geschlecht`}
+          key={`${personId}${existsFilter ? 1 : 0}geschlecht`}
           value={person.geschlecht}
           field="geschlecht"
           label="Geschlecht"
@@ -289,7 +293,7 @@ const Person = ({
           saveToDb={saveToDb}
         />
         <SelectMulti
-          key={`${personId}etikett`}
+          key={`${personId}${existsFilter ? 1 : 0}etikett`}
           value={myEtiketten}
           field="etikett"
           label="Etiketten"

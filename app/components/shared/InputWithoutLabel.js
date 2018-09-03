@@ -3,6 +3,7 @@ import React from 'react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
+import withLifecycle from '@hocs/with-lifecycle'
 import { inject, observer } from 'mobx-react'
 import { Input } from 'reactstrap'
 
@@ -30,6 +31,16 @@ const enhance = compose(
       if (store.showFilter) {
         // call onBlur to immediately update filters
         onBlur(event)
+      }
+    }
+  }),
+  withLifecycle({
+    // need this check because of filtering:
+    // when filter is emptied, value needs to reset
+    onDidUpdate(prevProps, props) {
+      if (props.value !== prevProps.value) {
+        const { setStateValue, value } = props
+        setStateValue(value || value === 0 ? value : '')
       }
     }
   }),
