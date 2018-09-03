@@ -187,7 +187,6 @@ const Person = ({
       label: e.etikett,
       value: e.etikett
     }))
-  console.log('Person, filterFulltext:', store.filterFulltext)
 
   return (
     <Container showfilter={showFilter}>

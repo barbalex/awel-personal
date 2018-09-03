@@ -278,8 +278,12 @@ const myTypes = types
         if (self.filterFulltext) self.filterFulltext = null
       },
       setFilterFulltext(value) {
+        if (value && !self.filterFulltext && self.location.length === 2) {
+          self.location.pop()
+        }
         self.filterFulltext = value
         if (value && self.existsFilter) self.emptyFilter()
+        if (self.showFilter) self.showFilter = false
       },
       emptyFilter() {
         self.filterPerson = {}
@@ -291,6 +295,7 @@ const myTypes = types
       },
       setShowFilter(value) {
         self.showFilter = value
+        if (value && self.filterFulltext) self.filterFulltext = null
       },
       setUsername(name) {
         self.username = name
