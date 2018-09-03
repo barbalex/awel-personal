@@ -103,14 +103,16 @@ const Person = ({
   const personenSum = showDeleted
     ? personen.length
     : personen.filter(p => p.deleted === 0).length
+  const personenSumSup =
+    personenFiltered.length !== personenSum
+      ? `${personenFiltered.length}/${personenSum}`
+      : personenFiltered.length
 
   return (
     <StyledNavItem active={activeLocation === 'Personen'}>
       <NavLink href="/" id="Personen" onClick={showTab}>
         Personen
-        {activeLocation === 'Personen' && (
-          <Sup>{`${personenFiltered.length}/${personenSum}`}</Sup>
-        )}
+        {activeLocation === 'Personen' && <Sup>{personenSumSup}</Sup>}
       </NavLink>
       {activeLocation !== 'Personen' && (
         <UncontrolledTooltip placement="bottom" target="Personen">
