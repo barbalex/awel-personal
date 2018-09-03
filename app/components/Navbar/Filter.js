@@ -46,9 +46,10 @@ const Filter = ({
       <Input
         placeholder="Volltext filtern (TODO)"
         onChange={onChangeFilterFulltext}
+        value={store.filterFulltext || ''}
       />
       <InputGroupAddon addonType="append">
-        {store.fulltextFilter && (
+        {store.filterFulltext && (
           <VolltextFilterRemoveAddon
             id="volltextFilterRemoveAddon"
             onClick={onEmptyFilterFulltext}
@@ -65,7 +66,7 @@ const Filter = ({
           </InputGroupText>
         )}
       </InputGroupAddon>
-      {store.fulltextFilter && (
+      {store.filterFulltext && (
         <UncontrolledTooltip
           placement="bottom"
           target="volltextFilterRemoveAddon"
