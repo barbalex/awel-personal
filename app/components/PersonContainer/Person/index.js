@@ -62,8 +62,41 @@ const enhance = compose(
         })
       }
     },
-    addEtikett: ({ store }) => etikett => store.addEtikett(etikett),
-    deleteEtikett: ({ store }) => etikett => store.deleteEtikett(etikett)
+    addEtikett: ({ store }) => etikett => {
+      const { showFilter, filterEtikett, setFilter, addEtikett } = store
+      if (showFilter) {
+        setFilter({
+          model: 'filterEtikett',
+          value: { ...filterEtikett, ...{ etikett } }
+        })
+      } else {
+        addEtikett(etikett)
+      }
+    },
+    deleteEtikett: ({ store }) => etikett => {
+      const { showFilter, filterEtikett, setFilter, deleteEtikett } = store
+      if (showFilter) {
+        setFilter({
+          model: 'filterEtikett',
+          value: { ...filterEtikett, ...{ etikett: null } }
+        })
+      } else {
+        deleteEtikett(etikett)
+      }
+    },
+    saveToDbEtikett: ({ store }) => ({ value }) => {
+      const { filterEtikett, setFilter } = store
+      if (value) {
+        return setFilter({
+          model: 'filterEtikett',
+          value: { ...filterEtikett, ...{ etikett: value } }
+        })
+      }
+      setFilter({
+        model: 'filterEtikett',
+        value: { ...filterEtikett, ...{ etikett: null } }
+      })
+    }
   }),
   observer
 )
@@ -72,12 +105,14 @@ const Person = ({
   store,
   activeId,
   saveToDb,
+  saveToDbEtikett,
   addEtikett,
   deleteEtikett
 }: {
   store: Object,
   activeId: ?number,
   saveToDb: () => void,
+  saveToDbEtikett: () => void,
   addEtikett: () => void,
   deleteEtikett: () => void
 }) => {
@@ -92,6 +127,7 @@ const Person = ({
     etikettWerte,
     showFilter,
     filterPerson,
+    filterEtikett,
     existsFilter
   } = store
   if (!showFilter && !activeId) return null
@@ -103,7 +139,6 @@ const Person = ({
     person = personen.find(p => p.id === activeId)
     if (!person) person = {}
   }
-  console.log('Person, render, person:', person.toJSON())
   const personId = showFilter ? '' : person.id
   // filter out options with empty values - makes no sense and errors
   const personOptions = sortBy(personen, ['name', 'vorname'])
@@ -143,15 +178,15 @@ const Person = ({
       label: w.value,
       value: w.value
     }))
-  const myEtiketten = sortBy(
-    etiketten.filter(e => e.idPerson === activeId),
-    'etikett'
-  )
-    .filter(w => !!w.etikett)
-    .map(e => ({
-      label: e.etikett,
-      value: e.etikett
-    }))
+  // eslint-disable-next-line no-nested-ternary
+  const myEtiketten = showFilter
+    ? filterEtikett.etikett
+    : sortBy(etiketten.filter(e => e.idPerson === activeId), 'etikett')
+        .filter(w => !!w.etikett)
+        .map(e => ({
+          label: e.etikett,
+          value: e.etikett
+        }))
 
   return (
     <Container showfilter={showFilter}>
@@ -292,15 +327,26 @@ const Person = ({
           options={geschlechtOptions}
           saveToDb={saveToDb}
         />
-        <SelectMulti
-          key={`${personId}${existsFilter ? 1 : 0}etikett`}
-          value={myEtiketten}
-          field="etikett"
-          label="Etiketten"
-          options={etikettenOptions}
-          addEtikett={addEtikett}
-          deleteEtikett={deleteEtikett}
-        />
+        {showFilter ? (
+          <Select
+            key={`${personId}${existsFilter ? 1 : 0}etikett`}
+            value={myEtiketten}
+            field="etikett"
+            label="Etikett"
+            options={etikettenOptions}
+            saveToDb={saveToDbEtikett}
+          />
+        ) : (
+          <SelectMulti
+            key={`${personId}${existsFilter ? 1 : 0}etikett`}
+            value={myEtiketten}
+            field="etikett"
+            label="Etiketten"
+            options={etikettenOptions}
+            addEtikett={addEtikett}
+            deleteEtikett={deleteEtikett}
+          />
+        )}
         <Input
           key={`${personId}bemerkungen`}
           value={person.bemerkungen}

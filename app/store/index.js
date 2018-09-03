@@ -84,6 +84,7 @@ const myTypes = types
         filterSchluessel,
         filterMobileAbo,
         filterKaderFunktion,
+        filterEtikett,
         filterPerson
       } = self
       let personen = self.personen.toJSON()
@@ -153,6 +154,24 @@ const myTypes = types
           })
         }
       })
+      let etiketten = self.etiketten.toJSON().filter(p => {
+        if (!self.showDeleted) return p.deleted === 0
+        return true
+      })
+      let etikettenIsFiltered = false
+      Object.keys(filterEtikett).forEach(key => {
+        if (filterEtikett[key]) {
+          etikettenIsFiltered = true
+          etiketten = etiketten.filter(p => {
+            if (!filterEtikett[key]) return true
+            if (!p[key]) return false
+            return p[key]
+              .toString()
+              .toLowerCase()
+              .includes(filterEtikett[key].toString().toLowerCase())
+          })
+        }
+      })
       personen = personen
         .filter(p => {
           if (!self.showDeleted) return p.deleted === 0
@@ -169,6 +188,10 @@ const myTypes = types
         .filter(p => {
           if (!kaderFunktionenIsFiltered) return true
           return kaderFunktionen.filter(s => s.idPerson === p.id).length > 0
+        })
+        .filter(p => {
+          if (!etikettenIsFiltered) return true
+          return etiketten.filter(s => s.idPerson === p.id).length > 0
         })
         .sort((a, b) => {
           if (!a.name && !a.vorname) return -1
