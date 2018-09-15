@@ -1137,9 +1137,11 @@ babel-messages@^6.23.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-add-module-exports@0.2.1:
-  version "0.2.1"
-  resolved "http://registry.npmjs.org/babel-plugin-add-module-exports/-/babel-plugin-add-module-exports-0.2.1.tgz#9ae9a1f4a8dc67f0cdec4f4aeda1e43a5ff65e25"
+babel-plugin-add-module-exports@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-add-module-exports/-/babel-plugin-add-module-exports-1.0.0.tgz#72b5424d941a336c6a35357f373d8b8366263031"
+  optionalDependencies:
+    chokidar "^2.0.4"
 
 babel-plugin-check-es2015-constants@^6.22.0, babel-plugin-check-es2015-constants@^6.8.0:
   version "6.22.0"
@@ -2393,7 +2395,7 @@ cheerio@^1.0.0-rc.2:
     lodash "^4.15.0"
     parse5 "^3.0.1"
 
-chokidar@^2.0.0, chokidar@^2.0.2:
+chokidar@^2.0.0, chokidar@^2.0.2, chokidar@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.0.4.tgz#356ff4e2b0e8e43e322d18a372460bbcf3accd26"
   dependencies:
@@ -7338,9 +7340,9 @@ mobx-state-tree@3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/mobx-state-tree/-/mobx-state-tree-3.3.0.tgz#a4bbe1bbd64af61fe2f842df9a882e3e7efb0783"
 
-mobx@5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/mobx/-/mobx-5.1.0.tgz#ae772ca8eb0c1dd93341ffce375f44a80050014d"
+mobx@5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-5.1.1.tgz#b8579ea7e7fbb07b79d56a71c3191287afc45f93"
 
 moment@2.22.2, moment@>=2.19.3:
   version "2.22.2"
