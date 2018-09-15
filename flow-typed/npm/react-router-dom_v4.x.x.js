@@ -1,5 +1,5 @@
-// flow-typed signature: ab1c735ef4ee91885b586be09a0ae20f
-// flow-typed version: 8840f4cb4b/react-router-dom_v4.x.x/flow_>=v0.63.x
+// flow-typed signature: ecc43e000c82096cdc6f9d077fb14682
+// flow-typed version: f4e99ca1ed/react-router-dom_v4.x.x/flow_>=v0.63.x
 
 declare module "react-router-dom" {
   import type { ComponentType, ElementConfig, Node, Component } from 'react';
@@ -157,10 +157,10 @@ declare module "react-router-dom" {
     location?: Location
   |}>>
 
-  declare export function withRouter<P: {}, Component: ComponentType<P>>(
-    WrappedComponent: Component
+  declare export function withRouter<WrappedComponent: ComponentType<*>>(
+    Component: WrappedComponent
   ): ComponentType<
-    $Diff<ElementConfig<Component>, ContextRouterVoid>
+    $Diff<ElementConfig<$Supertype<WrappedComponent>>, ContextRouterVoid>
     >;
 
   declare type MatchPathOptions = {
