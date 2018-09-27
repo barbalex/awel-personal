@@ -43,8 +43,7 @@
       "package.json"
     ],
     "dmg": {
-      "contents": [
-        {
+      "contents": [{
           "x": 130,
           "y": 220
         },
@@ -153,7 +152,7 @@
     "flow-bin": "0.81.0",
     "flow-runtime": "0.17.0",
     "flow-typed": "2.5.1",
-    "husky": "0.14.3",
+    "husky": "^0.14.3",
     "identity-obj-proxy": "3.0.0",
     "jest": "23.6.0",
     "minimist": "1.2.0",
