@@ -43,7 +43,8 @@
       "package.json"
     ],
     "dmg": {
-      "contents": [{
+      "contents": [
+        {
           "x": 130,
           "y": 220
         },
@@ -127,7 +128,7 @@
     "cross-spawn": "6.0.5",
     "css-loader": "^0.28.11",
     "detect-port": "1.2.3",
-    "electron": "3.0.4",
+    "electron": "3.0.5",
     "electron-builder": "^20.28.3",
     "electron-devtools-installer": "2.2.4",
     "electron-rebuild": "1.8.2",
@@ -142,7 +143,7 @@
     "eslint-plugin-compat": "2.6.2",
     "eslint-plugin-flowtype": "3.0.0",
     "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jest": "21.25.1",
+    "eslint-plugin-jest": "21.26.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-promise": "4.0.1",
     "eslint-plugin-react": "^7.11.0",
@@ -166,15 +167,15 @@
     "sinon": "^5.1.1",
     "spectron": "4.0.0",
     "style-loader": "0.23.1",
-    "stylefmt": "6.0.2",
+    "stylefmt": "6.0.3",
     "stylelint": "9.6.0",
     "stylelint-config-standard": "18.2.0",
     "uglifyjs-webpack-plugin": "^1.3.0",
     "url-loader": "1.1.2",
-    "webpack": "4.20.2",
+    "webpack": "4.22.0",
     "webpack-bundle-analyzer": "3.0.3",
     "webpack-cli": "3.1.2",
-    "webpack-dev-server": "3.1.9",
+    "webpack-dev-server": "3.1.10",
     "webpack-merge": "4.1.4"
   },
   "dependencies": {
@@ -187,15 +188,15 @@
     "font-awesome": "4.7.0",
     "history": "4.7.2",
     "jquery": "3.3.1",
-    "mobx": "5.5.0",
-    "mobx-react": "5.3.1",
-    "mobx-state-tree": "3.5.0",
+    "mobx": "5.5.2",
+    "mobx-react": "5.3.5",
+    "mobx-state-tree": "3.7.0",
     "moment": "2.22.2",
-    "mst-middlewares": "3.5.0",
+    "mst-middlewares": "3.7.0",
     "react": "16.5.2",
-    "react-datepicker": "1.6.0",
+    "react-datepicker": "1.7.0",
     "react-dom": "16.5.2",
-    "react-dropzone": "6.2.3",
+    "react-dropzone": "6.2.4",
     "react-hot-loader": "4.3.11",
     "react-json-view": "1.19.1",
     "react-popper": "1.0.2",
@@ -208,7 +209,7 @@
     "reactstrap": "6.5.0",
     "recompose": "0.30.0",
     "source-map-support": "0.5.9",
-    "styled-components": "4.0.0",
+    "styled-components": "4.0.2",
     "username": "4.0.0"
   },
   "devEngines": {
