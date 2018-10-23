@@ -1,4 +1,4 @@
-// flow-typed signature: 3de8ec6025b5e8cba3a77f71f4495008
+// flow-typed signature: dc2b339b282072e69ac231874e679100
 // flow-typed version: b349492ee1/moment_v2.x.x/flow_>=v0.25.x
 
 type moment$MomentOptions = {
