@@ -1,4 +1,4 @@
-// flow-typed signature: d71d314ca25fc6c20610a3ba80af9df0
+// flow-typed signature: 636ef2bb589992a4e20b25eca3cb8513
 // flow-typed version: 9698a46399/jquery_v3.x.x/flow_>=v0.28.x
 
 /* eslint-disable max-len, no-unused-vars, flowtype/no-weak-types */
