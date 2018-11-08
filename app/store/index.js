@@ -58,8 +58,8 @@ const myTypes = types
     filterKaderFunktion: types.optional(KaderFunktion, {}),
     showFilter: types.optional(types.boolean, false),
     filterFulltext: types.maybe(
-      types.union(types.string, types.integer, types.null)
-    )
+      types.union(types.string, types.integer, types.null),
+    ),
   })
   .views(self => ({
     get existsFilter() {
@@ -69,7 +69,7 @@ const myTypes = types
         filterLink,
         filterSchluessel,
         filterMobileAbo,
-        filterKaderFunktion
+        filterKaderFunktion,
       } = self
       return (
         [
@@ -78,7 +78,7 @@ const myTypes = types
           ...Object.values(filterLink),
           ...Object.values(filterSchluessel),
           ...Object.values(filterMobileAbo),
-          ...Object.values(filterKaderFunktion)
+          ...Object.values(filterKaderFunktion),
         ].filter(v => v).length > 0
       )
     },
@@ -88,7 +88,7 @@ const myTypes = types
         filterMobileAbo,
         filterKaderFunktion,
         filterEtikett,
-        filterPerson
+        filterPerson,
       } = self
       let personen = self.personen
       Object.keys(filterPerson).forEach(key => {
@@ -207,29 +207,29 @@ const myTypes = types
             self.schluessel.filter(s => s.idPerson === p.id).map(s =>
               Object.entries(s)
                 .filter(e => e[0] !== 'id')
-                .map(e => e[1])
-            )
+                .map(e => e[1]),
+            ),
           )
           const mobileAboValues = flatten(
             self.mobileAbos.filter(s => s.idPerson === p.id).map(s =>
               Object.entries(s)
                 .filter(e => e[0] !== 'id')
-                .map(e => e[1])
-            )
+                .map(e => e[1]),
+            ),
           )
           const kaderFunktionValues = flatten(
             self.kaderFunktionen.filter(s => s.idPerson === p.id).map(s =>
               Object.entries(s)
                 .filter(e => e[0] !== 'id')
-                .map(e => e[1])
-            )
+                .map(e => e[1]),
+            ),
           )
           const etikettValues = flatten(
             self.etiketten.filter(s => s.idPerson === p.id).map(s =>
               Object.entries(s)
                 .filter(e => e[0] !== 'id')
-                .map(e => e[1])
-            )
+                .map(e => e[1]),
+            ),
           )
           return (
             [
@@ -237,7 +237,7 @@ const myTypes = types
               schluesselValues,
               mobileAboValues,
               kaderFunktionValues,
-              etikettValues
+              etikettValues,
             ].filter(v => {
               if (!v) return false
               if (!v.toString()) return false
@@ -262,12 +262,12 @@ const myTypes = types
           return 1
         })
       return personen
-    }
+    },
   }))
   // functions are not serializable
   // so need to define this as volatile
   .volatile(() => ({
-    deletionCallback: null
+    deletionCallback: null,
   }))
   .actions(self => {
     setUndoManager(self)
@@ -364,7 +364,7 @@ const myTypes = types
             const dataset = self[tableName].find(d => d.id === rowId)
             if (!dataset) {
               throw new Error(
-                `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr. Daher wird er nicht aktualisiert`
+                `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr. Daher wird er nicht aktualisiert`,
               )
             }
             // 2. update value
@@ -373,7 +373,7 @@ const myTypes = types
               parentModel: tableName,
               field,
               value: previousValue,
-              id: rowId
+              id: rowId,
             })
             break
           }
@@ -383,7 +383,7 @@ const myTypes = types
             const dataset = self[tableName].find(d => d.id === rowId)
             if (!dataset) {
               throw new Error(
-                `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr. Daher wird er nicht gelöscht`
+                `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr. Daher wird er nicht gelöscht`,
               )
             }
             // 2. remove dataset
@@ -398,7 +398,7 @@ const myTypes = types
             // write to store
             self[tableName].splice(
               findIndex(self[tableName], p => p.id === rowId),
-              1
+              1,
             )
             break
           }
@@ -408,7 +408,7 @@ const myTypes = types
             const dataset = self[tableName].find(d => d.id === rowId)
             if (dataset) {
               throw new Error(
-                `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert. Daher wird er nicht wiederhergestellt`
+                `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert. Daher wird er nicht wiederhergestellt`,
               )
             }
             // 2. add dataset
@@ -416,7 +416,7 @@ const myTypes = types
             const previousObject = JSON.parse(previousValue)
             // need to remove keys with value null
             Object.keys(previousObject).forEach(
-              key => previousObject[key] == null && delete previousObject[key]
+              key => previousObject[key] == null && delete previousObject[key],
             )
             const objectKeys = keys(previousObject).join()
             const objectValues = lValues(previousObject)
@@ -442,7 +442,7 @@ const myTypes = types
         try {
           info = app.db
             .prepare(
-              'insert into personen (letzteMutationUser, letzteMutationZeit) values (@user, @zeit)'
+              'insert into personen (letzteMutationUser, letzteMutationZeit) values (@user, @zeit)',
             )
             .run({ user: self.username, zeit: Date.now() })
         } catch (error) {
@@ -450,11 +450,11 @@ const myTypes = types
         }
         // 2. add to store
         self.personen.push({
-          id: info.lastInsertROWID,
+          id: info.lastInsertRowid,
           letzteMutationUser: self.username,
-          letzteMutationZeit: Date.now()
+          letzteMutationZeit: Date.now(),
         })
-        self.setLocation(['Personen', info.lastInsertROWID.toString()])
+        self.setLocation(['Personen', info.lastInsertRowid.toString()])
       },
       addMutation({ tableName, patch, inversePatch }) {
         // watchMutations is false while data is loaded from server
@@ -491,12 +491,12 @@ const myTypes = types
                */
               const historyChanges = undoManager.history
               const historyInversePatches = flatten(
-                historyChanges.map(c => c.inversePatches)
+                historyChanges.map(c => c.inversePatches),
               )
               const historyInversePatch =
                 findLast(
                   historyInversePatches,
-                  p => p.op === 'add' && p.path === `/${tableName}/${index}`
+                  p => p.op === 'add' && p.path === `/${tableName}/${index}`,
                 ) || {}
               previousValue = JSON.stringify(historyInversePatch.value)
               rowId = historyInversePatch.value.id
@@ -514,7 +514,7 @@ const myTypes = types
           try {
             info = app.db
               .prepare(
-                'insert into mutations (time, user, op, tableName, rowId, field, value, previousValue) values (@time, @username, @op, @tableName, @rowId, @field, @value, @previousValue)'
+                'insert into mutations (time, user, op, tableName, rowId, field, value, previousValue) values (@time, @username, @op, @tableName, @rowId, @field, @value, @previousValue)',
               )
               .run({
                 username,
@@ -524,7 +524,7 @@ const myTypes = types
                 rowId,
                 field,
                 value,
-                previousValue
+                previousValue,
               })
           } catch (error) {
             return console.log(error)
@@ -532,7 +532,7 @@ const myTypes = types
           // 2. add to store
           // need to call other action as this happens inside timeout
           self.mutate({
-            id: info.lastInsertROWID,
+            id: info.lastInsertRowid,
             time,
             user: username,
             op,
@@ -540,7 +540,7 @@ const myTypes = types
             rowId,
             field,
             value,
-            previousValue
+            previousValue,
           })
         })
       },
@@ -553,22 +553,22 @@ const myTypes = types
         try {
           info = app.db
             .prepare(
-              `insert into ${table} (letzteMutationUser,letzteMutationZeit) values (@letzteMutationUser,@letzteMutationZeit)`
+              `insert into ${table} (letzteMutationUser,letzteMutationZeit) values (@letzteMutationUser,@letzteMutationZeit)`,
             )
             .run({
               letzteMutationUser: self.username,
-              letzteMutationZeit: Date.now()
+              letzteMutationZeit: Date.now(),
             })
         } catch (error) {
           return console.log(error)
         }
         // 2. add to store
         self[table].push({
-          id: info.lastInsertROWID,
+          id: info.lastInsertRowid,
           letzteMutationUser: self.username,
-          letzteMutationZeit: Date.now()
+          letzteMutationZeit: Date.now(),
         })
-        self.setLocation([table, info.lastInsertROWID.toString()])
+        self.setLocation([table, info.lastInsertRowid.toString()])
       },
       setWertDeleted({ id, table }) {
         // write to db
@@ -600,7 +600,7 @@ const myTypes = types
         try {
           app.db
             .prepare(
-              `update personen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`
+              `update personen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
             )
             .run({ id, user: self.username, time: Date.now() })
         } catch (error) {
@@ -639,7 +639,7 @@ const myTypes = types
         try {
           info = app.db
             .prepare(
-              'insert into etiketten (idPerson, etikett, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)'
+              'insert into etiketten (idPerson, etikett, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
             )
             .run(idPerson, etikett, self.username, Date.now())
         } catch (error) {
@@ -647,11 +647,11 @@ const myTypes = types
         }
         // 2. add to store
         self.etiketten.push({
-          id: info.lastInsertROWID,
+          id: info.lastInsertRowid,
           etikett,
           idPerson,
           letzteMutationUser: self.username,
-          letzteMutationZeit: Date.now()
+          letzteMutationZeit: Date.now(),
         })
         self.updatePersonsMutation(idPerson)
       },
@@ -671,9 +671,9 @@ const myTypes = types
         self.etiketten.splice(
           findIndex(
             self.etiketten,
-            e => e.idPerson === idPerson && e.etikett === etikett
+            e => e.idPerson === idPerson && e.etikett === etikett,
           ),
-          1
+          1,
         )
         self.updatePersonsMutation(idPerson)
       },
@@ -686,7 +686,7 @@ const myTypes = types
         try {
           info = app.db
             .prepare(
-              'insert into links (idPerson, url, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)'
+              'insert into links (idPerson, url, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
             )
             .run(idPerson, url, self.username, Date.now())
         } catch (error) {
@@ -694,11 +694,11 @@ const myTypes = types
         }
         // 2. add to store
         self.links.push({
-          id: info.lastInsertROWID,
+          id: info.lastInsertRowid,
           url,
           idPerson,
           letzteMutationUser: self.username,
-          letzteMutationZeit: Date.now()
+          letzteMutationZeit: Date.now(),
         })
         self.updatePersonsMutation(idPerson)
       },
@@ -725,7 +725,7 @@ const myTypes = types
         try {
           info = app.db
             .prepare(
-              'insert into schluessel (idPerson, letzteMutationUser, letzteMutationZeit) values (?,?,?)'
+              'insert into schluessel (idPerson, letzteMutationUser, letzteMutationZeit) values (?,?,?)',
             )
             .run(idPerson, self.username, Date.now())
         } catch (error) {
@@ -733,10 +733,10 @@ const myTypes = types
         }
         // 2. add to store
         self.schluessel.push({
-          id: info.lastInsertROWID,
+          id: info.lastInsertRowid,
           idPerson,
           letzteMutationUser: self.username,
-          letzteMutationZeit: Date.now()
+          letzteMutationZeit: Date.now(),
         })
         self.updatePersonsMutation(idPerson)
       },
@@ -763,7 +763,7 @@ const myTypes = types
         try {
           info = app.db
             .prepare(
-              'insert into mobileAbos (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)'
+              'insert into mobileAbos (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)',
             )
             .run(idPerson, self.username, Date.now())
         } catch (error) {
@@ -771,10 +771,10 @@ const myTypes = types
         }
         // 2. add to store
         self.mobileAbos.push({
-          id: info.lastInsertROWID,
+          id: info.lastInsertRowid,
           idPerson,
           letzteMutationUser: self.username,
-          letzteMutationZeit: Date.now()
+          letzteMutationZeit: Date.now(),
         })
         self.updatePersonsMutation(idPerson)
       },
@@ -801,7 +801,7 @@ const myTypes = types
         try {
           info = app.db
             .prepare(
-              'insert into kaderFunktionen (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)'
+              'insert into kaderFunktionen (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)',
             )
             .run(idPerson, self.username, Date.now())
         } catch (error) {
@@ -809,10 +809,10 @@ const myTypes = types
         }
         // 2. add to store
         self.kaderFunktionen.push({
-          id: info.lastInsertROWID,
+          id: info.lastInsertRowid,
           idPerson,
           letzteMutationUser: self.username,
-          letzteMutationZeit: Date.now()
+          letzteMutationZeit: Date.now(),
         })
         self.updatePersonsMutation(idPerson)
       },
@@ -826,7 +826,7 @@ const myTypes = types
         // write to store
         self.kaderFunktionen.splice(
           findIndex(self.kaderFunktionen, p => p.id === id),
-          1
+          1,
         )
         // set persons letzteMutation
         const location = self.location
@@ -837,13 +837,13 @@ const myTypes = types
         try {
           app.db
             .prepare(
-              `update ${table} set ${field} = @value, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`
+              `update ${table} set ${field} = @value, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
             )
             .run({
               value,
               id,
               user: self.username,
-              time: Date.now()
+              time: Date.now(),
             })
         } catch (error) {
           return console.log(error)
@@ -851,7 +851,7 @@ const myTypes = types
         const storeObject = self[parentModel].find(o => o.id === id)
         if (!storeObject) {
           return console.log(
-            `Error: no ${table} with id "${id}" found in store`
+            `Error: no ${table} with id "${id}" found in store`,
           )
         }
         storeObject[field] = value
@@ -863,7 +863,7 @@ const myTypes = types
             'schluessel',
             'mobileAbos',
             'kaderFunktionen',
-            'etiketten'
+            'etiketten',
           ].includes(parentModel)
         ) {
           // set persons letzteMutation
@@ -877,12 +877,12 @@ const myTypes = types
         try {
           app.db
             .prepare(
-              `update personen set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`
+              `update personen set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
             )
             .run({
               user: self.username,
               time: Date.now(),
-              id: idPerson
+              id: idPerson,
             })
         } catch (error) {
           return console.log(error)
@@ -891,7 +891,7 @@ const myTypes = types
         const person = self.personen.find(p => p.id === idPerson)
         person.letzteMutationUser = self.username
         person.letzteMutationZeit = Date.now()
-      }
+      },
     }
   })
 
