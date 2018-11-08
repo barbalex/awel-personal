@@ -1,9 +1,9 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { AppContainer as HotLoaderContainer } from 'react-hot-loader'
 import { Provider as MobxProvider } from 'mobx-react'
 import app from 'ampersand-app'
 import username from 'username'
+import { AppContainer as HotLoaderContainer } from 'react-hot-loader'
 
 import App from './components/App'
 import './app.global.css'
@@ -51,6 +51,19 @@ const run = async () => {
     </HotLoaderContainer>,
     document.getElementById('root')
   )
+  /*
+  if (module.hot) {
+    module.hot.accept('./containers/Root', () => {
+      // eslint-disable-next-line global-require
+      const NextRoot = require('./containers/Root').default
+      render(
+        <MobxProvider store={store}>
+          <App />
+        </MobxProvider>,
+        document.getElementById('root')
+      )
+    })
+  } */
 }
 
 run()
