@@ -11,6 +11,8 @@ import getDbConnection from './src/getDbConnection'
 import Store from './store'
 import watchMutations from './src/watchMutations'
 
+import { StoreContextProvider } from './storeContext'
+
 const run = async () => {
   let db
   try {
@@ -45,25 +47,14 @@ const run = async () => {
 
   render(
     <HotLoaderContainer>
-      <MobxProvider store={store}>
-        <App />
-      </MobxProvider>
+      <StoreContextProvider value={store}>
+        <MobxProvider store={store}>
+          <App />
+        </MobxProvider>
+      </StoreContextProvider>
     </HotLoaderContainer>,
     document.getElementById('root')
   )
-  /*
-  if (module.hot) {
-    module.hot.accept('./containers/Root', () => {
-      // eslint-disable-next-line global-require
-      const NextRoot = require('./containers/Root').default
-      render(
-        <MobxProvider store={store}>
-          <App />
-        </MobxProvider>,
-        document.getElementById('root')
-      )
-    })
-  } */
 }
 
 run()

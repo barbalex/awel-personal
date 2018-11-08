@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useState, useCallback } from 'react'
 import {
   Collapse,
   Navbar,
@@ -19,27 +19,18 @@ import Stammdaten from './Stammdaten'
 import Person from './Person'
 import Export from './Export'
 import More from './More'
+import storeContext from '../../storeContext'
 
-const enhance = compose(
-  inject('store'),
-  withState('open', 'setOpen', false),
-  withHandlers({
-    toggleNavbar: ({ open, setOpen }) => () => {
+const MyNavbar = () => {
+  const store = useContext(storeContext)
+  const [open, setOpen] = useState(false)
+  const toggleNavbar = useCallback(
+    () => {
       setOpen(!open)
-    }
-  }),
-  observer
-)
+    },
+    [open]
+  )
 
-const MyNavbar = ({
-  store,
-  open,
-  toggleNavbar
-}: {
-  store: Object,
-  open: boolean,
-  toggleNavbar: () => void
-}) => {
   const location = store.location.toJSON()
   const activeLocation = location[0]
 
@@ -75,4 +66,4 @@ const MyNavbar = ({
   )
 }
 
-export default enhance(MyNavbar)
+export default observer(MyNavbar)
