@@ -1,5 +1,5 @@
 // @flow
-import React from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import {
   Col,
   FormGroup,
@@ -10,11 +10,7 @@ import {
 } from 'reactstrap'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
-import withState from 'recompose/withState'
-import withLifecycle from '@hocs/with-lifecycle'
+import { observer } from 'mobx-react'
 import styled from 'styled-components'
 import { FaCalendarAlt } from 'react-icons/fa'
 
@@ -61,18 +57,28 @@ const StyledDatePicker = styled(DatePicker)`
   cursor: pointer;
 `
 
-const enhance = compose(
-  inject('store'),
-  withState('open', 'setOpen', false),
-  withState('stateValue', 'setStateValue', ({ value }) =>
+const DateField = ({
+  value,
+  field,
+  label,
+  saveToDb
+}: {
+  value: number | string,
+  field: string,
+  label: string,
+  saveToDb: () => void
+}) => {
+  const [open, setOpen] = useState(false)
+  const [stateValue, setStateValue] = useState(
     value || value === 0 ? value : ''
-  ),
-  withHandlers({
-    onChange: ({ setStateValue }) => async event => {
-      setStateValue(event.target.value)
-      return null
-    },
-    onBlur: ({ saveToDb, field, value }) => event => {
+  )
+
+  const onChange = useCallback(async event => {
+    setStateValue(event.target.value)
+    return null
+  })
+  const onBlur = useCallback(
+    event => {
       let newValue = event.target.value
       // save nulls if empty
       if (newValue === '') newValue = null
@@ -81,96 +87,70 @@ const enhance = compose(
       if (newValue === value) return
       saveToDb({ value: newValue, field })
     },
-    openPicker: ({ setOpen }) => () => setOpen(true),
-    closePicker: ({ setOpen }) => () => setOpen(false)
-  }),
-  withHandlers({
-    onChangeDatePicker: ({ onBlur, onChange, setOpen }) => async date => {
-      const myEvent = {
-        target: {
-          value: moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')
-        }
+    [value, field]
+  )
+  const openPicker = useCallback(() => setOpen(true))
+  const closePicker = useCallback(() => setOpen(false))
+  const onChangeDatePicker = useCallback(async date => {
+    const myEvent = {
+      target: {
+        value: moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')
       }
-      await onChange(myEvent)
-      onBlur(myEvent)
-      setOpen(false)
     }
-  }),
+    await onChange(myEvent)
+    onBlur(myEvent)
+    setOpen(false)
+  })
+
   // without lifecycle state value does not immediately update
   // after user enters new date
-  withLifecycle({
-    onDidUpdate(prevProps, props) {
-      if (props.value !== prevProps.value) {
-        const value = props.value || props.value === 0 ? props.value : ''
-        props.setStateValue(value)
-      }
-    }
-  }),
-  observer
-)
+  useEffect(() => setStateValue(value || value === 0 ? value : ''), [value])
 
-const DateField = ({
-  open,
-  openPicker,
-  closePicker,
-  stateValue,
-  field,
-  label,
-  onChange,
-  onChangeDatePicker,
-  onBlur
-}: {
-  open: boolean,
-  openPicker: () => void,
-  closePicker: () => void,
-  stateValue: number | string,
-  field: string,
-  label: string,
-  onChange: () => void,
-  onChangeDatePicker: () => void,
-  onBlur: () => void
-}) => (
-  <StyledFormGroup row>
-    <Label for={field} sm={2}>
-      {label}
-    </Label>
-    <Col sm={10}>
-      <InputGroup>
-        <Input
-          id={field}
-          type="text"
-          name={field}
-          value={stateValue}
-          onChange={onChange}
-          onBlur={onBlur}
-        />
-        <InputGroupAddon
-          addonType="append"
-          id="datePickerInputGroup"
-          onClick={openPicker}
-        >
-          <span className="input-group-text">
-            <FaCalendarAlt />
-          </span>
-          {open && (
-            <StyledDatePicker
-              selected={
-                moment(stateValue, 'DD.MM.YYYY').isValid()
-                  ? moment(stateValue, 'DD.MM.YYYY')
-                  : null
-              }
-              onChange={onChangeDatePicker}
-              dateFormat="DD.MM.YYYY"
-              locale="de-CH"
-              withPortal
-              inline
-              onClickOutside={closePicker}
-            />
-          )}
-        </InputGroupAddon>
-      </InputGroup>
-    </Col>
-  </StyledFormGroup>
-)
+  console.log('Date rendering', { value, field, label })
 
-export default enhance(DateField)
+  return (
+    <StyledFormGroup row>
+      <Label for={field} sm={2}>
+        {label}
+      </Label>
+      <Col sm={10}>
+        <InputGroup>
+          <Input
+            id={field}
+            type="text"
+            name={field}
+            value={stateValue}
+            onChange={onChange}
+            onBlur={onBlur}
+          />
+          <InputGroupAddon
+            addonType="append"
+            id="datePickerInputGroup"
+            onClick={openPicker}
+          >
+            <span className="input-group-text">
+              <FaCalendarAlt />
+            </span>
+            {open && (
+              <StyledDatePicker
+                selected={
+                  moment(stateValue, 'DD.MM.YYYY').isValid()
+                    ? moment(stateValue, 'DD.MM.YYYY')
+                    : null
+                }
+                onChange={onChangeDatePicker}
+                dateFormat="DD.MM.YYYY"
+                locale="de-CH"
+                withPortal
+                inline
+                onClickOutside={closePicker}
+              />
+            )}
+          </InputGroupAddon>
+        </InputGroup>
+      </Col>
+    </StyledFormGroup>
+  )
+}
+
+export default observer(DateField)
