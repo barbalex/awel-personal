@@ -8,8 +8,6 @@ import {
   UncontrolledDropdown
 } from 'reactstrap'
 import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
-import withState from 'recompose/withState'
 import { observer } from 'mobx-react'
 
 import personenPrepareData from './personenPrepareData'
@@ -20,6 +18,7 @@ const enhance = compose(observer)
 
 const Export = () => {
   const store = useContext(storeContext)
+  const { personenFiltered } = store
 
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
@@ -29,7 +28,7 @@ const Export = () => {
       const personenReadable = personenPrepareData({ store })
       personenExport({ personenReadable, setModalOpen, setModalMessage })
     },
-    [store.personenFiltered]
+    [personenFiltered]
   )
   const toggleModal = useCallback(() => setModalOpen(!modalOpen), [modalOpen])
 
