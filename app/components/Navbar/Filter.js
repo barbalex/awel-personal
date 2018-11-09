@@ -21,12 +21,9 @@ const Filter = () => {
   const store = useContext(storeContext)
   const { showFilter, setShowFilter, filterFulltext, setFilterFulltext } = store
 
-  const toggleShowFilter = useCallback(
-    () => {
-      setShowFilter(!showFilter)
-    },
-    [showFilter]
-  )
+  const toggleShowFilter = useCallback(() => setShowFilter(!showFilter), [
+    showFilter
+  ])
   const onChangeFilterFulltext = useCallback(e =>
     setFilterFulltext(e.target.value)
   )
