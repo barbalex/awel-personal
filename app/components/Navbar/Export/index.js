@@ -7,14 +7,11 @@ import {
   ModalBody,
   UncontrolledDropdown
 } from 'reactstrap'
-import compose from 'recompose/compose'
 import { observer } from 'mobx-react'
 
 import personenPrepareData from './personenPrepareData'
 import personenExport from './personenExport'
 import storeContext from '../../../storeContext'
-
-const enhance = compose(observer)
 
 const Export = () => {
   const store = useContext(storeContext)
@@ -51,4 +48,4 @@ const Export = () => {
   )
 }
 
-export default enhance(Export)
+export default observer(Export)
