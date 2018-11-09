@@ -1,17 +1,17 @@
-import React, { Fragment } from 'react'
+import React, { useContext, useCallback } from 'react'
 import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem
 } from 'reactstrap'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import app from 'ampersand-app'
-import { inject, observer } from 'mobx-react'
+import { observer } from 'mobx-react'
 import { shell } from 'electron'
 import { FaEllipsisV } from 'react-icons/fa'
+
+import storeContext from '../../storeContext'
 
 const DbPath = styled.span`
   font-style: italic;
@@ -28,27 +28,15 @@ const onClickIssues = () => {
   shell.openItem('https://github.com/barbalex/awel-personal/issues')
 }
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    toggleShowDeleted: ({ store }) => () =>
-      store.setShowDeleted(!store.showDeleted),
-    showMutations: ({ store }) => () => store.setLocation(['mutations'])
-  }),
-  observer
-)
-
-const More = ({
-  store,
-  toggleShowDeleted,
-  showMutations
-}: {
-  store: Object,
-  toggleShowDeleted: () => void,
-  showMutations: () => void
-}) => {
-  const { showDeleted, location } = store
+const More = () => {
+  const store = useContext(storeContext)
+  const { showDeleted, setShowDeleted, location, setLocation } = store
   const activeLocation = location.toJSON()[0]
+
+  const toggleShowDeleted = useCallback(() => setShowDeleted(!showDeleted), [
+    showDeleted
+  ])
+  const showMutations = useCallback(() => setLocation(['mutations']))
 
   return (
     <MoreMenu nav inNavbar>
@@ -62,12 +50,12 @@ const More = ({
           <DbPath>{`Aktuell: ${app.db.name}`}</DbPath>
         </DropdownItem>
         {!activeLocation !== 'mutations' && (
-          <Fragment>
+          <>
             <DropdownItem divider />
             <DropdownItem onClick={showMutations}>
               Daten-Änderungen anzeigen
             </DropdownItem>
-          </Fragment>
+          </>
         )}
         <DropdownItem divider />
         <DropdownItem onClick={toggleShowDeleted}>
@@ -84,4 +72,4 @@ const More = ({
   )
 }
 
-export default enhance(More)
+export default observer(More)
