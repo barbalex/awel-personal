@@ -1,12 +1,11 @@
-import React, { Fragment } from 'react'
+import React, { useContext, useCallback } from 'react'
 import { NavItem, NavLink, Button, UncontrolledTooltip } from 'reactstrap'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
-import { inject, observer } from 'mobx-react'
+import { observer } from 'mobx-react'
 import { FaPlus, FaTrashAlt } from 'react-icons/fa'
 
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
+import storeContext from '../../storeContext'
 
 const Sup = styled.sup`
   padding-left: 3px;
@@ -22,28 +21,32 @@ const StyledButton = styled(Button)`
   border: unset !important;
 `
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    showTab: ({ store }) => e => {
+const Person = () => {
+  const store = useContext(storeContext)
+  const {
+    showDeleted,
+    personenFiltered,
+    personen,
+    setLocation,
+    addPerson,
+    setDeletionMessage,
+    setDeletionTitle,
+    setDeletionCallback
+  } = store
+  const location = store.location.toJSON()
+  const activeLocation = location[0]
+  const activeId = ifIsNumericAsNumber(location[1])
+
+  const showTab = useCallback(
+    e => {
       e.preventDefault()
-      const id = e.target.id
-      const activeLocation = store.location[0]
-      const newLocation = id
-      // do nothing if is same location
-      if (newLocation === activeLocation) return
-      store.setLocation([newLocation])
+      setLocation([e.target.id])
     },
-    addPerson: ({ store }) => () => store.addPerson(),
-    deletePerson: ({ store }) => () => {
-      const {
-        setDeletionMessage,
-        setDeletionTitle,
-        setDeletionCallback,
-        personen
-      } = store
-      const location = store.location
-      const activeId = ifIsNumericAsNumber(location[1])
+    [location]
+  )
+  // const addPerson = useCallback(() => addPerson())
+  const deletePerson = useCallback(
+    () => {
       const activePerson = personen.find(p => p.id === activeId)
       if (activePerson.deleted === 1) {
         // person.deleted is already = 1
@@ -79,25 +82,10 @@ const enhance = compose(
         )
         setDeletionTitle('Person löschen')
       }
-    }
-  }),
-  observer
-)
+    },
+    [personen.length, location]
+  )
 
-const Person = ({
-  store,
-  showTab,
-  addPerson,
-  deletePerson
-}: {
-  store: Object,
-  showTab: () => void,
-  addPerson: () => void,
-  deletePerson: () => void
-}) => {
-  const { showDeleted, personenFiltered, personen } = store
-  const location = store.location.toJSON()
-  const activeLocation = location[0]
   const existsActivePerson = activeLocation === 'Personen' && location[1]
   const mayAddNewPerson =
     personenFiltered.filter(p => !p.name && !p.vorname).length === 0
@@ -121,7 +109,7 @@ const Person = ({
         </UncontrolledTooltip>
       )}
       {activeLocation === 'Personen' && (
-        <Fragment>
+        <>
           <StyledButton
             id="newPersonButton"
             onClick={addPerson}
@@ -146,10 +134,10 @@ const Person = ({
               markierte Person löschen
             </UncontrolledTooltip>
           )}
-        </Fragment>
+        </>
       )}
     </StyledNavItem>
   )
 }
 
-export default enhance(Person)
+export default observer(Person)
