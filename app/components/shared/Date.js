@@ -106,8 +106,6 @@ const DateField = ({
   // after user enters new date
   useEffect(() => setStateValue(value || value === 0 ? value : ''), [value])
 
-  console.log('Date rendering', { value, field, label })
-
   return (
     <StyledFormGroup row>
       <Label for={field} sm={2}>

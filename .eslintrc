@@ -20,7 +20,7 @@
     "flowtype/delimiter-dangle": ["error", "never"],
     "flowtype/generic-spacing": ["error", "never"],
     "flowtype/no-primitive-constructor-types": "error",
-    "flowtype/no-weak-types": "warn",
+    "flowtype/no-weak-types": "off",
     "flowtype/object-type-delimiter": ["error", "comma"],
     "flowtype/require-parameter-type": "off",
     "flowtype/require-return-type": "off",
@@ -43,6 +43,9 @@
     "promise/always-return": "error",
     "promise/catch-or-return": "error",
     "promise/no-native": "off",
+    "react/default-props-match-prop-types": ["error", {
+      "allowRequiredDefaults": true
+    }],
     "react/sort-comp": [
       "error",
       {

@@ -51,7 +51,9 @@ const DataList = ({
   activeTable: ?string
 }) => {
   const { showDeleted, setLocation } = store
+  // eslint-disable-next-line no-restricted-globals
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
+  // eslint-disable-next-line no-restricted-globals
   const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
   let data = store[activeTable].slice().filter(p => {
     if (!showDeleted) return p.deleted === 0
