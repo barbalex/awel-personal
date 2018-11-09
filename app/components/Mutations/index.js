@@ -1,12 +1,8 @@
 /* eslint-disable no-nested-ternary */
 // @flow
-import React from 'react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
-import withState from 'recompose/withState'
-import withLifecycle from '@hocs/with-lifecycle'
+import React, { useContext, useState, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
-import { inject, observer } from 'mobx-react'
+import { observer } from 'mobx-react'
 import { VariableSizeList as List } from 'react-window'
 import sortBy from 'lodash/sortBy'
 import moment from 'moment'
@@ -17,6 +13,7 @@ import ErrorBoundary from '../shared/ErrorBoundary'
 import fetchMutations from '../../src/fetchMutations'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import Filter from './Filter'
+import storeContext from '../../storeContext'
 
 moment.locale('de')
 
@@ -88,57 +85,11 @@ const RevertButton = styled(Button)`
   align-self: center;
 `
 
-const enhance = compose(
-  inject('store'),
-  withState('zeitFilter', 'setZeitFilter', null),
-  withState('userFilter', 'setUserFilter', null),
-  withState('opFilter', 'setOpFilter', null),
-  withState('tableFilter', 'setTableFilter', null),
-  withState('idFilter', 'setIdFilter', null),
-  withState('fieldFilter', 'setFieldFilter', null),
-  withState('valueFilter', 'setValueFilter', null),
-  withState('previousValueFilter', 'setPreviousValueFilter', null),
-  withHandlers({
-    revert: ({ store }) => e => {
-      const id = +e.target.dataset.id
-      store.revertMutation(id)
-    },
-    onChangeZeitFilter: ({ setZeitFilter }) => e =>
-      setZeitFilter(e.target.value),
-    emptyZeitFilter: ({ setZeitFilter }) => () => setZeitFilter(null),
-    onChangeUserFilter: ({ setUserFilter }) => e =>
-      setUserFilter(e.target.value),
-    emptyUserFilter: ({ setUserFilter }) => () => setUserFilter(null),
-    onChangeOpFilter: ({ setOpFilter }) => e => setOpFilter(e.target.value),
-    emptyOpFilter: ({ setOpFilter }) => () => setOpFilter(null),
-    onChangeTableFilter: ({ setTableFilter }) => e =>
-      setTableFilter(e.target.value),
-    emptyTableFilter: ({ setTableFilter }) => () => setTableFilter(null),
-    onChangeIdFilter: ({ setIdFilter }) => e => setIdFilter(e.target.value),
-    emptyIdFilter: ({ setIdFilter }) => () => setIdFilter(null),
-    onChangeFieldFilter: ({ setFieldFilter }) => e =>
-      setFieldFilter(e.target.value),
-    emptyFieldFilter: ({ setFieldFilter }) => () => setFieldFilter(null),
-    onChangeValueFilter: ({ setValueFilter }) => e =>
-      setValueFilter(e.target.value),
-    emptyValueFilter: ({ setValueFilter }) => () => setValueFilter(null),
-    onChangePreviousValueFilter: ({ setPreviousValueFilter }) => e =>
-      setPreviousValueFilter(e.target.value),
-    emptyPreviousValueFilter: ({ setPreviousValueFilter }) => () =>
-      setPreviousValueFilter(null)
-  }),
-  withLifecycle({
-    onDidMount() {
-      fetchMutations()
-    }
-  }),
-  observer
-)
-
 const getValueToShow = value => {
   let valueToShow = value
   if (!value && value !== 0) {
     valueToShow = ''
+    // eslint-disable-next-line no-restricted-globals
   } else if (!isNaN(value)) {
     // is a number
     if (value > 1530000000000 && moment.unix(value / 1000).isValid()) {
@@ -155,63 +106,50 @@ const getValueToShow = value => {
   return valueToShow
 }
 
-const Mutations = ({
-  store,
-  revert,
-  zeitFilter,
-  onChangeZeitFilter,
-  emptyZeitFilter,
-  onChangeUserFilter,
-  emptyUserFilter,
-  onChangeOpFilter,
-  emptyOpFilter,
-  onChangeTableFilter,
-  emptyTableFilter,
-  onChangeIdFilter,
-  emptyIdFilter,
-  onChangeFieldFilter,
-  emptyFieldFilter,
-  onChangeValueFilter,
-  emptyValueFilter,
-  onChangePreviousValueFilter,
-  emptyPreviousValueFilter,
-  userFilter,
-  opFilter,
-  tableFilter,
-  idFilter,
-  fieldFilter,
-  valueFilter,
-  previousValueFilter
-}: {
-  store: Object,
-  revert: () => void,
-  zeitFilter?: ?string,
-  onChangeZeitFilter: () => void,
-  emptyZeitFilter: () => void,
-  onChangeUserFilter: () => void,
-  emptyUserFilter: () => void,
-  onChangeOpFilter: () => void,
-  emptyOpFilter: () => void,
-  onChangeTableFilter: () => void,
-  emptyTableFilter: () => void,
-  onChangeIdFilter: () => void,
-  emptyIdFilter: () => void,
-  onChangeFieldFilter: () => void,
-  emptyFieldFilter: () => void,
-  onChangeValueFilter: () => void,
-  emptyValueFilter: () => void,
-  onChangePreviousValueFilter: () => void,
-  emptyPreviousValueFilter: () => void,
-  userFilter?: ?string,
-  opFilter?: ?string,
-  tableFilter?: ?string,
-  idFilter?: ?string,
-  fieldFilter?: ?string,
-  valueFilter?: ?string,
-  previousValueFilter?: ?string
-}) => {
+const Mutations = () => {
+  const store = useContext(storeContext)
   const { setLocation, mutations: rawMutations } = store
   const location = store.location.toJSON()
+
+  const [zeitFilter, setZeitFilter] = useState(null)
+  const [userFilter, setUserFilter] = useState(null)
+  const [opFilter, setOpFilter] = useState(null)
+  const [tableFilter, setTableFilter] = useState(null)
+  const [idFilter, setIdFilter] = useState(null)
+  const [fieldFilter, setFieldFilter] = useState(null)
+  const [valueFilter, setValueFilter] = useState(null)
+  const [previousValueFilter, setPreviousValueFilter] = useState(null)
+
+  const revert = useCallback(e => {
+    const id = +e.target.dataset.id
+    store.revertMutation(id)
+  })
+  const onChangeZeitFilter = useCallback(e => setZeitFilter(e.target.value))
+  const emptyZeitFilter = useCallback(() => setZeitFilter(null))
+  const onChangeUserFilter = useCallback(e => setUserFilter(e.target.value))
+  const emptyUserFilter = useCallback(() => setUserFilter(null))
+  const onChangeOpFilter = useCallback(e => setOpFilter(e.target.value))
+  const emptyOpFilter = useCallback(() => setOpFilter(null))
+  const onChangeTableFilter = useCallback(e => setTableFilter(e.target.value))
+  const emptyTableFilter = useCallback(() => setTableFilter(null))
+  const onChangeIdFilter = useCallback(e => setIdFilter(e.target.value))
+  const emptyIdFilter = useCallback(() => setIdFilter(null))
+  const onChangeFieldFilter = useCallback(e => setFieldFilter(e.target.value))
+  const emptyFieldFilter = useCallback(() => setFieldFilter(null))
+  const onChangeValueFilter = useCallback(e => setValueFilter(e.target.value))
+  const emptyValueFilter = useCallback(() => setValueFilter(null))
+  const onChangePreviousValueFilter = useCallback(e =>
+    setPreviousValueFilter(e.target.value)
+  )
+  const emptyPreviousValueFilter = useCallback(() =>
+    setPreviousValueFilter(null)
+  )
+
+  useEffect(() => {
+    console.log('fetching mutations')
+    fetchMutations()
+  }, [])
+
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const mutations = sortBy(rawMutations.slice(), 'id')
     .reverse()
@@ -267,6 +205,7 @@ const Mutations = ({
     .filter(r => {
       if (!valueFilter) return true
       if (!r.value) return false
+      // eslint-disable-next-line no-restricted-globals
       if (!isNaN(r.value)) return r.value.toString().includes(valueFilter)
       return (
         r.value && r.value.toLowerCase().includes(valueFilter.toLowerCase())
@@ -275,6 +214,7 @@ const Mutations = ({
     .filter(r => {
       if (!previousValueFilter) return true
       if (!r.previousValue) return false
+      // eslint-disable-next-line no-restricted-globals
       if (!isNaN(r.previousValue))
         return r.previousValue.toString().includes(previousValueFilter)
       return (
@@ -440,4 +380,4 @@ const Mutations = ({
   )
 }
 
-export default enhance(Mutations)
+export default observer(Mutations)
