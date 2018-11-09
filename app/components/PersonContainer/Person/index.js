@@ -1,5 +1,5 @@
 // @flow
-import React from 'react'
+import React, { useContext, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
@@ -20,6 +20,7 @@ import Schluessels from './Schluessels'
 import MobileAbos from './MobileAbos'
 import KaderFunktionen from './KaderFunktionen'
 import Zuletzt from './Zuletzt'
+import storeContext from '../../../storeContext'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
@@ -102,20 +103,19 @@ const enhance = compose(
 )
 
 const Person = ({
-  store,
   activeId,
   saveToDb,
   saveToDbEtikett,
   addEtikett,
   deleteEtikett
 }: {
-  store: Object,
   activeId: ?number,
   saveToDb: () => void,
   saveToDbEtikett: () => void,
   addEtikett: () => void,
   deleteEtikett: () => void
 }) => {
+  const store = useContext(storeContext)
   const {
     personen,
     etiketten,
@@ -132,6 +132,8 @@ const Person = ({
   } = store
   if (!showFilter && !activeId) return null
 
+  console.log('Person rendering')
+
   let person
   if (showFilter) {
     person = filterPerson
@@ -141,52 +143,65 @@ const Person = ({
   }
   const personId = showFilter ? '' : person.id
   // filter out options with empty values - makes no sense and errors
-  const personOptions = sortBy(personen, ['name', 'vorname'])
-    .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-    .filter(w => !showFilter && w.id !== person.id)
-    .map(w => ({
-      label: `${w.name} ${w.vorname}`,
-      value: w.id
-    }))
-  const abteilungOptions = sortBy(abteilungWerte, 'sort')
-    .filter(w => !!w.value)
-    .map(w => ({
-      label: w.value,
-      value: w.value
-    }))
-  const kostenstelleOptions = sortBy(kostenstelleWerte, 'sort')
-    .filter(w => !!w.value)
-    .map(w => ({
-      label: w.value,
-      value: w.value
-    }))
-  const statusOptions = sortBy(statusWerte, 'sort')
-    .filter(w => !!w.value)
-    .map(w => ({
-      label: w.value,
-      value: w.value
-    }))
-  const geschlechtOptions = sortBy(geschlechtWerte, 'sort')
-    .filter(w => !!w.value)
-    .map(w => ({
-      label: w.value,
-      value: w.value
-    }))
-  const etikettenOptions = sortBy(etikettWerte, 'sort')
-    .filter(w => !!w.value)
-    .map(w => ({
-      label: w.value,
-      value: w.value
-    }))
-  const myEtiketten = sortBy(
-    etiketten.filter(e => e.idPerson === activeId),
-    'etikett'
+  const personOptions = useMemo(
+    () =>
+      sortBy(personen, ['name', 'vorname'])
+        .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
+        .filter(w => !showFilter && w.id !== person.id)
+        .map(w => ({
+          label: `${w.name} ${w.vorname}`,
+          value: w.id
+        })),
+    [personen.length]
   )
-    .filter(w => !!w.etikett)
-    .map(e => ({
-      label: e.etikett,
-      value: e.etikett
-    }))
+  const abteilungOptions = useMemo(() =>
+    sortBy(abteilungWerte, 'sort')
+      .filter(w => !!w.value)
+      .map(w => ({
+        label: w.value,
+        value: w.value
+      }))
+  )
+  const kostenstelleOptions = useMemo(() =>
+    sortBy(kostenstelleWerte, 'sort')
+      .filter(w => !!w.value)
+      .map(w => ({
+        label: w.value,
+        value: w.value
+      }))
+  )
+  const statusOptions = useMemo(() =>
+    sortBy(statusWerte, 'sort')
+      .filter(w => !!w.value)
+      .map(w => ({
+        label: w.value,
+        value: w.value
+      }))
+  )
+  const geschlechtOptions = useMemo(() =>
+    sortBy(geschlechtWerte, 'sort')
+      .filter(w => !!w.value)
+      .map(w => ({
+        label: w.value,
+        value: w.value
+      }))
+  )
+  const etikettenOptions = useMemo(() =>
+    sortBy(etikettWerte, 'sort')
+      .filter(w => !!w.value)
+      .map(w => ({
+        label: w.value,
+        value: w.value
+      }))
+  )
+  const myEtiketten = useMemo(() =>
+    sortBy(etiketten.filter(e => e.idPerson === activeId), 'etikett')
+      .filter(w => !!w.etikett)
+      .map(e => ({
+        label: e.etikett,
+        value: e.etikett
+      }))
+  )
 
   return (
     <Container showfilter={showFilter}>
