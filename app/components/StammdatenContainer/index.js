@@ -1,16 +1,15 @@
 // @flow
-import React from 'react'
-import compose from 'recompose/compose'
-import withLifecycle from '@hocs/with-lifecycle'
+import React, { useEffect, useContext } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
-import { inject, observer } from 'mobx-react'
+import { observer } from 'mobx-react'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Data from './Data'
 import List from './List'
 import fetchWerte from '../../src/fetchWerte'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
+import storeContext from '../../storeContext'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
@@ -25,24 +24,8 @@ const StyledReflexElement = styled(ReflexElement)`
   }
 `
 
-const enhance = compose(
-  inject('store'),
-  withLifecycle({
-    onDidMount() {
-      fetchWerte('statusWerte')
-      fetchWerte('geschlechtWerte')
-      fetchWerte('abteilungWerte')
-      fetchWerte('kostenstelleWerte')
-      fetchWerte('mobileAboTypWerte')
-      fetchWerte('kaderFunktionWerte')
-      fetchWerte('mobileAboKostenstelleWerte')
-      fetchWerte('etikettWerte')
-    }
-  }),
-  observer
-)
-
-const StammdatenContainer = ({ store }: { store: Object }) => {
+const StammdatenContainer = () => {
+  const store = useContext(storeContext)
   const location = store.location.toJSON()
   const activeTable = location[0]
   const activeId = ifIsNumericAsNumber(location[1])
@@ -50,6 +33,17 @@ const StammdatenContainer = ({ store }: { store: Object }) => {
   const dat = data.find(d => d.id === activeId)
   // pass list the active dat's props to enable instant updates
   const datJson = dat || {}
+
+  useEffect(() => {
+    fetchWerte('statusWerte')
+    fetchWerte('geschlechtWerte')
+    fetchWerte('abteilungWerte')
+    fetchWerte('kostenstelleWerte')
+    fetchWerte('mobileAboTypWerte')
+    fetchWerte('kaderFunktionWerte')
+    fetchWerte('mobileAboKostenstelleWerte')
+    fetchWerte('etikettWerte')
+  }, [])
 
   return (
     <Container>
@@ -73,4 +67,4 @@ const StammdatenContainer = ({ store }: { store: Object }) => {
   )
 }
 
-export default enhance(StammdatenContainer)
+export default observer(StammdatenContainer)
