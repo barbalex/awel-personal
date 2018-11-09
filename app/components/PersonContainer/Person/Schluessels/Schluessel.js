@@ -5,6 +5,7 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import { UncontrolledTooltip } from 'reactstrap'
+import { FaTimes } from 'react-icons/fa'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import InputWithoutLabel from '../../../shared/InputWithoutLabel'
@@ -123,7 +124,7 @@ const SchluesselComponent = ({
             onClick={() => store.deleteSchluessel(id)}
             id={`deleteSchluesselIcon${id}`}
           >
-            <i className="fas fa-times" />
+            <FaTimes />
           </Delete>
           <UncontrolledTooltip
             placement="left"

@@ -6,6 +6,7 @@ import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import { UncontrolledTooltip } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
+import { FaTimes } from 'react-icons/fa'
 
 import Select from '../Select'
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
@@ -168,7 +169,7 @@ const KaderFunktion = ({
             onClick={() => store.deleteKaderFunktion(id)}
             id={`deleteKaderFunktionIcon${id}`}
           >
-            <i className="fas fa-times" />
+            <FaTimes />
           </Delete>
           <UncontrolledTooltip
             placement="left"

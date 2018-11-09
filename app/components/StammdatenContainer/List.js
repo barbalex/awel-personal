@@ -6,6 +6,7 @@ import compose from 'recompose/compose'
 import { inject, observer } from 'mobx-react'
 import { UncontrolledTooltip } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
+import { FaTrashAlt } from 'react-icons/fa'
 
 import tables from '../../src/tables'
 
@@ -74,7 +75,7 @@ const DataList = ({
               {row.value || '(kein Wert)'}
               {row.deleted === 1 && (
                 <Fragment>
-                  <i className="fas fa-trash-alt" id={`deletedIcon${row.id}`} />
+                  <FaTrashAlt id={`deletedIcon${row.id}`} />
                   <UncontrolledTooltip
                     placement="left"
                     target={`deletedIcon${row.id}`}

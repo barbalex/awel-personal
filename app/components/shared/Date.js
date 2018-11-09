@@ -16,6 +16,7 @@ import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
 import withLifecycle from '@hocs/with-lifecycle'
 import styled from 'styled-components'
+import { FaCalendarAlt } from 'react-icons/fa'
 
 moment.locale('de')
 
@@ -63,10 +64,8 @@ const StyledDatePicker = styled(DatePicker)`
 const enhance = compose(
   inject('store'),
   withState('open', 'setOpen', false),
-  withState(
-    'stateValue',
-    'setStateValue',
-    ({ value }) => (value || value === 0 ? value : '')
+  withState('stateValue', 'setStateValue', ({ value }) =>
+    value || value === 0 ? value : ''
   ),
   withHandlers({
     onChange: ({ setStateValue }) => async event => {
@@ -151,7 +150,7 @@ const DateField = ({
           onClick={openPicker}
         >
           <span className="input-group-text">
-            <i className="far fa-calendar-alt" />
+            <FaCalendarAlt />
           </span>
           {open && (
             <StyledDatePicker

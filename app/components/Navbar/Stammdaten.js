@@ -11,6 +11,7 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import { inject, observer } from 'mobx-react'
+import { FaPlus, FaTrashAlt } from 'react-icons/fa'
 
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 
@@ -163,7 +164,7 @@ const Stammdaten = ({
             onClick={addWert}
             disabled={!mayAddNewWert}
           >
-            <i className="fas fa-plus" />
+            <FaPlus />
           </StyledButton>
           {mayAddNewWert && (
             <UncontrolledTooltip
@@ -178,7 +179,7 @@ const Stammdaten = ({
             onClick={deleteWert}
             disabled={!existsActiveWert}
           >
-            <i className="fas fa-trash-alt" />
+            <FaTrashAlt />
           </StyledButton>
           {existsActiveWert && (
             <UncontrolledTooltip

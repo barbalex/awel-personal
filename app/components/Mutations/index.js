@@ -8,6 +8,7 @@ import sortBy from 'lodash/sortBy'
 import moment from 'moment'
 import { Button, UncontrolledTooltip } from 'reactstrap'
 import ReactJson from 'react-json-view'
+import { FaUndo } from 'react-icons/fa'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import fetchMutations from '../../src/fetchMutations'
@@ -362,7 +363,7 @@ const Mutations = () => {
                     onClick={revert}
                     outline
                   >
-                    <i className="fas fa-undo" data-id={id} />
+                    <FaUndo data-id={id} />
                   </RevertButton>
                   <UncontrolledTooltip
                     placement="left"

@@ -7,6 +7,7 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import { Col, FormGroup, Label, UncontrolledTooltip } from 'reactstrap'
+import { FaTimes } from 'react-icons/fa'
 
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
 
@@ -135,7 +136,7 @@ const LinksComponent = ({
                   onClick={() => store.deleteLink(link.id)}
                   id={`removeLinkIcon${link.id}`}
                 >
-                  <i className="fas fa-times" />
+                  <FaTimes />
                 </RemoveGlyphiconDiv>
                 <UncontrolledTooltip
                   placement="left"

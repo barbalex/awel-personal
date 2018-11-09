@@ -9,10 +9,7 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap'
-import compose from 'recompose/compose'
-import withState from 'recompose/withState'
-import withHandlers from 'recompose/withHandlers'
-import { inject, observer } from 'mobx-react'
+import { observer } from 'mobx-react'
 
 import Filter from './Filter'
 import Stammdaten from './Stammdaten'

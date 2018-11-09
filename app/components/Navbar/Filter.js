@@ -9,6 +9,7 @@ import {
   Input,
   UncontrolledTooltip
 } from 'reactstrap'
+import { FaTimes, FaEdit, FaFilter } from 'react-icons/fa'
 
 import storeContext from '../../storeContext'
 
@@ -45,17 +46,15 @@ const Filter = () => {
               id="volltextFilterRemoveAddon"
               onClick={onEmptyFilterFulltext}
             >
-              <i className="fas fa-times" />
+              <FaTimes />
             </VolltextFilterRemoveAddon>
           )}
           <InputGroupText id="filterAddon" onClick={toggleShowFilter}>
-            <i
-              className={`fas ${store.showFilter ? 'fa-edit' : 'fa-filter'}`}
-            />
+            {store.showFilter ? <FaEdit /> : <FaFilter />}
           </InputGroupText>
           {store.existsFilter && (
             <InputGroupText id="emptyFilterAddon" onClick={store.emptyFilter}>
-              <i className="fas fa-times" />
+              <FaTimes />
             </InputGroupText>
           )}
         </InputGroupAddon>

@@ -3,6 +3,7 @@
 import React from 'react'
 import { InputGroup, InputGroupAddon, Input } from 'reactstrap'
 import styled from 'styled-components'
+import { FaTimes } from 'react-icons/fa'
 
 const FilterInputGroup = styled(InputGroup)`
   margin-top: 3px;
@@ -28,7 +29,7 @@ const Filter = ({
       <Input value={value || ''} placeholder="filtern" onChange={onChange} />
       <EmptyAddon addonType="append" id="filterRemoveAddon" onClick={empty}>
         <span className="input-group-text">
-          <i className="fas fa-times" />
+          <FaTimes />
         </span>
       </EmptyAddon>
     </FilterInputGroup>

@@ -11,6 +11,7 @@ import styled from 'styled-components'
 import app from 'ampersand-app'
 import { inject, observer } from 'mobx-react'
 import { shell } from 'electron'
+import { FaEllipsisV } from 'react-icons/fa'
 
 const DbPath = styled.span`
   font-style: italic;
@@ -52,7 +53,7 @@ const More = ({
   return (
     <MoreMenu nav inNavbar>
       <DropdownToggle nav>
-        <i className="fas fa-ellipsis-v" />
+        <FaEllipsisV />
       </DropdownToggle>
       <DropdownMenu right>
         <DropdownItem>

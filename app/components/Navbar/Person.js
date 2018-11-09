@@ -4,6 +4,7 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import { inject, observer } from 'mobx-react'
+import { FaPlus, FaTrashAlt } from 'react-icons/fa'
 
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 
@@ -126,7 +127,7 @@ const Person = ({
             onClick={addPerson}
             disabled={!mayAddNewPerson}
           >
-            <i className="fas fa-plus" />
+            <FaPlus />
           </StyledButton>
           {mayAddNewPerson && (
             <UncontrolledTooltip placement="bottom" target="newPersonButton">
@@ -138,7 +139,7 @@ const Person = ({
             onClick={deletePerson}
             disabled={!existsActivePerson}
           >
-            <i className="fas fa-trash-alt" />
+            <FaTrashAlt />
           </StyledButton>
           {existsActivePerson && (
             <UncontrolledTooltip placement="bottom" target="deletePersonButton">

@@ -183,18 +183,6 @@ eval("module.exports = exceljs;\n\n//# sourceURL=webpack://renderer/external_%22
 
 /***/ }),
 
-/***/ "font-awesome":
-/*!*******************************!*\
-  !*** external "font-awesome" ***!
-  \*******************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports) {
-
-eval("module.exports = font-awesome;\n\n//# sourceURL=webpack://renderer/external_%22font-awesome%22?");
-
-/***/ }),
-
 /***/ "history":
 /*!**************************!*\
   !*** external "history" ***!
@@ -336,6 +324,18 @@ eval("module.exports = react-dropzone;\n\n//# sourceURL=webpack://renderer/exter
 /***/ (function(module, exports) {
 
 eval("module.exports = react-hot-loader;\n\n//# sourceURL=webpack://renderer/external_%22react-hot-loader%22?");
+
+/***/ }),
+
+/***/ "react-icons":
+/*!******************************!*\
+  !*** external "react-icons" ***!
+  \******************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+eval("module.exports = react-icons;\n\n//# sourceURL=webpack://renderer/external_%22react-icons%22?");
 
 /***/ }),
 

@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import compose from 'recompose/compose'
 import { inject, observer } from 'mobx-react'
 import { UncontrolledTooltip } from 'reactstrap'
+import { FaTrashAlt } from 'react-icons/fa'
 
 const Container = styled.div`
   border-right: 1px solid rgb(46, 125, 50);
@@ -72,7 +73,7 @@ const PersonList = ({
               <div>{`${row.name || ''} ${row.vorname || ''}`}</div>
               {row.deleted === 1 && (
                 <Fragment>
-                  <i className="fas fa-trash-alt" id={`deletedIcon${row.id}`} />
+                  <FaTrashAlt id={`deletedIcon${row.id}`} />
                   <UncontrolledTooltip
                     placement="left"
                     target={`deletedIcon${row.id}`}
