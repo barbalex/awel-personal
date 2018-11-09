@@ -195,18 +195,6 @@ eval("module.exports = history;\n\n//# sourceURL=webpack://renderer/external_%22
 
 /***/ }),
 
-/***/ "jquery":
-/*!*************************!*\
-  !*** external "jquery" ***!
-  \*************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports) {
-
-eval("module.exports = jquery;\n\n//# sourceURL=webpack://renderer/external_%22jquery%22?");
-
-/***/ }),
-
 /***/ "mobx":
 /*!***********************!*\
   !*** external "mobx" ***!
