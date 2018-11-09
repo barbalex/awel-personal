@@ -1,9 +1,7 @@
 // @flow
 import React, { useContext, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
-import { inject, observer } from 'mobx-react'
+import { observer } from 'mobx-react'
 import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
@@ -27,15 +25,38 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    saveToDb: ({ store }) => ({ field, value }) => {
-      const { personen, filterPerson, showFilter, setFilter } = store
-      const location = store.location.toJSON()
-      if (!location[1] && !showFilter) throw new Error(`no id found`)
-      const activeId = ifIsNumericAsNumber(location[1])
-      const person = personen.find(p => p.id === activeId)
+const Person = ({ activeId }: { activeId: ?number }) => {
+  const store = useContext(storeContext)
+  const {
+    personen,
+    etiketten,
+    showDeleted,
+    abteilungWerte,
+    kostenstelleWerte,
+    statusWerte,
+    geschlechtWerte,
+    etikettWerte,
+    showFilter,
+    filterPerson,
+    filterEtikett,
+    existsFilter,
+    setFilter
+  } = store
+
+  if (!showFilter && !activeId) return null
+
+  let person
+  if (showFilter) {
+    person = filterPerson
+  } else {
+    person = personen.find(p => p.id === activeId)
+    if (!person) person = {}
+  }
+  const personId = showFilter ? '' : person.id
+
+  const saveToDb = useCallback(
+    ({ field, value }) => {
+      // const person = personen.find(p => p.id === activeId)
       if (!person && !showFilter)
         throw new Error(`Person with id ${activeId} not found`)
       let newValue
@@ -63,8 +84,10 @@ const enhance = compose(
         })
       }
     },
-    addEtikett: ({ store }) => etikett => {
-      const { showFilter, filterEtikett, setFilter, addEtikett } = store
+    [activeId, personen.length, filterPerson, showFilter]
+  )
+  const addEtikett = useCallback(
+    etikett => {
       if (showFilter) {
         setFilter({
           model: 'filterEtikett',
@@ -74,8 +97,10 @@ const enhance = compose(
         addEtikett(etikett)
       }
     },
-    deleteEtikett: ({ store }) => etikett => {
-      const { showFilter, filterEtikett, setFilter, deleteEtikett } = store
+    [showFilter, filterEtikett]
+  )
+  const deleteEtikett = useCallback(
+    etikett => {
       if (showFilter) {
         setFilter({
           model: 'filterEtikett',
@@ -85,8 +110,10 @@ const enhance = compose(
         deleteEtikett(etikett)
       }
     },
-    saveToDbEtikett: ({ store }) => ({ value }) => {
-      const { filterEtikett, setFilter } = store
+    [filterEtikett, showFilter]
+  )
+  const saveToDbEtikett = useCallback(
+    ({ value }) => {
       if (value) {
         return setFilter({
           model: 'filterEtikett',
@@ -97,51 +124,10 @@ const enhance = compose(
         model: 'filterEtikett',
         value: { ...filterEtikett, ...{ etikett: null } }
       })
-    }
-  }),
-  observer
-)
+    },
+    [filterEtikett]
+  )
 
-const Person = ({
-  activeId,
-  saveToDb,
-  saveToDbEtikett,
-  addEtikett,
-  deleteEtikett
-}: {
-  activeId: ?number,
-  saveToDb: () => void,
-  saveToDbEtikett: () => void,
-  addEtikett: () => void,
-  deleteEtikett: () => void
-}) => {
-  const store = useContext(storeContext)
-  const {
-    personen,
-    etiketten,
-    showDeleted,
-    abteilungWerte,
-    kostenstelleWerte,
-    statusWerte,
-    geschlechtWerte,
-    etikettWerte,
-    showFilter,
-    filterPerson,
-    filterEtikett,
-    existsFilter
-  } = store
-  if (!showFilter && !activeId) return null
-
-  console.log('Person rendering')
-
-  let person
-  if (showFilter) {
-    person = filterPerson
-  } else {
-    person = personen.find(p => p.id === activeId)
-    if (!person) person = {}
-  }
-  const personId = showFilter ? '' : person.id
   // filter out options with empty values - makes no sense and errors
   const personOptions = useMemo(
     () =>
@@ -380,4 +366,4 @@ const Person = ({
   )
 }
 
-export default enhance(Person)
+export default observer(Person)
