@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useState, useCallback } from 'react'
 import {
   DropdownItem,
   DropdownMenu,
@@ -10,51 +10,46 @@ import {
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
-import { inject, observer } from 'mobx-react'
+import { observer } from 'mobx-react'
 
 import personenPrepareData from './personenPrepareData'
 import personenExport from './personenExport'
+import storeContext from '../../../storeContext'
 
-const enhance = compose(
-  inject('store'),
-  withState('modalOpen', 'setModalOpen', false),
-  withState('modalMessage', 'setModalMessage', ''),
-  withHandlers({
-    onClickExportPersonen: ({ store, setModalOpen, setModalMessage }) => () => {
+const enhance = compose(observer)
+
+const Export = () => {
+  const store = useContext(storeContext)
+
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalMessage, setModalMessage] = useState('')
+
+  const onClickExportPersonen = useCallback(
+    () => {
       const personenReadable = personenPrepareData({ store })
       personenExport({ personenReadable, setModalOpen, setModalMessage })
     },
-    toggleModal: ({ modalOpen, setModalOpen }) => () => setModalOpen(!modalOpen)
-  }),
-  observer
-)
+    [store.personenFiltered]
+  )
+  const toggleModal = useCallback(() => setModalOpen(!modalOpen), [modalOpen])
 
-const Export = ({
-  onClickExportPersonen,
-  modalOpen,
-  toggleModal,
-  modalMessage
-}: {
-  onClickExportPersonen: () => void,
-  modalOpen: boolean,
-  toggleModal: () => void,
-  modalMessage?: string
-}) => (
-  <UncontrolledDropdown nav inNavbar>
-    <DropdownToggle nav caret>
-      Exporte
-    </DropdownToggle>
-    <DropdownMenu>
-      <DropdownItem onClick={onClickExportPersonen}>
-        Gefilterte Personen mit allen Feldern
-      </DropdownItem>
-      <DropdownItem divider />
-      <DropdownItem>mehr?</DropdownItem>
-    </DropdownMenu>
-    <Modal isOpen={modalOpen} toggle={toggleModal}>
-      <ModalBody>{modalMessage}</ModalBody>
-    </Modal>
-  </UncontrolledDropdown>
-)
+  return (
+    <UncontrolledDropdown nav inNavbar>
+      <DropdownToggle nav caret>
+        Exporte
+      </DropdownToggle>
+      <DropdownMenu>
+        <DropdownItem onClick={onClickExportPersonen}>
+          Gefilterte Personen mit allen Feldern
+        </DropdownItem>
+        <DropdownItem divider />
+        <DropdownItem>mehr?</DropdownItem>
+      </DropdownMenu>
+      <Modal isOpen={modalOpen} toggle={toggleModal}>
+        <ModalBody>{modalMessage}</ModalBody>
+      </Modal>
+    </UncontrolledDropdown>
+  )
+}
 
 export default enhance(Export)
