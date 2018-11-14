@@ -14,31 +14,31 @@ type Props = {
 };
 type State = {
   // eslint-disable-next-line flowtype/no-weak-types
-  errorInfo: Object
+  error: Object
 };
 
 class ErrorBoundary extends Component<Props, State> {
-  constructor(props) {
-    super(props)
-    this.state = { errorInfo: null }
+  static getDerivedStateFromError(error) {
+    // Catch errors in any components below and re-render with error message
+    return {
+      error
+    }
   }
 
-  componentDidCatch(error, errorInfo) {
-    // Catch errors in any components below and re-render with error message
-    this.setState({
-      errorInfo
-    })
+  constructor(props) {
+    super(props)
+    this.state = { error: null }
   }
 
   render() {
-    const { errorInfo } = this.state
-    if (errorInfo) {
+    const { error } = this.state
+    if (error) {
       return (
         <Container>
           <ErrorTitle>
             Oh je, es ist ein Fehler aufgetreten! Bericht:
           </ErrorTitle>
-          <div>{errorInfo.componentStack}</div>
+          <div>{error.message}</div>
         </Container>
       )
     }
