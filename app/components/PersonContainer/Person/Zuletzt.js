@@ -1,13 +1,13 @@
 // @flow
 
-import React from 'react'
+import React, { useContext } from 'react'
 import moment from 'moment'
 import { Col, FormGroup, Label } from 'reactstrap'
-import compose from 'recompose/compose'
-import { inject, observer } from 'mobx-react'
+import { observer } from 'mobx-react'
 import styled from 'styled-components'
 
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
+import storeContext from '../../../storeContext'
 
 const Value = styled.div`
   padding-top: 7px;
@@ -15,12 +15,8 @@ const Value = styled.div`
 
 moment.locale('de')
 
-const enhance = compose(
-  inject('store'),
-  observer
-)
-
-const Zuletzt = ({ store }: { store: Object }) => {
+const Zuletzt = () => {
+  const store = useContext(storeContext)
   const { personen } = store
   const location = store.location.toJSON()
   if (!location[1]) throw new Error(`no id found`)
@@ -47,4 +43,4 @@ const Zuletzt = ({ store }: { store: Object }) => {
   )
 }
 
-export default enhance(Zuletzt)
+export default observer(Zuletzt)
