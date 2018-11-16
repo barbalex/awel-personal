@@ -94,7 +94,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           value: { ...filterEtikett, ...{ etikett } }
         })
       } else {
-        addEtikett(etikett)
+        store.addEtikett(etikett)
       }
     },
     [showFilter, filterEtikett]
@@ -107,7 +107,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           value: { ...filterEtikett, ...{ etikett: null } }
         })
       } else {
-        deleteEtikett(etikett)
+        store.deleteEtikett(etikett)
       }
     },
     [filterEtikett, showFilter]

@@ -1,7 +1,5 @@
 // @flow
-import React from 'react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
+import React, { useCallback } from 'react'
 import { observer } from 'mobx-react'
 import { Col, FormGroup, Label } from 'reactstrap'
 import Select from 'react-select'
@@ -24,46 +22,45 @@ const StyledSelect = styled(Select)`
   }
 `
 
-const enhance = compose(
-  withHandlers({
-    onChange: ({ saveToDb, field }) => option =>
-      saveToDb({ value: option ? option.value : null, field })
-  }),
-  observer
-)
-
 const SharedSelect = ({
   value,
   field,
   label,
   options,
-  onChange
+  saveToDb
 }: {
   value?: ?number | ?string,
   field: string,
   label: string,
   options: Array<Object>,
-  onChange: () => void
-}) => (
-  <FormGroup row>
-    <Label for={field} sm={2}>
-      {label}
-    </Label>
-    <Col sm={10}>
-      <StyledSelect
-        id={field}
-        name={field}
-        defaultValue={options.find(o => o.value === value)}
-        options={options}
-        onChange={onChange}
-        hideSelectedOptions
-        placeholder=""
-        isClearable
-        isSearchable
-        noOptionsMessage={() => '(keine)'}
-      />
-    </Col>
-  </FormGroup>
-)
+  saveToDb: () => void
+}) => {
+  const onChange = useCallback(
+    option => saveToDb({ value: option ? option.value : null, field }),
+    [field]
+  )
 
-export default enhance(SharedSelect)
+  return (
+    <FormGroup row>
+      <Label for={field} sm={2}>
+        {label}
+      </Label>
+      <Col sm={10}>
+        <StyledSelect
+          id={field}
+          name={field}
+          defaultValue={options.find(o => o.value === value)}
+          options={options}
+          onChange={onChange}
+          hideSelectedOptions
+          placeholder=""
+          isClearable
+          isSearchable
+          noOptionsMessage={() => '(keine)'}
+        />
+      </Col>
+    </FormGroup>
+  )
+}
+
+export default observer(SharedSelect)

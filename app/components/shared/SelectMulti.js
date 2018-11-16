@@ -1,7 +1,5 @@
 // @flow
-import React from 'react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
+import React, { useCallback } from 'react'
 import { observer } from 'mobx-react'
 import { Col, FormGroup, Label } from 'reactstrap'
 import Select from 'react-select'
@@ -24,50 +22,54 @@ const StyledSelect = styled(Select)`
   }
 `
 
-const enhance = compose(
-  withHandlers({
-    onChange: ({ addEtikett, deleteEtikett }) => (option, action) => {
-      if (action.action === 'select-option') addEtikett(action.option.value)
-      if (action.action === 'remove-value')
-        deleteEtikett(action.removedValue.value)
-    }
-  }),
-  observer
-)
-
 const SharedSelectMulti = ({
   value,
   field,
   label,
   options,
-  onChange
+  addEtikett,
+  deleteEtikett
 }: {
   value?: Array<Object>,
   field: string,
   label: string,
   options: Array<Object>,
-  onChange: () => void
-}) => (
-  <FormGroup row>
-    <Label for={field} sm={2}>
-      {label}
-    </Label>
-    <Col sm={10}>
-      <StyledSelect
-        id={field}
-        name={field}
-        isMulti
-        defaultValue={value || ''}
-        options={options}
-        onChange={onChange}
-        hideSelectedOptions
-        placeholder=""
-        isClearable={false}
-        isSearchable
-        noOptionsMessage={() => '(keine)'}
-      />
-    </Col>
-  </FormGroup>
-)
+  addEtikett: () => void,
+  deleteEtikett: () => void
+}) => {
+  const onChange = useCallback(
+    (unusedOption, { action, option, removedValue }) => {
+      if (action === 'select-option') {
+        return addEtikett(option.value)
+      }
+      if (action === 'remove-value' && removedValue) {
+        deleteEtikett(removedValue.value)
+      }
+    }
+  )
 
-export default enhance(SharedSelectMulti)
+  return (
+    <FormGroup row>
+      <Label for={field} sm={2}>
+        {label}
+      </Label>
+      <Col sm={10}>
+        <StyledSelect
+          id={field}
+          name={field}
+          isMulti
+          defaultValue={value || ''}
+          options={options}
+          onChange={onChange}
+          hideSelectedOptions
+          placeholder=""
+          isClearable={false}
+          isSearchable
+          noOptionsMessage={() => '(keine)'}
+        />
+      </Col>
+    </FormGroup>
+  )
+}
+
+export default observer(SharedSelectMulti)
