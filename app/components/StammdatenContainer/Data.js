@@ -1,70 +1,54 @@
 // @flow
-import React from 'react'
+import React, { useContext, useCallback } from 'react'
 import styled from 'styled-components'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
-import { inject, observer } from 'mobx-react'
+import { observer } from 'mobx-react'
 import { Form } from 'reactstrap'
 
 import Input from '../shared/Input'
 import SharedCheckbox from '../shared/Checkbox_01'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import tables from '../../src/tables'
+import storeContext from '../../storeContext'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    saveToDb: ({ store, activeTable }) => ({ field, value }) => {
-      const location = store.location.toJSON()
-      const activeId = ifIsNumericAsNumber(location[1])
-      const data = store[activeTable]
-      const dat = data.find(d => d.id === activeId)
-      if (!dat)
-        throw new Error(
-          `keinen Datensatz in Tabelle "${activeTable}" mit id "${activeId}" gefunden.`
-        )
+const Data = ({
+  activeId,
+  activeTable
+}: {
+  activeId: ?number,
+  activeTable: ?string
+}) => {
+  if (!activeId) return null
+  const store = useContext(storeContext)
+  const { showDeleted, updateField } = store
+  const dat = store[activeTable].find(p => p.id === activeId)
+  if (!dat) {
+    return (
+      <Container>
+        {`Sorry: keinen Datensatz in Tabelle "${activeTable}" mit id "${activeId}" gefunden.`}
+      </Container>
+    )
+  }
 
+  const saveToDb = useCallback(
+    ({ field, value }) => {
       const newValue = ifIsNumericAsNumber(value)
-      const parentModel = tables.find(t => t.table === activeTable).parentModel
+      const { parentModel } = tables.find(t => t.table === activeTable)
 
-      store.updateField({
+      updateField({
         table: activeTable,
         parentModel,
         field,
         value: newValue,
         id: dat.id
       })
-    }
-  }),
-  observer
-)
-
-const Data = ({
-  store,
-  activeId,
-  activeTable,
-  saveToDb
-}: {
-  store: Object,
-  activeId: ?number,
-  activeTable: ?string,
-  saveToDb: () => void
-}) => {
-  if (!activeId) return null
-
-  const { showDeleted } = store
-  const dat = store[activeTable].find(p => p.id === activeId)
-  if (!dat)
-    return (
-      <Container>
-        {`Sorry: keinen Datensatz in Tabelle "${activeTable}" mit id "${activeId}" gefunden.`}
-      </Container>
-    )
+    },
+    [activeTable, activeId]
+  )
 
   return (
     <Container>
@@ -113,4 +97,4 @@ const Data = ({
   )
 }
 
-export default enhance(Data)
+export default observer(Data)
