@@ -1,14 +1,13 @@
 // @flow
-import React, { Fragment } from 'react'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
+import React, { useContext, useCallback } from 'react'
+import { observer } from 'mobx-react'
 import styled from 'styled-components'
 import { UncontrolledTooltip } from 'reactstrap'
 import { FaTimes } from 'react-icons/fa'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import InputWithoutLabel from '../../../shared/InputWithoutLabel'
+import storeContext from '../../../../storeContext'
 
 const Row = styled.div`
   grid-column: 1;
@@ -44,16 +43,21 @@ const Delete = styled.div`
   }
 `
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    onBlur: ({ store, id }) => ({ field, value }) => {
-      const {
-        schluessel: schluessels,
-        showFilter,
-        filterSchluessel,
-        setFilter
-      } = store
+const SchluesselComponent = ({ id }: { id: number | string }) => {
+  const store = useContext(storeContext)
+  const { showFilter, filterSchluessel, setFilter, deleteSchluessel } = store
+  let schluessel
+  if (showFilter) {
+    schluessel = filterSchluessel
+  } else {
+    schluessel = store.schluessel.find(s => s.id === id)
+  }
+  const location = store.location.toJSON()
+  // TODO: refactor when pdf is built
+  const isPdf = location[0] === 'personPdf'
+
+  const onBlur = useCallback(
+    ({ field, value }) => {
       const newValue = ifIsNumericAsNumber(value)
       if (showFilter) {
         setFilter({
@@ -61,10 +65,6 @@ const enhance = compose(
           value: { ...filterSchluessel, ...{ [field]: newValue } }
         })
       } else {
-        const schluessel = schluessels.find(p => p.id === id)
-        if (!schluessel) {
-          throw new Error(`Schluessel with id ${id} not found`)
-        }
         store.updateField({
           table: 'schluessel',
           parentModel: 'schluessel',
@@ -73,29 +73,10 @@ const enhance = compose(
           id: schluessel.id
         })
       }
-    }
-  }),
-  observer
-)
-
-const SchluesselComponent = ({
-  store,
-  id,
-  onBlur
-}: {
-  store: Object,
-  id: number | string,
-  onBlur: () => void
-}) => {
-  const { showFilter, filterSchluessel } = store
-  let schluessel
-  if (showFilter) {
-    schluessel = filterSchluessel
-  } else {
-    schluessel = store.schluessel.find(s => s.id === id)
-  }
-  // TODO: refactor when pdf is built
-  const isPdf = location[0] === 'personPdf'
+    },
+    [showFilter, filterSchluessel, id]
+  )
+  const onClickDelete = useCallback(() => deleteSchluessel(id), [id])
 
   return (
     <Row key={`${id}`} nosymbol={isPdf || showFilter}>
@@ -118,10 +99,10 @@ const SchluesselComponent = ({
         />
       </Bemerkungen>
       {!(isPdf || showFilter) && (
-        <Fragment>
+        <>
           <Delete
             data-ispdf={isPdf}
-            onClick={() => store.deleteSchluessel(id)}
+            onClick={onClickDelete}
             id={`deleteSchluesselIcon${id}`}
           >
             <FaTimes />
@@ -132,10 +113,10 @@ const SchluesselComponent = ({
           >
             Schlüssel entfernen
           </UncontrolledTooltip>
-        </Fragment>
+        </>
       )}
     </Row>
   )
 }
 
-export default enhance(SchluesselComponent)
+export default observer(SchluesselComponent)
