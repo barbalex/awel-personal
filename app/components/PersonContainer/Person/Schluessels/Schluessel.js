@@ -1,6 +1,6 @@
 // @flow
 import React, { useContext, useCallback } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { UncontrolledTooltip } from 'reactstrap'
 import { FaTimes } from 'react-icons/fa'

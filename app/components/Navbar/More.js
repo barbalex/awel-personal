@@ -7,7 +7,7 @@ import {
 } from 'reactstrap'
 import styled from 'styled-components'
 import app from 'ampersand-app'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { shell } from 'electron'
 import { FaEllipsisV } from 'react-icons/fa'
 

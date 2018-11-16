@@ -2,7 +2,7 @@
 import React, { useContext, useCallback } from 'react'
 import { FixedSizeList as List } from 'react-window'
 import styled from 'styled-components'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { UncontrolledTooltip } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 import { FaTrashAlt } from 'react-icons/fa'

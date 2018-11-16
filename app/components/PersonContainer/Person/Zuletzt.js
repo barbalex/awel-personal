@@ -3,7 +3,7 @@
 import React, { useContext } from 'react'
 import moment from 'moment'
 import { Col, FormGroup, Label } from 'reactstrap'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'

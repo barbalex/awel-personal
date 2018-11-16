@@ -1,7 +1,7 @@
 // @flow
 import React, { useContext, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'

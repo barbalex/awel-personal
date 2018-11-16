@@ -1,6 +1,6 @@
 // @flow
 import React, { useCallback } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import Select from 'react-select'
 import styled from 'styled-components'
 

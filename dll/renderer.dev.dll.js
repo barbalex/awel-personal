@@ -195,15 +195,15 @@ eval("module.exports = mobx;\n\n//# sourceURL=webpack://renderer/external_%22mob
 
 /***/ }),
 
-/***/ "mobx-react":
-/*!*****************************!*\
-  !*** external "mobx-react" ***!
-  \*****************************/
+/***/ "mobx-react-lite":
+/*!**********************************!*\
+  !*** external "mobx-react-lite" ***!
+  \**********************************/
 /*! no static exports found */
 /*! all exports used */
 /***/ (function(module, exports) {
 
-eval("module.exports = mobx-react;\n\n//# sourceURL=webpack://renderer/external_%22mobx-react%22?");
+eval("module.exports = mobx-react-lite;\n\n//# sourceURL=webpack://renderer/external_%22mobx-react-lite%22?");
 
 /***/ }),
 
@@ -420,18 +420,6 @@ eval("module.exports = react-window;\n\n//# sourceURL=webpack://renderer/externa
 /***/ (function(module, exports) {
 
 eval("module.exports = reactstrap;\n\n//# sourceURL=webpack://renderer/external_%22reactstrap%22?");
-
-/***/ }),
-
-/***/ "recompose":
-/*!****************************!*\
-  !*** external "recompose" ***!
-  \****************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports) {
-
-eval("module.exports = recompose;\n\n//# sourceURL=webpack://renderer/external_%22recompose%22?");
 
 /***/ }),
 

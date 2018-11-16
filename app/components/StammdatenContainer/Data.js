@@ -1,7 +1,7 @@
 // @flow
 import React, { useContext, useCallback } from 'react'
 import styled from 'styled-components'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
 
 import Input from '../shared/Input'

@@ -1,6 +1,6 @@
 // @flow
 import React, { useContext, useState, useCallback, useEffect } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { Col, FormGroup, Label, Input } from 'reactstrap'
 
 import storeContext from '../../storeContext'

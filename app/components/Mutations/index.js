@@ -2,7 +2,7 @@
 // @flow
 import React, { useContext, useState, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { VariableSizeList as List } from 'react-window'
 import sortBy from 'lodash/sortBy'
 import moment from 'moment'

@@ -2,7 +2,7 @@
 import React, { useEffect, useContext } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Data from './Data'

@@ -1,7 +1,7 @@
 import React, { useContext, useCallback } from 'react'
 import { NavItem, NavLink, Button, UncontrolledTooltip } from 'reactstrap'
 import styled from 'styled-components'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { FaPlus, FaTrashAlt } from 'react-icons/fa'
 
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'

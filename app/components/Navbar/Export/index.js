@@ -7,7 +7,7 @@ import {
   ModalBody,
   UncontrolledDropdown
 } from 'reactstrap'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import personenPrepareData from './personenPrepareData'
 import personenExport from './personenExport'
