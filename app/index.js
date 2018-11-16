@@ -1,6 +1,5 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Provider as MobxProvider } from 'mobx-react'
 import app from 'ampersand-app'
 import username from 'username'
 import { AppContainer as HotLoaderContainer } from 'react-hot-loader'
@@ -48,9 +47,7 @@ const run = async () => {
   render(
     <HotLoaderContainer>
       <StoreContextProvider value={store}>
-        <MobxProvider store={store}>
-          <App />
-        </MobxProvider>
+        <App />
       </StoreContextProvider>
     </HotLoaderContainer>,
     document.getElementById('root')
