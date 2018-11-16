@@ -90,7 +90,7 @@ const myTypes = types
         filterEtikett,
         filterPerson,
       } = self
-      let personen = self.personen
+      let {personen} = self
       Object.keys(filterPerson).forEach(key => {
         if (filterPerson[key] || filterPerson[key] === 0) {
           personen = personen.filter(p => {
@@ -632,7 +632,7 @@ const myTypes = types
       },
       addEtikett(etikett) {
         // grab idPerson from location
-        const location = self.location
+        const {location} = self
         const idPerson = ifIsNumericAsNumber(location[1])
         // 1. create new etikett in db, returning id
         let info
@@ -657,7 +657,7 @@ const myTypes = types
       },
       deleteEtikett(etikett) {
         // grab idPerson from location
-        const location = self.location
+        const {location} = self
         const idPerson = ifIsNumericAsNumber(location[1])
         // write to db
         try {
@@ -679,7 +679,7 @@ const myTypes = types
       },
       addLink(url) {
         // grab idPerson from location
-        const location = self.location
+        const {location} = self
         const idPerson = ifIsNumericAsNumber(location[1])
         // 1. create new link in db, returning id
         let info
@@ -712,13 +712,13 @@ const myTypes = types
         // write to store
         self.links.splice(findIndex(self.links, p => p.id === id), 1)
         // set persons letzteMutation
-        const location = self.location
+        const {location} = self
         const idPerson = ifIsNumericAsNumber(location[1])
         self.updatePersonsMutation(idPerson)
       },
       addSchluessel() {
         // grab idPerson from location
-        const location = self.location
+        const {location} = self
         const idPerson = ifIsNumericAsNumber(location[1])
         // 1. create new link in db, returning id
         let info
@@ -750,13 +750,13 @@ const myTypes = types
         // write to store
         self.schluessel.splice(findIndex(self.schluessel, p => p.id === id), 1)
         // set persons letzteMutation
-        const location = self.location
+        const {location} = self
         const idPerson = ifIsNumericAsNumber(location[1])
         self.updatePersonsMutation(idPerson)
       },
       addMobileAbo() {
         // grab idPerson from location
-        const location = self.location
+        const {location} = self
         const idPerson = ifIsNumericAsNumber(location[1])
         // 1. create new link in db, returning id
         let info
@@ -788,13 +788,13 @@ const myTypes = types
         // write to store
         self.mobileAbos.splice(findIndex(self.mobileAbos, p => p.id === id), 1)
         // set persons letzteMutation
-        const location = self.location
+        const {location} = self
         const idPerson = ifIsNumericAsNumber(location[1])
         self.updatePersonsMutation(idPerson)
       },
       addKaderFunktion() {
         // grab idPerson from location
-        const location = self.location
+        const {location} = self
         const idPerson = ifIsNumericAsNumber(location[1])
         // 1. create new link in db, returning id
         let info
@@ -829,7 +829,7 @@ const myTypes = types
           1,
         )
         // set persons letzteMutation
-        const location = self.location
+        const {location} = self
         const idPerson = ifIsNumericAsNumber(location[1])
         self.updatePersonsMutation(idPerson)
       },
@@ -867,7 +867,7 @@ const myTypes = types
           ].includes(parentModel)
         ) {
           // set persons letzteMutation
-          const location = self.location
+          const {location} = self
           const idPerson = ifIsNumericAsNumber(location[1])
           self.updatePersonsMutation(idPerson)
         }
