@@ -1,13 +1,12 @@
 // @flow
-import React from 'react'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
+import React, { useContext } from 'react'
+import { observer } from 'mobx-react'
 import styled from 'styled-components'
 import { Col, FormGroup, Label, Button } from 'reactstrap'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import MobileAbo from './MobileAbo'
+import storeContext from '../../../../storeContext'
 
 const Container = styled.div`
   border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
@@ -37,22 +36,9 @@ const Bemerkungen = styled.div`
   grid-column: 3 / span 1;
 `
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    onNew: ({ store }) => () => store.addMobileAbo()
-  }),
-  observer
-)
-
-const MobileAbosComponent = ({
-  store,
-  onNew
-}: {
-  store: Object,
-  onNew: () => void
-}) => {
-  const { showFilter, filterMobileAbo } = store
+const MobileAbosComponent = () => {
+  const store = useContext(storeContext)
+  const { showFilter, filterMobileAbo, addMobileAbo } = store
   const location = store.location.toJSON()
   if (!location[1] && !showFilter) throw new Error(`no id found`)
   const activePersonenId = ifIsNumericAsNumber(location[1])
@@ -91,7 +77,7 @@ const MobileAbosComponent = ({
             />
           ))}
           {mayAddNew && (
-            <StyledButton onClick={onNew} outline>
+            <StyledButton onClick={addMobileAbo} outline>
               neues mobile Abo
             </StyledButton>
           )}
@@ -101,4 +87,4 @@ const MobileAbosComponent = ({
   )
 }
 
-export default enhance(MobileAbosComponent)
+export default observer(MobileAbosComponent)
