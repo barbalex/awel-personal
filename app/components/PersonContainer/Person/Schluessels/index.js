@@ -1,12 +1,12 @@
 // @flow
-import React from 'react'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
+import React, { useContext } from 'react'
+import { observer } from 'mobx-react'
 import styled from 'styled-components'
 import { Col, FormGroup, Label, Button } from 'reactstrap'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import Schluessel from './Schluessel'
+import storeContext from '../../../../storeContext'
 
 const Container = styled.div`
   border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
@@ -33,12 +33,8 @@ const Bemerkungen = styled.div`
   grid-column: 2 / span 1;
 `
 
-const enhance = compose(
-  inject('store'),
-  observer
-)
-
-const SchluesselsComponent = ({ store }: { store: Object }) => {
+const SchluesselsComponent = () => {
+  const store = useContext(storeContext)
   const { showFilter, filterSchluessel, addSchluessel } = store
   const location = store.location.toJSON()
   if (!location[1] && !showFilter) throw new Error(`no id found`)
@@ -87,4 +83,4 @@ const SchluesselsComponent = ({ store }: { store: Object }) => {
   )
 }
 
-export default enhance(SchluesselsComponent)
+export default observer(SchluesselsComponent)
