@@ -1,8 +1,6 @@
 // @flow
-import React from 'react'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
+import React, { useContext, useCallback } from 'react'
+import { observer } from 'mobx-react'
 import styled from 'styled-components'
 import { UncontrolledTooltip } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
@@ -11,6 +9,7 @@ import { FaTimes } from 'react-icons/fa'
 import Select from '../Select'
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import InputWithoutLabel from '../../../shared/InputWithoutLabel'
+import storeContext from '../../../../storeContext'
 
 const Row = styled.div`
   grid-column: 1;
@@ -50,17 +49,34 @@ const Delete = styled.div`
   }
 `
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    onBlur: ({ store, id }) => ({ field, value }) => {
-      const {
-        kaderFunktionen,
-        updateField,
-        showFilter,
-        filterKaderFunktion,
-        setFilter
-      } = store
+const KaderFunktion = ({ id }: { id: number | string }) => {
+  const store = useContext(storeContext)
+  const {
+    kaderFunktionWerte,
+    showFilter,
+    filterKaderFunktion,
+    kaderFunktionen,
+    updateField,
+    setFilter
+  } = store
+  let kaderFunktion
+  if (showFilter) {
+    kaderFunktion = filterKaderFunktion
+  } else {
+    kaderFunktion = kaderFunktionen.find(s => s.id === id)
+  }
+  const location = store.location.toJSON()
+  // TODO: refactor when pdf is built
+  const isPdf = location[0] === 'personPdf'
+  const kaderFunktionOptions = sortBy(kaderFunktionWerte, 'sort')
+    .filter(w => !!w.value)
+    .map(w => ({
+      label: w.value,
+      value: w.value
+    }))
+
+  const onBlur = useCallback(
+    ({ field, value }) => {
       const newValue = ifIsNumericAsNumber(value)
       if (showFilter) {
         setFilter({
@@ -68,10 +84,6 @@ const enhance = compose(
           value: { ...filterKaderFunktion, ...{ [field]: newValue } }
         })
       } else {
-        const kaderFunktion = kaderFunktionen.find(p => p.id === id)
-        if (!kaderFunktion) {
-          throw new Error(`KaderFunktion with id ${id} not found`)
-        }
         updateField({
           table: 'kaderFunktionen',
           parentModel: 'kaderFunktionen',
@@ -81,14 +93,10 @@ const enhance = compose(
         })
       }
     },
-    onChangeSelect: ({ store, id }) => ({ field, value }) => {
-      const {
-        kaderFunktionen,
-        updateField,
-        showFilter,
-        setFilter,
-        filterKaderFunktion
-      } = store
+    [showFilter, filterKaderFunktion, kaderFunktion.id]
+  )
+  const onChangeSelect = useCallback(
+    ({ field, value }) => {
       const newValue = ifIsNumericAsNumber(value)
       if (showFilter) {
         setFilter({
@@ -96,10 +104,6 @@ const enhance = compose(
           value: { ...filterKaderFunktion, ...{ [field]: newValue } }
         })
       } else {
-        const kaderFunktion = kaderFunktionen.find(p => p.id === id)
-        if (!kaderFunktion) {
-          throw new Error(`KaderFunktion with id ${id} not found`)
-        }
         updateField({
           table: 'kaderFunktionen',
           parentModel: 'kaderFunktionen',
@@ -108,37 +112,9 @@ const enhance = compose(
           id: kaderFunktion.id
         })
       }
-    }
-  }),
-  observer
-)
-
-const KaderFunktion = ({
-  store,
-  id,
-  onBlur,
-  onChangeSelect
-}: {
-  store: Object,
-  id: number | string,
-  onBlur: () => void,
-  onChangeSelect: () => void
-}) => {
-  const { kaderFunktionWerte, showFilter, filterKaderFunktion } = store
-  let kaderFunktion
-  if (showFilter) {
-    kaderFunktion = filterKaderFunktion
-  } else {
-    kaderFunktion = store.kaderFunktionen.find(s => s.id === id)
-  }
-  // TODO: refactor when pdf is built
-  const isPdf = location[0] === 'personPdf'
-  const kaderFunktionOptions = sortBy(kaderFunktionWerte, 'sort')
-    .filter(w => !!w.value)
-    .map(w => ({
-      label: w.value,
-      value: w.value
-    }))
+    },
+    [showFilter, filterKaderFunktion, kaderFunktion.id]
+  )
 
   return (
     <Row key={`${id}`} nosymbol={isPdf || showFilter}>
@@ -183,4 +159,4 @@ const KaderFunktion = ({
   )
 }
 
-export default enhance(KaderFunktion)
+export default observer(KaderFunktion)
