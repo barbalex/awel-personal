@@ -1,7 +1,5 @@
 // @flow
-import React from 'react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
+import React, { useCallback } from 'react'
 import { observer } from 'mobx-react'
 import Select from 'react-select'
 import styled from 'styled-components'
@@ -23,37 +21,36 @@ const StyledSelect = styled(Select)`
   }
 `
 
-const enhance = compose(
-  withHandlers({
-    onChange: ({ saveToDb, field }) => option =>
-      saveToDb({ value: option ? option.value : null, field })
-  }),
-  observer
-)
-
 const SharedSelect = ({
   value,
   field,
   options,
-  onChange
+  saveToDb
 }: {
   value?: ?number | ?string,
   field: string,
   options: Array<Object>,
-  onChange: () => void
-}) => (
-  <StyledSelect
-    id={field}
-    name={field}
-    defaultValue={options.find(o => o.value === value)}
-    options={options}
-    onChange={onChange}
-    hideSelectedOptions
-    placeholder=""
-    isClearable
-    isSearchable
-    noOptionsMessage={() => '(keine)'}
-  />
-)
+  saveToDb: () => void
+}) => {
+  const onChange = useCallback(
+    option => saveToDb({ value: option ? option.value : null, field }),
+    [field]
+  )
 
-export default enhance(SharedSelect)
+  return (
+    <StyledSelect
+      id={field}
+      name={field}
+      defaultValue={options.find(o => o.value === value)}
+      options={options}
+      onChange={onChange}
+      hideSelectedOptions
+      placeholder=""
+      isClearable
+      isSearchable
+      noOptionsMessage={() => '(keine)'}
+    />
+  )
+}
+
+export default observer(SharedSelect)
