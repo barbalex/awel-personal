@@ -1,15 +1,13 @@
 // @flow
-import React from 'react'
+import React, { useContext, useCallback } from 'react'
 import Dropzone from 'react-dropzone'
-import { shell } from 'electron'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
+import { observer } from 'mobx-react'
 import styled from 'styled-components'
-import { Col, FormGroup, Label, UncontrolledTooltip } from 'reactstrap'
-import { FaTimes } from 'react-icons/fa'
+import { Col, FormGroup, Label } from 'reactstrap'
 
-import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
+import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
+import storeContext from '../../../../storeContext'
+import Link from './Link'
 
 const Container = styled.div`
   grid-area: areaLinks;
@@ -30,37 +28,6 @@ const Links = styled.div`
   grid-area: links;
   display: ${props => (props['data-ispdf'] ? 'grid' : 'block')};
   grid-template-columns: ${props => (props['data-ispdf'] ? '100%' : 'none')};
-`
-const Field = styled.div`
-  grid-column: 1;
-  display: grid;
-  grid-template-columns: calc(100% - 20px) 20px;
-  grid-gap: 0;
-  border-bottom: thin solid #cccccc;
-  padding: 3px;
-  align-items: center;
-  min-height: ${props => (props['data-ispdf'] ? 0 : '35px')};
-  &:first-of-type {
-    border-top: thin solid #cccccc;
-  }
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-`
-const UrlDiv = styled.div`
-  grid-column: 1 / span 1;
-  grid-column: 1;
-`
-const RemoveGlyphiconDiv = styled.div`
-  grid-column: 2 / span 1;
-  margin-top: -2px;
-  display: ${props => (props['data-ispdf'] ? 'none' : 'block')};
-  color: #cccccc;
-  font-size: 18px;
-  cursor: pointer;
-  &:hover {
-    color: rgba(146, 146, 146, 1);
-  }
 `
 const DropzoneContainer = styled.div`
   grid-area: dropzone;
@@ -83,32 +50,18 @@ const DropzoneInnerDiv = styled.div`
   border-radius: 5px;
   padding: 5px;
 `
-const StyledA = styled.a`
-  color: black;
-`
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    onDrop: ({ store }) => files => store.addLink(files[0].path)
-  }),
-  observer
-)
-
-const LinksComponent = ({
-  store,
-  onDrop
-}: {
-  store: Object,
-  onDrop: () => void
-}) => {
-  const { showFilter } = store
+const LinksComponent = () => {
+  const store = useContext(storeContext)
+  const { showFilter, links, addLink } = store
   const location = store.location.toJSON()
   if (!location[1] && !showFilter) throw new Error(`no id found`)
   const activePersonenId = ifIsNumericAsNumber(location[1])
-  const myLinks = store.links.filter(l => l.idPerson === activePersonenId)
+  const myLinks = links.filter(l => l.idPerson === activePersonenId)
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
+
+  const onDrop = useCallback(files => addLink(files[0].path))
 
   return (
     <FormGroup row>
@@ -119,32 +72,7 @@ const LinksComponent = ({
         <Container data-ispdf={isPdf} name="links">
           <Links data-ispdf={isPdf}>
             {myLinks.map(link => (
-              <Field key={`${link.idPerson}${link.url}`} data-ispdf={isPdf}>
-                <UrlDiv>
-                  <StyledA
-                    href={link.url}
-                    onClick={event => {
-                      event.preventDefault()
-                      shell.openItem(link.url)
-                    }}
-                  >
-                    {link.url}
-                  </StyledA>
-                </UrlDiv>
-                <RemoveGlyphiconDiv
-                  data-ispdf={isPdf}
-                  onClick={() => store.deleteLink(link.id)}
-                  id={`removeLinkIcon${link.id}`}
-                >
-                  <FaTimes />
-                </RemoveGlyphiconDiv>
-                <UncontrolledTooltip
-                  placement="left"
-                  target={`removeLinkIcon${link.id}`}
-                >
-                  Link entfernen
-                </UncontrolledTooltip>
-              </Field>
+              <Link key={`${link.idPerson}${link.url}`} link={link} />
             ))}
           </Links>
           <DropzoneContainer data-ispdf={isPdf}>
@@ -179,4 +107,4 @@ const LinksComponent = ({
   )
 }
 
-export default enhance(LinksComponent)
+export default observer(LinksComponent)
