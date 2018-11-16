@@ -1,13 +1,12 @@
 // @flow
-import React from 'react'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
+import React, { useContext } from 'react'
+import { observer } from 'mobx-react'
 import styled from 'styled-components'
 import { Col, FormGroup, Label, Button } from 'reactstrap'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import KaderFunktion from './KaderFunktion'
+import storeContext from '../../../../storeContext'
 
 const Container = styled.div`
   border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
@@ -34,22 +33,9 @@ const Bemerkungen = styled.div`
   grid-column: 2 / span 1;
 `
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    onNew: ({ store }) => () => store.addKaderFunktion()
-  }),
-  observer
-)
-
-const KaderFunktionenComponent = ({
-  store,
-  onNew
-}: {
-  store: Object,
-  onNew: () => void
-}) => {
-  const { showFilter, filterKaderFunktion } = store
+const KaderFunktionenComponent = () => {
+  const store = useContext(storeContext)
+  const { showFilter, filterKaderFunktion, addKaderFunktion } = store
   const location = store.location.toJSON()
   if (!location[1] && !showFilter) throw new Error(`no id found`)
   const activePersonenId = ifIsNumericAsNumber(location[1])
@@ -89,7 +75,7 @@ const KaderFunktionenComponent = ({
             />
           ))}
           {mayAddNew && (
-            <StyledButton onClick={onNew} outline>
+            <StyledButton onClick={addKaderFunktion} outline>
               neue Kaderfunktion
             </StyledButton>
           )}
@@ -99,4 +85,4 @@ const KaderFunktionenComponent = ({
   )
 }
 
-export default enhance(KaderFunktionenComponent)
+export default observer(KaderFunktionenComponent)
