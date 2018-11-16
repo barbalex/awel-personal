@@ -32,34 +32,33 @@ const Stammdaten = () => {
   const store = useContext(storeContext)
   const { setDeletionMessage, setDeletionTitle, setDeletionCallback } = store
   const location = store.location.toJSON()
-  const activeLocation = location[0]
+  const activeTable = location[0]
   const activeId = ifIsNumericAsNumber(location[1])
   let stammdatenCount = 0
-  if (activeLocation.includes('Werte')) {
-    stammdatenCount = store[activeLocation].length
+  if (activeTable.includes('Werte')) {
+    stammdatenCount = store[activeTable].length
   }
   let mayAddNewWert
-  if (activeLocation && store[activeLocation]) {
+  if (activeTable && store[activeTable]) {
     mayAddNewWert =
-      store[activeLocation].filter(p => p.deleted === 0 && !p.value).length ===
-      0
+      store[activeTable].filter(p => p.deleted === 0 && !p.value).length === 0
   }
-  const existsActiveWert = activeLocation.includes('Werte') && location[1]
+  const existsActiveWert = activeTable.includes('Werte') && location[1]
 
   const addWert = useCallback(
     () => {
-      store.addWert(activeLocation)
+      store.addWert(activeTable)
     },
-    [activeLocation]
+    [activeTable]
   )
   const deleteWert = useCallback(
     () => {
-      const activeWert = store[activeLocation].find(p => p.id === activeId)
+      const activeWert = store[activeTable].find(p => p.id === activeId)
       if (activeWert.deleted === 1) {
         // deleted is already = 1
         // prepare true deletion
         setDeletionCallback(() => {
-          store.deleteWert({ id: activeId, table: activeLocation })
+          store.deleteWert({ id: activeId, table: activeTable })
           setDeletionMessage(null)
           setDeletionTitle(null)
         })
@@ -69,12 +68,12 @@ const Stammdaten = () => {
         setDeletionMessage(
           `${name} war schon gelöscht. Wenn Sie ihn nochmals löschen, ist das endgültig und unwiederbringlich. Möchten Sie das?`
         )
-        setDeletionTitle(`${activeLocation} unwiederbringlich löschen`)
+        setDeletionTitle(`${activeTable} unwiederbringlich löschen`)
       } else {
         // do not true delete yet
         // only set deleted = 1
         setDeletionCallback(() => {
-          store.setWertDeleted({ id: activeId, table: activeLocation })
+          store.setWertDeleted({ id: activeId, table: activeTable })
           setDeletionMessage(null)
           setDeletionTitle(null)
         })
@@ -83,26 +82,22 @@ const Stammdaten = () => {
             activeWert.value ? `"${activeWert.value}"` : 'Diesen Datensatz'
           } wirklich löschen?`
         )
-        setDeletionTitle(`${activeLocation} löschen`)
+        setDeletionTitle(`${activeTable} löschen`)
       }
     },
-    [activeLocation]
+    [activeTable]
   )
   const onClickStatusTable = useCallback(e => {
     store.setLocation([e.target.name])
   })
 
   return (
-    <StamdatenContainer active={activeLocation.includes('Werte')}>
-      <UncontrolledDropdown
-        nav
-        inNavbar
-        active={activeLocation.includes('Werte')}
-      >
+    <StamdatenContainer active={activeTable.includes('Werte')}>
+      <UncontrolledDropdown nav inNavbar active={activeTable.includes('Werte')}>
         <DropdownToggle nav caret>
-          {activeLocation.includes('Werte') ? (
+          {activeTable.includes('Werte') ? (
             <span>
-              {activeLocation}
+              {activeTable}
               <Sup>{stammdatenCount}</Sup>
             </span>
           ) : (
@@ -139,7 +134,7 @@ const Stammdaten = () => {
           </DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
-      {activeLocation.includes('Werte') && (
+      {activeTable.includes('Werte') && (
         <>
           <StyledButton
             id="newStammdatenButton"
