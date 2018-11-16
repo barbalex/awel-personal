@@ -1,14 +1,14 @@
 // @flow
-import React, { Fragment } from 'react'
+import React, { useContext, useCallback } from 'react'
 import { FixedSizeList as List } from 'react-window'
 import styled from 'styled-components'
-import compose from 'recompose/compose'
-import { inject, observer } from 'mobx-react'
+import { observer } from 'mobx-react'
 import { UncontrolledTooltip } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 import { FaTrashAlt } from 'react-icons/fa'
 
 import tables from '../../src/tables'
+import storeContext from '../../storeContext'
 
 const Container = styled.div`
   border-right: 1px solid rgb(46, 125, 50);
@@ -34,22 +34,16 @@ const Row = styled.div`
   }
 `
 
-const enhance = compose(
-  inject('store'),
-  observer
-)
-
 const DataList = ({
   dimensions,
-  store,
   activeId,
   activeTable
 }: {
   dimensions: Object,
-  store: Object,
   activeId: ?number,
   activeTable: ?string
 }) => {
+  const store = useContext(storeContext)
   const { showDeleted, setLocation } = store
   // eslint-disable-next-line no-restricted-globals
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
@@ -76,7 +70,7 @@ const DataList = ({
             >
               {row.value || '(kein Wert)'}
               {row.deleted === 1 && (
-                <Fragment>
+                <>
                   <FaTrashAlt id={`deletedIcon${row.id}`} />
                   <UncontrolledTooltip
                     placement="left"
@@ -86,7 +80,7 @@ const DataList = ({
                       table ? table.model : 'Datensatz'
                     } wurde gelöscht`}
                   </UncontrolledTooltip>
-                </Fragment>
+                </>
               )}
             </Row>
           )
@@ -96,4 +90,4 @@ const DataList = ({
   )
 }
 
-export default enhance(DataList)
+export default observer(DataList)

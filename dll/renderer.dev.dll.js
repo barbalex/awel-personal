@@ -99,18 +99,6 @@ eval("module.exports = __webpack_require__;\n\n//# sourceURL=webpack://renderer/
 
 /***/ }),
 
-/***/ "@hocs/with-lifecycle":
-/*!***************************************!*\
-  !*** external "@hocs/with-lifecycle" ***!
-  \***************************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports) {
-
-eval("module.exports = @hocs/with-lifecycle;\n\n//# sourceURL=webpack://renderer/external_%22@hocs/with-lifecycle%22?");
-
-/***/ }),
-
 /***/ "ampersand-app":
 /*!********************************!*\
   !*** external "ampersand-app" ***!
