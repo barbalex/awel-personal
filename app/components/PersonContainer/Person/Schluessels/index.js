@@ -2,7 +2,6 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import { Col, FormGroup, Label, Button } from 'reactstrap'
 
@@ -36,20 +35,11 @@ const Bemerkungen = styled.div`
 
 const enhance = compose(
   inject('store'),
-  withHandlers({
-    onNew: ({ store }) => () => store.addSchluessel()
-  }),
   observer
 )
 
-const SchluesselsComponent = ({
-  store,
-  onNew
-}: {
-  store: Object,
-  onNew: () => void
-}) => {
-  const { showFilter, filterSchluessel } = store
+const SchluesselsComponent = ({ store }: { store: Object }) => {
+  const { showFilter, filterSchluessel, addSchluessel } = store
   const location = store.location.toJSON()
   if (!location[1] && !showFilter) throw new Error(`no id found`)
   const activePersonenId = ifIsNumericAsNumber(location[1])
@@ -87,7 +77,7 @@ const SchluesselsComponent = ({
             />
           ))}
           {mayAddNew && (
-            <StyledButton onClick={onNew} outline>
+            <StyledButton onClick={addSchluessel} outline>
               neuer Schlüssel
             </StyledButton>
           )}
