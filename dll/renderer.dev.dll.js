@@ -351,30 +351,6 @@ eval("module.exports = react-reflex;\n\n//# sourceURL=webpack://renderer/externa
 
 /***/ }),
 
-/***/ "react-router":
-/*!*******************************!*\
-  !*** external "react-router" ***!
-  \*******************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports) {
-
-eval("module.exports = react-router;\n\n//# sourceURL=webpack://renderer/external_%22react-router%22?");
-
-/***/ }),
-
-/***/ "react-router-dom":
-/*!***********************************!*\
-  !*** external "react-router-dom" ***!
-  \***********************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports) {
-
-eval("module.exports = react-router-dom;\n\n//# sourceURL=webpack://renderer/external_%22react-router-dom%22?");
-
-/***/ }),
-
 /***/ "react-select":
 /*!*******************************!*\
   !*** external "react-select" ***!
