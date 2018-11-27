@@ -10,16 +10,24 @@ create table personen (
   -- because: may be recreated when undoing deletion
   id integer primary key autoincrement,
   deleted integer default 0,
+  personalNr text,
   name text,
   vorname text,
+  -- anrede nötig oder vom Geschlecht abhängig?
+  --anrede text,
   kurzzeichen text,
+  adresse text,
+  plz integer,
+  ort text,
+  -- land aus Liste auswählen?
+  land text,
   telefonNr text,
   telefonNrMobile text,
   email text check (email like '%_@__%.__%'),
   geburtDatum text,
   bueroNr text,
-  abteilung text references abteilungWerte(value) on update cascade on delete no action,
-  kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
+  abteilung text references abteilungen(id) on update cascade on delete restrict,
+  sektion text references sektionen(id) on update cascade on delete restrict,
   vorgesetztId integer references personen(id) on update cascade on delete restrict,
   eintrittDatum text,
   austrittDatum text,
@@ -28,6 +36,7 @@ create table personen (
   parkplatzBeitrag text,
   geschlecht text references geschlechtWerte(value) on update cascade on delete no action,
   bemerkungen text,
+  beschaeftigungsgrad integer,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT
 );
@@ -38,6 +47,62 @@ drop index if exists iPersonName;
 create index iPersonName on personen (name);
 drop index if exists iPersonVorname;
 create index iPersonVorname on personen (vorname);
+
+-------------------------------------------
+
+drop table if exists abteilungen;
+create table abteilungen (
+  id integer primary key autoincrement,
+  deleted integer default 0,
+  name text,
+  kurzzeichen text,
+  telefonNr text,
+  email text check (email like '%_@__%.__%'),
+  standort text,
+  leiter integer REFERENCES personen(id) on update cascade on delete restrict,
+  -- schluessel?,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iAbteilungDeleted;
+create index iAbteilungDeleted on abteilungen (deleted);
+drop index if exists iAbteilungName;
+create index iAbteilungName on abteilungen (name);
+
+insert into
+  abteilungen(name, kurzzeichen)
+values
+  ('Abfallwirtschaft und Betriebe', 'aw'),
+  ('Dienste', 'di'),
+  ('Energie', 'en'),
+  ('Gewässerschutz', 'gs'),
+  ('Luft', 'lu'),
+  ('Recht', 're'),
+  ('Wasserbau', 'wb');
+
+-------------------------------------------
+
+drop table if exists sektionen;
+create table sektionen (
+  id integer primary key autoincrement,
+  deleted integer default 0,
+  abteilung integer REFERENCES abteilungen (id) on update cascade on delete restrict,
+  name text,
+  kurzzeichen text,
+  telefonNr text,
+  email text check (email like '%_@__%.__%'),
+  standort text,
+  leiter integer REFERENCES personen(id) on update cascade on delete restrict,
+  kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iSektionDeleted;
+create index iSektionDeleted on sektionen (deleted);
+drop index if exists iSektionName;
+create index iSektionName on sektionen (name);
 
 -------------------------------------------
 
@@ -233,33 +298,6 @@ values
 -------------------------------------------
 
 drop table if exists abteilungWerte;
-create table abteilungWerte (
-  id integer primary key autoincrement,
-  value text unique,
-  deleted integer default 0,
-  historic integer default 0,
-  sort integer,
-  letzteMutationZeit TEXT,
-  letzteMutationUser TEXT
-);
-
-drop index if exists iAbteilungWerteAbteilung;
-create index iAbteilungWerteAbteilung on abteilungWerte (value);
-drop index if exists iAbteilungWerteHistorisch;
-create index iAbteilungWerteHistorisch on abteilungWerte (historic);
-drop index if exists iAbteilungWerteSort;
-create index iAbteilungWerteSort on abteilungWerte (sort);
-
-insert into
-  abteilungWerte(value, sort)
-values
-  ('aw', 1),
-  ('di', 2),
-  ('en', 3),
-  ('gs', 4),
-  ('lu', 5),
-  ('re', 6),
-  ('wb', 7);
 
 -------------------------------------------
 
