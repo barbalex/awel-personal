@@ -10,6 +10,7 @@ import List from './List'
 import fetchWerte from '../../src/fetchWerte'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
+import dbContext from '../../dbContext'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
@@ -26,6 +27,7 @@ const StyledReflexElement = styled(ReflexElement)`
 
 const StammdatenContainer = () => {
   const store = useContext(storeContext)
+  const db = useContext(dbContext)
   const location = store.location.toJSON()
   const activeTable = location[0]
   const activeId = ifIsNumericAsNumber(location[1])
@@ -35,14 +37,14 @@ const StammdatenContainer = () => {
   const datJson = dat || {}
 
   useEffect(() => {
-    fetchWerte('statusWerte')
-    fetchWerte('geschlechtWerte')
-    fetchWerte('abteilungWerte')
-    fetchWerte('kostenstelleWerte')
-    fetchWerte('mobileAboTypWerte')
-    fetchWerte('kaderFunktionWerte')
-    fetchWerte('mobileAboKostenstelleWerte')
-    fetchWerte('etikettWerte')
+    fetchWerte({ db, store, table: 'statusWerte' })
+    fetchWerte({ db, store, table: 'geschlechtWerte' })
+    fetchWerte({ db, store, table: 'abteilungWerte' })
+    fetchWerte({ db, store, table: 'kostenstelleWerte' })
+    fetchWerte({ db, store, table: 'mobileAboTypWerte' })
+    fetchWerte({ db, store, table: 'kaderFunktionWerte' })
+    fetchWerte({ db, store, table: 'mobileAboKostenstelleWerte' })
+    fetchWerte({ db, store, table: 'etikettWerte' })
   }, [])
 
   return (
