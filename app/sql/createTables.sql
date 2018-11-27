@@ -10,7 +10,7 @@ create table personen (
   -- because: may be recreated when undoing deletion
   id integer primary key autoincrement,
   deleted integer default 0,
-  personalNr text,
+  personalNr integer,
   name text,
   vorname text,
   -- anrede nötig oder vom Geschlecht abhängig?
@@ -21,6 +21,7 @@ create table personen (
   ort text,
   -- land aus Liste auswählen?
   land text,
+  bildUrl text,
   telefonNr text,
   telefonNrMobile text,
   email text check (email like '%_@__%.__%'),
@@ -71,15 +72,15 @@ drop index if exists iAbteilungName;
 create index iAbteilungName on abteilungen (name);
 
 insert into
-  abteilungen(name, kurzzeichen)
+  abteilungen(id, name, kurzzeichen)
 values
-  ('Abfallwirtschaft und Betriebe', 'aw'),
-  ('Dienste', 'di'),
-  ('Energie', 'en'),
-  ('Gewässerschutz', 'gs'),
-  ('Luft', 'lu'),
-  ('Recht', 're'),
-  ('Wasserbau', 'wb');
+  (1, 'Abfallwirtschaft und Betriebe', 'aw'),
+  (2, 'Dienste', 'di'),
+  (3, 'Energie', 'en'),
+  (4, 'Gewässerschutz', 'gs'),
+  (5, 'Luft', 'lu'),
+  (6, 'Recht', 're'),
+  (7, 'Wasserbau', 'wb');
 
 -------------------------------------------
 
@@ -103,6 +104,44 @@ drop index if exists iSektionDeleted;
 create index iSektionDeleted on sektionen (deleted);
 drop index if exists iSektionName;
 create index iSektionName on sektionen (name);
+
+insert into
+  sektionen(name, kurzzeichen, abteilung)
+values
+  ('Abfallwirtschaft', '', 1), -- Abfallwirtschaft und Betriebe
+  ('Altlasten', '', 1), -- Abfallwirtschaft und Betriebe
+  ('Betrieblicher Umweltschutz und Störfallvorsorge', '', 1), -- Abfallwirtschaft und Betriebe
+  ('Biosicherheit', '', 1), -- Abfallwirtschaft und Betriebe
+  ('Tankanlagen und Transportgewerbe', '', 1), -- Abfallwirtschaft und Betriebe
+  ('Finanz und Rechnungswesen', '', 2), -- Dienste
+  ('Controllerdienst', '', 2), -- Dienste
+  ('Qualitäts- und Umweltmanagement', '', 2), -- Dienste
+  ('Informatik', '', 2), -- Dienste
+  ('Internet', '', 2), -- Dienste
+  ('Kanzlei AWEL', '', 2), -- Dienste
+  ('Energieberatung', '', 3), -- Energie
+  ('Energietechnik', '', 3), -- Energie
+  ('Energiewirtschaft', '', 3), -- Energie
+  ('Kernenergietechnik/Radioaktive Abfälle', '', 3), -- Energie
+  ('Tiefenlager', '', 3), -- Energie
+  ('Oberflächengewässerschutz', '', 4), -- Gewässerschutz
+  ('Abwasserreinigungsanlagen', '', 4), -- Gewässerschutz
+  ('Grundwasser und Wasserversorgung', '', 4), -- Gewässerschutz
+  ('Bevölkerungsschutz', '', 4), -- Gewässerschutz
+  ('Siedlungsentwässerung', '', 4), -- Gewässerschutz
+  ('Monitoring', '', 5), -- Luft
+  ('Emissionskontrolle', '', 5), -- Luft
+  ('Klima und Mobilität', '', 5), -- Luft
+  ('Strahlung', '', 5), -- Luft
+  ('Bearbeitung von Rechtsfragen', '', 6), -- Recht
+  ('Rekurse und Beschwerden', '', 6), -- Recht
+  ('Juristische Beratung', '', 6), -- Recht
+  ('Rechtliche Vertretung des Amtes nach Aussen', '', 6), -- Recht
+  ('Beratung und Bewilligungen', '', 7), -- Wasserbau
+  ('Planung', '', 7), -- Wasserbau
+  ('Gewässernutzung', '', 7), -- Wasserbau
+  ('Bau', '', 7), -- Wasserbau
+  ('Gewässerunterhalt', '', 7); -- Wasserbau
 
 -------------------------------------------
 
