@@ -49,7 +49,7 @@ const PersonContainer = () => {
     fetchWerte({ db, store, table: 'statusWerte' })
     fetchWerte({ db, store, table: 'geschlechtWerte' })
     fetchWerte({ db, store, table: 'abteilungWerte' })
-    fetchWerte({ db, store, table: 'kostenstelleWerte' })
+    // fetchWerte({ db, store, table: 'kostenstelleWerte' })
     fetchWerte({ db, store, table: 'kaderFunktionWerte' })
     fetchEtiketten({ db, store })
     fetchWerte({ db, store, table: 'etikettWerte' })
