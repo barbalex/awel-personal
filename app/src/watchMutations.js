@@ -1,9 +1,7 @@
 // @flow
 import { onPatch } from 'mobx-state-tree'
-import app from 'ampersand-app'
 
-export default () => {
-  const { store } = app
+export default ({ store }) => {
   const {
     addMutation,
     personen,

@@ -2,7 +2,7 @@
 import React, { useContext, useEffect } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
-import {  observer } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Person from './Person'
@@ -16,6 +16,7 @@ import fetchKaderFunktionen from '../../src/fetchKaderFunktionen'
 import fetchWerte from '../../src/fetchWerte'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
+import dbContext from '../../dbContext'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
@@ -35,6 +36,7 @@ const StyledReflexElement = styled(ReflexElement)`
 
 const PersonContainer = () => {
   const store = useContext(storeContext)
+  const db = useContext(dbContext)
   const { showFilter, personen } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
@@ -43,20 +45,20 @@ const PersonContainer = () => {
   const personJson = person ? person.toJSON() : {}
 
   useEffect(() => {
-    fetchPersonen()
-    fetchWerte('statusWerte')
-    fetchWerte('geschlechtWerte')
-    fetchWerte('abteilungWerte')
-    fetchWerte('kostenstelleWerte')
-    fetchWerte('kaderFunktionWerte')
-    fetchEtiketten()
-    fetchWerte('etikettWerte')
-    fetchLinks()
-    fetchSchluessel()
-    fetchMobileAbos()
-    fetchWerte('mobileAboKostenstelleWerte')
-    fetchWerte('mobileAboTypWerte')
-    fetchKaderFunktionen()
+    fetchPersonen({ db, store })
+    fetchWerte({ db, store, table: 'statusWerte' })
+    fetchWerte({ db, store, table: 'geschlechtWerte' })
+    fetchWerte({ db, store, table: 'abteilungWerte' })
+    fetchWerte({ db, store, table: 'kostenstelleWerte' })
+    fetchWerte({ db, store, table: 'kaderFunktionWerte' })
+    fetchEtiketten({ db, store })
+    fetchWerte({ db, store, table: 'etikettWerte' })
+    fetchLinks({ db, store })
+    fetchSchluessel({ db, store })
+    fetchMobileAbos({ db, store })
+    fetchWerte({ db, store, table: 'mobileAboKostenstelleWerte' })
+    fetchWerte({ db, store, table: 'mobileAboTypWerte' })
+    fetchKaderFunktionen({ db, store })
     // set initial active id
     // nope, better not
     // for instance: after deleting do not show another user

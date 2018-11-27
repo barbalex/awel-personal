@@ -1,8 +1,5 @@
 // @flow
-import app from 'ampersand-app'
-
-export default () => {
-  const { db, store } = app
+export default ({ db, store }: { db: Object, store: Object }) => {
   const personen = db.prepare('SELECT * from personen').all()
   store.setPersonen(personen)
 }

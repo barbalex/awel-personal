@@ -15,6 +15,7 @@ import fetchMutations from '../../src/fetchMutations'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import Filter from './Filter'
 import storeContext from '../../storeContext'
+import dbContext from '../../dbContext'
 
 moment.locale('de')
 
@@ -109,6 +110,7 @@ const getValueToShow = value => {
 
 const Mutations = () => {
   const store = useContext(storeContext)
+  const db = useContext(dbContext)
   const { setLocation, mutations: rawMutations } = store
   const location = store.location.toJSON()
 
@@ -148,7 +150,7 @@ const Mutations = () => {
 
   useEffect(() => {
     console.log('fetching mutations')
-    fetchMutations()
+    fetchMutations({ db, store })
   }, [])
 
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
