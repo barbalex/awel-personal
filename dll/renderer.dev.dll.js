@@ -195,6 +195,18 @@ eval("module.exports = history;\n\n//# sourceURL=webpack://renderer/external_%22
 
 /***/ }),
 
+/***/ "jquery":
+/*!*************************!*\
+  !*** external "jquery" ***!
+  \*************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+eval("module.exports = jquery;\n\n//# sourceURL=webpack://renderer/external_%22jquery%22?");
+
+/***/ }),
+
 /***/ "mobx":
 /*!***********************!*\
   !*** external "mobx" ***!
@@ -252,6 +264,18 @@ eval("module.exports = moment;\n\n//# sourceURL=webpack://renderer/external_%22m
 /***/ (function(module, exports) {
 
 eval("module.exports = mst-middlewares;\n\n//# sourceURL=webpack://renderer/external_%22mst-middlewares%22?");
+
+/***/ }),
+
+/***/ "popper":
+/*!*************************!*\
+  !*** external "popper" ***!
+  \*************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+eval("module.exports = popper;\n\n//# sourceURL=webpack://renderer/external_%22popper%22?");
 
 /***/ }),
 
