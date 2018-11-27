@@ -156,19 +156,17 @@ const Mutations = () => {
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const mutations = sortBy(rawMutations.slice(), 'id')
     .reverse()
-    .map(m => {
-      const {
-        id,
-        time,
-        user,
-        op,
-        tableName,
-        rowId,
-        field,
-        value,
-        previousValue
-      } = m
-      return {
+    .map(({
+      id,
+      time,
+      user,
+      op,
+      tableName,
+      rowId,
+      field,
+      value,
+      previousValue
+    }) => ({
         id,
         time: moment.unix(time / 1000).format('YYYY.MM.DD HH:mm:ss'),
         user,
@@ -178,8 +176,8 @@ const Mutations = () => {
         field,
         value: getValueToShow(value),
         previousValue: getValueToShow(previousValue)
-      }
-    })
+      })
+    )
     .filter(r => !zeitFilter || (r.time && r.time.includes(zeitFilter)))
     .filter(
       r =>

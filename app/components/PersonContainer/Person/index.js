@@ -43,8 +43,6 @@ const Person = ({ activeId }: { activeId: ?number }) => {
     setFilter
   } = store
 
-  if (!showFilter && !activeId) return null
-
   let person
   if (showFilter) {
     person = filterPerson
@@ -188,6 +186,8 @@ const Person = ({ activeId }: { activeId: ?number }) => {
         value: e.etikett
       }))
   )
+
+  if (!showFilter && !activeId) return null
 
   return (
     <Container showfilter={showFilter}>

@@ -22,17 +22,9 @@ const Data = ({
   activeId: ?number,
   activeTable: ?string
 }) => {
-  if (!activeId) return null
   const store = useContext(storeContext)
   const { showDeleted, updateField } = store
   const dat = store[activeTable].find(p => p.id === activeId)
-  if (!dat) {
-    return (
-      <Container>
-        {`Sorry: keinen Datensatz in Tabelle "${activeTable}" mit id "${activeId}" gefunden.`}
-      </Container>
-    )
-  }
 
   const saveToDb = useCallback(
     ({ field, value }) => {
@@ -50,6 +42,14 @@ const Data = ({
     [activeTable, activeId]
   )
 
+  if (!activeId) return null
+  if (!dat) {
+    return (
+      <Container>
+        {`Sorry: keinen Datensatz in Tabelle "${activeTable}" mit id "${activeId}" gefunden.`}
+      </Container>
+    )
+  }
   return (
     <Container>
       <StyledForm>

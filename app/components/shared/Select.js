@@ -49,7 +49,7 @@ const SharedSelect = ({
         <StyledSelect
           id={field}
           name={field}
-          defaultValue={options.find(o => o.value === value)}
+          value={options.find(o => o.value === value)}
           options={options}
           onChange={onChange}
           hideSelectedOptions
