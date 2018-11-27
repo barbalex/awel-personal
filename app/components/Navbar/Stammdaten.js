@@ -105,9 +105,6 @@ const Stammdaten = () => {
           )}
         </DropdownToggle>
         <DropdownMenu>
-          <DropdownItem name="abteilungWerte" onClick={onClickStatusTable}>
-            Abteilung
-          </DropdownItem>
           <DropdownItem name="etikettWerte" onClick={onClickStatusTable}>
             Etikett
           </DropdownItem>

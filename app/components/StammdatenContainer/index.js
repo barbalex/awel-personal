@@ -39,7 +39,6 @@ const StammdatenContainer = () => {
   useEffect(() => {
     fetchWerte({ db, store, table: 'statusWerte' })
     fetchWerte({ db, store, table: 'geschlechtWerte' })
-    fetchWerte({ db, store, table: 'abteilungWerte' })
     fetchWerte({ db, store, table: 'kostenstelleWerte' })
     fetchWerte({ db, store, table: 'mobileAboTypWerte' })
     fetchWerte({ db, store, table: 'kaderFunktionWerte' })

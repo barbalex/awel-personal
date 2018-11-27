@@ -31,8 +31,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
     personen,
     etiketten,
     showDeleted,
-    abteilungWerte,
-    //kostenstelleWerte,
+    // kostenstelleWerte,
     statusWerte,
     geschlechtWerte,
     etikettWerte,
@@ -138,22 +137,14 @@ const Person = ({ activeId }: { activeId: ?number }) => {
         })),
     [personen.length]
   )
-  const abteilungOptions = useMemo(() =>
-    sortBy(abteilungWerte, 'sort')
-      .filter(w => !!w.value)
-      .map(w => ({
-        label: w.value,
-        value: w.value
-      }))
-  )
-  /*const kostenstelleOptions = useMemo(() =>
+  /* const kostenstelleOptions = useMemo(() =>
     sortBy(kostenstelleWerte, 'sort')
       .filter(w => !!w.value)
       .map(w => ({
         label: w.value,
         value: w.value
       }))
-  )*/
+  ) */
   const statusOptions = useMemo(() =>
     sortBy(statusWerte, 'sort')
       .filter(w => !!w.value)
@@ -257,25 +248,14 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label="Büro Nr."
           saveToDb={saveToDb}
         />
-        <Select
-          // change id when filter changes
-          // only works for select because rerenders the input
-          // which takes focus out which is bad in regular input
-          key={`${personId}${existsFilter ? 1 : 0}abteilung`}
-          value={person.abteilung}
-          field="abteilung"
-          label="Abteilung"
-          options={abteilungOptions}
-          saveToDb={saveToDb}
-        />
-        {/*<Select
+        {/* <Select
           key={`${personId}${existsFilter ? 1 : 0}kostenstelle`}
           value={person.kostenstelle}
           field="kostenstelle"
           label="Kostenstelle"
           options={kostenstelleOptions}
           saveToDb={saveToDb}
-        />*/}
+        /> */}
         <Select
           key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
           value={person.vorgesetztId}

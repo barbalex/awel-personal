@@ -40,11 +40,6 @@ export default [
     parentModel: 'geschlechtWerte'
   },
   {
-    table: 'abteilungWerte',
-    model: 'AbteilungWert',
-    parentModel: 'abteilungWerte'
-  },
-  {
     table: 'kostenstelleWerte',
     model: 'KostenstelleWert',
     parentModel: 'kostenstelleWerte'

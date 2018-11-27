@@ -28,7 +28,6 @@ import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 export default (db: Object) =>
   types
     .model({
-      abteilungWerte: types.array(AbteilungWert),
       deletionMessage: types.maybeNull(types.string),
       deletionTitle: types.maybeNull(types.string),
       etiketten: types.array(Etikett),

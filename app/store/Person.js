@@ -3,14 +3,14 @@ import { types } from 'mobx-state-tree'
 export default types.model('Person', {
   id: types.maybe(types.integer),
   deleted: types.optional(types.integer, 0),
-  personalNr: types.optional(types.integer, null),
+  personalNr: types.maybe(types.union(types.integer, types.null)),
   name: types.maybe(types.union(types.string, types.integer, types.null)),
   vorname: types.maybe(types.union(types.string, types.integer, types.null)),
   kurzzeichen: types.maybe(
     types.union(types.string, types.integer, types.null)
   ),
   adresse: types.maybe(types.union(types.string, types.integer, types.null)),
-  plz: types.optional(types.integer, null),
+  plz: types.maybe(types.union(types.integer, types.null)),
   ort: types.maybe(types.union(types.string, types.integer, types.null)),
   land: types.maybe(types.union(types.string, types.integer, types.null)),
   bildUrl: types.maybe(types.union(types.string, types.integer, types.null)),
@@ -23,8 +23,8 @@ export default types.model('Person', {
     types.union(types.string, types.integer, types.null)
   ),
   bueroNr: types.maybe(types.union(types.string, types.integer, types.null)),
-  abteilung: types.optional(types.integer, null),
-  sektion: types.optional(types.integer, null),
+  abteilung: types.maybe(types.union(types.integer, types.null)),
+  sektion: types.maybe(types.union(types.integer, types.null)),
   /* kostenstelle: types.maybe(
     types.union(types.string, types.integer, types.null)
   ), */

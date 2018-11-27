@@ -12,7 +12,6 @@ export default ({ store }) => {
     etiketten,
     statusWerte,
     geschlechtWerte,
-    abteilungWerte,
     kostenstelleWerte,
     mobileAboTypWerte,
     kaderFunktionWerte,
@@ -42,9 +41,6 @@ export default ({ store }) => {
   )
   onPatch(geschlechtWerte, (patch, inversePatch) =>
     addMutation({ tableName: 'geschlechtWerte', patch, inversePatch })
-  )
-  onPatch(abteilungWerte, (patch, inversePatch) =>
-    addMutation({ tableName: 'abteilungWerte', patch, inversePatch })
   )
   onPatch(kostenstelleWerte, (patch, inversePatch) =>
     addMutation({ tableName: 'kostenstelleWerte', patch, inversePatch })
