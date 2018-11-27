@@ -133,12 +133,11 @@ const DateField = ({
               <DatePicker
                 selected={
                   moment(stateValue, 'DD.MM.YYYY').isValid()
-                    ? moment(stateValue, 'DD.MM.YYYY')
+                    ? moment(stateValue, 'DD.MM.YYYY').toDate()
                     : null
                 }
                 onChange={onChangeDatePicker}
                 dateFormat="DD.MM.YYYY"
-                locale="de-CH"
                 withPortal
                 inline
                 onClickOutside={closePicker}

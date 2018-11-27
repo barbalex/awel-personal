@@ -223,7 +223,7 @@
     "moment": "2.22.2",
     "mst-middlewares": "3.8.1",
     "react": "16.7.0-alpha.2",
-    "react-datepicker": "1.8.0",
+    "react-datepicker": "2.0.0",
     "react-dom": "16.7.0-alpha.2",
     "react-dropzone": "7.0.1",
     "react-hot-loader": "4.3.12",
