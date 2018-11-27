@@ -53,7 +53,7 @@ const StyledFormGroup = styled(FormGroup)`
     right: 1em;
   }
 `
-const StyledDatePicker = styled(DatePicker)`
+const StyledInputGroupAddon = styled(InputGroupAddon)`
   cursor: pointer;
 `
 
@@ -121,7 +121,7 @@ const DateField = ({
             onChange={onChange}
             onBlur={onBlur}
           />
-          <InputGroupAddon
+          <StyledInputGroupAddon
             addonType="append"
             id="datePickerInputGroup"
             onClick={openPicker}
@@ -130,7 +130,7 @@ const DateField = ({
               <FaCalendarAlt />
             </span>
             {open && (
-              <StyledDatePicker
+              <DatePicker
                 selected={
                   moment(stateValue, 'DD.MM.YYYY').isValid()
                     ? moment(stateValue, 'DD.MM.YYYY')
@@ -144,7 +144,7 @@ const DateField = ({
                 onClickOutside={closePicker}
               />
             )}
-          </InputGroupAddon>
+          </StyledInputGroupAddon>
         </InputGroup>
       </Col>
     </StyledFormGroup>

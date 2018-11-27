@@ -2113,12 +2113,12 @@ babel-plugin-macros@^2.0.0:
     resolve "^1.8.1"
 
 "babel-plugin-styled-components@>= 1":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-styled-components/-/babel-plugin-styled-components-1.9.0.tgz#7b814bbe55900d9e0f6ec2c66741a1992c1c4a3d"
-  integrity sha512-DRurNjnndoIAiW0+vYgQyGmnCtKyCEGP9Y19Z9NrSwMEMGBWl2S7Q7F70RyGDae+KKeighhOPI1WttIb3r0xaA==
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-styled-components/-/babel-plugin-styled-components-1.9.1.tgz#53dde7a9cdff22a16db197129b1e68160c926e8b"
+  integrity sha512-mn7vI7ueBzr7ntLbDAhvILxjOnFPO/JzZsnU1wakgSh4YNrgLZ+oMnycRnC8xpZut3Kuwcz8dZJDsWJBl1OXVA==
   dependencies:
     "@babel/helper-annotate-as-pure" "^7.0.0"
-    "@babel/plugin-syntax-jsx" "^7.0.0"
+    babel-plugin-syntax-jsx "^6.18.0"
     lodash "^4.17.10"
 
 babel-plugin-syntax-async-functions@^6.8.0:
@@ -3256,14 +3256,14 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-db@^1.0.30000889:
-  version "1.0.30000911"
-  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000911.tgz#76262de497a6d914594201eccc10a4d6c5020f98"
-  integrity sha512-TrcnJ/w8DA7ZCXbZ2/EPgBmZtkYQAPegRovKpB0BJmDsf86ZoQM/CizblSeNt0TZBxqgeHmj+eElPe33fAGwdw==
+  version "1.0.30000912"
+  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000912.tgz#29c739d8c8fae006de61b51f547bdbf02f5d867e"
+  integrity sha512-uiepPdHcJ06Na9t15L5l+pp3NWQU4IETbmleghD6tqCqbIYqhHSu7nVfbK2gqPjfy+9jl/wHF1UQlyTszh9tJQ==
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30000898, caniuse-lite@^1.0.30000899:
-  version "1.0.30000911"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000911.tgz#5dfb8139ee479722da27000ca92dec47913b9605"
-  integrity sha512-x/E/SNwD80I0bT+fF9Y3Kbwo7Xd1xSafCAmFlpJmaVg3SQoJJOH4Ivb9fi9S0WjfqewQ6Ydt1zEVZpmMVYNeDA==
+  version "1.0.30000912"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000912.tgz#08e650d4090a9c0ab06bfd2b46b7d3ad6dcaea28"
+  integrity sha512-M3zAtV36U+xw5mMROlTXpAHClmPAor6GPKAMD5Yi7glCB5sbMPFtnQ3rGpk4XqPdUrrTIaVYSJZxREZWNy8QJg==
 
 capture-exit@^1.2.0:
   version "1.2.0"
@@ -4286,15 +4286,15 @@ date-extended@~0.0.3:
     extended "~0.0.3"
     is-extended "~0.0.3"
 
+date-fns@2.0.0-alpha.25:
+  version "2.0.0-alpha.25"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.25.tgz#651a5d1f59a01af6cf0371e39b2ae29df5d521ee"
+  integrity sha512-iQzJkHF0L4wah9Ae9PkvwemwFz6qmRLuNZcghmvf2t+ptLs1qXzONLiGtjmPQzL6+JpC01JjlTopY2AEy4NFAg==
+
 date-fns@^1.23.0:
   version "1.29.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.29.0.tgz#12e609cdcb935127311d04d33334e2960a2a54e6"
   integrity sha512-lbTXWZ6M20cWH8N9S6afb0SBm6tMk+uUg6z3MqHPKE9atmsY3kJkTm8vKe93izJ2B2+q5MV990sM2CHgtAZaOw==
-
-date-fns@^2.0.0-alpha.23:
-  version "2.0.0-alpha.25"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.25.tgz#651a5d1f59a01af6cf0371e39b2ae29df5d521ee"
-  integrity sha512-iQzJkHF0L4wah9Ae9PkvwemwFz6qmRLuNZcghmvf2t+ptLs1qXzONLiGtjmPQzL6+JpC01JjlTopY2AEy4NFAg==
 
 date-now@^0.1.4:
   version "0.1.4"
@@ -5278,9 +5278,9 @@ eslint-restricted-globals@^0.1.1:
   integrity sha1-NfDVy8ZMLj7WLpO0saevBbp+1Nc=
 
 eslint-rule-docs@^1.1.5:
-  version "1.1.23"
-  resolved "https://registry.yarnpkg.com/eslint-rule-docs/-/eslint-rule-docs-1.1.23.tgz#5916a7c310a074fe2d9c70d547a451ebe0959dc4"
-  integrity sha512-f9HaSbZycODqihBOpyzjpl46o2zmftPApZRWCQtkW9omceRdsymjW8FNVofS6G+98pe82VQggE9828IYEiIMqA==
+  version "1.1.24"
+  resolved "https://registry.yarnpkg.com/eslint-rule-docs/-/eslint-rule-docs-1.1.24.tgz#ce37805751ebed9a21394e42b88672e422852f11"
+  integrity sha512-DP1tJqxPuoRDvNNSa9d6QS+aRwqLIUukh6BOE1ayv8C/sh5dh+i6gHFrWYIbJzZs0/YbUNoD90lDPinr1G5U2w==
 
 eslint-scope@3.7.1:
   version "3.7.1"
@@ -10819,13 +10819,12 @@ react-base16-styling@^0.6.0:
     lodash.flow "^3.3.0"
     pure-color "^1.2.0"
 
-react-datepicker@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-2.0.0.tgz#5818edfdd08af1b18cbc02b8a1c842cec906606f"
-  integrity sha512-3L3PrZLqbnEIBDXh4RkwlClCaCOFOPd2WYezo4vjXz5PSogrpXtG6UuAc21JtF8+3bBgcsZ/2BUH5F5b89VHsA==
+react-datepicker@1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-1.8.0.tgz#ee46148aa10234d42e22ab969d1110f74263ba56"
+  integrity sha512-N4LdVTtqJCsZyKXBQ/AqSEcH6FyhgsY1gD07zECNu60nGt5s4ngRlhYdHoE34VNFO+ZY+pvljZRLwSC8LS9RxQ==
   dependencies:
     classnames "^2.2.5"
-    date-fns "^2.0.0-alpha.23"
     prop-types "^15.6.0"
     react-onclickoutside "^6.7.1"
     react-popper "^1.0.2"
@@ -12348,10 +12347,10 @@ string.prototype.trim@^1.1.2:
     es-abstract "^1.5.0"
     function-bind "^1.0.2"
 
-string_decoder@^1.0.0, string_decoder@^1.1.1, string_decoder@~1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
-  integrity sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==
+string_decoder@^1.0.0, string_decoder@^1.1.1:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.2.0.tgz#fe86e738b19544afe70469243b2a1ee9240eae8d"
+  integrity sha512-6YqyX6ZWEYguAxgZzHGL7SsCeGx3V2TtOTqZz1xSTSWnqsbWwbptafNyvf/ACquZUXV3DANr5BDIwNYe1mN42w==
   dependencies:
     safe-buffer "~5.1.0"
 
@@ -12359,6 +12358,13 @@ string_decoder@~0.10.x:
   version "0.10.31"
   resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-0.10.31.tgz#62e203bc41766c6c28c9fc84301dab1c5310fa94"
   integrity sha1-YuIDvEF2bGwoyfyEMB2rHFMQ+pQ=
+
+string_decoder@~1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
+  integrity sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==
+  dependencies:
+    safe-buffer "~5.1.0"
 
 stringify-entities@^1.0.1:
   version "1.3.2"

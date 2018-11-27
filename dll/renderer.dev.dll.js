@@ -135,6 +135,18 @@ eval("module.exports = bootstrap;\n\n//# sourceURL=webpack://renderer/external_%
 
 /***/ }),
 
+/***/ "date-fns":
+/*!***************************!*\
+  !*** external "date-fns" ***!
+  \***************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+eval("module.exports = date-fns;\n\n//# sourceURL=webpack://renderer/external_%22date-fns%22?");
+
+/***/ }),
+
 /***/ "devtron":
 /*!**************************!*\
   !*** external "devtron" ***!
