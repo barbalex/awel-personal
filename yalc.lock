@@ -1,9 +1,0 @@
-{
-  "version": "v1",
-  "packages": {
-    "mobx-react-lite": {
-      "signature": "32c1289bce26ab79040170dca564a5cb",
-      "file": true
-    }
-  }
-}

@@ -4,7 +4,7 @@
     "sourceType": "module",
     "allowImportExportEverywhere": true
   },
-  "extends": ["airbnb", "prettier", "prettier/flowtype", "prettier/react"],
+  "extends": ["react-app", "prettier", "prettier/flowtype", "prettier/react"],
   "env": {
     "browser": true,
     "node": true
@@ -44,7 +44,7 @@
     //"promise/always-return": "error",
     //"promise/catch-or-return": "error",
     //"promise/no-native": "off",
-    "react/default-props-match-prop-types": ["error", {
+    /*"react/default-props-match-prop-types": ["error", {
       "allowRequiredDefaults": true
     }],
     "react/require-default-props": "off",
@@ -67,7 +67,7 @@
         "extensions": [".js", ".jsx"]
       }
     ],
-    "react/prefer-stateless-function": "off"
+    "react/prefer-stateless-function": "off"*/
   },
   "plugins": ["flowtype", "import", "promise", "compat", "react"],
   "settings": {
