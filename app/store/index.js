@@ -7,7 +7,7 @@ import findLast from 'lodash/findLast'
 import keys from 'lodash/keys'
 import lValues from 'lodash/values'
 
-import AbteilungWert from './AbteilungWert'
+import Abteilung from './Abteilung'
 import Etikett from './Etikett'
 import GeschlechtWert from './GeschlechtWert'
 import KaderFunktionWert from './KaderFunktionWert'
