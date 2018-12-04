@@ -7,13 +7,13 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
 } from 'reactstrap'
 import { observer } from 'mobx-react-lite'
 
 import Filter from './Filter'
 import Stammdaten from './Stammdaten'
-import Person from './Person'
+import Personen from './Personen'
 import Export from './Export'
 import More from './More'
 import storeContext from '../../storeContext'
@@ -25,7 +25,7 @@ const MyNavbar = () => {
     () => {
       setOpen(!open)
     },
-    [open]
+    [open],
   )
 
   const location = store.location.toJSON()
@@ -36,7 +36,7 @@ const MyNavbar = () => {
       <NavbarToggler onClick={toggleNavbar} />
       <Collapse isOpen={open} navbar>
         <Nav className="mr-auto" navbar>
-          <Person />
+          <Personen />
           <Export />
           <UncontrolledDropdown
             nav
