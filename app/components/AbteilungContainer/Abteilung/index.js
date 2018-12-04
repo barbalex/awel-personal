@@ -65,11 +65,11 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
   // filter out options with empty values - makes no sense and errors
   const personOptions = useMemo(
     () =>
-      sortBy(personen, ['name'])
-        .filter(w => !!w.name && w.deleted === 0)
+      sortBy(personen, ['name', 'vorname'])
+        .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
         .filter(w => !showFilter && w.id !== abteilung.leiter)
         .map(w => ({
-          label: w.name,
+          label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
     [personen.length],
