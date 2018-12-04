@@ -128,7 +128,7 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
           key={`${abteilungId}${existsFilter ? 1 : 0}leiter`}
           value={abteilung.leiter}
           field="leiter"
-          label="Vorgesetzte(r)"
+          label="Leiter"
           options={personOptions}
           saveToDb={saveToDb}
         />
