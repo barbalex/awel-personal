@@ -2,7 +2,7 @@
 import React, { useContext } from 'react'
 import { FixedSizeList as List } from 'react-window'
 import styled from 'styled-components'
-import {  observer } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { UncontrolledTooltip } from 'reactstrap'
 import { FaTrashAlt } from 'react-icons/fa'
 
@@ -32,42 +32,40 @@ const Row = styled.div`
   }
 `
 
-const PersonList = ({
+const AbteilungList = ({
   dimensions,
-  activeId
+  activeId,
 }: {
   dimensions: Object,
-  activeId: ?number
+  activeId: ?number,
 }) => {
   const store = useContext(storeContext)
   const { setLocation, showFilter, setShowFilter } = store
-  // eslint-disable-next-line no-restricted-globals
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
-  // eslint-disable-next-line no-restricted-globals
   const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
-  const personen = store.personenFiltered
+  const abteilungen = store.abteilungenFiltered
 
   return (
     <Container>
       <List
         height={height}
-        itemCount={personen.length}
+        itemCount={abteilungen.length}
         itemSize={50}
         width={width}
       >
         {({ index, style }) => {
-          const row = personen[index]
+          const row = abteilungen[index]
 
           return (
             <Row
               style={style}
               onClick={() => {
-                setLocation(['Personen', row.id.toString()])
+                setLocation(['Abteilungen', row.id.toString()])
                 if (showFilter) setShowFilter(false)
               }}
               active={!showFilter && activeId === row.id}
             >
-              <div>{`${row.name || ''} ${row.vorname || ''}`}</div>
+              <div>{`${row.name || ''}`}</div>
               {row.deleted === 1 && (
                 <>
                   <FaTrashAlt id={`deletedIcon${row.id}`} />
@@ -75,7 +73,7 @@ const PersonList = ({
                     placement="left"
                     target={`deletedIcon${row.id}`}
                   >
-                    Diese Person wurde gelöscht
+                    Diese Abteilung wurde gelöscht
                   </UncontrolledTooltip>
                 </>
               )}
@@ -87,4 +85,4 @@ const PersonList = ({
   )
 }
 
-export default observer(PersonList)
+export default observer(AbteilungList)

@@ -3,20 +3,12 @@ import React, { useContext, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
-import moment from 'moment'
 import sortBy from 'lodash/sortBy'
 
 import Input from '../../shared/Input'
-import Date from '../../shared/Date'
 import Select from '../../shared/Select'
-import SelectMulti from '../../shared/SelectMulti'
 import SharedCheckbox from '../../shared/Checkbox_01'
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
-import isDateField from '../../../src/isDateField'
-import Links from './Links'
-import Schluessels from './Schluessels'
-import MobileAbos from './MobileAbos'
-import KaderFunktionen from './KaderFunktionen'
 import Zuletzt from './Zuletzt'
 import storeContext from '../../../storeContext'
 
@@ -25,157 +17,62 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Person = ({ activeId }: { activeId: ?number }) => {
+const Abteilung = ({ activeId }: { activeId: ?number }) => {
   const store = useContext(storeContext)
   const {
     personen,
-    etiketten,
+    abteilungen,
     showDeleted,
-    // kostenstelleWerte,
-    statusWerte,
-    geschlechtWerte,
-    etikettWerte,
     showFilter,
-    filterPerson,
-    filterEtikett,
+    filterAbteilung,
     existsFilter,
-    setFilter
+    setFilter,
   } = store
 
-  let person
+  let abteilung
   if (showFilter) {
-    person = filterPerson
+    abteilung = filterAbteilung
   } else {
-    person = personen.find(p => p.id === activeId)
-    if (!person) person = {}
+    abteilung = abteilungen.find(p => p.id === activeId)
+    if (!abteilung) abteilung = {}
   }
-  const personId = showFilter ? '' : person.id
+  const abteilungId = showFilter ? '' : abteilung.id
 
   const saveToDb = useCallback(
     ({ field, value }) => {
-      // const person = personen.find(p => p.id === activeId)
-      if (!person && !showFilter)
-        throw new Error(`Person with id ${activeId} not found`)
-      let newValue
-      if (isDateField(field)) {
-        if (value) newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
-        if (newValue && newValue.includes('Invalid date')) {
-          newValue = newValue.replace('Invalid date', 'Format: DD.MM.YYYY')
-        }
-      } else {
-        newValue = ifIsNumericAsNumber(value)
-      }
+      if (!abteilung && !showFilter)
+        throw new Error(`Abteilung with id ${activeId} not found`)
+      const newValue = ifIsNumericAsNumber(value)
 
       if (showFilter) {
         setFilter({
-          model: 'filterPerson',
-          value: { ...filterPerson, ...{ [field]: newValue } }
+          model: 'filterAbteilung',
+          value: { ...filterAbteilung, ...{ [field]: newValue } },
         })
       } else {
         store.updateField({
-          table: 'personen',
-          parentModel: 'personen',
+          table: 'abteilungen',
+          parentModel: 'abteilungen',
           field,
           value: newValue,
-          id: person.id
+          id: abteilung.id,
         })
       }
     },
-    [activeId, personen.length, filterPerson, showFilter]
-  )
-  const addEtikett = useCallback(
-    etikett => {
-      if (showFilter) {
-        setFilter({
-          model: 'filterEtikett',
-          value: { ...filterEtikett, ...{ etikett } }
-        })
-      } else {
-        store.addEtikett(etikett)
-      }
-    },
-    [showFilter, filterEtikett]
-  )
-  const deleteEtikett = useCallback(
-    etikett => {
-      if (showFilter) {
-        setFilter({
-          model: 'filterEtikett',
-          value: { ...filterEtikett, ...{ etikett: null } }
-        })
-      } else {
-        store.deleteEtikett(etikett)
-      }
-    },
-    [filterEtikett, showFilter]
-  )
-  const saveToDbEtikett = useCallback(
-    ({ value }) => {
-      if (value) {
-        return setFilter({
-          model: 'filterEtikett',
-          value: { ...filterEtikett, ...{ etikett: value } }
-        })
-      }
-      setFilter({
-        model: 'filterEtikett',
-        value: { ...filterEtikett, ...{ etikett: null } }
-      })
-    },
-    [filterEtikett]
+    [activeId, abteilungen.length, filterAbteilung, showFilter],
   )
 
   // filter out options with empty values - makes no sense and errors
   const personOptions = useMemo(
     () =>
       sortBy(personen, ['name', 'vorname'])
-        .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-        .filter(w => !showFilter && w.id !== person.id)
+        .filter(w => !!w.name && w.deleted === 0)
+        .filter(w => !showFilter && w.id !== abteilung.leiter)
         .map(w => ({
-          label: `${w.name} ${w.vorname}`,
-          value: w.id
+          label: w.name,
+          value: w.id,
         })),
-    [personen.length]
-  )
-  /* const kostenstelleOptions = useMemo(() =>
-    sortBy(kostenstelleWerte, 'sort')
-      .filter(w => !!w.value)
-      .map(w => ({
-        label: w.value,
-        value: w.value
-      }))
-  ) */
-  const statusOptions = useMemo(() =>
-    sortBy(statusWerte, 'sort')
-      .filter(w => !!w.value)
-      .map(w => ({
-        label: w.value,
-        value: w.value
-      }))
-  )
-  const geschlechtOptions = useMemo(() =>
-    sortBy(geschlechtWerte, 'sort')
-      .filter(w => !!w.value)
-      .map(w => ({
-        label: w.value,
-        value: w.value
-      }))
-  )
-  const etikettenOptions = useMemo(() =>
-    sortBy(etikettWerte, 'sort')
-      .filter(w => !!w.value)
-      .map(w => ({
-        label: w.value,
-        value: w.value
-      }))
-  )
-  const myEtiketten = useMemo(() =>
-    sortBy(etiketten.filter(e => e.idPerson === activeId), 'etikett')
-      .filter(w => !!w.etikett)
-      .map(e => ({
-        label: e.etikett,
-        value: e.etikett
-      }))
+    [personen.length],
   )
 
   if (!showFilter && !activeId) return null
@@ -185,165 +82,60 @@ const Person = ({ activeId }: { activeId: ?number }) => {
       <StyledForm>
         {showDeleted && (
           <SharedCheckbox
-            key={`${personId}deleted`}
-            value={person.deleted}
+            key={`${abteilungId}deleted`}
+            value={abteilung.deleted}
             field="deleted"
             label="gelöscht"
             saveToDb={saveToDb}
           />
         )}
         <Input
-          key={`${personId}name`}
-          value={person.name}
+          key={`${abteilungId}name`}
+          value={abteilung.name}
           field="name"
           label="Name"
           saveToDb={saveToDb}
         />
         <Input
-          key={`${personId}vorname`}
-          value={person.vorname}
-          field="vorname"
-          label="Vorname"
-          saveToDb={saveToDb}
-        />
-        <Input
-          key={`${personId}kurzzeichen`}
-          value={person.kurzzeichen}
+          key={`${abteilungId}kurzzeichen`}
+          value={abteilung.kurzzeichen}
           field="kurzzeichen"
           label="Kurzzeichen"
           saveToDb={saveToDb}
         />
         <Input
-          key={`${personId}telefonNr`}
-          value={person.telefonNr}
+          key={`${abteilungId}telefonNr`}
+          value={abteilung.telefonNr}
           field="telefonNr"
           label="Telefon"
           saveToDb={saveToDb}
         />
         <Input
-          key={`${personId}telefonNrMobile`}
-          value={person.telefonNrMobile}
-          field="telefonNrMobile"
-          label="Telefon mobile"
-          saveToDb={saveToDb}
-        />
-        <Input
-          key={`${personId}email`}
-          value={person.email}
+          key={`${abteilungId}email`}
+          value={abteilung.email}
           field="email"
           label="Email"
           saveToDb={saveToDb}
         />
-        <Date
-          key={`${personId}geburtDatum`}
-          value={person.geburtDatum}
-          field="geburtDatum"
-          label="Geburtsdatum"
-          saveToDb={saveToDb}
-        />
         <Input
-          key={`${personId}bueroNr`}
-          value={person.bueroNr}
-          field="bueroNr"
-          label="Büro Nr."
+          key={`${abteilungId}standort`}
+          value={abteilung.standort}
+          field="standort"
+          label="Standort"
           saveToDb={saveToDb}
         />
-        {/* <Select
-          key={`${personId}${existsFilter ? 1 : 0}kostenstelle`}
-          value={person.kostenstelle}
-          field="kostenstelle"
-          label="Kostenstelle"
-          options={kostenstelleOptions}
-          saveToDb={saveToDb}
-        /> */}
         <Select
-          key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
-          value={person.vorgesetztId}
-          field="vorgesetztId"
+          key={`${abteilungId}${existsFilter ? 1 : 0}leiter`}
+          value={abteilung.leiter}
+          field="leiter"
           label="Vorgesetzte(r)"
           options={personOptions}
           saveToDb={saveToDb}
         />
-        <Date
-          key={`${personId}${existsFilter ? 1 : 0}eintrittDatum`}
-          value={person.eintrittDatum}
-          field="eintrittDatum"
-          label="Eintritt Datum"
-          saveToDb={saveToDb}
-        />
-        <Date
-          key={`${personId}${existsFilter ? 1 : 0}austrittDatum`}
-          value={person.austrittDatum}
-          field="austrittDatum"
-          label="Austritt Datum"
-          saveToDb={saveToDb}
-        />
-        <Select
-          key={`${personId}${existsFilter ? 1 : 0}status`}
-          value={person.status}
-          field="status"
-          label="Status"
-          options={statusOptions}
-          saveToDb={saveToDb}
-        />
-        <Input
-          key={`${personId}parkplatzNr`}
-          value={person.parkplatzNr}
-          field="parkplatzNr"
-          label="Parkplatz Nr."
-          saveToDb={saveToDb}
-        />
-        <Input
-          key={`${personId}parkplatzBeitrag`}
-          value={person.parkplatzBeitrag}
-          field="parkplatzBeitrag"
-          label="Parkplatz Beitrag"
-          saveToDb={saveToDb}
-        />
-        <Select
-          key={`${personId}${existsFilter ? 1 : 0}geschlecht`}
-          value={person.geschlecht}
-          field="geschlecht"
-          label="Geschlecht"
-          options={geschlechtOptions}
-          saveToDb={saveToDb}
-        />
-        {showFilter ? (
-          <Select
-            key={`${personId}${existsFilter ? 1 : 0}etikett`}
-            value={filterEtikett.etikett}
-            field="etikett"
-            label="Etikett"
-            options={etikettenOptions}
-            saveToDb={saveToDbEtikett}
-          />
-        ) : (
-          <SelectMulti
-            key={`${personId}${existsFilter ? 1 : 0}etikett`}
-            value={myEtiketten}
-            field="etikett"
-            label="Etiketten"
-            options={etikettenOptions}
-            addEtikett={addEtikett}
-            deleteEtikett={deleteEtikett}
-          />
-        )}
-        <Input
-          key={`${personId}bemerkungen`}
-          value={person.bemerkungen}
-          field="bemerkungen"
-          label="Bemerkungen"
-          saveToDb={saveToDb}
-          type="textarea"
-        />
-        {!showFilter && <Links />}
-        <Schluessels />
-        <MobileAbos />
-        <KaderFunktionen />
         {!showFilter && <Zuletzt />}
       </StyledForm>
     </Container>
   )
 }
 
-export default observer(Person)
+export default observer(Abteilung)

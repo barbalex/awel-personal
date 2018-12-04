@@ -7,12 +7,7 @@ import { observer } from 'mobx-react-lite'
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Abteilung from './Abteilung'
 import List from './List'
-import fetchPersonen from '../../src/fetchPersonen'
-import fetchEtiketten from '../../src/fetchEtiketten'
-import fetchLinks from '../../src/fetchLinks'
-import fetchSchluessel from '../../src/fetchSchluessel'
-import fetchMobileAbos from '../../src/fetchMobileAbos'
-import fetchKaderFunktionen from '../../src/fetchKaderFunktionen'
+import fetchAbteilungen from '../../src/fetchAbteilungen'
 import fetchWerte from '../../src/fetchWerte'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
@@ -37,42 +32,16 @@ const StyledReflexElement = styled(ReflexElement)`
 const PersonContainer = () => {
   const store = useContext(storeContext)
   const db = useContext(dbContext)
-  const { showFilter, personen } = store
+  const { showFilter, abteilungen } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-  const person = personen.find(p => p.id === activeId)
-  // pass list the active person's props to enable instant updates
-  const personJson = person ? person.toJSON() : {}
+  const abteilung = abteilungen.find(p => p.id === activeId)
+  // pass list the active abteilung's props to enable instant updates
+  const abteilungJson = abteilung ? abteilung.toJSON() : {}
 
   useEffect(() => {
-    fetchPersonen({ db, store })
-    fetchWerte({ db, store, table: 'statusWerte' })
-    fetchWerte({ db, store, table: 'geschlechtWerte' })
-    // fetchWerte({ db, store, table: 'kostenstelleWerte' })
-    fetchWerte({ db, store, table: 'kaderFunktionWerte' })
-    fetchEtiketten({ db, store })
-    fetchWerte({ db, store, table: 'etikettWerte' })
-    fetchLinks({ db, store })
-    fetchSchluessel({ db, store })
-    fetchMobileAbos({ db, store })
-    fetchWerte({ db, store, table: 'mobileAboKostenstelleWerte' })
-    fetchWerte({ db, store, table: 'mobileAboTypWerte' })
-    fetchKaderFunktionen({ db, store })
-    // set initial active id
-    // nope, better not
-    // for instance: after deleting do not show another user
-    // generally: never sho a person the user has not choosen
-    /*
-      let { personen } = props.store
-      personen = sortBy(personen, ['name', 'vorname'])
-      const { showDeleted, location } = props.store
-      if (!showDeleted) personen = personen.filter(p => p.deleted === 0)
-      const activeId = location.toJSON()[1]
-      if (personen && personen.length && personen.length > 0 && !activeId) {
-        const row = personen[0]
-        props.setInitialId(row.id)
-      }
-      */
+    fetchAbteilungen({ db, store })
+    fetchWerte({ db, store, table: 'kostenstelleWerte' })
   }, [])
 
   return (
@@ -85,7 +54,7 @@ const PersonContainer = () => {
             renderOnResizeRate={100}
             renderOnResize
           >
-            <List activeId={activeId} {...personJson} />
+            <List activeId={activeId} {...abteilungJson} />
           </ReflexElement>
           <ReflexSplitter />
           <StyledReflexElement showfilter={showFilter}>

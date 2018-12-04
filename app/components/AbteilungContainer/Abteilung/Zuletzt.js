@@ -17,11 +17,12 @@ moment.locale('de')
 
 const Zuletzt = () => {
   const store = useContext(storeContext)
-  const { personen } = store
+  const { abteilungen } = store
   const location = store.location.toJSON()
+
   if (!location[1]) throw new Error(`no id found`)
   const activeId = ifIsNumericAsNumber(location[1])
-  const person = personen.find(p => p.id === activeId)
+  const abteilung = abteilungen.find(p => p.id === activeId)
 
   return (
     <FormGroup row>
@@ -31,12 +32,12 @@ const Zuletzt = () => {
       <Col sm={10}>
         <Value name="letzteAenderung">
           {`${
-            moment.unix(person.letzteMutationZeit / 1000).isValid()
+            moment.unix(abteilung.letzteMutationZeit / 1000).isValid()
               ? moment
-                  .unix(person.letzteMutationZeit / 1000)
+                  .unix(abteilung.letzteMutationZeit / 1000)
                   .format('DD.MM.YYYY H:mm:ss')
               : ''
-          }, ${person.letzteMutationUser || ''}`}
+          }, ${abteilung.letzteMutationUser || ''}`}
         </Value>
       </Col>
     </FormGroup>
