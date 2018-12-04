@@ -1,5 +1,5 @@
 // @flow
-import { types, splitJsonPath } from 'mobx-state-tree'
+import { types, splitJsonPath, getSnapshot } from 'mobx-state-tree'
 import { UndoManager } from 'mst-middlewares'
 import findIndex from 'lodash/findIndex'
 import flatten from 'lodash/flatten'
@@ -281,8 +281,8 @@ export default (db: Object) =>
         return personen
       },
       get abteilungenFiltered() {
-        const { filterAbteilung } = self
-        let { abteilungen } = self
+        const { filterAbteilung, filterFulltext } = self
+        let abteilungen = getSnapshot(self.abteilungen)
         Object.keys(filterAbteilung).forEach(key => {
           if (filterAbteilung[key] || filterAbteilung[key] === 0) {
             abteilungen = abteilungen.filter(p => {
@@ -301,7 +301,6 @@ export default (db: Object) =>
             return true
           })
           .filter(p => {
-            const { filterFulltext } = self
             if (!filterFulltext) return true
             // now check for any value if includes
             const abteilungValues = Object.entries(p)
@@ -319,8 +318,9 @@ export default (db: Object) =>
             )
           })
           .sort((a, b) => {
-            if (!a.name) return -1
-            if (a.name && a.name.toLowerCase() < b.name.toLowerCase()) return -1
+            if (!a.name && b.name) return -1
+            if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
+              return -1
             return 1
           })
         return abteilungen
