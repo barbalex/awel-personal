@@ -15,6 +15,7 @@ const StyledNavItem = styled(NavItem)`
   border: ${props =>
     props.active ? '1px solid rgb(255, 255, 255, .5)' : 'unset'};
   border-radius: 0.25rem;
+  margin-right: 5px;
 `
 const StyledButton = styled(Button)`
   background-color: rgba(0, 0, 0, 0) !important;

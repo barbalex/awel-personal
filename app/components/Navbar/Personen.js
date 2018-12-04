@@ -15,6 +15,7 @@ const StyledNavItem = styled(NavItem)`
   border: ${props =>
     props.active ? '1px solid rgb(255, 255, 255, .5)' : 'unset'};
   border-radius: 0.25rem;
+  margin-right: 5px;
 `
 const StyledButton = styled(Button)`
   background-color: rgba(0, 0, 0, 0) !important;
@@ -31,7 +32,7 @@ const Person = () => {
     addPerson,
     setDeletionMessage,
     setDeletionTitle,
-    setDeletionCallback
+    setDeletionCallback,
   } = store
   const location = store.location.toJSON()
   const activeLocation = location[0]
@@ -42,7 +43,7 @@ const Person = () => {
       e.preventDefault()
       setLocation([e.target.id])
     },
-    [location]
+    [location],
   )
   // const addPerson = useCallback(() => addPerson())
   const deletePerson = useCallback(
@@ -62,7 +63,7 @@ const Person = () => {
         const namer1 = activePerson.geschlecht === 'w' ? 'sie' : 'ihn'
         const namer2 = activePerson.geschlecht === 'w' ? 'sie' : 'er'
         setDeletionMessage(
-          `${name} war schon gelöscht. Wenn Sie ${namer1} nochmals löschen, wird ${namer2} endgültig und unwiederbringlich gelöscht. Möchten Sie das?`
+          `${name} war schon gelöscht. Wenn Sie ${namer1} nochmals löschen, wird ${namer2} endgültig und unwiederbringlich gelöscht. Möchten Sie das?`,
         )
         setDeletionTitle('Person unwiederbringlich löschen')
       } else {
@@ -78,12 +79,12 @@ const Person = () => {
             activePerson.name
               ? `"${activePerson.name} ${activePerson.vorname}"`
               : 'Diesen Datensatz'
-          } wirklich löschen?`
+          } wirklich löschen?`,
         )
         setDeletionTitle('Person löschen')
       }
     },
-    [personen.length, location]
+    [personen.length, location],
   )
 
   const existsActivePerson = activeLocation === 'Personen' && location[1]
