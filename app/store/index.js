@@ -326,8 +326,9 @@ export default (db: Object) =>
         return abteilungen
       },
       get sektionenFiltered() {
-        const { filterKostenstelle, filterSektion } = self
-        let { sektionen } = self
+        const { filterFulltext } = self
+        let sektionen = getSnapshot(self.sektionen)
+        const filterSektion = getSnapshot(self.filterSektion)
         Object.keys(filterSektion).forEach(key => {
           if (filterSektion[key] || filterSektion[key] === 0) {
             sektionen = sektionen.filter(p => {
@@ -340,51 +341,19 @@ export default (db: Object) =>
             })
           }
         })
-        let kostenstelle = self.kostenstelle.filter(p => {
-          if (!self.showDeleted) return p.deleted === 0
-          return true
-        })
-        let kostenstelleIsFiltered = false
-        Object.keys(filterKostenstelle).forEach(key => {
-          if (filterKostenstelle[key]) {
-            kostenstelleIsFiltered = true
-            kostenstelle = kostenstelle.filter(p => {
-              if (!filterKostenstelle[key]) return true
-              if (!p[key]) return false
-              return p[key]
-                .toString()
-                .toLowerCase()
-                .includes(filterKostenstelle[key].toString().toLowerCase())
-            })
-          }
-        })
         sektionen = sektionen
           .filter(p => {
             if (!self.showDeleted) return p.deleted === 0
             return true
           })
           .filter(p => {
-            if (!kostenstelleIsFiltered) return true
-            return kostenstelle.filter(s => s.idSektion === p.id).length > 0
-          })
-          .filter(p => {
-            const { filterFulltext } = self
             if (!filterFulltext) return true
             // now check for any value if includes
             const personValues = Object.entries(p)
               .filter(e => e[0] !== 'id')
               .map(e => e[1])
-            const kostenstelleValues = flatten(
-              self.kostenstelle
-                .filter(s => s.idSektion === p.id)
-                .map(s =>
-                  Object.entries(s)
-                    .filter(e => e[0] !== 'id')
-                    .map(e => e[1]),
-                ),
-            )
             return (
-              [...personValues, kostenstelleValues].filter(v => {
+              [...personValues].filter(v => {
                 if (!v) return false
                 if (!v.toString()) return false
                 return v
@@ -395,7 +364,7 @@ export default (db: Object) =>
             )
           })
           .sort((a, b) => {
-            if (!a.name) return -1
+            if (!a.name && b.name) return -1
             if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
               return -1
             return 1

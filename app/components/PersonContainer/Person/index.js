@@ -31,7 +31,6 @@ const Person = ({ activeId }: { activeId: ?number }) => {
     personen,
     etiketten,
     showDeleted,
-    // kostenstelleWerte,
     statusWerte,
     geschlechtWerte,
     etikettWerte,
@@ -39,7 +38,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
     filterPerson,
     filterEtikett,
     existsFilter,
-    setFilter
+    setFilter,
   } = store
 
   let person
@@ -69,7 +68,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
       if (showFilter) {
         setFilter({
           model: 'filterPerson',
-          value: { ...filterPerson, ...{ [field]: newValue } }
+          value: { ...filterPerson, ...{ [field]: newValue } },
         })
       } else {
         store.updateField({
@@ -77,52 +76,52 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           parentModel: 'personen',
           field,
           value: newValue,
-          id: person.id
+          id: person.id,
         })
       }
     },
-    [activeId, personen.length, filterPerson, showFilter]
+    [activeId, personen.length, filterPerson, showFilter],
   )
   const addEtikett = useCallback(
     etikett => {
       if (showFilter) {
         setFilter({
           model: 'filterEtikett',
-          value: { ...filterEtikett, ...{ etikett } }
+          value: { ...filterEtikett, ...{ etikett } },
         })
       } else {
         store.addEtikett(etikett)
       }
     },
-    [showFilter, filterEtikett]
+    [showFilter, filterEtikett],
   )
   const deleteEtikett = useCallback(
     etikett => {
       if (showFilter) {
         setFilter({
           model: 'filterEtikett',
-          value: { ...filterEtikett, ...{ etikett: null } }
+          value: { ...filterEtikett, ...{ etikett: null } },
         })
       } else {
         store.deleteEtikett(etikett)
       }
     },
-    [filterEtikett, showFilter]
+    [filterEtikett, showFilter],
   )
   const saveToDbEtikett = useCallback(
     ({ value }) => {
       if (value) {
         return setFilter({
           model: 'filterEtikett',
-          value: { ...filterEtikett, ...{ etikett: value } }
+          value: { ...filterEtikett, ...{ etikett: value } },
         })
       }
       setFilter({
         model: 'filterEtikett',
-        value: { ...filterEtikett, ...{ etikett: null } }
+        value: { ...filterEtikett, ...{ etikett: null } },
       })
     },
-    [filterEtikett]
+    [filterEtikett],
   )
 
   // filter out options with empty values - makes no sense and errors
@@ -133,49 +132,41 @@ const Person = ({ activeId }: { activeId: ?number }) => {
         .filter(w => !showFilter && w.id !== person.id)
         .map(w => ({
           label: `${w.name} ${w.vorname}`,
-          value: w.id
+          value: w.id,
         })),
-    [personen.length]
+    [personen.length],
   )
-  /* const kostenstelleOptions = useMemo(() =>
-    sortBy(kostenstelleWerte, 'sort')
-      .filter(w => !!w.value)
-      .map(w => ({
-        label: w.value,
-        value: w.value
-      }))
-  ) */
   const statusOptions = useMemo(() =>
     sortBy(statusWerte, 'sort')
       .filter(w => !!w.value)
       .map(w => ({
         label: w.value,
-        value: w.value
-      }))
+        value: w.value,
+      })),
   )
   const geschlechtOptions = useMemo(() =>
     sortBy(geschlechtWerte, 'sort')
       .filter(w => !!w.value)
       .map(w => ({
         label: w.value,
-        value: w.value
-      }))
+        value: w.value,
+      })),
   )
   const etikettenOptions = useMemo(() =>
     sortBy(etikettWerte, 'sort')
       .filter(w => !!w.value)
       .map(w => ({
         label: w.value,
-        value: w.value
-      }))
+        value: w.value,
+      })),
   )
   const myEtiketten = useMemo(() =>
     sortBy(etiketten.filter(e => e.idPerson === activeId), 'etikett')
       .filter(w => !!w.etikett)
       .map(e => ({
         label: e.etikett,
-        value: e.etikett
-      }))
+        value: e.etikett,
+      })),
   )
 
   if (!showFilter && !activeId) return null
@@ -248,14 +239,6 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label="Büro Nr."
           saveToDb={saveToDb}
         />
-        {/* <Select
-          key={`${personId}${existsFilter ? 1 : 0}kostenstelle`}
-          value={person.kostenstelle}
-          field="kostenstelle"
-          label="Kostenstelle"
-          options={kostenstelleOptions}
-          saveToDb={saveToDb}
-        /> */}
         <Select
           key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
           value={person.vorgesetztId}

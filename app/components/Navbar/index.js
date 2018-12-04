@@ -15,6 +15,7 @@ import Filter from './Filter'
 import Stammdaten from './Stammdaten'
 import Personen from './Personen'
 import Abteilungen from './Abteilungen'
+import Sektionen from './Sektionen'
 import Export from './Export'
 import More from './More'
 import storeContext from '../../storeContext'
@@ -38,6 +39,7 @@ const MyNavbar = () => {
       <Collapse isOpen={open} navbar>
         <Nav className="mr-auto" navbar>
           <Personen />
+          <Sektionen />
           <Abteilungen />
           <Export />
           <UncontrolledDropdown
