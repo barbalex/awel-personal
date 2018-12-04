@@ -42,6 +42,7 @@ export default (db: Object) =>
       mobileAboTypWerte: types.array(MobileAboTypWert),
       etikettWerte: types.array(EtikettWert),
       personen: types.array(Person),
+      abteilungen: types.array(Abteilung),
       mutations: types.array(Mutation),
       location: types.optional(types.array(types.string), ['Personen']),
       showDeleted: types.optional(types.boolean, false),
@@ -51,6 +52,7 @@ export default (db: Object) =>
       watchMutations: types.optional(types.boolean, false),
       history: types.optional(UndoManager, {}),
       filterPerson: types.optional(Person, {}),
+      filterAbteilung: types.optional(Abteilung, {}),
       filterEtikett: types.optional(Etikett, {}),
       filterLink: types.optional(Link, {}),
       filterSchluessel: types.optional(Schluessel, {}),
@@ -58,27 +60,29 @@ export default (db: Object) =>
       filterKaderFunktion: types.optional(KaderFunktion, {}),
       showFilter: types.optional(types.boolean, false),
       filterFulltext: types.maybe(
-        types.union(types.string, types.integer, types.null)
-      )
+        types.union(types.string, types.integer, types.null),
+      ),
     })
     .views(self => ({
       get existsFilter() {
         const {
           filterPerson,
+          filterAbteilung,
           filterEtikett,
           filterLink,
           filterSchluessel,
           filterMobileAbo,
-          filterKaderFunktion
+          filterKaderFunktion,
         } = self
         return (
           [
             ...Object.values(filterPerson),
+            ...Object.values(filterAbteilung),
             ...Object.values(filterEtikett),
             ...Object.values(filterLink),
             ...Object.values(filterSchluessel),
             ...Object.values(filterMobileAbo),
-            ...Object.values(filterKaderFunktion)
+            ...Object.values(filterKaderFunktion),
           ].filter(v => v).length > 0
         )
       },
@@ -88,7 +92,7 @@ export default (db: Object) =>
           filterMobileAbo,
           filterKaderFunktion,
           filterEtikett,
-          filterPerson
+          filterPerson,
         } = self
         let { personen } = self
         Object.keys(filterPerson).forEach(key => {
@@ -209,8 +213,8 @@ export default (db: Object) =>
                 .map(s =>
                   Object.entries(s)
                     .filter(e => e[0] !== 'id')
-                    .map(e => e[1])
-                )
+                    .map(e => e[1]),
+                ),
             )
             const mobileAboValues = flatten(
               self.mobileAbos
@@ -218,8 +222,8 @@ export default (db: Object) =>
                 .map(s =>
                   Object.entries(s)
                     .filter(e => e[0] !== 'id')
-                    .map(e => e[1])
-                )
+                    .map(e => e[1]),
+                ),
             )
             const kaderFunktionValues = flatten(
               self.kaderFunktionen
@@ -227,8 +231,8 @@ export default (db: Object) =>
                 .map(s =>
                   Object.entries(s)
                     .filter(e => e[0] !== 'id')
-                    .map(e => e[1])
-                )
+                    .map(e => e[1]),
+                ),
             )
             const etikettValues = flatten(
               self.etiketten
@@ -236,8 +240,8 @@ export default (db: Object) =>
                 .map(s =>
                   Object.entries(s)
                     .filter(e => e[0] !== 'id')
-                    .map(e => e[1])
-                )
+                    .map(e => e[1]),
+                ),
             )
             return (
               [
@@ -245,7 +249,7 @@ export default (db: Object) =>
                 schluesselValues,
                 mobileAboValues,
                 kaderFunktionValues,
-                etikettValues
+                etikettValues,
               ].filter(v => {
                 if (!v) return false
                 if (!v.toString()) return false
@@ -270,12 +274,57 @@ export default (db: Object) =>
             return 1
           })
         return personen
-      }
+      },
+      get abteilungenFiltered() {
+        const { filterAbteilung } = self
+        let { abteilungen } = self
+        Object.keys(filterAbteilung).forEach(key => {
+          if (filterAbteilung[key] || filterAbteilung[key] === 0) {
+            abteilungen = abteilungen.filter(p => {
+              if (!filterAbteilung[key]) return true
+              if (!p[key]) return false
+              return p[key]
+                .toString()
+                .toLowerCase()
+                .includes(filterAbteilung[key].toString().toLowerCase())
+            })
+          }
+        })
+        abteilungen = abteilungen
+          .filter(p => {
+            if (!self.showDeleted) return p.deleted === 0
+            return true
+          })
+          .filter(p => {
+            const { filterFulltext } = self
+            if (!filterFulltext) return true
+            // now check for any value if includes
+            const abteilungValues = Object.entries(p)
+              .filter(e => e[0] !== 'id')
+              .map(e => e[1])
+            return (
+              [...abteilungValues].filter(v => {
+                if (!v) return false
+                if (!v.toString()) return false
+                return v
+                  .toString()
+                  .toLowerCase()
+                  .includes(filterFulltext.toString().toLowerCase())
+              }).length > 0
+            )
+          })
+          .sort((a, b) => {
+            if (!a.name) return -1
+            if (a.name && a.name.toLowerCase() < b.name.toLowerCase()) return -1
+            return 1
+          })
+        return abteilungen
+      },
     }))
     // functions are not serializable
     // so need to define this as volatile
     .volatile(() => ({
-      deletionCallback: null
+      deletionCallback: null,
     }))
     .actions(self => {
       setUndoManager(self)
@@ -295,6 +344,7 @@ export default (db: Object) =>
         },
         emptyFilter() {
           self.filterPerson = {}
+          self.filterAbteilung = {}
           self.filterEtikett = {}
           self.filterLink = {}
           self.filterSchluessel = {}
@@ -323,6 +373,11 @@ export default (db: Object) =>
         setPersonen(personen) {
           self.watchMutations = false
           self.personen = personen
+          self.watchMutations = true
+        },
+        setAbteilungen(abteilungen) {
+          self.watchMutations = false
+          self.abteilungen = abteilungen
           self.watchMutations = true
         },
         setMutations(mutations) {
@@ -372,7 +427,7 @@ export default (db: Object) =>
               const dataset = self[tableName].find(d => d.id === rowId)
               if (!dataset) {
                 throw new Error(
-                  `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr. Daher wird er nicht aktualisiert`
+                  `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr. Daher wird er nicht aktualisiert`,
                 )
               }
               // 2. update value
@@ -381,7 +436,7 @@ export default (db: Object) =>
                 parentModel: tableName,
                 field,
                 value: previousValue,
-                id: rowId
+                id: rowId,
               })
               break
             }
@@ -391,7 +446,7 @@ export default (db: Object) =>
               const dataset = self[tableName].find(d => d.id === rowId)
               if (!dataset) {
                 throw new Error(
-                  `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr. Daher wird er nicht gelöscht`
+                  `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr. Daher wird er nicht gelöscht`,
                 )
               }
               // 2. remove dataset
@@ -404,7 +459,7 @@ export default (db: Object) =>
               // write to store
               self[tableName].splice(
                 findIndex(self[tableName], p => p.id === rowId),
-                1
+                1,
               )
               break
             }
@@ -414,7 +469,7 @@ export default (db: Object) =>
               const dataset = self[tableName].find(d => d.id === rowId)
               if (dataset) {
                 throw new Error(
-                  `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert. Daher wird er nicht wiederhergestellt`
+                  `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert. Daher wird er nicht wiederhergestellt`,
                 )
               }
               // 2. add dataset
@@ -422,7 +477,8 @@ export default (db: Object) =>
               const previousObject = JSON.parse(previousValue)
               // need to remove keys with value null
               Object.keys(previousObject).forEach(
-                key => previousObject[key] == null && delete previousObject[key]
+                key =>
+                  previousObject[key] == null && delete previousObject[key],
               )
               const objectKeys = keys(previousObject).join()
               const objectValues = lValues(previousObject)
@@ -448,7 +504,7 @@ export default (db: Object) =>
           try {
             info = db
               .prepare(
-                'insert into personen (letzteMutationUser, letzteMutationZeit) values (@user, @zeit)'
+                'insert into personen (letzteMutationUser, letzteMutationZeit) values (@user, @zeit)',
               )
               .run({ user: self.username, zeit: Date.now() })
           } catch (error) {
@@ -458,9 +514,29 @@ export default (db: Object) =>
           self.personen.push({
             id: info.lastInsertRowid,
             letzteMutationUser: self.username,
-            letzteMutationZeit: Date.now()
+            letzteMutationZeit: Date.now(),
           })
           self.setLocation(['Personen', info.lastInsertRowid.toString()])
+        },
+        addAbteilung() {
+          // 1. create new Abteilung in db, returning id
+          let info
+          try {
+            info = db
+              .prepare(
+                'insert into abteilungen (letzteMutationUser, letzteMutationZeit) values (@user, @zeit)',
+              )
+              .run({ user: self.username, zeit: Date.now() })
+          } catch (error) {
+            return console.log(error)
+          }
+          // 2. add to store
+          self.abteilungen.push({
+            id: info.lastInsertRowid,
+            letzteMutationUser: self.username,
+            letzteMutationZeit: Date.now(),
+          })
+          self.setLocation(['Abteilungen', info.lastInsertRowid.toString()])
         },
         addMutation({ tableName, patch, inversePatch }) {
           // watchMutations is false while data is loaded from server
@@ -497,12 +573,12 @@ export default (db: Object) =>
                  */
                 const historyChanges = undoManager.history
                 const historyInversePatches = flatten(
-                  historyChanges.map(c => c.inversePatches)
+                  historyChanges.map(c => c.inversePatches),
                 )
                 const historyInversePatch =
                   findLast(
                     historyInversePatches,
-                    p => p.op === 'add' && p.path === `/${tableName}/${index}`
+                    p => p.op === 'add' && p.path === `/${tableName}/${index}`,
                   ) || {}
                 previousValue = JSON.stringify(historyInversePatch.value)
                 rowId = historyInversePatch.value.id
@@ -520,7 +596,7 @@ export default (db: Object) =>
             try {
               info = db
                 .prepare(
-                  'insert into mutations (time, user, op, tableName, rowId, field, value, previousValue) values (@time, @username, @op, @tableName, @rowId, @field, @value, @previousValue)'
+                  'insert into mutations (time, user, op, tableName, rowId, field, value, previousValue) values (@time, @username, @op, @tableName, @rowId, @field, @value, @previousValue)',
                 )
                 .run({
                   username,
@@ -530,7 +606,7 @@ export default (db: Object) =>
                   rowId,
                   field,
                   value,
-                  previousValue
+                  previousValue,
                 })
             } catch (error) {
               return console.log(error)
@@ -546,7 +622,7 @@ export default (db: Object) =>
               rowId,
               field,
               value,
-              previousValue
+              previousValue,
             })
           })
         },
@@ -559,11 +635,11 @@ export default (db: Object) =>
           try {
             info = db
               .prepare(
-                `insert into ${table} (letzteMutationUser,letzteMutationZeit) values (@letzteMutationUser,@letzteMutationZeit)`
+                `insert into ${table} (letzteMutationUser,letzteMutationZeit) values (@letzteMutationUser,@letzteMutationZeit)`,
               )
               .run({
                 letzteMutationUser: self.username,
-                letzteMutationZeit: Date.now()
+                letzteMutationZeit: Date.now(),
               })
           } catch (error) {
             return console.log(error)
@@ -572,7 +648,7 @@ export default (db: Object) =>
           self[table].push({
             id: info.lastInsertRowid,
             letzteMutationUser: self.username,
-            letzteMutationZeit: Date.now()
+            letzteMutationZeit: Date.now(),
           })
           self.setLocation([table, info.lastInsertRowid.toString()])
         },
@@ -603,7 +679,7 @@ export default (db: Object) =>
           // write to db
           try {
             db.prepare(
-              `update personen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`
+              `update personen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
             ).run({ id, user: self.username, time: Date.now() })
           } catch (error) {
             return console.log(error)
@@ -632,6 +708,42 @@ export default (db: Object) =>
           self.personen.splice(findIndex(self.personen, p => p.id === id), 1)
           self.setLocation(['Personen'])
         },
+        setAbteilungDeleted(id) {
+          // write to db
+          try {
+            db.prepare(
+              `update abteilungen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+            ).run({ id, user: self.username, time: Date.now() })
+          } catch (error) {
+            return console.log(error)
+          }
+          // write to store
+          const abteilung = self.abteilungen.find(p => p.id === id)
+          abteilung.deleted = 1
+          abteilung.letzteMutationUser = self.username
+          abteilung.letzteMutationZeit = Date.now()
+          if (!self.showDeleted) self.setLocation(['Abteilungen'])
+        },
+        deleteAbteilung(id) {
+          // write to db
+          try {
+            db.prepare('delete from abteilungen where id = ?').run(id)
+          } catch (error) {
+            // roll back update
+            return console.log(error)
+          }
+          // write to store
+          /**
+           * Do not use filter! Reason:
+           * rebuilds self.abteilungen. Consequence:
+           * all other abteilungen are re-added and listet as mutations of op 'add'
+           */
+          self.abteilungen.splice(
+            findIndex(self.abteilungen, p => p.id === id),
+            1,
+          )
+          self.setLocation(['Abteilungen'])
+        },
         addEtikett(etikett) {
           // grab idPerson from location
           const { location } = self
@@ -641,7 +753,7 @@ export default (db: Object) =>
           try {
             info = db
               .prepare(
-                'insert into etiketten (idPerson, etikett, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)'
+                'insert into etiketten (idPerson, etikett, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
               )
               .run(idPerson, etikett, self.username, Date.now())
           } catch (error) {
@@ -653,7 +765,7 @@ export default (db: Object) =>
             etikett,
             idPerson,
             letzteMutationUser: self.username,
-            letzteMutationZeit: Date.now()
+            letzteMutationZeit: Date.now(),
           })
           self.updatePersonsMutation(idPerson)
         },
@@ -664,7 +776,7 @@ export default (db: Object) =>
           // write to db
           try {
             db.prepare(
-              'delete from etiketten where idPerson = ? and etikett = ?'
+              'delete from etiketten where idPerson = ? and etikett = ?',
             ).run(idPerson, etikett)
           } catch (error) {
             return console.log(error)
@@ -673,9 +785,9 @@ export default (db: Object) =>
           self.etiketten.splice(
             findIndex(
               self.etiketten,
-              e => e.idPerson === idPerson && e.etikett === etikett
+              e => e.idPerson === idPerson && e.etikett === etikett,
             ),
-            1
+            1,
           )
           self.updatePersonsMutation(idPerson)
         },
@@ -688,7 +800,7 @@ export default (db: Object) =>
           try {
             info = db
               .prepare(
-                'insert into links (idPerson, url, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)'
+                'insert into links (idPerson, url, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
               )
               .run(idPerson, url, self.username, Date.now())
           } catch (error) {
@@ -700,7 +812,7 @@ export default (db: Object) =>
             url,
             idPerson,
             letzteMutationUser: self.username,
-            letzteMutationZeit: Date.now()
+            letzteMutationZeit: Date.now(),
           })
           self.updatePersonsMutation(idPerson)
         },
@@ -727,7 +839,7 @@ export default (db: Object) =>
           try {
             info = db
               .prepare(
-                'insert into schluessel (idPerson, letzteMutationUser, letzteMutationZeit) values (?,?,?)'
+                'insert into schluessel (idPerson, letzteMutationUser, letzteMutationZeit) values (?,?,?)',
               )
               .run(idPerson, self.username, Date.now())
           } catch (error) {
@@ -738,7 +850,7 @@ export default (db: Object) =>
             id: info.lastInsertRowid,
             idPerson,
             letzteMutationUser: self.username,
-            letzteMutationZeit: Date.now()
+            letzteMutationZeit: Date.now(),
           })
           self.updatePersonsMutation(idPerson)
         },
@@ -752,7 +864,7 @@ export default (db: Object) =>
           // write to store
           self.schluessel.splice(
             findIndex(self.schluessel, p => p.id === id),
-            1
+            1,
           )
           // set persons letzteMutation
           const { location } = self
@@ -768,7 +880,7 @@ export default (db: Object) =>
           try {
             info = db
               .prepare(
-                'insert into mobileAbos (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)'
+                'insert into mobileAbos (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)',
               )
               .run(idPerson, self.username, Date.now())
           } catch (error) {
@@ -779,7 +891,7 @@ export default (db: Object) =>
             id: info.lastInsertRowid,
             idPerson,
             letzteMutationUser: self.username,
-            letzteMutationZeit: Date.now()
+            letzteMutationZeit: Date.now(),
           })
           self.updatePersonsMutation(idPerson)
         },
@@ -793,7 +905,7 @@ export default (db: Object) =>
           // write to store
           self.mobileAbos.splice(
             findIndex(self.mobileAbos, p => p.id === id),
-            1
+            1,
           )
           // set persons letzteMutation
           const { location } = self
@@ -809,7 +921,7 @@ export default (db: Object) =>
           try {
             info = db
               .prepare(
-                'insert into kaderFunktionen (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)'
+                'insert into kaderFunktionen (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)',
               )
               .run(idPerson, self.username, Date.now())
           } catch (error) {
@@ -820,7 +932,7 @@ export default (db: Object) =>
             id: info.lastInsertRowid,
             idPerson,
             letzteMutationUser: self.username,
-            letzteMutationZeit: Date.now()
+            letzteMutationZeit: Date.now(),
           })
           self.updatePersonsMutation(idPerson)
         },
@@ -834,7 +946,7 @@ export default (db: Object) =>
           // write to store
           self.kaderFunktionen.splice(
             findIndex(self.kaderFunktionen, p => p.id === id),
-            1
+            1,
           )
           // set persons letzteMutation
           const { location } = self
@@ -844,12 +956,12 @@ export default (db: Object) =>
         updateField({ table, parentModel, field, value, id }) {
           try {
             db.prepare(
-              `update ${table} set ${field} = @value, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`
+              `update ${table} set ${field} = @value, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
             ).run({
               value,
               id,
               user: self.username,
-              time: Date.now()
+              time: Date.now(),
             })
           } catch (error) {
             return console.log(error)
@@ -857,7 +969,7 @@ export default (db: Object) =>
           const storeObject = self[parentModel].find(o => o.id === id)
           if (!storeObject) {
             return console.log(
-              `Error: no ${table} with id "${id}" found in store`
+              `Error: no ${table} with id "${id}" found in store`,
             )
           }
           storeObject[field] = value
@@ -869,7 +981,7 @@ export default (db: Object) =>
               'schluessel',
               'mobileAbos',
               'kaderFunktionen',
-              'etiketten'
+              'etiketten',
             ].includes(parentModel)
           ) {
             // set persons letzteMutation
@@ -882,11 +994,11 @@ export default (db: Object) =>
           // in db
           try {
             db.prepare(
-              `update personen set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`
+              `update personen set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
             ).run({
               user: self.username,
               time: Date.now(),
-              id: idPerson
+              id: idPerson,
             })
           } catch (error) {
             return console.log(error)
@@ -895,11 +1007,28 @@ export default (db: Object) =>
           const person = self.personen.find(p => p.id === idPerson)
           person.letzteMutationUser = self.username
           person.letzteMutationZeit = Date.now()
-        }
+        },
+        updateAbteilungsMutation(idAbteilung) {
+          // in db
+          try {
+            db.prepare(
+              `update abteilungen set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+            ).run({
+              user: self.username,
+              time: Date.now(),
+              id: idAbteilung,
+            })
+          } catch (error) {
+            return console.log(error)
+          }
+          // in store
+          const abteilung = self.abteilungen.find(p => p.id === idAbteilung)
+          abteilung.letzteMutationUser = self.username
+          abteilung.letzteMutationZeit = Date.now()
+        },
       }
     })
 
-// eslint-disable-next-line import/no-mutable-exports
 export let undoManager = {}
 export const setUndoManager = targetStore => {
   undoManager = targetStore.history
