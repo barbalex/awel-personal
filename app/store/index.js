@@ -8,6 +8,7 @@ import keys from 'lodash/keys'
 import lValues from 'lodash/values'
 
 import Abteilung from './Abteilung'
+import Sektion from './Sektion'
 import Etikett from './Etikett'
 import GeschlechtWert from './GeschlechtWert'
 import KaderFunktionWert from './KaderFunktionWert'
@@ -43,6 +44,7 @@ export default (db: Object) =>
       etikettWerte: types.array(EtikettWert),
       personen: types.array(Person),
       abteilungen: types.array(Abteilung),
+      sektionen: types.array(Sektion),
       mutations: types.array(Mutation),
       location: types.optional(types.array(types.string), ['Personen']),
       showDeleted: types.optional(types.boolean, false),
@@ -53,6 +55,7 @@ export default (db: Object) =>
       history: types.optional(UndoManager, {}),
       filterPerson: types.optional(Person, {}),
       filterAbteilung: types.optional(Abteilung, {}),
+      filterSektion: types.optional(Sektion, {}),
       filterEtikett: types.optional(Etikett, {}),
       filterLink: types.optional(Link, {}),
       filterSchluessel: types.optional(Schluessel, {}),
@@ -68,6 +71,7 @@ export default (db: Object) =>
         const {
           filterPerson,
           filterAbteilung,
+          filterSektion,
           filterEtikett,
           filterLink,
           filterSchluessel,
@@ -78,6 +82,7 @@ export default (db: Object) =>
           [
             ...Object.values(filterPerson),
             ...Object.values(filterAbteilung),
+            ...Object.values(filterSektion),
             ...Object.values(filterEtikett),
             ...Object.values(filterLink),
             ...Object.values(filterSchluessel),
@@ -320,6 +325,83 @@ export default (db: Object) =>
           })
         return abteilungen
       },
+      get sektionenFiltered() {
+        const { filterKostenstelle, filterSektion } = self
+        let { sektionen } = self
+        Object.keys(filterSektion).forEach(key => {
+          if (filterSektion[key] || filterSektion[key] === 0) {
+            sektionen = sektionen.filter(p => {
+              if (!filterSektion[key]) return true
+              if (!p[key]) return false
+              return p[key]
+                .toString()
+                .toLowerCase()
+                .includes(filterSektion[key].toString().toLowerCase())
+            })
+          }
+        })
+        let kostenstelle = self.kostenstelle.filter(p => {
+          if (!self.showDeleted) return p.deleted === 0
+          return true
+        })
+        let kostenstelleIsFiltered = false
+        Object.keys(filterKostenstelle).forEach(key => {
+          if (filterKostenstelle[key]) {
+            kostenstelleIsFiltered = true
+            kostenstelle = kostenstelle.filter(p => {
+              if (!filterKostenstelle[key]) return true
+              if (!p[key]) return false
+              return p[key]
+                .toString()
+                .toLowerCase()
+                .includes(filterKostenstelle[key].toString().toLowerCase())
+            })
+          }
+        })
+        sektionen = sektionen
+          .filter(p => {
+            if (!self.showDeleted) return p.deleted === 0
+            return true
+          })
+          .filter(p => {
+            if (!kostenstelleIsFiltered) return true
+            return kostenstelle.filter(s => s.idSektion === p.id).length > 0
+          })
+          .filter(p => {
+            const { filterFulltext } = self
+            if (!filterFulltext) return true
+            // now check for any value if includes
+            const personValues = Object.entries(p)
+              .filter(e => e[0] !== 'id')
+              .map(e => e[1])
+            const kostenstelleValues = flatten(
+              self.kostenstelle
+                .filter(s => s.idSektion === p.id)
+                .map(s =>
+                  Object.entries(s)
+                    .filter(e => e[0] !== 'id')
+                    .map(e => e[1]),
+                ),
+            )
+            return (
+              [...personValues, kostenstelleValues].filter(v => {
+                if (!v) return false
+                if (!v.toString()) return false
+                return v
+                  .toString()
+                  .toLowerCase()
+                  .includes(filterFulltext.toString().toLowerCase())
+              }).length > 0
+            )
+          })
+          .sort((a, b) => {
+            if (!a.name) return -1
+            if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
+              return -1
+            return 1
+          })
+        return sektionen
+      },
     }))
     // functions are not serializable
     // so need to define this as volatile
@@ -345,9 +427,11 @@ export default (db: Object) =>
         emptyFilter() {
           self.filterPerson = {}
           self.filterAbteilung = {}
+          self.filterSektion = {}
           self.filterEtikett = {}
           self.filterLink = {}
           self.filterSchluessel = {}
+          self.filterKostenstelle = {}
           self.filterMobileAbo = {}
           self.filterKaderFunktion = {}
         },
@@ -380,6 +464,11 @@ export default (db: Object) =>
           self.abteilungen = abteilungen
           self.watchMutations = true
         },
+        setSektionen(sektionen) {
+          self.watchMutations = false
+          self.sektionen = sektionen
+          self.watchMutations = true
+        },
         setMutations(mutations) {
           self.mutations = mutations
         },
@@ -396,6 +485,11 @@ export default (db: Object) =>
         setSchluessel(schluessel) {
           self.watchMutations = false
           self.schluessel = schluessel
+          self.watchMutations = true
+        },
+        setKostenstelle(kostenstelle) {
+          self.watchMutations = false
+          self.kostenstelle = kostenstelle
           self.watchMutations = true
         },
         setMobileAbos(mobileAbos) {
@@ -419,8 +513,9 @@ export default (db: Object) =>
         revertMutation(mutationId) {
           const { mutations } = self
           const mutation = mutations.find(m => m.id === mutationId)
-          if (!mutation) throw new Error(`Keine Mutation mit id ${id} gefunden`)
-          const { id, op, tableName, rowId, field, previousValue } = mutation
+          if (!mutation)
+            throw new Error(`Keine Mutation mit id ${mutationId} gefunden`)
+          const { op, tableName, rowId, field, previousValue } = mutation
           switch (op) {
             case 'replace': {
               // 1. check if dataset still exists, warn and exit if not
@@ -537,6 +632,26 @@ export default (db: Object) =>
             letzteMutationZeit: Date.now(),
           })
           self.setLocation(['Abteilungen', info.lastInsertRowid.toString()])
+        },
+        addSektion() {
+          // 1. create new Sektion in db, returning id
+          let info
+          try {
+            info = db
+              .prepare(
+                'insert into sektionen (letzteMutationUser, letzteMutationZeit) values (@user, @zeit)',
+              )
+              .run({ user: self.username, zeit: Date.now() })
+          } catch (error) {
+            return console.log(error)
+          }
+          // 2. add to store
+          self.sektionen.push({
+            id: info.lastInsertRowid,
+            letzteMutationUser: self.username,
+            letzteMutationZeit: Date.now(),
+          })
+          self.setLocation(['Sektionen', info.lastInsertRowid.toString()])
         },
         addMutation({ tableName, patch, inversePatch }) {
           // watchMutations is false while data is loaded from server
@@ -744,6 +859,39 @@ export default (db: Object) =>
           )
           self.setLocation(['Abteilungen'])
         },
+        setSektionDeleted(id) {
+          // write to db
+          try {
+            db.prepare(
+              `update sektionen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+            ).run({ id, user: self.username, time: Date.now() })
+          } catch (error) {
+            return console.log(error)
+          }
+          // write to store
+          const sektion = self.sektionen.find(p => p.id === id)
+          sektion.deleted = 1
+          sektion.letzteMutationUser = self.username
+          sektion.letzteMutationZeit = Date.now()
+          if (!self.showDeleted) self.setLocation(['Sektionen'])
+        },
+        deleteSektion(id) {
+          // write to db
+          try {
+            db.prepare('delete from sektionen where id = ?').run(id)
+          } catch (error) {
+            // roll back update
+            return console.log(error)
+          }
+          // write to store
+          /**
+           * Do not use filter! Reason:
+           * rebuilds self.sektionen. Consequence:
+           * all other sektionen are re-added and listet as mutations of op 'add'
+           */
+          self.sektionen.splice(findIndex(self.sektionen, p => p.id === id), 1)
+          self.setLocation(['Sektionen'])
+        },
         addEtikett(etikett) {
           // grab idPerson from location
           const { location } = self
@@ -871,6 +1019,47 @@ export default (db: Object) =>
           const idPerson = ifIsNumericAsNumber(location[1])
           self.updatePersonsMutation(idPerson)
         },
+        addKostenstelle() {
+          // grab idSektion from location
+          const { location } = self
+          const idSektion = ifIsNumericAsNumber(location[1])
+          // 1. create new link in db, returning id
+          let info
+          try {
+            info = db
+              .prepare(
+                'insert into kostenstelle (idSektion, letzteMutationUser, letzteMutationZeit) values (?,?,?)',
+              )
+              .run(idSektion, self.username, Date.now())
+          } catch (error) {
+            return console.log(error)
+          }
+          // 2. add to store
+          self.kostenstelle.push({
+            id: info.lastInsertRowid,
+            idSektion,
+            letzteMutationUser: self.username,
+            letzteMutationZeit: Date.now(),
+          })
+          self.updateSektionsMutation(idSektion)
+        },
+        deleteKostenstelle(id) {
+          // write to db
+          try {
+            db.prepare('delete from kostenstelle where id = ?').run(id)
+          } catch (error) {
+            return console.log(error)
+          }
+          // write to store
+          self.kostenstelle.splice(
+            findIndex(self.kostenstelle, p => p.id === id),
+            1,
+          )
+          // set persons letzteMutation
+          const { location } = self
+          const idSektion = ifIsNumericAsNumber(location[1])
+          self.updateSektionsMutation(idSektion)
+        },
         addMobileAbo() {
           // grab idPerson from location
           const { location } = self
@@ -989,6 +1178,12 @@ export default (db: Object) =>
             const idPerson = ifIsNumericAsNumber(location[1])
             self.updatePersonsMutation(idPerson)
           }
+          if (['kostenstellen'].includes(parentModel)) {
+            // set sektions letzteMutation
+            const { location } = self
+            const idSektion = ifIsNumericAsNumber(location[1])
+            self.updateSektionsMutation(idSektion)
+          }
         },
         updatePersonsMutation(idPerson) {
           // in db
@@ -1025,6 +1220,24 @@ export default (db: Object) =>
           const abteilung = self.abteilungen.find(p => p.id === idAbteilung)
           abteilung.letzteMutationUser = self.username
           abteilung.letzteMutationZeit = Date.now()
+        },
+        updateSektionsMutation(idSektion) {
+          // in db
+          try {
+            db.prepare(
+              `update sektionen set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+            ).run({
+              user: self.username,
+              time: Date.now(),
+              id: idSektion,
+            })
+          } catch (error) {
+            return console.log(error)
+          }
+          // in store
+          const person = self.sektionen.find(p => p.id === idSektion)
+          person.letzteMutationUser = self.username
+          person.letzteMutationZeit = Date.now()
         },
       }
     })
