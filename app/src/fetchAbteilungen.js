@@ -1,5 +1,5 @@
 // @flow
 export default ({ db, store }: { db: Object, store: Object }) => {
   const abteilungen = db.prepare('SELECT * from abteilungen').all()
-  store.setPersonen(abteilungen)
+  store.setAbteilungen(abteilungen)
 }
