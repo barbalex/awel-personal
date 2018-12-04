@@ -15,7 +15,7 @@ import dbContext from '../../dbContext'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
-// seems that navbar is not finished when PersonContainer is built
+// seems that navbar is not finished when AbteilungContainer is built
 const Container = styled.div`
   height: calc(100vh - 56px);
 `
@@ -29,7 +29,7 @@ const StyledReflexElement = styled(ReflexElement)`
   }
 `
 
-const PersonContainer = () => {
+const AbteilungContainer = () => {
   const store = useContext(storeContext)
   const db = useContext(dbContext)
   const { showFilter, abteilungen } = store
@@ -66,4 +66,4 @@ const PersonContainer = () => {
   )
 }
 
-export default observer(PersonContainer)
+export default observer(AbteilungContainer)
