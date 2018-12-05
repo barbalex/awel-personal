@@ -480,6 +480,9 @@ export default (db: Object) =>
           self.showDeleted = show
         },
         revertMutation(mutationId) {
+          console.log('store, revertMutation', {
+            mutationId,
+          })
           const { mutations } = self
           const mutation = mutations.find(m => m.id === mutationId)
           if (!mutation)
@@ -544,6 +547,10 @@ export default (db: Object) =>
                 key =>
                   previousObject[key] == null && delete previousObject[key],
               )
+              console.log('store, revertMutation', {
+                mutationId,
+                previousObject,
+              })
               const objectKeys = keys(previousObject).join()
               const objectValues = lValues(previousObject)
               const sql = `insert into ${tableName} (${objectKeys}) values (${objectValues

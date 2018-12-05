@@ -6,9 +6,6 @@ import { observer } from 'mobx-react-lite'
 import { VariableSizeList as List } from 'react-window'
 import sortBy from 'lodash/sortBy'
 import moment from 'moment'
-import { Button, UncontrolledTooltip } from 'reactstrap'
-import ReactJson from 'react-json-view'
-import { FaUndo } from 'react-icons/fa'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import fetchMutations from '../../src/fetchMutations'
@@ -16,6 +13,7 @@ import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import Filter from './Filter'
 import storeContext from '../../storeContext'
 import dbContext from '../../dbContext'
+import Row from './Row'
 
 moment.locale('de')
 
@@ -25,7 +23,7 @@ moment.locale('de')
 const Container = styled.div`
   height: calc(100vh - 56px);
 `
-const Row = styled.div`
+const RowDiv = styled.div`
   border-bottom: 1px solid rgba(46, 125, 50, 0.5);
   cursor: pointer;
   background-color: ${props => (props.active ? 'rgb(255, 250, 198)' : 'unset')};
@@ -42,7 +40,7 @@ const Row = styled.div`
   overflow: hidden;
   overflow-x: auto;
 `
-const TitleRow = styled(Row)`
+const TitleRow = styled(RowDiv)`
   font-weight: 700;
   padding: 8px;
   overflow: hidden;
@@ -78,14 +76,6 @@ const Value = styled(Field)`
 const PreviousValue = styled(Field)`
   overflow: auto;
 `
-const RevertButton = styled(Button)`
-  font-size: 0.8rem !important;
-  padding-top: 3px !important;
-  padding-bottom: 3px !important;
-  margin-top: -5px;
-  height: 27px;
-  align-self: center;
-`
 
 const getValueToShow = value => {
   let valueToShow = value
@@ -111,7 +101,7 @@ const getValueToShow = value => {
 const Mutations = () => {
   const store = useContext(storeContext)
   const db = useContext(dbContext)
-  const { setLocation, mutations: rawMutations } = store
+  const { mutations: rawMutations } = store
   const location = store.location.toJSON()
 
   const [zeitFilter, setZeitFilter] = useState(null)
@@ -123,10 +113,6 @@ const Mutations = () => {
   const [valueFilter, setValueFilter] = useState(null)
   const [previousValueFilter, setPreviousValueFilter] = useState(null)
 
-  const revert = useCallback(e => {
-    const id = +e.target.dataset.id
-    store.revertMutation(id)
-  })
   const onChangeZeitFilter = useCallback(e => setZeitFilter(e.target.value))
   const emptyZeitFilter = useCallback(() => setZeitFilter(null))
   const onChangeUserFilter = useCallback(e => setUserFilter(e.target.value))
@@ -142,10 +128,10 @@ const Mutations = () => {
   const onChangeValueFilter = useCallback(e => setValueFilter(e.target.value))
   const emptyValueFilter = useCallback(() => setValueFilter(null))
   const onChangePreviousValueFilter = useCallback(e =>
-    setPreviousValueFilter(e.target.value)
+    setPreviousValueFilter(e.target.value),
   )
   const emptyPreviousValueFilter = useCallback(() =>
-    setPreviousValueFilter(null)
+    setPreviousValueFilter(null),
   )
 
   useEffect(() => {
@@ -156,17 +142,18 @@ const Mutations = () => {
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const mutations = sortBy(rawMutations.slice(), 'id')
     .reverse()
-    .map(({
-      id,
-      time,
-      user,
-      op,
-      tableName,
-      rowId,
-      field,
-      value,
-      previousValue
-    }) => ({
+    .map(
+      ({
+        id,
+        time,
+        user,
+        op,
+        tableName,
+        rowId,
+        field,
+        value,
+        previousValue,
+      }) => ({
         id,
         time: moment.unix(time / 1000).format('YYYY.MM.DD HH:mm:ss'),
         user,
@@ -175,33 +162,33 @@ const Mutations = () => {
         rowId: op === 'add' ? JSON.parse(value).id : rowId,
         field,
         value: getValueToShow(value),
-        previousValue: getValueToShow(previousValue)
-      })
+        previousValue: getValueToShow(previousValue),
+      }),
     )
     .filter(r => !zeitFilter || (r.time && r.time.includes(zeitFilter)))
     .filter(
       r =>
         !userFilter ||
-        (r.user && r.user.toLowerCase().includes(userFilter.toLowerCase()))
+        (r.user && r.user.toLowerCase().includes(userFilter.toLowerCase())),
     )
     .filter(
       r =>
         !opFilter ||
-        (r.op && r.op.toLowerCase().includes(opFilter.toLowerCase()))
+        (r.op && r.op.toLowerCase().includes(opFilter.toLowerCase())),
     )
     .filter(
       r =>
         !tableFilter ||
         (r.tableName &&
-          r.tableName.toLowerCase().includes(tableFilter.toLowerCase()))
+          r.tableName.toLowerCase().includes(tableFilter.toLowerCase())),
     )
     .filter(
-      r => !idFilter || (r.rowId && r.rowId.toString().includes(idFilter))
+      r => !idFilter || (r.rowId && r.rowId.toString().includes(idFilter)),
     )
     .filter(
       r =>
         !fieldFilter ||
-        (r.field && r.field.toLowerCase().includes(fieldFilter.toLowerCase()))
+        (r.field && r.field.toLowerCase().includes(fieldFilter.toLowerCase())),
     )
     .filter(r => {
       if (!valueFilter) return true
@@ -307,73 +294,14 @@ const Mutations = () => {
             itemSize={index => rowHeights[index] || 50}
             width={window.innerWidth}
           >
-            {({ index, style }) => {
-              const row = mutations[index]
-              const {
-                id,
-                time,
-                user,
-                tableName,
-                rowId,
-                field,
-                op,
-                value,
-                previousValue
-              } = row
-
-              return (
-                <Row
-                  style={style}
-                  onClick={() => setLocation(['mutations', id.toString()])}
-                  active={activeId === id}
-                >
-                  <Time>{time}</Time>
-                  <User>{user}</User>
-                  <Op>{op}</Op>
-                  <Model>{tableName}</Model>
-                  <Id>{rowId}</Id>
-                  <FieldName>{field}</FieldName>
-                  <PreviousValue>
-                    {previousValue && previousValue[0] === '{' ? (
-                      <ReactJson
-                        src={JSON.parse(previousValue)}
-                        name={null}
-                        displayObjectSize={false}
-                        displayDataTypes={false}
-                      />
-                    ) : (
-                      previousValue
-                    )}
-                  </PreviousValue>
-                  <Value>
-                    {value && value[0] === '{' ? (
-                      <ReactJson
-                        src={JSON.parse(value)}
-                        name={null}
-                        displayObjectSize={false}
-                        displayDataTypes={false}
-                      />
-                    ) : (
-                      value
-                    )}
-                  </Value>
-                  <RevertButton
-                    id={`revertButton${id}`}
-                    data-id={id}
-                    onClick={revert}
-                    outline
-                  >
-                    <FaUndo data-id={id} />
-                  </RevertButton>
-                  <UncontrolledTooltip
-                    placement="left"
-                    target={`revertButton${id}`}
-                  >
-                    alten Wert wiederherstellen
-                  </UncontrolledTooltip>
-                </Row>
-              )
-            }}
+            {({ index, style }) => (
+              <Row
+                style={style}
+                listIndex={index}
+                mutations={mutations}
+                activeId={activeId}
+              />
+            )}
           </List>
         </ListDiv>
       </Container>
