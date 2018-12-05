@@ -81,7 +81,6 @@ const getValueToShow = value => {
   let valueToShow = value
   if (!value && value !== 0) {
     valueToShow = ''
-    // eslint-disable-next-line no-restricted-globals
   } else if (!isNaN(value)) {
     // is a number
     if (value > 1530000000000 && moment.unix(value / 1000).isValid()) {
@@ -135,7 +134,6 @@ const Mutations = () => {
   )
 
   useEffect(() => {
-    console.log('fetching mutations')
     fetchMutations({ db, store })
   }, [])
 
@@ -193,7 +191,6 @@ const Mutations = () => {
     .filter(r => {
       if (!valueFilter) return true
       if (!r.value) return false
-      // eslint-disable-next-line no-restricted-globals
       if (!isNaN(r.value)) return r.value.toString().includes(valueFilter)
       return (
         r.value && r.value.toLowerCase().includes(valueFilter.toLowerCase())
@@ -202,7 +199,6 @@ const Mutations = () => {
     .filter(r => {
       if (!previousValueFilter) return true
       if (!r.previousValue) return false
-      // eslint-disable-next-line no-restricted-globals
       if (!isNaN(r.previousValue))
         return r.previousValue.toString().includes(previousValueFilter)
       return (

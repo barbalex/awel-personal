@@ -72,7 +72,6 @@ const MutationsRow = ({
 }) => {
   const store = useContext(storeContext)
   const { setLocation, revertMutation } = store
-  console.log('MutationsRow', { listIndex, activeId, mutations })
   const row = mutations[listIndex]
   const {
     id,

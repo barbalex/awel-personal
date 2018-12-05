@@ -480,13 +480,11 @@ export default (db: Object) =>
           self.showDeleted = show
         },
         revertMutation(mutationId) {
-          console.log('store, revertMutation', {
-            mutationId,
-          })
           const { mutations } = self
           const mutation = mutations.find(m => m.id === mutationId)
-          if (!mutation)
+          if (!mutation) {
             throw new Error(`Keine Mutation mit id ${mutationId} gefunden`)
+          }
           const { op, tableName, rowId, field, previousValue } = mutation
           switch (op) {
             case 'replace': {
@@ -502,7 +500,9 @@ export default (db: Object) =>
                 table: tableName,
                 parentModel: tableName,
                 field,
-                value: previousValue,
+                // sqlite stores numbers in text fields by adding .0
+                // need to convert to number or it will fail
+                value: ifIsNumericAsNumber(previousValue),
                 id: rowId,
               })
               break
