@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext, useCallback } from 'react'
+import React, { useContext } from 'react'
 import { FixedSizeList as List } from 'react-window'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
@@ -7,8 +7,8 @@ import { UncontrolledTooltip } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 import { FaTrashAlt } from 'react-icons/fa'
 
-import tables from '../../src/tables'
-import storeContext from '../../storeContext'
+import tables from '../../../src/tables'
+import storeContext from '../../../storeContext'
 
 const Container = styled.div`
   border-right: 1px solid rgb(46, 125, 50);
@@ -37,17 +37,16 @@ const Row = styled.div`
 const DataList = ({
   dimensions,
   activeId,
-  activeTable
+  activeTable,
 }: {
   dimensions: Object,
   activeId: ?number,
-  activeTable: ?string
+  activeTable: ?string,
 }) => {
   const store = useContext(storeContext)
   const { showDeleted, setLocation } = store
-  // eslint-disable-next-line no-restricted-globals
+
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
-  // eslint-disable-next-line no-restricted-globals
   const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
   let data = store[activeTable].slice().filter(p => {
     if (!showDeleted) return p.deleted === 0
