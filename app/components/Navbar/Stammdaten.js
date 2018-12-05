@@ -5,7 +5,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
-  UncontrolledTooltip
+  UncontrolledTooltip,
 } from 'reactstrap'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
@@ -49,7 +49,7 @@ const Stammdaten = () => {
     () => {
       store.addWert(activeTable)
     },
-    [activeTable]
+    [activeTable],
   )
   const deleteWert = useCallback(
     () => {
@@ -66,7 +66,7 @@ const Stammdaten = () => {
           ? `"${activeWert.value}"`
           : 'Dieser Datensatz'
         setDeletionMessage(
-          `${name} war schon gelöscht. Wenn Sie ihn nochmals löschen, ist das endgültig und unwiederbringlich. Möchten Sie das?`
+          `${name} war schon gelöscht. Wenn Sie ihn nochmals löschen, ist das endgültig und unwiederbringlich. Möchten Sie das?`,
         )
         setDeletionTitle(`${activeTable} unwiederbringlich löschen`)
       } else {
@@ -80,12 +80,12 @@ const Stammdaten = () => {
         setDeletionMessage(
           `${
             activeWert.value ? `"${activeWert.value}"` : 'Diesen Datensatz'
-          } wirklich löschen?`
+          } wirklich löschen?`,
         )
         setDeletionTitle(`${activeTable} löschen`)
       }
     },
-    [activeTable]
+    [activeTable, activeId],
   )
   const onClickStatusTable = useCallback(e => {
     store.setLocation([e.target.name])
