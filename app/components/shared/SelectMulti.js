@@ -22,20 +22,22 @@ const StyledSelect = styled(Select)`
   }
 `
 
+const noOptionsMessage = () => '(keine)'
+
 const SharedSelectMulti = ({
   value,
   field,
   label,
   options,
   addEtikett,
-  deleteEtikett
+  deleteEtikett,
 }: {
   value?: Array<Object>,
   field: string,
   label: string,
   options: Array<Object>,
   addEtikett: () => void,
-  deleteEtikett: () => void
+  deleteEtikett: () => void,
 }) => {
   const onChange = useCallback(
     (unusedOption, { action, option, removedValue }) => {
@@ -45,7 +47,7 @@ const SharedSelectMulti = ({
       if (action === 'remove-value' && removedValue) {
         deleteEtikett(removedValue.value)
       }
-    }
+    },
   )
 
   return (
@@ -65,7 +67,7 @@ const SharedSelectMulti = ({
           placeholder=""
           isClearable={false}
           isSearchable
-          noOptionsMessage={() => '(keine)'}
+          noOptionsMessage={noOptionsMessage}
         />
       </Col>
     </FormGroup>
