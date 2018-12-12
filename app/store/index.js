@@ -1119,6 +1119,7 @@ export default (db: Object) =>
           self.updatePersonsMutation(idPerson)
         },
         updateField({ table, parentModel, field, value, id }) {
+          // 1. update in db
           try {
             db.prepare(
               `update ${table} set ${field} = @value, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
@@ -1131,6 +1132,7 @@ export default (db: Object) =>
           } catch (error) {
             return console.log(error)
           }
+          // 2. update in store
           const storeObject = self[parentModel].find(o => o.id === id)
           if (!storeObject) {
             return console.log(
