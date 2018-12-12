@@ -1,5 +1,5 @@
 // @flow
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Col, FormGroup, Label } from 'reactstrap'
 import Select from 'react-select'
@@ -22,23 +22,30 @@ const StyledSelect = styled(Select)`
   }
 `
 
+const noOptionsMessage = () => '(keine)'
+
 const SharedSelect = ({
   value,
   field,
   label,
   options,
-  saveToDb
+  saveToDb,
 }: {
   value?: ?number | ?string,
   field: string,
   label: string,
   options: Array<Object>,
-  saveToDb: () => void
+  saveToDb: () => void,
 }) => {
   const onChange = useCallback(
     option => saveToDb({ value: option ? option.value : null, field }),
-    [field]
+    [field],
   )
+  // need to return null instead of undefined if no option is found
+  // otherwise field does not update
+  const option = useMemo(() => options.find(o => o.value === value) || null, [
+    value,
+  ])
 
   return (
     <FormGroup row>
@@ -49,14 +56,14 @@ const SharedSelect = ({
         <StyledSelect
           id={field}
           name={field}
-          value={options.find(o => o.value === value)}
+          value={option}
           options={options}
           onChange={onChange}
           hideSelectedOptions
           placeholder=""
           isClearable
           isSearchable
-          noOptionsMessage={() => '(keine)'}
+          noOptionsMessage={noOptionsMessage}
         />
       </Col>
     </FormGroup>
