@@ -1,5 +1,5 @@
 // @flow
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { observer } from 'mobx-react-lite'
 import Select from 'react-select'
 import styled from 'styled-components'
@@ -21,34 +21,41 @@ const StyledSelect = styled(Select)`
   }
 `
 
+const noOptionsMessage = () => '(keine)'
+
 const SharedSelect = ({
   value,
   field,
   options,
-  saveToDb
+  saveToDb,
 }: {
   value?: ?number | ?string,
   field: string,
   options: Array<Object>,
-  saveToDb: () => void
+  saveToDb: () => void,
 }) => {
   const onChange = useCallback(
     option => saveToDb({ value: option ? option.value : null, field }),
-    [field]
+    [field],
   )
+  // need to return null instead of undefined if no option is found
+  // otherwise field does not update
+  const option = useMemo(() => options.find(o => o.value === value) || null, [
+    value,
+  ])
 
   return (
     <StyledSelect
       id={field}
       name={field}
-      defaultValue={options.find(o => o.value === value)}
+      defaultValue={option}
       options={options}
       onChange={onChange}
       hideSelectedOptions
       placeholder=""
       isClearable
       isSearchable
-      noOptionsMessage={() => '(keine)'}
+      noOptionsMessage={noOptionsMessage}
     />
   )
 }

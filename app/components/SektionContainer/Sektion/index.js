@@ -23,6 +23,7 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
   const store = useContext(storeContext)
   const {
     personen,
+    abteilungen,
     sektionen,
     showDeleted,
     kostenstelleWerte,
@@ -93,6 +94,16 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
         value: w.value,
       })),
   )
+  const abteilungOptions = useMemo(
+    () =>
+      sortBy(abteilungen, ['name'])
+        .filter(w => !!w.name && w.deleted === 0)
+        .map(w => ({
+          label: w.name,
+          value: w.id,
+        })),
+    [abteilungen.length],
+  )
 
   if (!showFilter && !activeId) return null
 
@@ -113,6 +124,14 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
           value={sektion.name}
           field="name"
           label="Name"
+          saveToDb={saveToDb}
+        />
+        <Select
+          key={`${sektionId}${existsFilter ? 1 : 0}abteilung`}
+          value={sektion.abteilung}
+          field="abteilung"
+          label="Abteilung"
+          options={abteilungOptions}
           saveToDb={saveToDb}
         />
         <Input

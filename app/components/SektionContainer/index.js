@@ -9,6 +9,7 @@ import Sektion from './Sektion'
 import List from './List'
 import fetchPersonen from '../../src/fetchPersonen'
 import fetchSektionen from '../../src/fetchSektionen'
+import fetchAbteilungen from '../../src/fetchAbteilungen'
 import fetchWerte from '../../src/fetchWerte'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
@@ -42,6 +43,7 @@ const SektionContainer = () => {
 
   useEffect(() => {
     fetchSektionen({ db, store })
+    fetchAbteilungen({ db, store })
     fetchPersonen({ db, store })
     fetchWerte({ db, store, table: 'kostenstelleWerte' })
   }, [])
