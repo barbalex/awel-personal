@@ -215,8 +215,6 @@ const Person = ({ activeId }: { activeId: ?number }) => {
       })),
   )
 
-  console.log('Person', person ? getSnapshot(person) : person)
-
   if (!showFilter && !activeId) return null
 
   return (
