@@ -46,8 +46,7 @@
       "package.json"
     ],
     "dmg": {
-      "contents": [
-        {
+      "contents": [{
           "x": 130,
           "y": 220
         },
@@ -162,13 +161,12 @@
     "enzyme-adapter-react-16": "1.7.1",
     "enzyme-to-json": "3.3.5",
     "eslint": "5.x",
-    "eslint-config-airbnb": "17.1.0",
     "eslint-config-prettier": "3.3.0",
     "eslint-config-react-app": "3.0.5",
     "eslint-formatter-pretty": "2.0.0",
     "eslint-import-resolver-webpack": "0.10.1",
     "eslint-plugin-compat": "2.6.3",
-    "eslint-plugin-flowtype": "2.x",
+    "eslint-plugin-flowtype": "3.2.0",
     "eslint-plugin-import": "2.x",
     "eslint-plugin-jest": "22.1.2",
     "eslint-plugin-jsx-a11y": "6.x",
@@ -191,7 +189,7 @@
     "redux-logger": "3.0.6",
     "rimraf": "2.6.2",
     "sass-loader": "7.1.0",
-    "sinon": "7.2.0",
+    "sinon": "7.2.2",
     "spectron": "5.0.0",
     "style-loader": "0.23.1",
     "stylelint": "9.9.0",
