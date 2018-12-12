@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
+import { getSnapshot } from 'mobx-state-tree'
 
 import Input from '../../shared/Input'
 import Date from '../../shared/Date'
@@ -29,6 +30,8 @@ const Person = ({ activeId }: { activeId: ?number }) => {
   const store = useContext(storeContext)
   const {
     personen,
+    abteilungen,
+    sektionen,
     etiketten,
     showDeleted,
     statusWerte,
@@ -70,7 +73,14 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           model: 'filterPerson',
           value: { ...filterPerson, ...{ [field]: newValue } },
         })
+        if (field === 'abteilung' && person.sektion) {
+          setFilter({
+            model: 'filterPerson',
+            value: { ...filterPerson, ...{ sektion: null } },
+          })
+        }
       } else {
+        console.log('Person, saveToDb', { field, value, person })
         store.updateField({
           table: 'personen',
           parentModel: 'personen',
@@ -78,6 +88,17 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           value: newValue,
           id: person.id,
         })
+        if (field === 'abteilung' && person.sektion) {
+          console.log('Person, saveToDb, updating sektion')
+          // reset sektion
+          store.updateField({
+            table: 'personen',
+            parentModel: 'personen',
+            field: 'sektion',
+            value: null,
+            id: person.id,
+          })
+        }
       }
     },
     [activeId, personen.length, filterPerson, showFilter],
@@ -136,6 +157,32 @@ const Person = ({ activeId }: { activeId: ?number }) => {
         })),
     [personen.length],
   )
+  const abteilungOptions = useMemo(
+    () =>
+      sortBy(abteilungen, ['name'])
+        .filter(w => !!w.name && w.deleted === 0)
+        .map(w => ({
+          label: w.name,
+          value: w.id,
+        })),
+    [abteilungen.length],
+  )
+  const sektionOptions = useMemo(
+    () =>
+      sortBy(sektionen, ['name'])
+        .filter(w => !!w.name && w.deleted === 0)
+        .filter(w => {
+          if (person.abteilung) {
+            return w.abteilung === person.abteilung
+          }
+          return true
+        })
+        .map(w => ({
+          label: w.name,
+          value: w.id,
+        })),
+    [sektionen.length, person.abteilung],
+  )
   const statusOptions = useMemo(() =>
     sortBy(statusWerte, 'sort')
       .filter(w => !!w.value)
@@ -168,6 +215,8 @@ const Person = ({ activeId }: { activeId: ?number }) => {
         value: e.etikett,
       })),
   )
+
+  console.log('Person', person ? getSnapshot(person) : person)
 
   if (!showFilter && !activeId) return null
 
@@ -245,6 +294,22 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           field="vorgesetztId"
           label="Vorgesetzte(r)"
           options={personOptions}
+          saveToDb={saveToDb}
+        />
+        <Select
+          key={`${personId}${existsFilter ? 1 : 0}abteilung`}
+          value={person.abteilung}
+          field="abteilung"
+          label="Abteilung"
+          options={abteilungOptions}
+          saveToDb={saveToDb}
+        />
+        <Select
+          key={`${personId}${existsFilter ? 1 : 0}sektion`}
+          value={person.sektion}
+          field="sektion"
+          label="Sektion"
+          options={sektionOptions}
           saveToDb={saveToDb}
         />
         <Date
