@@ -74,13 +74,13 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           value: { ...filterPerson, ...{ [field]: newValue } },
         })
         if (field === 'abteilung' && person.sektion) {
+          // reset sektion
           setFilter({
             model: 'filterPerson',
             value: { ...filterPerson, ...{ sektion: null } },
           })
         }
       } else {
-        console.log('Person, saveToDb', { field, value, person })
         store.updateField({
           table: 'personen',
           parentModel: 'personen',
@@ -89,7 +89,6 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           id: person.id,
         })
         if (field === 'abteilung' && person.sektion) {
-          console.log('Person, saveToDb, updating sektion')
           // reset sektion
           store.updateField({
             table: 'personen',
@@ -215,8 +214,6 @@ const Person = ({ activeId }: { activeId: ?number }) => {
         value: e.etikett,
       })),
   )
-
-  console.log('Person', person ? getSnapshot(person) : person)
 
   if (!showFilter && !activeId) return null
 
