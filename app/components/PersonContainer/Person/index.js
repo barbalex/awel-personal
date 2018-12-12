@@ -215,6 +215,8 @@ const Person = ({ activeId }: { activeId: ?number }) => {
       })),
   )
 
+  console.log('Person', person ? getSnapshot(person) : person)
+
   if (!showFilter && !activeId) return null
 
   return (
@@ -248,6 +250,35 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           value={person.kurzzeichen}
           field="kurzzeichen"
           label="Kurzzeichen"
+          saveToDb={saveToDb}
+        />
+        <Input
+          key={`${personId}adresse`}
+          value={person.adresse}
+          field="adresse"
+          label="Adresse"
+          saveToDb={saveToDb}
+        />
+        <Input
+          key={`${personId}plz`}
+          value={person.plz}
+          field="plz"
+          label="PLZ"
+          saveToDb={saveToDb}
+          type="number"
+        />
+        <Input
+          key={`${personId}ort`}
+          value={person.ort}
+          field="ort"
+          label="Ort"
+          saveToDb={saveToDb}
+        />
+        <Input
+          key={`${personId}land`}
+          value={person.land}
+          field="land"
+          label="Land"
           saveToDb={saveToDb}
         />
         <Input
@@ -286,14 +317,6 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           saveToDb={saveToDb}
         />
         <Select
-          key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
-          value={person.vorgesetztId}
-          field="vorgesetztId"
-          label="Vorgesetzte(r)"
-          options={personOptions}
-          saveToDb={saveToDb}
-        />
-        <Select
           key={`${personId}${existsFilter ? 1 : 0}abteilung`}
           value={person.abteilung}
           field="abteilung"
@@ -307,6 +330,14 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           field="sektion"
           label="Sektion"
           options={sektionOptions}
+          saveToDb={saveToDb}
+        />
+        <Select
+          key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
+          value={person.vorgesetztId}
+          field="vorgesetztId"
+          label="Vorgesetzte(r)"
+          options={personOptions}
           saveToDb={saveToDb}
         />
         <Date
@@ -330,6 +361,14 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label="Status"
           options={statusOptions}
           saveToDb={saveToDb}
+        />
+        <Input
+          key={`${personId}beschaeftigungsgrad`}
+          value={person.beschaeftigungsgrad}
+          field="beschaeftigungsgrad"
+          label="Beschaeftigungsgrad (%)"
+          saveToDb={saveToDb}
+          type="number"
         />
         <Input
           key={`${personId}parkplatzNr`}

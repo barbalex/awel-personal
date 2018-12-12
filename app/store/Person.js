@@ -43,6 +43,7 @@ export default types.model('Person', {
   bemerkungen: types.maybe(
     types.union(types.string, types.integer, types.null),
   ),
+  beschaeftigungsgrad: types.maybe(types.union(types.integer, types.null)),
   letzteMutationZeit: types.maybe(
     types.union(types.string, types.integer, types.null),
   ),
