@@ -77,23 +77,29 @@ const LinksComponent = () => {
           </Links>
           <DropzoneContainer data-ispdf={isPdf}>
             <StyledDropzone onDrop={onDrop}>
-              {({ isDragActive, isDragReject }) => {
+              {({
+                getRootProps,
+                getInputProps,
+                isDragActive,
+                isDragReject,
+              }) => {
                 if (isDragActive) {
                   return (
-                    <DropzoneInnerDiv>
+                    <DropzoneInnerDiv {...getRootProps()}>
                       <div>jetzt fallen lassen...</div>
                     </DropzoneInnerDiv>
                   )
                 }
                 if (isDragReject) {
                   return (
-                    <DropzoneInnerDiv>
+                    <DropzoneInnerDiv {...getRootProps()}>
                       <div>Hm. Da ging etwas schief :-(</div>
                     </DropzoneInnerDiv>
                   )
                 }
                 return (
-                  <DropzoneInnerDiv>
+                  <DropzoneInnerDiv {...getRootProps()}>
+                    <input {...getInputProps()} />
                     <div>Datei hierhin ziehen...</div>
                     <div>...oder klicken, um sie zu wählen.</div>
                   </DropzoneInnerDiv>

@@ -10931,7 +10931,7 @@ popper.js@^1.14.1, popper.js@^1.14.4:
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.6.tgz#ab20dd4edf9288b8b3b6531c47c361107b60b4b0"
   integrity sha512-AGwHGQBKumlk/MDfrSOf0JHhJCImdDMcGNoqKmKkU+68GFazv3CQ6q9r7Ja1sKDZmYWTckY/uLyEznheTDycnA==
 
-popper@^1.0.1:
+popper@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/popper/-/popper-1.0.1.tgz#a3153910a01ce328a297cb241924afff0690837e"
   integrity sha512-i/6yRlY5+VomX0ScQ5TI4Ro8XlQbOj7NMRf0hSnUEVv/aAP6IbrxvNcRsrEG6VsKzvltfINPeD4p++6SKwOTSA==
@@ -11747,10 +11747,10 @@ react-dom@16.7.0-alpha.2:
     prop-types "^15.6.2"
     scheduler "^0.12.0-alpha.2"
 
-react-dropzone@7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-7.0.1.tgz#bc76bc1686fb47ed0c8301f968fffa6aecdff47b"
-  integrity sha512-J4rbzhFZPVW7k7K9CVb0OcwSOJGLWa0y+0rvtB4rBLVkvq0agH/o3kPJ0DCkd6ZVzL2K1NFqIOvtQkwQKpmJBA==
+react-dropzone@8.0.2:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-8.0.2.tgz#865f7bd7460c256f27ac023e3f58d97eafeece86"
+  integrity sha512-ifMg8J5XsIJEK+OOH10ywJVU3LnF5wdZnHhTqnmuHmZPYXiLVpsX2CEZSmkGck1nuDmV1+4wEfmBuLkxnhn06Q==
   dependencies:
     attr-accept "^1.1.3"
     prop-types "^15.6.2"
