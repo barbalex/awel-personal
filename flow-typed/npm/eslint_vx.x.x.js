@@ -1,4 +1,4 @@
-// flow-typed signature: 1014172d19e6fffe20eac334772517ca
+// flow-typed signature: c0498a21d7538d850594284ff881fb6e
 // flow-typed version: <<STUB>>/eslint_v5.x/flow_v0.89.0
 
 /**
@@ -975,6 +975,10 @@ declare module 'eslint/lib/rules/no-use-before-define' {
 }
 
 declare module 'eslint/lib/rules/no-useless-call' {
+  declare module.exports: any;
+}
+
+declare module 'eslint/lib/rules/no-useless-catch' {
   declare module.exports: any;
 }
 
@@ -2155,6 +2159,9 @@ declare module 'eslint/lib/rules/no-use-before-define.js' {
 }
 declare module 'eslint/lib/rules/no-useless-call.js' {
   declare module.exports: $Exports<'eslint/lib/rules/no-useless-call'>;
+}
+declare module 'eslint/lib/rules/no-useless-catch.js' {
+  declare module.exports: $Exports<'eslint/lib/rules/no-useless-catch'>;
 }
 declare module 'eslint/lib/rules/no-useless-computed-key.js' {
   declare module.exports: $Exports<'eslint/lib/rules/no-useless-computed-key'>;
