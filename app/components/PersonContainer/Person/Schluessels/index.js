@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext } from 'react'
+import React, { useContext, useState, useRef, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { Col, FormGroup, Label, Button, ButtonGroup } from 'reactstrap'
@@ -47,6 +47,10 @@ const EditIcon = styled(MdEdit)`
 const SchluesselsComponent = () => {
   const store = useContext(storeContext)
   const { showFilter, filterSchluessel, addSchluessel } = store
+
+  const [editFormPath, setEditFormPath] = useState(false)
+  const uploader = useRef(null)
+
   const location = store.location.toJSON()
   if (!location[1] && !showFilter) throw new Error(`no id found`)
   const activePersonenId = ifIsNumericAsNumber(location[1])
@@ -62,6 +66,16 @@ const SchluesselsComponent = () => {
     !showFilter &&
     (schluessels.length === 0 ||
       !schluessels.map(s => s.name).some(n => n === null))
+
+  const onClickChangePath = useCallback(() => uploader.current.click())
+  const onChangeFormPath = useCallback(event => {
+    event.stopPropagation()
+    event.preventDefault()
+    const file = event.target.files[0]
+    if (file && file.path) {
+      console.log(file.path)
+    }
+  })
 
   return (
     <FormGroup row>
@@ -91,8 +105,15 @@ const SchluesselsComponent = () => {
           )}
           <EFButtonGroup>
             <Button outline>Empfangsformular</Button>
-            <Button title="Pfad ändern" outline>
+            <Button title="Pfad ändern" outline onClick={onClickChangePath}>
               <EditIcon size="22" id={`editIcon${activePersonenId}`} />
+              <input
+                type="file"
+                id="file"
+                ref={uploader}
+                style={{ display: 'none' }}
+                onChange={onChangeFormPath}
+              />
             </Button>
           </EFButtonGroup>
         </Container>

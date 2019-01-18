@@ -51,6 +51,18 @@ create index iPersonVorname on personen (vorname);
 
 -------------------------------------------
 
+drop table if exists settings;
+create table settings (
+  id integer primary key,
+  schluesselFormPath text
+);
+insert into
+  settings(id)
+values
+  (1);
+
+-------------------------------------------
+
 drop table if exists abteilungen;
 create table abteilungen (
   id integer primary key autoincrement,
