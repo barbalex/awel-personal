@@ -3,6 +3,7 @@ import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { Col, FormGroup, Label, Button, ButtonGroup } from 'reactstrap'
+import { MdEdit } from 'react-icons/md'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import Schluessel from './Schluessel'
@@ -38,6 +39,9 @@ const Anlage = styled.div`
 `
 const Bemerkungen = styled.div`
   grid-column: 3 / span 1;
+`
+const EditIcon = styled(MdEdit)`
+  margin-top: -4px;
 `
 
 const SchluesselsComponent = () => {
@@ -87,7 +91,9 @@ const SchluesselsComponent = () => {
           )}
           <EFButtonGroup>
             <Button outline>Empfangsformular</Button>
-            <Button outline>Pfad</Button>
+            <Button title="Pfad ändern" outline>
+              <EditIcon size="22" id={`editIcon${activePersonenId}`} />
+            </Button>
           </EFButtonGroup>
         </Container>
       </Col>
