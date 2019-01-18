@@ -2,66 +2,71 @@ export default [
   {
     table: 'personen',
     model: 'Person',
-    parentModel: 'personen'
+    parentModel: 'personen',
   },
   {
     table: 'links',
     model: 'Link',
-    parentModel: 'links'
+    parentModel: 'links',
   },
   {
     table: 'schluessel',
     model: 'Schluessel',
-    parentModel: 'schluessel'
+    parentModel: 'schluessel',
   },
   {
     table: 'mobileAbos',
     model: 'MobileAbo',
-    parentModel: 'mobileAbos'
+    parentModel: 'mobileAbos',
   },
   {
     table: 'kaderFunktionen',
     model: 'KaderFunktion',
-    parentModel: 'kaderFunktionen'
+    parentModel: 'kaderFunktionen',
   },
   {
     table: 'etiketten',
     model: 'Etikett',
-    parentModel: 'etiketten'
+    parentModel: 'etiketten',
   },
   {
     table: 'statusWerte',
     model: 'StatusWert',
-    parentModel: 'statusWerte'
+    parentModel: 'statusWerte',
   },
   {
     table: 'geschlechtWerte',
     model: 'GeschlechtWert',
-    parentModel: 'geschlechtWerte'
+    parentModel: 'geschlechtWerte',
   },
   {
     table: 'kostenstelleWerte',
     model: 'KostenstelleWert',
-    parentModel: 'kostenstelleWerte'
+    parentModel: 'kostenstelleWerte',
   },
   {
     table: 'mobileAboTypWerte',
     model: 'MobileAboTypWert',
-    parentModel: 'mobileAboTypWerte'
+    parentModel: 'mobileAboTypWerte',
   },
   {
     table: 'kaderFunktionWerte',
     model: 'KaderFunktionWert',
-    parentModel: 'kaderFunktionWerte'
+    parentModel: 'kaderFunktionWerte',
   },
   {
     table: 'mobileAboKostenstelleWerte',
     model: 'MobileAboKostenstelleWert',
-    parentModel: 'mobileAboKostenstelleWerte'
+    parentModel: 'mobileAboKostenstelleWerte',
   },
   {
     table: 'etikettWerte',
     model: 'EtikettWert',
-    parentModel: 'etikettWerte'
-  }
+    parentModel: 'etikettWerte',
+  },
+  {
+    table: 'landWerte',
+    model: 'LandWert',
+    parentModel: 'landWerte',
+  },
 ]

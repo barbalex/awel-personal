@@ -126,6 +126,9 @@ const Stammdaten = () => {
           >
             Mobile Abo Kostenstelle
           </DropdownItem>
+          <DropdownItem name="landWerte" onClick={onClickStatusTable}>
+            Land
+          </DropdownItem>
           <DropdownItem name="statusWerte" onClick={onClickStatusTable}>
             Status
           </DropdownItem>

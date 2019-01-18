@@ -48,7 +48,7 @@ const StammdatenRow = ({
     if (!showDeleted) return p.deleted === 0
     return true
   })
-  data = sortBy(data, 'sort')
+  data = sortBy(data, ['sort', 'value'])
   const table = tables.find(t => t.table === activeTable)
   const row = data[index]
 

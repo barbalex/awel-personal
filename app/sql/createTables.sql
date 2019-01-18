@@ -20,7 +20,7 @@ create table personen (
   plz integer,
   ort text,
   -- land aus Liste auswählen?
-  land text,
+  land text  references landWerte(value) on update cascade on delete no action,
   bildUrl text,
   telefonNr text,
   telefonNrMobile text,
@@ -236,12 +236,12 @@ create table etiketten (
   letzteMutationUser TEXT
 );
 
-drop index if exists iTagDeleted;
-create index iTagDeleted on etiketten (deleted);
-drop index if exists iTagIdPerson;
-create index iTagIdPerson on etiketten (idPerson);
-drop index if exists iTagTag;
-create index iTagTag on etiketten (etikett);
+drop index if exists iEtikettDeleted;
+create index iEtikettDeleted on etiketten (deleted);
+drop index if exists iEtikettIdPerson;
+create index iEtikettIdPerson on etiketten (idPerson);
+drop index if exists iEtikettEtikett;
+create index iEtikettEtikett on etiketten (etikett);
 
 -------------------------------------------
 
@@ -452,18 +452,48 @@ create table etikettWerte (
   letzteMutationUser TEXT
 );
 
-drop index if exists iTagWerteTag;
-create index iTagWerteTag on etikettWerte (value);
-drop index if exists iTagWerteHistorisch;
-create index iTagWerteHistorisch on etikettWerte (historic);
-drop index if exists iTagWerteSort;
-create index iTagWerteSort on etikettWerte (sort);
+drop index if exists iEtikettWerteEtikett;
+create index iEtikettWerteEtikett on etikettWerte (value);
+drop index if exists iEtikettWerteHistorisch;
+create index iEtikettWerteHistorisch on etikettWerte (historic);
+drop index if exists iEtikettWerteSort;
+create index iEtikettWerteSort on etikettWerte (sort);
 
 insert into
   etikettWerte(value, sort)
 values
   ('Fussballfan', 1),
   ('Mountainbiker', 2);
+
+
+-------------------------------------------
+
+drop table if exists landWerte;
+create table landWerte (
+  id integer primary key autoincrement,
+  value text unique,
+  deleted integer default 0,
+  historic integer default 0,
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iLandWerteLand;
+create index iLandWerteLand on landWerte (value);
+drop index if exists iLandWerteHistorisch;
+create index iLandWerteHistorisch on landWerte (historic);
+drop index if exists iLandWerteSort;
+create index iLandWerteSort on landWerte (sort);
+
+insert into
+  landWerte(value)
+values
+  ('Schweiz'),
+  ('Deutschland'),
+  ('Italien'),
+  ('Frankreich'),
+  ('Österreich');
 
 -------------------------------------------
 

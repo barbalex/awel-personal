@@ -20,6 +20,7 @@ import KaderFunktion from './KaderFunktion'
 import MobileAboKostenstelleWert from './MobileAboKostenstelleWert'
 import MobileAboTypWert from './MobileAboTypWert'
 import EtikettWert from './EtikettWert'
+import LandWert from './LandWert'
 import Person from './Person'
 import Mutation from './Mutation'
 import StatusWert from './StatusWert'
@@ -42,6 +43,7 @@ export default (db: Object) =>
       mobileAboKostenstelleWerte: types.array(MobileAboKostenstelleWert),
       mobileAboTypWerte: types.array(MobileAboTypWert),
       etikettWerte: types.array(EtikettWert),
+      landWerte: types.array(LandWert),
       personen: types.array(Person),
       abteilungen: types.array(Abteilung),
       sektionen: types.array(Sektion),

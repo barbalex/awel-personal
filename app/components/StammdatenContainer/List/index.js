@@ -30,7 +30,7 @@ const DataList = ({
     if (!showDeleted) return p.deleted === 0
     return true
   })
-  data = sortBy(data, 'sort')
+  data = sortBy(data, ['sort', 'value'])
 
   return (
     <Container>

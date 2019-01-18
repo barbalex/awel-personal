@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
-import { getSnapshot } from 'mobx-state-tree'
 
 import Input from '../../shared/Input'
 import Date from '../../shared/Date'
@@ -37,6 +36,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
     statusWerte,
     geschlechtWerte,
     etikettWerte,
+    landWerte,
     showFilter,
     filterPerson,
     filterEtikett,
@@ -183,24 +183,32 @@ const Person = ({ activeId }: { activeId: ?number }) => {
     [sektionen.length, person.abteilung],
   )
   const statusOptions = useMemo(() =>
-    sortBy(statusWerte, 'sort')
-      .filter(w => !!w.value)
+    sortBy(statusWerte, ['sort', 'value'])
+      .filter(p => p.deleted === 0)
       .map(w => ({
         label: w.value,
         value: w.value,
       })),
   )
   const geschlechtOptions = useMemo(() =>
-    sortBy(geschlechtWerte, 'sort')
-      .filter(w => !!w.value)
+    sortBy(geschlechtWerte, ['sort', 'value'])
+      .filter(p => p.deleted === 0)
       .map(w => ({
         label: w.value,
         value: w.value,
       })),
   )
   const etikettenOptions = useMemo(() =>
-    sortBy(etikettWerte, 'sort')
-      .filter(w => !!w.value)
+    sortBy(etikettWerte, ['sort', 'value'])
+      .filter(p => p.deleted === 0)
+      .map(w => ({
+        label: w.value,
+        value: w.value,
+      })),
+  )
+  const landOptions = useMemo(() =>
+    sortBy(landWerte, ['sort', 'value'])
+      .filter(p => p.deleted === 0)
       .map(w => ({
         label: w.value,
         value: w.value,
@@ -209,6 +217,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
   const myEtiketten = useMemo(() =>
     sortBy(etiketten.filter(e => e.idPerson === activeId), 'etikett')
       .filter(w => !!w.etikett)
+      .filter(p => p.deleted === 0)
       .map(e => ({
         label: e.etikett,
         value: e.etikett,
@@ -272,11 +281,12 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label="Ort"
           saveToDb={saveToDb}
         />
-        <Input
-          key={`${personId}land`}
+        <Select
+          key={`${personId}${existsFilter ? 1 : 0}land`}
           value={person.land}
           field="land"
           label="Land"
+          options={landOptions}
           saveToDb={saveToDb}
         />
         <Input
