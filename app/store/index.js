@@ -577,9 +577,9 @@ export default (db: Object) =>
           try {
             info = db
               .prepare(
-                'insert into personen (letzteMutationUser, letzteMutationZeit) values (@user, @zeit)',
+                'insert into personen (letzteMutationUser, letzteMutationZeit, land) values (@user, @zeit, @land)',
               )
-              .run({ user: self.username, zeit: Date.now() })
+              .run({ user: self.username, zeit: Date.now(), land: 'Schweiz' })
           } catch (error) {
             return console.log(error)
           }
@@ -588,6 +588,7 @@ export default (db: Object) =>
             id: info.lastInsertRowid,
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
+            land: 'Schweiz',
           })
           self.setLocation(['Personen', info.lastInsertRowid.toString()])
         },
