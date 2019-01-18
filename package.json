@@ -209,7 +209,7 @@
   },
   "dependencies": {
     "ampersand-app": "2.0.0",
-    "better-sqlite3": "5.2.1",
+    "better-sqlite3": "5.3.0",
     "bootstrap": "4.2.1",
     "date-fns": "2.0.0-alpha.25",
     "devtron": "1.4.0",
