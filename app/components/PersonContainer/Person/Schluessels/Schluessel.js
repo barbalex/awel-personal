@@ -15,7 +15,7 @@ const Row = styled.div`
   grid-column: 1;
   display: grid;
   grid-template-columns: ${props =>
-    props.nosymbol ? '1fr 1fr 1fr' : '1fr 1fr 1fr 20px'};
+    props.nosymbol ? '2fr 2fr 2fr 1fr' : '2fr 2fr 2fr 1fr 20px'};
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
   padding: 3px 0;
@@ -32,11 +32,14 @@ const Typ = styled.div`
 const Anlage = styled.div`
   grid-column: 2 / span 1;
 `
-const Bemerkungen = styled.div`
+const Bezeichnung = styled.div`
   grid-column: 3 / span 1;
 `
-const Delete = styled.div`
+const Nr = styled.div`
   grid-column: 4 / span 1;
+`
+const Delete = styled.div`
+  grid-column: 5 / span 1;
   margin-top: auto;
   margin-bottom: auto;
   text-align: center;
@@ -164,16 +167,25 @@ const SchluesselComponent = ({ id }: { id: number | string }) => {
           saveToDb={onChangeSelectSchluesselAnlage}
         />
       </Anlage>
-      <Bemerkungen>
+      <Bezeichnung>
         <InputWithoutLabel
-          key={`${id}bemerkungen`}
-          value={schluessel.bemerkungen}
-          field="bemerkungen"
+          key={`${id}bezeichnung`}
+          value={schluessel.bezeichnung}
+          field="bezeichnung"
           saveToDb={onBlur}
           type="textarea"
           rows={1}
         />
-      </Bemerkungen>
+      </Bezeichnung>
+      <Nr>
+        <InputWithoutLabel
+          key={`${id}nr`}
+          value={schluessel.nr}
+          field="nr"
+          saveToDb={onBlur}
+          type="text"
+        />
+      </Nr>
       {!(isPdf || showFilter) && (
         <>
           <Delete

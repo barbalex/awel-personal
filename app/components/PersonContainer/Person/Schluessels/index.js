@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext, useState, useRef, useCallback } from 'react'
+import React, { useContext, useRef, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { Col, FormGroup, Label, Button, ButtonGroup } from 'reactstrap'
@@ -26,7 +26,7 @@ const Row = styled.div`
   grid-column: 1;
   display: grid;
   grid-template-columns: ${props =>
-    props['data-ispdf'] ? '1fr 1fr 1fr' : '1fr 1fr 1fr 20px'};
+    props['data-ispdf'] ? '2fr 2fr 2fr 1fr' : '2fr 2fr 2fr 1fr 20px'};
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
   padding: 3px 0;
@@ -38,8 +38,11 @@ const Typ = styled.div`
 const Anlage = styled.div`
   grid-column: 2 / span 1;
 `
-const Bemerkungen = styled.div`
+const Bezeichnung = styled.div`
   grid-column: 3 / span 1;
+`
+const Nr = styled.div`
+  grid-column: 4 / span 1;
 `
 const EditIcon = styled(MdEdit)`
   margin-top: -4px;
@@ -107,7 +110,8 @@ const SchluesselsComponent = () => {
             <Row data-ispdf={isPdf}>
               <Typ>Typ</Typ>
               <Anlage>Anlage</Anlage>
-              <Bemerkungen>Bemerkungen</Bemerkungen>
+              <Bezeichnung>Bezeichnung</Bezeichnung>
+              <Nr>Nr.</Nr>
               {!isPdf && <div />}
             </Row>
           )}

@@ -184,9 +184,8 @@ create table schluessel (
   idPerson integer references personen(id) on update cascade on delete cascade,
   typ text references schluesselTypWerte(value) on update cascade on delete no action,
   anlage text references schluesselAnlageWerte(value) on update cascade on delete no action,
-  bezeichnung text,
   nr text,
-  bemerkungen text,
+  bezeichnung text,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT
 );
