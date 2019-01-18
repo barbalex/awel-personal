@@ -10,7 +10,7 @@ import lValues from 'lodash/values'
 import Abteilung from './Abteilung'
 import Sektion from './Sektion'
 import Etikett from './Etikett'
-import GeschlechtWert from './GeschlechtWert'
+import AnredeWert from './AnredeWert'
 import KaderFunktionWert from './KaderFunktionWert'
 import KostenstelleWert from './KostenstelleWert'
 import Link from './Link'
@@ -33,7 +33,7 @@ export default (db: Object) =>
       deletionMessage: types.maybeNull(types.string),
       deletionTitle: types.maybeNull(types.string),
       etiketten: types.array(Etikett),
-      geschlechtWerte: types.array(GeschlechtWert),
+      anredeWerte: types.array(AnredeWert),
       kaderFunktionWerte: types.array(KaderFunktionWert),
       kostenstelleWerte: types.array(KostenstelleWert),
       links: types.array(Link),

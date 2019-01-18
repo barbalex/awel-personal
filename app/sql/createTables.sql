@@ -15,6 +15,7 @@ create table personen (
   vorname text,
   -- anrede nötig oder vom Geschlecht abhängig?
   --anrede text,
+  anrede text references anredeWerte(value) on update cascade on delete no action,
   kurzzeichen text,
   adresse text,
   plz integer,
@@ -35,7 +36,6 @@ create table personen (
   status text references statusWerte(value) on update cascade on delete no action,
   parkplatzNr text,
   parkplatzBeitrag text,
-  geschlecht text references geschlechtWerte(value) on update cascade on delete no action,
   bemerkungen text,
   beschaeftigungsgrad integer,
   letzteMutationZeit TEXT,
@@ -310,8 +310,8 @@ values
 
 -- boolean in sqlite is integer
 -- true = 1, false = 0
-drop table if exists geschlechtWerte;
-create table geschlechtWerte (
+drop table if exists anredeWerte;
+create table anredeWerte (
   id integer primary key autoincrement,
   value text unique,
   deleted integer default 0,
@@ -322,17 +322,17 @@ create table geschlechtWerte (
 );
 
 drop index if exists iGeschlechtWerteGeschlecht;
-create index iGeschlechtWerteGeschlecht on geschlechtWerte (value);
+create index iGeschlechtWerteGeschlecht on anredeWerte (value);
 drop index if exists iGeschlechtWerteHistorisch;
-create index iGeschlechtWerteHistorisch on geschlechtWerte (historic);
+create index iGeschlechtWerteHistorisch on anredeWerte (historic);
 drop index if exists iGeschlechtWerteSort;
-create index iGeschlechtWerteSort on geschlechtWerte (sort);
+create index iGeschlechtWerteSort on anredeWerte (sort);
 
 insert into
-  geschlechtWerte(value, sort)
+  anredeWerte(value, sort)
 values
-  ('m', 1),
-  ('w', 2);
+  ('Herr', 1),
+  ('Frau', 2);
 
 -------------------------------------------
 

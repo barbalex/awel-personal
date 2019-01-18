@@ -60,8 +60,8 @@ const Person = () => {
         const name = activePerson.name
           ? `"${activePerson.name} ${activePerson.vorname}"`
           : 'Dieser Datensatz'
-        const namer1 = activePerson.geschlecht === 'w' ? 'sie' : 'ihn'
-        const namer2 = activePerson.geschlecht === 'w' ? 'sie' : 'er'
+        const namer1 = activePerson.anrede === 'Frau' ? 'sie' : 'ihn'
+        const namer2 = activePerson.anrede === 'Frau' ? 'sie' : 'er'
         setDeletionMessage(
           `${name} war schon gelöscht. Wenn Sie ${namer1} nochmals löschen, wird ${namer2} endgültig und unwiederbringlich gelöscht. Möchten Sie das?`,
         )

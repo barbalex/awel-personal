@@ -34,7 +34,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
     etiketten,
     showDeleted,
     statusWerte,
-    geschlechtWerte,
+    anredeWerte,
     etikettWerte,
     landWerte,
     showFilter,
@@ -190,8 +190,8 @@ const Person = ({ activeId }: { activeId: ?number }) => {
         value: w.value,
       })),
   )
-  const geschlechtOptions = useMemo(() =>
-    sortBy(geschlechtWerte, ['sort', 'value'])
+  const anredeOptions = useMemo(() =>
+    sortBy(anredeWerte, ['sort', 'value'])
       .filter(p => p.deleted === 0)
       .map(w => ({
         label: w.value,
@@ -250,6 +250,14 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           value={person.vorname}
           field="vorname"
           label="Vorname"
+          saveToDb={saveToDb}
+        />
+        <Select
+          key={`${personId}${existsFilter ? 1 : 0}anrede`}
+          value={person.anrede}
+          field="anrede"
+          label="Anrede"
+          options={anredeOptions}
           saveToDb={saveToDb}
         />
         <Input
@@ -390,14 +398,6 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           value={person.parkplatzBeitrag}
           field="parkplatzBeitrag"
           label="Parkplatz Beitrag"
-          saveToDb={saveToDb}
-        />
-        <Select
-          key={`${personId}${existsFilter ? 1 : 0}geschlecht`}
-          value={person.geschlecht}
-          field="geschlecht"
-          label="Geschlecht"
-          options={geschlechtOptions}
           saveToDb={saveToDb}
         />
         {showFilter ? (

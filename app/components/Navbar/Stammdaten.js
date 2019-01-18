@@ -105,11 +105,11 @@ const Stammdaten = () => {
           )}
         </DropdownToggle>
         <DropdownMenu>
+          <DropdownItem name="anredeWerte" onClick={onClickStatusTable}>
+            Anrede
+          </DropdownItem>
           <DropdownItem name="etikettWerte" onClick={onClickStatusTable}>
             Etikett
-          </DropdownItem>
-          <DropdownItem name="geschlechtWerte" onClick={onClickStatusTable}>
-            Geschlecht
           </DropdownItem>
           <DropdownItem name="kaderFunktionWerte" onClick={onClickStatusTable}>
             Kaderfunktion

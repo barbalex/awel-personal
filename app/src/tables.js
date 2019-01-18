@@ -35,9 +35,9 @@ export default [
     parentModel: 'statusWerte',
   },
   {
-    table: 'geschlechtWerte',
-    model: 'GeschlechtWert',
-    parentModel: 'geschlechtWerte',
+    table: 'anredeWerte',
+    model: 'AnredeWert',
+    parentModel: 'anredeWerte',
   },
   {
     table: 'kostenstelleWerte',

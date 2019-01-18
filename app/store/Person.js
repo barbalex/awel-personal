@@ -39,7 +39,7 @@ export default types.model('Person', {
   parkplatzBeitrag: types.maybe(
     types.union(types.string, types.integer, types.null),
   ),
-  geschlecht: types.maybe(types.union(types.string, types.integer, types.null)),
+  anrede: types.maybe(types.union(types.string, types.integer, types.null)),
   bemerkungen: types.maybe(
     types.union(types.string, types.integer, types.null),
   ),

@@ -11,7 +11,7 @@ export default ({ store }) => {
     kaderFunktionen,
     etiketten,
     statusWerte,
-    geschlechtWerte,
+    anredeWerte,
     kostenstelleWerte,
     mobileAboTypWerte,
     kaderFunktionWerte,
@@ -40,8 +40,8 @@ export default ({ store }) => {
   onPatch(statusWerte, (patch, inversePatch) =>
     addMutation({ tableName: 'statusWerte', patch, inversePatch }),
   )
-  onPatch(geschlechtWerte, (patch, inversePatch) =>
-    addMutation({ tableName: 'geschlechtWerte', patch, inversePatch }),
+  onPatch(anredeWerte, (patch, inversePatch) =>
+    addMutation({ tableName: 'anredeWerte', patch, inversePatch }),
   )
   onPatch(kostenstelleWerte, (patch, inversePatch) =>
     addMutation({ tableName: 'kostenstelleWerte', patch, inversePatch }),
