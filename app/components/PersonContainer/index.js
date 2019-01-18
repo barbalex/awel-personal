@@ -16,6 +16,7 @@ import fetchSchluessel from '../../src/fetchSchluessel'
 import fetchMobileAbos from '../../src/fetchMobileAbos'
 import fetchFunktionen from '../../src/fetchFunktionen'
 import fetchWerte from '../../src/fetchWerte'
+import fetchSettings from '../../src/fetchSettings'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 import dbContext from '../../dbContext'
@@ -65,6 +66,7 @@ const PersonContainer = () => {
     fetchWerte({ db, store, table: 'schluesselTypWerte' })
     fetchWerte({ db, store, table: 'schluesselAnlageWerte' })
     fetchFunktionen({ db, store })
+    fetchSettings({ db, store })
     // set initial active id
     // nope, better not
     // for instance: after deleting do not show another user

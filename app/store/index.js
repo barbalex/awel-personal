@@ -8,6 +8,7 @@ import keys from 'lodash/keys'
 import lValues from 'lodash/values'
 
 import Abteilung from './Abteilung'
+import Settings from './Settings'
 import Sektion from './Sektion'
 import Etikett from './Etikett'
 import AnredeWert from './AnredeWert'
@@ -50,6 +51,7 @@ export default (db: Object) =>
       landWerte: types.array(LandWert),
       personen: types.array(Person),
       abteilungen: types.array(Abteilung),
+      settings: types.optional(Settings, { id: 1, schluesselFormPath: null }),
       sektionen: types.array(Sektion),
       mutations: types.array(Mutation),
       location: types.optional(types.array(types.string), ['Personen']),
@@ -1229,6 +1231,20 @@ export default (db: Object) =>
           const person = self.sektionen.find(p => p.id === idSektion)
           person.letzteMutationUser = self.username
           person.letzteMutationZeit = Date.now()
+        },
+        setSettings(value) {
+          self.settings = value
+        },
+        setSettingsKey({ key, value }) {
+          try {
+            db.prepare(`update settings set ${key} = ? where id = 1`).run(value)
+          } catch (error) {
+            return console.log(error)
+          }
+          self.settings = {
+            ...self.settings,
+            [key]: value,
+          }
         },
       }
     })

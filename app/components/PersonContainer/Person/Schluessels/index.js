@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { Col, FormGroup, Label, Button, ButtonGroup } from 'reactstrap'
 import { MdEdit } from 'react-icons/md'
+import { shell } from 'electron'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import Schluessel from './Schluessel'
@@ -46,9 +47,13 @@ const EditIcon = styled(MdEdit)`
 
 const SchluesselsComponent = () => {
   const store = useContext(storeContext)
-  const { showFilter, filterSchluessel, addSchluessel } = store
-
-  const [editFormPath, setEditFormPath] = useState(false)
+  const {
+    showFilter,
+    filterSchluessel,
+    addSchluessel,
+    settings,
+    setSettingsKey,
+  } = store
   const uploader = useRef(null)
 
   const location = store.location.toJSON()
@@ -73,9 +78,23 @@ const SchluesselsComponent = () => {
     event.preventDefault()
     const file = event.target.files[0]
     if (file && file.path) {
-      console.log(file.path)
+      setSettingsKey({ key: 'schluesselFormPath', value: file.path })
+    } else {
+      console.log('Path not set')
     }
   })
+  const onClickForm = useCallback(
+    () => {
+      let success = false
+      if (settings.schluesselFormPath) {
+        success = shell.openItem(settings.schluesselFormPath)
+        if (!success) console.log('File could not be opened')
+        return
+      }
+      console.log('no schluesselFormPath to open')
+    },
+    [settings.schluesselFormPath],
+  )
 
   return (
     <FormGroup row>
@@ -104,7 +123,13 @@ const SchluesselsComponent = () => {
             </StyledButton>
           )}
           <EFButtonGroup>
-            <Button outline>Empfangsformular</Button>
+            <Button
+              onClick={onClickForm}
+              outline
+              title={settings.schluesselFormPath || ''}
+            >
+              Empfangsformular
+            </Button>
             <Button title="Pfad ändern" outline onClick={onClickChangePath}>
               <EditIcon size="22" id={`editIcon${activePersonenId}`} />
               <input
