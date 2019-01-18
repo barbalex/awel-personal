@@ -11,12 +11,12 @@ import Abteilung from './Abteilung'
 import Sektion from './Sektion'
 import Etikett from './Etikett'
 import AnredeWert from './AnredeWert'
-import KaderFunktionWert from './KaderFunktionWert'
+import FunktionWert from './FunktionWert'
 import KostenstelleWert from './KostenstelleWert'
 import Link from './Link'
 import Schluessel from './Schluessel'
 import MobileAbo from './MobileAbo'
-import KaderFunktion from './KaderFunktion'
+import Funktion from './Funktion'
 import MobileAboKostenstelleWert from './MobileAboKostenstelleWert'
 import MobileAboTypWert from './MobileAboTypWert'
 import EtikettWert from './EtikettWert'
@@ -34,12 +34,12 @@ export default (db: Object) =>
       deletionTitle: types.maybeNull(types.string),
       etiketten: types.array(Etikett),
       anredeWerte: types.array(AnredeWert),
-      kaderFunktionWerte: types.array(KaderFunktionWert),
+      funktionWerte: types.array(FunktionWert),
       kostenstelleWerte: types.array(KostenstelleWert),
       links: types.array(Link),
       schluessel: types.array(Schluessel),
       mobileAbos: types.array(MobileAbo),
-      kaderFunktionen: types.array(KaderFunktion),
+      funktionen: types.array(Funktion),
       mobileAboKostenstelleWerte: types.array(MobileAboKostenstelleWert),
       mobileAboTypWerte: types.array(MobileAboTypWert),
       etikettWerte: types.array(EtikettWert),
@@ -62,7 +62,7 @@ export default (db: Object) =>
       filterLink: types.optional(Link, {}),
       filterSchluessel: types.optional(Schluessel, {}),
       filterMobileAbo: types.optional(MobileAbo, {}),
-      filterKaderFunktion: types.optional(KaderFunktion, {}),
+      filterFunktion: types.optional(Funktion, {}),
       showFilter: types.optional(types.boolean, false),
       filterFulltext: types.maybe(
         types.union(types.string, types.integer, types.null),
@@ -78,7 +78,7 @@ export default (db: Object) =>
           filterLink,
           filterSchluessel,
           filterMobileAbo,
-          filterKaderFunktion,
+          filterFunktion,
         } = self
         return (
           [
@@ -89,7 +89,7 @@ export default (db: Object) =>
             ...Object.values(filterLink),
             ...Object.values(filterSchluessel),
             ...Object.values(filterMobileAbo),
-            ...Object.values(filterKaderFunktion),
+            ...Object.values(filterFunktion),
           ].filter(v => v).length > 0
         )
       },
@@ -97,7 +97,7 @@ export default (db: Object) =>
         const {
           filterSchluessel,
           filterMobileAbo,
-          filterKaderFunktion,
+          filterFunktion,
           filterEtikett,
           filterPerson,
         } = self
@@ -150,21 +150,21 @@ export default (db: Object) =>
             })
           }
         })
-        let kaderFunktionen = self.kaderFunktionen.filter(p => {
+        let funktionen = self.funktionen.filter(p => {
           if (!self.showDeleted) return p.deleted === 0
           return true
         })
-        let kaderFunktionenIsFiltered = false
-        Object.keys(filterKaderFunktion).forEach(key => {
-          if (filterKaderFunktion[key]) {
-            kaderFunktionenIsFiltered = true
-            kaderFunktionen = kaderFunktionen.filter(p => {
-              if (!filterKaderFunktion[key]) return true
+        let funktionenIsFiltered = false
+        Object.keys(filterFunktion).forEach(key => {
+          if (filterFunktion[key]) {
+            funktionenIsFiltered = true
+            funktionen = funktionen.filter(p => {
+              if (!filterFunktion[key]) return true
               if (!p[key]) return false
               return p[key]
                 .toString()
                 .toLowerCase()
-                .includes(filterKaderFunktion[key].toString().toLowerCase())
+                .includes(filterFunktion[key].toString().toLowerCase())
             })
           }
         })
@@ -200,8 +200,8 @@ export default (db: Object) =>
             return mobileAbos.filter(s => s.idPerson === p.id).length > 0
           })
           .filter(p => {
-            if (!kaderFunktionenIsFiltered) return true
-            return kaderFunktionen.filter(s => s.idPerson === p.id).length > 0
+            if (!funktionenIsFiltered) return true
+            return funktionen.filter(s => s.idPerson === p.id).length > 0
           })
           .filter(p => {
             if (!etikettenIsFiltered) return true
@@ -232,8 +232,8 @@ export default (db: Object) =>
                     .map(e => e[1]),
                 ),
             )
-            const kaderFunktionValues = flatten(
-              self.kaderFunktionen
+            const funktionValues = flatten(
+              self.funktionen
                 .filter(s => s.idPerson === p.id)
                 .map(s =>
                   Object.entries(s)
@@ -255,7 +255,7 @@ export default (db: Object) =>
                 ...personValues,
                 schluesselValues,
                 mobileAboValues,
-                kaderFunktionValues,
+                funktionValues,
                 etikettValues,
               ].filter(v => {
                 if (!v) return false
@@ -404,7 +404,7 @@ export default (db: Object) =>
           self.filterSchluessel = {}
           self.filterKostenstelle = {}
           self.filterMobileAbo = {}
-          self.filterKaderFunktion = {}
+          self.filterFunktion = {}
         },
         setShowFilter(value) {
           self.showFilter = value
@@ -468,9 +468,9 @@ export default (db: Object) =>
           self.mobileAbos = mobileAbos
           self.watchMutations = true
         },
-        setKaderFunktionen(kaderFunktionen) {
+        setFunktionen(funktionen) {
           self.watchMutations = false
-          self.kaderFunktionen = kaderFunktionen
+          self.funktionen = funktionen
           self.watchMutations = true
         },
         setWerte({ table, values }) {
@@ -1080,45 +1080,51 @@ export default (db: Object) =>
           const idPerson = ifIsNumericAsNumber(location[1])
           self.updatePersonsMutation(idPerson)
         },
-        addKaderFunktion() {
+        addFunktion(funktion) {
           // grab idPerson from location
           const { location } = self
           const idPerson = ifIsNumericAsNumber(location[1])
-          // 1. create new link in db, returning id
+          // 1. create new funktion in db, returning id
           let info
           try {
             info = db
               .prepare(
-                'insert into kaderFunktionen (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)',
+                'insert into funktionen (idPerson, funktion, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
               )
-              .run(idPerson, self.username, Date.now())
+              .run(idPerson, funktion, self.username, Date.now())
           } catch (error) {
             return console.log(error)
           }
           // 2. add to store
-          self.kaderFunktionen.push({
+          self.funktionen.push({
             id: info.lastInsertRowid,
+            funktion,
             idPerson,
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
           })
           self.updatePersonsMutation(idPerson)
         },
-        deleteKaderFunktion(id) {
+        deleteFunktion(funktion) {
+          // grab idPerson from location
+          const { location } = self
+          const idPerson = ifIsNumericAsNumber(location[1])
           // write to db
           try {
-            db.prepare('delete from kaderFunktionen where id = ?').run(id)
+            db.prepare(
+              'delete from funktionen where idPerson = ? and funktion = ?',
+            ).run(idPerson, funktion)
           } catch (error) {
             return console.log(error)
           }
           // write to store
-          self.kaderFunktionen.splice(
-            findIndex(self.kaderFunktionen, p => p.id === id),
+          self.funktionen.splice(
+            findIndex(
+              self.funktionen,
+              e => e.idPerson === idPerson && e.funktion === funktion,
+            ),
             1,
           )
-          // set persons letzteMutation
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
           self.updatePersonsMutation(idPerson)
         },
         updateField({ table, parentModel, field, value, id }) {
@@ -1150,7 +1156,7 @@ export default (db: Object) =>
               'links',
               'schluessel',
               'mobileAbos',
-              'kaderFunktionen',
+              'funktionen',
               'etiketten',
             ].includes(parentModel)
           ) {

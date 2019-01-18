@@ -206,23 +206,22 @@ create index iMobileAboTyp on mobileAbos (typ);
 
 -------------------------------------------
 
-drop table if exists kaderFunktionen;
-create table kaderFunktionen (
+drop table if exists funktionen;
+create table funktionen (
   id integer primary key autoincrement,
   deleted integer default 0,
   idPerson integer references personen(id) on update cascade on delete cascade,
-  funktion text references kaderFunktionWerte(value) on update cascade on delete no action,
-  bemerkungen text,
+  funktion text references funktionWerte(value) on update cascade on delete no action,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT
 );
 
-drop index if exists iKaderFunktionDeleted;
-create index iKaderFunktionDeleted on kaderFunktionen (deleted);
-drop index if exists iKaderFunktionIdPerson;
-create index iKaderFunktionIdPerson on kaderFunktionen (idPerson);
-drop index if exists iKaderFunktionFunktion;
-create index iKaderFunktionFunktion on kaderFunktionen (funktion);
+drop index if exists iFunktionDeleted;
+create index iFunktionDeleted on funktionen (deleted);
+drop index if exists iFunktionIdPerson;
+create index iFunktionIdPerson on funktionen (idPerson);
+drop index if exists iFunktionFunktion;
+create index iFunktionFunktion on funktionen (funktion);
 
 -------------------------------------------
 
@@ -390,8 +389,8 @@ values
 
 -------------------------------------------
 
-drop table if exists kaderFunktionWerte;
-create table kaderFunktionWerte (
+drop table if exists funktionWerte;
+create table funktionWerte (
   id integer primary key autoincrement,
   value text unique,
   deleted integer default 0,
@@ -401,17 +400,18 @@ create table kaderFunktionWerte (
   letzteMutationUser TEXT
 );
 
-drop index if exists iKaderFunktionWerteKaderFunktion;
-create index iKaderFunktionWerteKaderFunktion on kaderFunktionWerte (value);
-drop index if exists iKaderFunktionWerteHistorisch;
-create index iKaderFunktionWerteHistorisch on kaderFunktionWerte (historic);
-drop index if exists iKaderFunktionWerteSort;
-create index iKaderFunktionWerteSort on kaderFunktionWerte (sort);
+drop index if exists iFunktionWerteFunktion;
+create index iFunktionWerteFunktion on funktionWerte (value);
+drop index if exists iFunktionWerteHistorisch;
+create index iFunktionWerteHistorisch on funktionWerte (historic);
+drop index if exists iFunktionWerteSort;
+create index iFunktionWerteSort on funktionWerte (sort);
 
 insert into
-  kaderFunktionWerte(value, sort)
+  funktionWerte(value, sort)
 values
-  ('TODO', 1);
+  ('Chef', 1),
+  ('Knecht', 2);
 
 -------------------------------------------
 

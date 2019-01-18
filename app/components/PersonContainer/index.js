@@ -14,7 +14,7 @@ import fetchEtiketten from '../../src/fetchEtiketten'
 import fetchLinks from '../../src/fetchLinks'
 import fetchSchluessel from '../../src/fetchSchluessel'
 import fetchMobileAbos from '../../src/fetchMobileAbos'
-import fetchKaderFunktionen from '../../src/fetchKaderFunktionen'
+import fetchFunktionen from '../../src/fetchFunktionen'
 import fetchWerte from '../../src/fetchWerte'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
@@ -53,7 +53,7 @@ const PersonContainer = () => {
     fetchWerte({ db, store, table: 'statusWerte' })
     fetchWerte({ db, store, table: 'anredeWerte' })
     // fetchWerte({ db, store, table: 'kostenstelleWerte' })
-    fetchWerte({ db, store, table: 'kaderFunktionWerte' })
+    fetchWerte({ db, store, table: 'funktionWerte' })
     fetchEtiketten({ db, store })
     fetchWerte({ db, store, table: 'etikettWerte' })
     fetchWerte({ db, store, table: 'landWerte' })
@@ -62,7 +62,7 @@ const PersonContainer = () => {
     fetchMobileAbos({ db, store })
     fetchWerte({ db, store, table: 'mobileAboKostenstelleWerte' })
     fetchWerte({ db, store, table: 'mobileAboTypWerte' })
-    fetchKaderFunktionen({ db, store })
+    fetchFunktionen({ db, store })
     // set initial active id
     // nope, better not
     // for instance: after deleting do not show another user

@@ -29,23 +29,23 @@ const SharedSelectMulti = ({
   field,
   label,
   options,
-  addEtikett,
-  deleteEtikett,
+  add,
+  remove,
 }: {
   value?: Array<Object>,
   field: string,
   label: string,
   options: Array<Object>,
-  addEtikett: () => void,
-  deleteEtikett: () => void,
+  add: () => void,
+  remove: () => void,
 }) => {
   const onChange = useCallback(
     (unusedOption, { action, option, removedValue }) => {
       if (action === 'select-option') {
-        return addEtikett(option.value)
+        return add(option.value)
       }
       if (action === 'remove-value' && removedValue) {
-        deleteEtikett(removedValue.value)
+        remove(removedValue.value)
       }
     },
   )

@@ -20,9 +20,9 @@ export default [
     parentModel: 'mobileAbos',
   },
   {
-    table: 'kaderFunktionen',
-    model: 'KaderFunktion',
-    parentModel: 'kaderFunktionen',
+    table: 'funktionen',
+    model: 'Funktion',
+    parentModel: 'funktionen',
   },
   {
     table: 'etiketten',
@@ -50,9 +50,9 @@ export default [
     parentModel: 'mobileAboTypWerte',
   },
   {
-    table: 'kaderFunktionWerte',
-    model: 'KaderFunktionWert',
-    parentModel: 'kaderFunktionWerte',
+    table: 'funktionWerte',
+    model: 'FunktionWert',
+    parentModel: 'funktionWerte',
   },
   {
     table: 'mobileAboKostenstelleWerte',

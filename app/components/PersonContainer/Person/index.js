@@ -16,7 +16,6 @@ import isDateField from '../../../src/isDateField'
 import Links from './Links'
 import Schluessels from './Schluessels'
 import MobileAbos from './MobileAbos'
-import KaderFunktionen from './KaderFunktionen'
 import Zuletzt from './Zuletzt'
 import storeContext from '../../../storeContext'
 
@@ -32,14 +31,17 @@ const Person = ({ activeId }: { activeId: ?number }) => {
     abteilungen,
     sektionen,
     etiketten,
+    funktionen,
     showDeleted,
     statusWerte,
     anredeWerte,
     etikettWerte,
+    funktionWerte,
     landWerte,
     showFilter,
     filterPerson,
     filterEtikett,
+    filterFunktion,
     existsFilter,
     setFilter,
   } = store
@@ -144,6 +146,48 @@ const Person = ({ activeId }: { activeId: ?number }) => {
     [filterEtikett],
   )
 
+  const addFunktion = useCallback(
+    funktion => {
+      if (showFilter) {
+        setFilter({
+          model: 'filterFunktion',
+          value: { ...filterFunktion, ...{ funktion } },
+        })
+      } else {
+        store.addFunktion(funktion)
+      }
+    },
+    [showFilter, filterFunktion],
+  )
+  const deleteFunktion = useCallback(
+    funktion => {
+      if (showFilter) {
+        setFilter({
+          model: 'filterFunktion',
+          value: { ...filterFunktion, ...{ funktion: null } },
+        })
+      } else {
+        store.deleteFunktion(funktion)
+      }
+    },
+    [filterFunktion, showFilter],
+  )
+  const saveToDbFunktion = useCallback(
+    ({ value }) => {
+      if (value) {
+        return setFilter({
+          model: 'filterFunktion',
+          value: { ...filterFunktion, ...{ funktion: value } },
+        })
+      }
+      setFilter({
+        model: 'filterFunktion',
+        value: { ...filterFunktion, ...{ funktion: null } },
+      })
+    },
+    [filterFunktion],
+  )
+
   // filter out options with empty values - makes no sense and errors
   const personOptions = useMemo(
     () =>
@@ -206,6 +250,14 @@ const Person = ({ activeId }: { activeId: ?number }) => {
         value: w.value,
       })),
   )
+  const funktionenOptions = useMemo(() =>
+    sortBy(funktionWerte, ['sort', 'value'])
+      .filter(p => p.deleted === 0)
+      .map(w => ({
+        label: w.value,
+        value: w.value,
+      })),
+  )
   const landOptions = useMemo(() =>
     sortBy(landWerte, ['sort', 'value'])
       .filter(p => p.deleted === 0)
@@ -221,6 +273,15 @@ const Person = ({ activeId }: { activeId: ?number }) => {
       .map(e => ({
         label: e.etikett,
         value: e.etikett,
+      })),
+  )
+  const myFunktionen = useMemo(() =>
+    sortBy(funktionen.filter(e => e.idPerson === activeId), 'funktion')
+      .filter(w => !!w.funktion)
+      .filter(p => p.deleted === 0)
+      .map(e => ({
+        label: e.funktion,
+        value: e.funktion,
       })),
   )
 
@@ -402,6 +463,26 @@ const Person = ({ activeId }: { activeId: ?number }) => {
         />
         {showFilter ? (
           <Select
+            key={`${personId}${existsFilter ? 1 : 0}funktion`}
+            value={filterFunktion.funktion}
+            field="funktion"
+            label="Funktion"
+            options={funktionenOptions}
+            saveToDb={saveToDbFunktion}
+          />
+        ) : (
+          <SelectMulti
+            key={`${personId}${existsFilter ? 1 : 0}funktion`}
+            value={myFunktionen}
+            field="funktion"
+            label="Funktionen"
+            options={funktionenOptions}
+            add={addFunktion}
+            remove={deleteFunktion}
+          />
+        )}
+        {showFilter ? (
+          <Select
             key={`${personId}${existsFilter ? 1 : 0}etikett`}
             value={filterEtikett.etikett}
             field="etikett"
@@ -416,8 +497,8 @@ const Person = ({ activeId }: { activeId: ?number }) => {
             field="etikett"
             label="Etiketten"
             options={etikettenOptions}
-            addEtikett={addEtikett}
-            deleteEtikett={deleteEtikett}
+            add={addEtikett}
+            remove={deleteEtikett}
           />
         )}
         <Input
@@ -431,7 +512,6 @@ const Person = ({ activeId }: { activeId: ?number }) => {
         {!showFilter && <Links />}
         <Schluessels />
         <MobileAbos />
-        <KaderFunktionen />
         {!showFilter && <Zuletzt />}
       </StyledForm>
     </Container>
