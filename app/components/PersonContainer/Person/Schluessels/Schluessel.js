@@ -4,16 +4,18 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { UncontrolledTooltip } from 'reactstrap'
 import { FaTimes } from 'react-icons/fa'
+import sortBy from 'lodash/sortBy'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import InputWithoutLabel from '../../../shared/InputWithoutLabel'
 import storeContext from '../../../../storeContext'
+import Select from '../Select'
 
 const Row = styled.div`
   grid-column: 1;
   display: grid;
   grid-template-columns: ${props =>
-    props.nosymbol ? '1fr 1fr' : '1fr 1fr 20px'};
+    props.nosymbol ? '1fr 1fr 1fr' : '1fr 1fr 1fr 20px'};
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
   padding: 3px 0;
@@ -24,14 +26,17 @@ const Row = styled.div`
     background-color: rgba(0, 0, 0, 0.05);
   }
 `
-const Name = styled.div`
+const Typ = styled.div`
   grid-column: 1 / span 1;
 `
-const Bemerkungen = styled.div`
+const Anlage = styled.div`
   grid-column: 2 / span 1;
 `
-const Delete = styled.div`
+const Bemerkungen = styled.div`
   grid-column: 3 / span 1;
+`
+const Delete = styled.div`
+  grid-column: 4 / span 1;
   margin-top: auto;
   margin-bottom: auto;
   text-align: center;
@@ -45,7 +50,17 @@ const Delete = styled.div`
 
 const SchluesselComponent = ({ id }: { id: number | string }) => {
   const store = useContext(storeContext)
-  const { showFilter, filterSchluessel, setFilter, deleteSchluessel } = store
+  const {
+    showFilter,
+    filterSchluessel,
+    setFilter,
+    deleteSchluessel,
+    schluesselTypWerte,
+    schluesselAnlageWerte,
+    updateField,
+    filterSchluesselTyp,
+    filterSchluesselAnlage,
+  } = store
   let schluessel
   if (showFilter) {
     schluessel = filterSchluessel
@@ -55,6 +70,21 @@ const SchluesselComponent = ({ id }: { id: number | string }) => {
   const location = store.location.toJSON()
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
+  const schluesselTypOptions = sortBy(schluesselTypWerte, ['sort', 'value'])
+    .filter(w => !!w.value)
+    .map(w => ({
+      label: w.value,
+      value: w.value,
+    }))
+  const schluesselAnlageOptions = sortBy(schluesselAnlageWerte, [
+    'sort',
+    'value',
+  ])
+    .filter(w => !!w.value)
+    .map(w => ({
+      label: w.value,
+      value: w.value,
+    }))
 
   const onBlur = useCallback(
     ({ field, value }) => {
@@ -62,32 +92,78 @@ const SchluesselComponent = ({ id }: { id: number | string }) => {
       if (showFilter) {
         setFilter({
           model: 'filterSchluessel',
-          value: { ...filterSchluessel, ...{ [field]: newValue } }
+          value: { ...filterSchluessel, ...{ [field]: newValue } },
         })
       } else {
-        store.updateField({
+        updateField({
           table: 'schluessel',
           parentModel: 'schluessel',
           field,
           value: newValue,
-          id: schluessel.id
+          id: schluessel.id,
         })
       }
     },
-    [showFilter, filterSchluessel, id]
+    [showFilter, filterSchluessel, id],
   )
+  const onChangeSelectSchluesselTyp = useCallback(({ field, value }) => {
+    const newValue = ifIsNumericAsNumber(value)
+    if (showFilter) {
+      setFilter({
+        model: 'filterMobileAbo',
+        value: { ...filterSchluesselTyp, ...{ [field]: newValue } },
+      })
+    } else {
+      updateField({
+        table: 'mobileAbos',
+        parentModel: 'mobileAbos',
+        field,
+        value: newValue,
+        id,
+      })
+    }
+  }, (showFilter, filterSchluesselTyp, id))
+  const onChangeSelectSchluesselAnlage = useCallback(({ field, value }) => {
+    const newValue = ifIsNumericAsNumber(value)
+    if (showFilter) {
+      setFilter({
+        model: 'filterMobileAbo',
+        value: { ...filterSchluesselAnlage, ...{ [field]: newValue } },
+      })
+    } else {
+      updateField({
+        table: 'mobileAbos',
+        parentModel: 'mobileAbos',
+        field,
+        value: newValue,
+        id,
+      })
+    }
+  }, (showFilter, filterSchluesselAnlage, id))
   const onClickDelete = useCallback(() => deleteSchluessel(id), [id])
 
   return (
     <Row key={`${id}`} nosymbol={isPdf || showFilter}>
-      <Name>
-        <InputWithoutLabel
-          key={`${id}name`}
-          value={schluessel.name}
-          field="name"
-          saveToDb={onBlur}
+      <Typ>
+        <Select
+          key={`${id}typ`}
+          value={schluessel.typ}
+          field="typ"
+          label="Typ"
+          options={schluesselTypOptions}
+          saveToDb={onChangeSelectSchluesselTyp}
         />
-      </Name>
+      </Typ>
+      <Anlage>
+        <Select
+          key={`${id}anlage`}
+          value={schluessel.anlage}
+          field="anlage"
+          label="Anlage"
+          options={schluesselAnlageOptions}
+          saveToDb={onChangeSelectSchluesselAnlage}
+        />
+      </Anlage>
       <Bemerkungen>
         <InputWithoutLabel
           key={`${id}bemerkungen`}

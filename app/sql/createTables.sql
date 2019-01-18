@@ -170,7 +170,10 @@ create table schluessel (
   id integer primary key autoincrement,
   deleted integer default 0,
   idPerson integer references personen(id) on update cascade on delete cascade,
-  name text,
+  typ text references schluesselTypWerte(value) on update cascade on delete no action,
+  anlage text references schluesselAnlageWerte(value) on update cascade on delete no action,
+  bezeichnung text,
+  nr text,
   bemerkungen text,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT
@@ -180,8 +183,6 @@ drop index if exists iSchluesselDeleted;
 create index iSchluesselDeleted on schluessel (deleted);
 drop index if exists iSchluesselIdPerson;
 create index iSchluesselIdPerson on schluessel (idPerson);
-drop index if exists iSchluesselName;
-create index iSchluesselName on schluessel (name);
 
 -------------------------------------------
 
@@ -386,6 +387,59 @@ insert into
   mobileAboTypWerte(value, sort)
 values
   ('TODO', 1);
+
+-------------------------------------------
+
+drop table if exists schluesselTypWerte;
+create table schluesselTypWerte (
+  id integer primary key autoincrement,
+  value text unique,
+  deleted integer default 0,
+  historic integer default 0,
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iSchluesselTypWerteSchluesselTyp;
+create index iSchluesselTypWerteSchluesselTyp on schluesselTypWerte (value);
+drop index if exists iSchluesselTypWerteHistorisch;
+create index iSchluesselTypWerteHistorisch on schluesselTypWerte (historic);
+drop index if exists iSchluesselTypWerteSort;
+create index iSchluesselTypWerteSort on schluesselTypWerte (sort);
+
+insert into
+  schluesselTypWerte(value)
+values
+  ('Kaba Nova'),
+  ('Kaba Legic'),
+  ('Kaba Star');
+
+-------------------------------------------
+
+drop table if exists schluesselAnlageWerte;
+create table schluesselAnlageWerte (
+  id integer primary key autoincrement,
+  value text unique,
+  deleted integer default 0,
+  historic integer default 0,
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iSchluesselAnlageWerteSchluesselAnlage;
+create index iSchluesselAnlageWerteSchluesselAnlage on schluesselAnlageWerte (value);
+drop index if exists iSchluesselAnlageWerteHistorisch;
+create index iSchluesselAnlageWerteHistorisch on schluesselAnlageWerte (historic);
+drop index if exists iSchluesselAnlageWerteSort;
+create index iSchluesselAnlageWerteSort on schluesselAnlageWerte (sort);
+
+insert into
+  schluesselAnlageWerte(value)
+values
+  ('RZ0146'),
+  ('RZ0147');
 
 -------------------------------------------
 

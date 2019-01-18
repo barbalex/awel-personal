@@ -19,6 +19,8 @@ import MobileAbo from './MobileAbo'
 import Funktion from './Funktion'
 import MobileAboKostenstelleWert from './MobileAboKostenstelleWert'
 import MobileAboTypWert from './MobileAboTypWert'
+import SchluesselTypWert from './SchluesselTypWert'
+import SchluesselAnlageWert from './SchluesselAnlageWert'
 import EtikettWert from './EtikettWert'
 import LandWert from './LandWert'
 import Person from './Person'
@@ -42,6 +44,8 @@ export default (db: Object) =>
       funktionen: types.array(Funktion),
       mobileAboKostenstelleWerte: types.array(MobileAboKostenstelleWert),
       mobileAboTypWerte: types.array(MobileAboTypWert),
+      schluesselTypWerte: types.array(SchluesselTypWert),
+      schluesselAnlageWerte: types.array(SchluesselAnlageWert),
       etikettWerte: types.array(EtikettWert),
       landWerte: types.array(LandWert),
       personen: types.array(Person),

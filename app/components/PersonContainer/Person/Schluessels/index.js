@@ -20,17 +20,20 @@ const Row = styled.div`
   grid-column: 1;
   display: grid;
   grid-template-columns: ${props =>
-    props['data-ispdf'] ? '1fr 1fr' : '1fr 1fr 20px'};
+    props['data-ispdf'] ? '1fr 1fr 1fr' : '1fr 1fr 1fr 20px'};
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
   padding: 3px 0;
   color: rgba(146, 146, 146, 1);
 `
-const Name = styled.div`
+const Typ = styled.div`
   grid-column: 1 / span 1;
 `
-const Bemerkungen = styled.div`
+const Anlage = styled.div`
   grid-column: 2 / span 1;
+`
+const Bemerkungen = styled.div`
+  grid-column: 3 / span 1;
 `
 
 const SchluesselsComponent = () => {
@@ -61,7 +64,8 @@ const SchluesselsComponent = () => {
         <Container data-ispdf={isPdf} name="schluessel">
           {schluessels.length > 0 && (
             <Row data-ispdf={isPdf}>
-              <Name>Name</Name>
+              <Typ>Typ</Typ>
+              <Anlage>Anlage</Anlage>
               <Bemerkungen>Bemerkungen</Bemerkungen>
               {!isPdf && <div />}
             </Row>

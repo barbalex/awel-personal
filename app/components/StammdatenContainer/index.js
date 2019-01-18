@@ -41,6 +41,8 @@ const StammdatenContainer = () => {
     fetchWerte({ db, store, table: 'anredeWerte' })
     fetchWerte({ db, store, table: 'kostenstelleWerte' })
     fetchWerte({ db, store, table: 'mobileAboTypWerte' })
+    fetchWerte({ db, store, table: 'schluesselTypWerte' })
+    fetchWerte({ db, store, table: 'schluesselAnlageWerte' })
     fetchWerte({ db, store, table: 'funktionWerte' })
     fetchWerte({ db, store, table: 'mobileAboKostenstelleWerte' })
     fetchWerte({ db, store, table: 'etikettWerte' })

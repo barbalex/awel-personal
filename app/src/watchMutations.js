@@ -14,6 +14,8 @@ export default ({ store }) => {
     anredeWerte,
     kostenstelleWerte,
     mobileAboTypWerte,
+    schluesselTypWerte,
+    schluesselAnlageWerte,
     funktionWerte,
     mobileAboKostenstelleWerte,
     etikettWerte,
@@ -48,6 +50,12 @@ export default ({ store }) => {
   )
   onPatch(mobileAboTypWerte, (patch, inversePatch) =>
     addMutation({ tableName: 'mobileAboTypWerte', patch, inversePatch }),
+  )
+  onPatch(schluesselTypWerte, (patch, inversePatch) =>
+    addMutation({ tableName: 'schluesselTypWerte', patch, inversePatch }),
+  )
+  onPatch(schluesselAnlageWerte, (patch, inversePatch) =>
+    addMutation({ tableName: 'schluesselAnlageWerte', patch, inversePatch }),
   )
   onPatch(funktionWerte, (patch, inversePatch) =>
     addMutation({ tableName: 'funktionWerte', patch, inversePatch }),

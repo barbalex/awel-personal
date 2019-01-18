@@ -50,6 +50,16 @@ export default [
     parentModel: 'mobileAboTypWerte',
   },
   {
+    table: 'schluesselTypWerte',
+    model: 'SchluesselTypWert',
+    parentModel: 'schluesselTypWerte',
+  },
+  {
+    table: 'schluesselAnlageWerte',
+    model: 'SchluesselAnlageWert',
+    parentModel: 'schluesselAnlageWerte',
+  },
+  {
     table: 'funktionWerte',
     model: 'FunktionWert',
     parentModel: 'funktionWerte',

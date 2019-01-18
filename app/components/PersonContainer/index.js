@@ -62,6 +62,8 @@ const PersonContainer = () => {
     fetchMobileAbos({ db, store })
     fetchWerte({ db, store, table: 'mobileAboKostenstelleWerte' })
     fetchWerte({ db, store, table: 'mobileAboTypWerte' })
+    fetchWerte({ db, store, table: 'schluesselTypWerte' })
+    fetchWerte({ db, store, table: 'schluesselAnlageWerte' })
     fetchFunktionen({ db, store })
     // set initial active id
     // nope, better not
