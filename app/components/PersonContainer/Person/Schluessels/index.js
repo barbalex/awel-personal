@@ -2,7 +2,7 @@
 import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { Col, FormGroup, Label, Button } from 'reactstrap'
+import { Col, FormGroup, Label, Button, ButtonGroup } from 'reactstrap'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import Schluessel from './Schluessel'
@@ -14,6 +14,10 @@ const Container = styled.div`
   font-size: ${props => (props['data-ispdf'] ? '10px' : 'inherit')};
 `
 const StyledButton = styled(Button)`
+  margin-top: 5px;
+`
+const EFButtonGroup = styled(ButtonGroup)`
+  margin-left: 5px;
   margin-top: 5px;
 `
 const Row = styled.div`
@@ -81,6 +85,10 @@ const SchluesselsComponent = () => {
               neuer Schlüssel
             </StyledButton>
           )}
+          <EFButtonGroup>
+            <Button outline>Empfangsformular</Button>
+            <Button outline>Pfad</Button>
+          </EFButtonGroup>
         </Container>
       </Col>
     </FormGroup>
