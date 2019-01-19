@@ -218,6 +218,26 @@ create index iMobileAboTyp on mobileAbos (typ);
 
 -------------------------------------------
 
+drop table if exists telefones;
+create table telefones (
+  id integer primary key autoincrement,
+  deleted integer default 0,
+  idPerson integer references personen(id) on update cascade on delete cascade,
+  typ text references telefonTypWerte(value) on update cascade on delete no action,
+  bemerkungen text,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iTelefonDeleted;
+create index iTelefonDeleted on telefones (deleted);
+drop index if exists iTelefonIdPerson;
+create index iTelefonIdPerson on telefones (idPerson);
+drop index if exists iTelefonTyp;
+create index iTelefonTyp on telefones (typ);
+
+-------------------------------------------
+
 drop table if exists funktionen;
 create table funktionen (
   id integer primary key autoincrement,
@@ -398,6 +418,32 @@ insert into
   mobileAboTypWerte(value, sort)
 values
   ('TODO', 1);
+
+-------------------------------------------
+
+drop table if exists telefonTypWerte;
+create table telefonTypWerte (
+  id integer primary key autoincrement,
+  value text unique,
+  deleted integer default 0,
+  historic integer default 0,
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iTelefonTypWerteTelefonTyp;
+create index iTelefonTypWerteTelefonTyp on telefonTypWerte (value);
+drop index if exists iTelefonTypWerteHistorisch;
+create index iTelefonTypWerteHistorisch on telefonTypWerte (historic);
+drop index if exists iTelefonTypWerteSort;
+create index iTelefonTypWerteSort on telefonTypWerte (sort);
+
+insert into
+  telefonTypWerte(value, sort)
+values
+  ('mobile', 1),
+  ('Festnetz', 2);
 
 -------------------------------------------
 
