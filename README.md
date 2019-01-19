@@ -5,9 +5,6 @@ Mit dieser Anwendung plant das [AWEL des Kantons Zürich](https://awel.zh.ch) ih
 
 Die Anwendung ist noch in Entwicklung.
 
-## Datenstruktur
-![Datenstruktur](./app/etc/awel-personal-structure.png)
-
 ## Technische Umsetzung
 
 Die Anwendung ist in JavaScript geschrieben und benutzt unter anderem:
@@ -23,5 +20,8 @@ Die Anwendung ist in JavaScript geschrieben und benutzt unter anderem:
 ## Electron- versus Access- oder FileMaker-Anwendung
 [Siehe im readme von Kapla](https://github.com/barbalex/kapla3#electron--versus-access-anwendung).
 
-## License
+## Datenstruktur
+![Datenstruktur](./app/etc/awel-personal-structure.png)
+
+## Lizenz
 [MIT © AWEL Kt. Zürich](./LICENSE)
