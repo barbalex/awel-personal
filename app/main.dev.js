@@ -10,9 +10,7 @@
  *
  * @flow
  */
-import { app, BrowserWindow } from 'electron'
-// import { autoUpdater } from 'electron-updater'
-import log from 'electron-log'
+import { app, BrowserWindow, Menu } from 'electron'
 import MenuBuilder from './menu'
 
 /*
@@ -44,7 +42,7 @@ const installExtensions = async () => {
   const extensions = ['REACT_DEVELOPER_TOOLS']
 
   return Promise.all(
-    extensions.map(name => installer.default(installer[name], forceDownload))
+    extensions.map(name => installer.default(installer[name], forceDownload)),
   ).catch(console.log)
 }
 
@@ -71,7 +69,7 @@ app.on('ready', async () => {
   mainWindow = new BrowserWindow({
     show: false,
     width: 1024,
-    height: 728
+    height: 728,
   })
 
   mainWindow.maximize()
@@ -96,8 +94,13 @@ app.on('ready', async () => {
     mainWindow = null
   })
 
-  const menuBuilder = new MenuBuilder(mainWindow)
-  menuBuilder.buildMenu()
+  if (process.env.NODE_ENV === 'development') {
+    const menuBuilder = new MenuBuilder(mainWindow)
+    menuBuilder.buildMenu()
+    mainWindow.openDevTools()
+  } else {
+    Menu.setApplicationMenu(null)
+  }
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line

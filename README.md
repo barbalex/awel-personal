@@ -3,6 +3,9 @@
 <br/>
 Mit dieser Anwendung verwaltet das AWEL Personal-Daten
 
+![Datenstruktur](./app/etc/awel-personal-structure.png)
+
+
 
 
 ## License
