@@ -72,6 +72,7 @@ create table abteilungen (
   email text check (email like '%_@__%.__%'),
   standort text,
   leiter integer REFERENCES personen(id) on update cascade on delete restrict,
+  kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
   -- schluessel?,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT
@@ -392,7 +393,7 @@ create index iKostenstelleWerteSort on kostenstelleWerte (sort);
 insert into
   kostenstelleWerte(value, sort)
 values
-  ('TODO', 1);
+  ('TODO kostenstelleWert', 1);
 
 -------------------------------------------
 
@@ -417,7 +418,7 @@ create index iMobileAboTypWerteSort on mobileAboTypWerte (sort);
 insert into
   mobileAboTypWerte(value, sort)
 values
-  ('TODO', 1);
+  ('TODO mobileAboTypWert', 1);
 
 -------------------------------------------
 
@@ -547,8 +548,7 @@ create index iMobileAboKostenstelleWerteSort on mobileAboKostenstelleWerte (sort
 insert into
   mobileAboKostenstelleWerte(value, sort)
 values
-  ('', 0),
-  ('TODO', 1);
+  ('TODO mobileAboKostenstelleWert', 1);
 
 -------------------------------------------
 

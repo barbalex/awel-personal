@@ -23,6 +23,7 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
     personen,
     abteilungen,
     showDeleted,
+    kostenstelleWerte,
     showFilter,
     filterAbteilung,
     existsFilter,
@@ -73,6 +74,14 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
           value: w.id,
         })),
     [personen.length],
+  )
+  const kostenstelleOptions = useMemo(() =>
+    sortBy(kostenstelleWerte, ['sort', 'value'])
+      .filter(w => !!w.value)
+      .map(w => ({
+        label: w.value,
+        value: w.value,
+      })),
   )
 
   if (!showFilter && !activeId) return null
@@ -130,6 +139,14 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
           field="leiter"
           label="Leiter"
           options={personOptions}
+          saveToDb={saveToDb}
+        />
+        <Select
+          key={`${abteilungId}${existsFilter ? 1 : 0}kostenstelle`}
+          value={abteilung.kostenstelle}
+          field="kostenstelle"
+          label="Kostenstelle"
+          options={kostenstelleOptions}
           saveToDb={saveToDb}
         />
         {!showFilter && <Zuletzt />}

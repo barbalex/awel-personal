@@ -8,6 +8,7 @@ import ErrorBoundary from '../shared/ErrorBoundary'
 import Abteilung from './Abteilung'
 import List from './List'
 import fetchAbteilungen from '../../src/fetchAbteilungen'
+import fetchWerte from '../../src/fetchWerte'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 import dbContext from '../../dbContext'
@@ -40,6 +41,7 @@ const AbteilungContainer = () => {
 
   useEffect(() => {
     fetchAbteilungen({ db, store })
+    fetchWerte({ db, store, table: 'kostenstelleWerte' })
   }, [])
 
   return (
