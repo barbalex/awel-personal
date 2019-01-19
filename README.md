@@ -12,4 +12,4 @@ Die Anwendung ist noch in Entwicklung.
 
 
 ## License
-MIT © AWEL Kt. Zürich
+[MIT © AWEL Kt. Zürich](./README.md)
