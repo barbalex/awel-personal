@@ -8,6 +8,8 @@ Die Anwendung ist noch in Entwicklung.
 ## Datenstruktur
 ![Datenstruktur](./app/etc/awel-personal-structure.png)
 
+## Technische Umsetzung
+Ähnlich, wie bei Kapla. [Mehr dazu in dessen readme](https://github.com/barbalex/kapla3#technische-umsetzung).
 
 
 
