@@ -3,7 +3,7 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
 } from 'reactstrap'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
@@ -23,6 +23,12 @@ const MoreMenu = styled(UncontrolledDropdown)`
     padding-left: 18px !important;
   }
 `
+const Version = styled.div`
+  padding: 4px 24px;
+  color: rgba(0, 0, 0, 0.87);
+  user-select: none;
+  font-style: italic;
+`
 
 const onClickIssues = () => {
   shell.openItem('https://github.com/barbalex/awel-personal/issues')
@@ -35,7 +41,7 @@ const More = () => {
   const activeLocation = location.toJSON()[0]
 
   const toggleShowDeleted = useCallback(() => setShowDeleted(!showDeleted), [
-    showDeleted
+    showDeleted,
   ])
   const showMutations = useCallback(() => setLocation(['mutations']))
 
@@ -68,6 +74,8 @@ const More = () => {
         <DropdownItem onClick={onClickIssues}>
           Fehler und Wünsche melden
         </DropdownItem>
+        <DropdownItem divider />
+        <Version>Version: 0.19.0 vom 19.01.2019</Version>
       </DropdownMenu>
     </MoreMenu>
   )
