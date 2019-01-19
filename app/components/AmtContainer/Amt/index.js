@@ -17,51 +17,50 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Abteilung = ({ activeId }: { activeId: ?number }) => {
+const Amt = ({ activeId }: { activeId: ?number }) => {
   const store = useContext(storeContext)
   const {
     personen,
     aemter,
-    abteilungen,
     showDeleted,
     kostenstelleWerte,
     showFilter,
-    filterAbteilung,
+    filterAmt,
     existsFilter,
     setFilter,
   } = store
 
-  let abteilung
+  let amt
   if (showFilter) {
-    abteilung = filterAbteilung
+    amt = filterAmt
   } else {
-    abteilung = abteilungen.find(p => p.id === activeId)
-    if (!abteilung) abteilung = {}
+    amt = aemter.find(p => p.id === activeId)
+    if (!amt) amt = {}
   }
-  const abteilungId = showFilter ? '' : abteilung.id
+  const amtId = showFilter ? '' : amt.id
 
   const saveToDb = useCallback(
     ({ field, value }) => {
-      if (!abteilung && !showFilter)
-        throw new Error(`Abteilung with id ${activeId} not found`)
+      if (!amt && !showFilter)
+        throw new Error(`Amt with id ${activeId} not found`)
       const newValue = ifIsNumericAsNumber(value)
 
       if (showFilter) {
         setFilter({
-          model: 'filterAbteilung',
-          value: { ...filterAbteilung, ...{ [field]: newValue } },
+          model: 'filterAmt',
+          value: { ...filterAmt, ...{ [field]: newValue } },
         })
       } else {
         store.updateField({
-          table: 'abteilungen',
-          parentModel: 'abteilungen',
+          table: 'aemter',
+          parentModel: 'aemter',
           field,
           value: newValue,
-          id: abteilung.id,
+          id: amt.id,
         })
       }
     },
-    [activeId, abteilungen.length, filterAbteilung, showFilter],
+    [activeId, aemter.length, filterAmt, showFilter],
   )
 
   // filter out options with empty values - makes no sense and errors
@@ -69,22 +68,12 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
     () =>
       sortBy(personen, ['name', 'vorname'])
         .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-        .filter(w => !showFilter && w.id !== abteilung.leiter)
+        .filter(w => !showFilter && w.id !== amt.leiter)
         .map(w => ({
           label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
     [personen.length],
-  )
-  const amtOptions = useMemo(
-    () =>
-      sortBy(aemter, ['name'])
-        .filter(w => !!w.name && w.deleted === 0)
-        .map(w => ({
-          label: w.name,
-          value: w.id,
-        })),
-    [aemter.length],
   )
   const kostenstelleOptions = useMemo(() =>
     sortBy(kostenstelleWerte, ['sort', 'value'])
@@ -102,67 +91,59 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
       <StyledForm>
         {showDeleted && (
           <SharedCheckbox
-            key={`${abteilungId}deleted`}
-            value={abteilung.deleted}
+            key={`${amtId}deleted`}
+            value={amt.deleted}
             field="deleted"
             label="gelöscht"
             saveToDb={saveToDb}
           />
         )}
         <Input
-          key={`${abteilungId}name`}
-          value={abteilung.name}
+          key={`${amtId}name`}
+          value={amt.name}
           field="name"
           label="Name"
           saveToDb={saveToDb}
         />
-        <Select
-          key={`${abteilungId}${existsFilter ? 1 : 0}amt`}
-          value={abteilung.amt}
-          field="amt"
-          label="Amt"
-          options={amtOptions}
-          saveToDb={saveToDb}
-        />
         <Input
-          key={`${abteilungId}kurzzeichen`}
-          value={abteilung.kurzzeichen}
+          key={`${amtId}kurzzeichen`}
+          value={amt.kurzzeichen}
           field="kurzzeichen"
           label="Kurzzeichen"
           saveToDb={saveToDb}
         />
         <Input
-          key={`${abteilungId}telefonNr`}
-          value={abteilung.telefonNr}
+          key={`${amtId}telefonNr`}
+          value={amt.telefonNr}
           field="telefonNr"
           label="Telefon"
           saveToDb={saveToDb}
         />
         <Input
-          key={`${abteilungId}email`}
-          value={abteilung.email}
+          key={`${amtId}email`}
+          value={amt.email}
           field="email"
           label="Email"
           saveToDb={saveToDb}
         />
         <Input
-          key={`${abteilungId}standort`}
-          value={abteilung.standort}
+          key={`${amtId}standort`}
+          value={amt.standort}
           field="standort"
           label="Standort"
           saveToDb={saveToDb}
         />
         <Select
-          key={`${abteilungId}${existsFilter ? 1 : 0}leiter`}
-          value={abteilung.leiter}
+          key={`${amtId}${existsFilter ? 1 : 0}leiter`}
+          value={amt.leiter}
           field="leiter"
           label="Leiter"
           options={personOptions}
           saveToDb={saveToDb}
         />
         <Select
-          key={`${abteilungId}${existsFilter ? 1 : 0}kostenstelle`}
-          value={abteilung.kostenstelle}
+          key={`${amtId}${existsFilter ? 1 : 0}kostenstelle`}
+          value={amt.kostenstelle}
           field="kostenstelle"
           label="Kostenstelle"
           options={kostenstelleOptions}
@@ -174,4 +155,4 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
   )
 }
 
-export default observer(Abteilung)
+export default observer(Amt)

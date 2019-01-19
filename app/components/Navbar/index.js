@@ -14,6 +14,7 @@ import { observer } from 'mobx-react-lite'
 import Filter from './Filter'
 import Stammdaten from './Stammdaten'
 import Personen from './Personen'
+import Aemter from './Aemter'
 import Abteilungen from './Abteilungen'
 import Sektionen from './Sektionen'
 import Export from './Export'
@@ -41,6 +42,7 @@ const MyNavbar = () => {
           <Personen />
           <Sektionen />
           <Abteilungen />
+          <Aemter />
           <Export />
           <UncontrolledDropdown
             nav
@@ -59,7 +61,7 @@ const MyNavbar = () => {
           <Stammdaten />
         </Nav>
         <Nav className="ml-auto" navbar>
-          {['Personen', 'Abteilungen', 'Sektionen'].includes(
+          {['Personen', 'Aemter', 'Abteilungen', 'Sektionen'].includes(
             activeLocation,
           ) && <Filter />}
           <More />

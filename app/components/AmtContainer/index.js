@@ -5,10 +5,9 @@ import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
-import Abteilung from './Abteilung'
+import Amt from './Amt'
 import List from './List'
 import fetchAemter from '../../src/fetchAemter'
-import fetchAbteilungen from '../../src/fetchAbteilungen'
 import fetchWerte from '../../src/fetchWerte'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
@@ -16,7 +15,7 @@ import dbContext from '../../dbContext'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
-// seems that navbar is not finished when AbteilungContainer is built
+// seems that navbar is not finished when AmtContainer is built
 const Container = styled.div`
   height: calc(100vh - 56px);
 `
@@ -30,18 +29,17 @@ const StyledReflexElement = styled(ReflexElement)`
   }
 `
 
-const AbteilungContainer = () => {
+const AmtContainer = () => {
   const store = useContext(storeContext)
   const db = useContext(dbContext)
-  const { showFilter, abteilungen } = store
+  const { showFilter, aemter } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-  const abteilung = abteilungen.find(p => p.id === activeId)
-  // pass list the active abteilung's props to enable instant updates
-  const abteilungJson = abteilung ? abteilung.toJSON() : {}
+  const amt = aemter.find(p => p.id === activeId)
+  // pass list the active amt's props to enable instant updates
+  const amtJson = amt ? amt.toJSON() : {}
 
   useEffect(() => {
-    fetchAbteilungen({ db, store })
     fetchAemter({ db, store })
     fetchWerte({ db, store, table: 'kostenstelleWerte' })
   }, [])
@@ -56,11 +54,11 @@ const AbteilungContainer = () => {
             renderOnResizeRate={100}
             renderOnResize
           >
-            <List activeId={activeId} {...abteilungJson} />
+            <List activeId={activeId} {...amtJson} />
           </ReflexElement>
           <ReflexSplitter />
           <StyledReflexElement showfilter={showFilter}>
-            <Abteilung activeId={activeId} />
+            <Amt activeId={activeId} />
           </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>
@@ -68,4 +66,4 @@ const AbteilungContainer = () => {
   )
 }
 
-export default observer(AbteilungContainer)
+export default observer(AmtContainer)

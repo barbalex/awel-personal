@@ -7,6 +7,7 @@ import findLast from 'lodash/findLast'
 import keys from 'lodash/keys'
 import lValues from 'lodash/values'
 
+import Amt from './Amt'
 import Abteilung from './Abteilung'
 import Settings from './Settings'
 import Sektion from './Sektion'
@@ -56,6 +57,7 @@ export default (db: Object) =>
       landWerte: types.array(LandWert),
       bereichWerte: types.array(BereichWert),
       personen: types.array(Person),
+      aemter: types.array(Amt),
       abteilungen: types.array(Abteilung),
       settings: types.optional(Settings, { id: 1, schluesselFormPath: null }),
       sektionen: types.array(Sektion),
@@ -68,6 +70,7 @@ export default (db: Object) =>
       watchMutations: types.optional(types.boolean, false),
       history: types.optional(UndoManager, {}),
       filterPerson: types.optional(Person, {}),
+      filterAmt: types.optional(Amt, {}),
       filterAbteilung: types.optional(Abteilung, {}),
       filterSektion: types.optional(Sektion, {}),
       filterEtikett: types.optional(Etikett, {}),
@@ -85,6 +88,7 @@ export default (db: Object) =>
       get existsFilter() {
         const {
           filterPerson,
+          filterAmt,
           filterAbteilung,
           filterSektion,
           filterEtikett,
@@ -97,6 +101,7 @@ export default (db: Object) =>
         return (
           [
             ...Object.values(filterPerson),
+            ...Object.values(filterAmt),
             ...Object.values(filterAbteilung),
             ...Object.values(filterSektion),
             ...Object.values(filterEtikett),
@@ -330,6 +335,51 @@ export default (db: Object) =>
           })
         return personen
       },
+      get aemterFiltered() {
+        const { filterAmt, filterFulltext } = self
+        let aemter = getSnapshot(self.aemter)
+        Object.keys(filterAmt).forEach(key => {
+          if (filterAmt[key] || filterAmt[key] === 0) {
+            aemter = aemter.filter(p => {
+              if (!filterAmt[key]) return true
+              if (!p[key]) return false
+              return p[key]
+                .toString()
+                .toLowerCase()
+                .includes(filterAmt[key].toString().toLowerCase())
+            })
+          }
+        })
+        aemter = aemter
+          .filter(p => {
+            if (!self.showDeleted) return p.deleted === 0
+            return true
+          })
+          .filter(p => {
+            if (!filterFulltext) return true
+            // now check for any value if includes
+            const amtValues = Object.entries(p)
+              .filter(e => e[0] !== 'id')
+              .map(e => e[1])
+            return (
+              [...amtValues].filter(v => {
+                if (!v) return false
+                if (!v.toString()) return false
+                return v
+                  .toString()
+                  .toLowerCase()
+                  .includes(filterFulltext.toString().toLowerCase())
+              }).length > 0
+            )
+          })
+          .sort((a, b) => {
+            if (!a.name && b.name) return -1
+            if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
+              return -1
+            return 1
+          })
+        return aemter
+      },
       get abteilungenFiltered() {
         const { filterAbteilung, filterFulltext } = self
         let abteilungen = getSnapshot(self.abteilungen)
@@ -477,6 +527,11 @@ export default (db: Object) =>
         setPersonen(personen) {
           self.watchMutations = false
           self.personen = personen
+          self.watchMutations = true
+        },
+        setAemter(aemter) {
+          self.watchMutations = false
+          self.aemter = aemter
           self.watchMutations = true
         },
         setAbteilungen(abteilungen) {
@@ -646,15 +701,35 @@ export default (db: Object) =>
           })
           self.setLocation(['Personen', info.lastInsertRowid.toString()])
         },
+        addAmt() {
+          // 1. create new Amt in db, returning id
+          let info
+          try {
+            info = db
+              .prepare(
+                'insert into aemter (letzteMutationUser, letzteMutationZeit) values (@user, @zeit)',
+              )
+              .run({ user: self.username, zeit: Date.now() })
+          } catch (error) {
+            return console.log(error)
+          }
+          // 2. add to store
+          self.aemter.push({
+            id: info.lastInsertRowid,
+            letzteMutationUser: self.username,
+            letzteMutationZeit: Date.now(),
+          })
+          self.setLocation(['Aemter', info.lastInsertRowid.toString()])
+        },
         addAbteilung() {
           // 1. create new Abteilung in db, returning id
           let info
           try {
             info = db
               .prepare(
-                'insert into abteilungen (letzteMutationUser, letzteMutationZeit) values (@user, @zeit)',
+                'insert into abteilungen (letzteMutationUser, letzteMutationZeit, amt) values (@user, @zeit, @amt)',
               )
-              .run({ user: self.username, zeit: Date.now() })
+              .run({ user: self.username, zeit: Date.now(), amt: 1 })
           } catch (error) {
             return console.log(error)
           }
@@ -856,6 +931,22 @@ export default (db: Object) =>
           self.personen.splice(findIndex(self.personen, p => p.id === id), 1)
           self.setLocation(['Personen'])
         },
+        setAmtDeleted(id) {
+          // write to db
+          try {
+            db.prepare(
+              `update aemter set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+            ).run({ id, user: self.username, time: Date.now() })
+          } catch (error) {
+            return console.log(error)
+          }
+          // write to store
+          const amt = self.aemter.find(p => p.id === id)
+          amt.deleted = 1
+          amt.letzteMutationUser = self.username
+          amt.letzteMutationZeit = Date.now()
+          if (!self.showDeleted) self.setLocation(['Aemter'])
+        },
         setAbteilungDeleted(id) {
           // write to db
           try {
@@ -871,6 +962,23 @@ export default (db: Object) =>
           abteilung.letzteMutationUser = self.username
           abteilung.letzteMutationZeit = Date.now()
           if (!self.showDeleted) self.setLocation(['Abteilungen'])
+        },
+        deleteAmt(id) {
+          // write to db
+          try {
+            db.prepare('delete from aemter where id = ?').run(id)
+          } catch (error) {
+            // roll back update
+            return console.log(error)
+          }
+          // write to store
+          /**
+           * Do not use filter! Reason:
+           * rebuilds self.aemter. Consequence:
+           * all other aemter are re-added and listet as mutations of op 'add'
+           */
+          self.aemter.splice(findIndex(self.aemter, p => p.id === id), 1)
+          self.setLocation(['Aemter'])
         },
         deleteAbteilung(id) {
           // write to db
@@ -1282,6 +1390,24 @@ export default (db: Object) =>
           const person = self.personen.find(p => p.id === idPerson)
           person.letzteMutationUser = self.username
           person.letzteMutationZeit = Date.now()
+        },
+        updateAmtMutation(idAmt) {
+          // in db
+          try {
+            db.prepare(
+              `update aemter set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+            ).run({
+              user: self.username,
+              time: Date.now(),
+              id: idAmt,
+            })
+          } catch (error) {
+            return console.log(error)
+          }
+          // in store
+          const amt = self.aemter.find(p => p.id === idAmt)
+          amt.letzteMutationUser = self.username
+          amt.letzteMutationZeit = Date.now()
         },
         updateAbteilungsMutation(idAbteilung) {
           // in db

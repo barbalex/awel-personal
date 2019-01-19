@@ -26,6 +26,7 @@ create table personen (
   email text check (email like '%_@__%.__%'),
   geburtDatum text,
   bueroNr text,
+  amt integer default 1 references aemter(id) on update cascade on delete restrict,
   abteilung integer references abteilungen(id) on update cascade on delete restrict,
   sektion integer references sektionen(id) on update cascade on delete restrict,
   bereich text references bereichWerte(value) on update cascade on delete no action,

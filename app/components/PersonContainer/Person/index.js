@@ -29,6 +29,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
   const store = useContext(storeContext)
   const {
     personen,
+    aemter,
     abteilungen,
     sektionen,
     etiketten,
@@ -77,6 +78,22 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           model: 'filterPerson',
           value: { ...filterPerson, ...{ [field]: newValue } },
         })
+        if (field === 'amt') {
+          if (person.abteilung) {
+            // reset abteilung
+            setFilter({
+              model: 'filterPerson',
+              value: { ...filterPerson, ...{ abteilung: null } },
+            })
+          }
+          if (person.sektion) {
+            // reset sektion
+            setFilter({
+              model: 'filterPerson',
+              value: { ...filterPerson, ...{ sektion: null } },
+            })
+          }
+        }
         if (field === 'abteilung' && person.sektion) {
           // reset sektion
           setFilter({
@@ -92,6 +109,28 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           value: newValue,
           id: person.id,
         })
+        if (field === 'amt') {
+          if (person.abteilung) {
+            // reset abteilung
+            store.updateField({
+              table: 'personen',
+              parentModel: 'personen',
+              field: 'abteilung',
+              value: null,
+              id: person.id,
+            })
+          }
+          if (person.sektion) {
+            // reset sektion
+            store.updateField({
+              table: 'personen',
+              parentModel: 'personen',
+              field: 'sektion',
+              value: null,
+              id: person.id,
+            })
+          }
+        }
         if (field === 'abteilung' && person.sektion) {
           // reset sektion
           store.updateField({
@@ -202,10 +241,26 @@ const Person = ({ activeId }: { activeId: ?number }) => {
         })),
     [personen.length],
   )
+  const amtOptions = useMemo(
+    () =>
+      sortBy(aemter, ['name'])
+        .filter(w => !!w.name && w.deleted === 0)
+        .map(w => ({
+          label: w.name,
+          value: w.id,
+        })),
+    [aemter.length],
+  )
   const abteilungOptions = useMemo(
     () =>
       sortBy(abteilungen, ['name'])
         .filter(w => !!w.name && w.deleted === 0)
+        .filter(w => {
+          if (person.amt) {
+            return w.amt === person.amt
+          }
+          return true
+        })
         .map(w => ({
           label: w.name,
           value: w.id,
@@ -226,7 +281,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label: w.name,
           value: w.id,
         })),
-    [sektionen.length, person.abteilung],
+    [sektionen.length, person.abteilung, person.amt],
   )
   const statusOptions = useMemo(() =>
     sortBy(statusWerte, ['sort', 'value'])
@@ -387,6 +442,14 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           value={person.bueroNr}
           field="bueroNr"
           label="Büro Nr."
+          saveToDb={saveToDb}
+        />
+        <Select
+          key={`${personId}${existsFilter ? 1 : 0}amt`}
+          value={person.amt}
+          field="amt"
+          label="Amt"
+          options={amtOptions}
           saveToDb={saveToDb}
         />
         <Select

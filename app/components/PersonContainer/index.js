@@ -8,6 +8,7 @@ import ErrorBoundary from '../shared/ErrorBoundary'
 import Person from './Person'
 import List from './List'
 import fetchPersonen from '../../src/fetchPersonen'
+import fetchAemter from '../../src/fetchAemter'
 import fetchAbteilungen from '../../src/fetchAbteilungen'
 import fetchSektionen from '../../src/fetchSektionen'
 import fetchEtiketten from '../../src/fetchEtiketten'
@@ -50,6 +51,7 @@ const PersonContainer = () => {
 
   useEffect(() => {
     fetchPersonen({ db, store })
+    fetchAemter({ db, store })
     fetchAbteilungen({ db, store })
     fetchSektionen({ db, store })
     fetchWerte({ db, store, table: 'statusWerte' })

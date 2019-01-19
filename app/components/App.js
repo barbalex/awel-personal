@@ -7,6 +7,7 @@ import { de } from 'date-fns/locale'
 
 import Navbar from './Navbar'
 import PersonContainer from './PersonContainer'
+import AmtContainer from './AmtContainer'
 import AbteilungContainer from './AbteilungContainer'
 import SektionContainer from './SektionContainer'
 import StammdatenContainer from './StammdatenContainer'
@@ -30,6 +31,7 @@ const App = () => {
     <Container>
       <Navbar />
       {activeLocation === 'Personen' && <PersonContainer />}
+      {activeLocation === 'Aemter' && <AmtContainer />}
       {activeLocation === 'Sektionen' && <SektionContainer />}
       {activeLocation === 'Abteilungen' && <AbteilungContainer />}
       {activeLocation.includes('Werte') && <StammdatenContainer />}
