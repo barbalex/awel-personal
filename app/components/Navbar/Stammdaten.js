@@ -123,6 +123,9 @@ const Stammdaten = () => {
           <DropdownItem name="schluesselTypWerte" onClick={onClickStatusTable}>
             Schlüssel Typ
           </DropdownItem>
+          <DropdownItem name="telefonTypWerte" onClick={onClickStatusTable}>
+            Telefon Typ
+          </DropdownItem>
           <DropdownItem
             name="schluesselAnlageWerte"
             onClick={onClickStatusTable}

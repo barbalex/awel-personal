@@ -20,6 +20,11 @@ export default [
     parentModel: 'mobileAbos',
   },
   {
+    table: 'telefones',
+    model: 'Telefon',
+    parentModel: 'telefones',
+  },
+  {
     table: 'funktionen',
     model: 'Funktion',
     parentModel: 'funktionen',

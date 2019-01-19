@@ -113,13 +113,13 @@ const SchluesselComponent = ({ id }: { id: number | string }) => {
     const newValue = ifIsNumericAsNumber(value)
     if (showFilter) {
       setFilter({
-        model: 'filterMobileAbo',
+        model: 'filterSchluesselTyp',
         value: { ...filterSchluesselTyp, ...{ [field]: newValue } },
       })
     } else {
       updateField({
-        table: 'mobileAbos',
-        parentModel: 'mobileAbos',
+        table: 'schluessel',
+        parentModel: 'schluessel',
         field,
         value: newValue,
         id,
@@ -130,13 +130,13 @@ const SchluesselComponent = ({ id }: { id: number | string }) => {
     const newValue = ifIsNumericAsNumber(value)
     if (showFilter) {
       setFilter({
-        model: 'filterMobileAbo',
+        model: 'filterSchluesselAnlage',
         value: { ...filterSchluesselAnlage, ...{ [field]: newValue } },
       })
     } else {
       updateField({
-        table: 'mobileAbos',
-        parentModel: 'mobileAbos',
+        table: 'schluessel',
+        parentModel: 'schluessel',
         field,
         value: newValue,
         id,

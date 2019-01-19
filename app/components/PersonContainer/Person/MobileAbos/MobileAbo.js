@@ -62,7 +62,7 @@ const MobileAbo = ({ id }: { id: number | string }) => {
     filterMobileAbo,
     updateField,
     setFilter,
-    deleteMobileAbo
+    deleteMobileAbo,
   } = store
   let mobileAbo
   if (showFilter) {
@@ -73,20 +73,20 @@ const MobileAbo = ({ id }: { id: number | string }) => {
   const location = store.location.toJSON()
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
-  const mobileAboTypOptions = sortBy(mobileAboTypWerte, 'sort')
+  const mobileAboTypOptions = sortBy(mobileAboTypWerte, ['sort', 'value'])
     .filter(w => !!w.value)
     .map(w => ({
       label: w.value,
-      value: w.value
+      value: w.value,
     }))
-  const mobileAboKostenstelleOptions = sortBy(
-    mobileAboKostenstelleWerte,
-    'sort'
-  )
+  const mobileAboKostenstelleOptions = sortBy(mobileAboKostenstelleWerte, [
+    'sort',
+    'value',
+  ])
     .filter(w => !!w.value)
     .map(w => ({
       label: w.value,
-      value: w.value
+      value: w.value,
     }))
 
   const onBlur = useCallback(({ field, value }) => {
@@ -94,7 +94,7 @@ const MobileAbo = ({ id }: { id: number | string }) => {
     if (showFilter) {
       setFilter({
         model: 'filterMobileAbo',
-        value: { ...filterMobileAbo, ...{ [field]: newValue } }
+        value: { ...filterMobileAbo, ...{ [field]: newValue } },
       })
     } else {
       updateField({
@@ -102,7 +102,7 @@ const MobileAbo = ({ id }: { id: number | string }) => {
         parentModel: 'mobileAbos',
         field,
         value: newValue,
-        id
+        id,
       })
     }
   }, (showFilter, filterMobileAbo, id))
@@ -111,7 +111,7 @@ const MobileAbo = ({ id }: { id: number | string }) => {
     if (showFilter) {
       setFilter({
         model: 'filterMobileAbo',
-        value: { ...filterMobileAbo, ...{ [field]: newValue } }
+        value: { ...filterMobileAbo, ...{ [field]: newValue } },
       })
     } else {
       updateField({
@@ -119,7 +119,7 @@ const MobileAbo = ({ id }: { id: number | string }) => {
         parentModel: 'mobileAbos',
         field,
         value: newValue,
-        id
+        id,
       })
     }
   }, (showFilter, filterMobileAbo, id))

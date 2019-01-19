@@ -14,6 +14,7 @@ import fetchEtiketten from '../../src/fetchEtiketten'
 import fetchLinks from '../../src/fetchLinks'
 import fetchSchluessel from '../../src/fetchSchluessel'
 import fetchMobileAbos from '../../src/fetchMobileAbos'
+import fetchTelefones from '../../src/fetchTelefones'
 import fetchFunktionen from '../../src/fetchFunktionen'
 import fetchWerte from '../../src/fetchWerte'
 import fetchSettings from '../../src/fetchSettings'
@@ -61,8 +62,10 @@ const PersonContainer = () => {
     fetchLinks({ db, store })
     fetchSchluessel({ db, store })
     fetchMobileAbos({ db, store })
+    fetchTelefones({ db, store })
     fetchWerte({ db, store, table: 'mobileAboKostenstelleWerte' })
     fetchWerte({ db, store, table: 'mobileAboTypWerte' })
+    fetchWerte({ db, store, table: 'telefonTypWerte' })
     fetchWerte({ db, store, table: 'schluesselTypWerte' })
     fetchWerte({ db, store, table: 'schluesselAnlageWerte' })
     fetchFunktionen({ db, store })

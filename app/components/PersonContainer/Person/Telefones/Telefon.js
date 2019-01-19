@@ -15,7 +15,7 @@ const Row = styled.div`
   grid-column: 1;
   display: grid;
   grid-template-columns: ${props =>
-    props.nosymbol ? '1fr 1fr' : '1fr 1fr 20px'};
+    props.nosymbol ? '1fr 1fr 1fr' : '1fr 1fr 1fr 20px'};
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
   padding: 3px 0;
@@ -26,18 +26,21 @@ const Row = styled.div`
     background-color: rgba(0, 0, 0, 0.05);
   }
 `
-const Typ = styled.div`
+const Nr = styled.div`
   grid-column: 1 / span 1;
 `
-const Bemerkungen = styled.div`
+const Typ = styled.div`
   grid-column: 2 / span 1;
+`
+const Bemerkungen = styled.div`
+  grid-column: 3 / span 1;
 `
 const DeleteContainer = styled.div`
   margin-top: auto;
   margin-bottom: auto;
 `
 const Delete = styled.div`
-  grid-column: 3 / span 1;
+  grid-column: 4 / span 1;
   margin-top: auto;
   margin-bottom: auto;
   text-align: center;
@@ -69,7 +72,7 @@ const Telefon = ({ id }: { id: number | string }) => {
   const location = store.location.toJSON()
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
-  const telefoneTypOptions = sortBy(telefoneTypWerte, 'sort')
+  const telefoneTypOptions = sortBy(telefoneTypWerte, ['sort', 'value'])
     .filter(w => !!w.value)
     .map(w => ({
       label: w.value,
@@ -114,6 +117,15 @@ const Telefon = ({ id }: { id: number | string }) => {
 
   return (
     <Row key={`${id}`} nosymbol={isPdf || showFilter}>
+      <Nr>
+        <InputWithoutLabel
+          key={`${id}nr`}
+          value={telefone.nr}
+          field="nr"
+          saveToDb={onBlur}
+          type="text"
+        />
+      </Nr>
       <Typ>
         <Select
           key={`${id}typ`}
@@ -147,7 +159,7 @@ const Telefon = ({ id }: { id: number | string }) => {
             placement="left"
             target={`deleteTelefonIcon${id}`}
           >
-            mobile Abo entfernen
+            Telefon entfernen
           </UncontrolledTooltip>
         </DeleteContainer>
       )}

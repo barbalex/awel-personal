@@ -87,7 +87,7 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
     [personen.length],
   )
   const kostenstelleOptions = useMemo(() =>
-    sortBy(kostenstelleWerte, 'sort')
+    sortBy(kostenstelleWerte, ['sort', 'value'])
       .filter(w => !!w.value)
       .map(w => ({
         label: w.value,

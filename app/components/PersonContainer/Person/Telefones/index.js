@@ -20,17 +20,20 @@ const Row = styled.div`
   grid-column: 1;
   display: grid;
   grid-template-columns: ${props =>
-    props['data-ispdf'] ? '1fr 1fr' : '1fr 1fr 20px'};
+    props['data-ispdf'] ? '1fr 1fr 1fr' : '1fr 1fr 1fr 20px'};
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
   padding: 3px 0;
   color: rgba(146, 146, 146, 1);
 `
-const Typ = styled.div`
+const Nr = styled.div`
   grid-column: 1 / span 1;
 `
-const Bemerkungen = styled.div`
+const Typ = styled.div`
   grid-column: 2 / span 1;
+`
+const Bemerkungen = styled.div`
+  grid-column: 3 / span 1;
 `
 
 const TelefonesComponent = () => {
@@ -55,12 +58,13 @@ const TelefonesComponent = () => {
   return (
     <FormGroup row>
       <Label for="telefone" sm={2}>
-        mobile Abo
+        Telefon
       </Label>
       <Col sm={10}>
         <Container data-ispdf={isPdf} name="telefone">
           {telefones.length > 0 && (
             <Row data-ispdf={isPdf}>
+              <Nr>Nr.</Nr>
               <Typ>Typ</Typ>
               <Bemerkungen>Bemerkungen</Bemerkungen>
               {!isPdf && <div />}
@@ -74,7 +78,7 @@ const TelefonesComponent = () => {
           ))}
           {mayAddNew && (
             <StyledButton onClick={addTelefon} outline>
-              neues mobile Abo
+              neues Telefon
             </StyledButton>
           )}
         </Container>

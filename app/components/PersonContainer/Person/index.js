@@ -16,6 +16,7 @@ import isDateField from '../../../src/isDateField'
 import Links from './Links'
 import Schluessels from './Schluessels'
 import MobileAbos from './MobileAbos'
+import Telefones from './Telefones'
 import Zuletzt from './Zuletzt'
 import storeContext from '../../../storeContext'
 
@@ -512,6 +513,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
         {!showFilter && <Links />}
         <Schluessels />
         <MobileAbos />
+        <Telefones />
         {!showFilter && <Zuletzt />}
       </StyledForm>
     </Container>

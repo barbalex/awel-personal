@@ -8,12 +8,14 @@ export default ({ store }) => {
     links,
     schluessel,
     mobileAbos,
+    telefones,
     funktionen,
     etiketten,
     statusWerte,
     anredeWerte,
     kostenstelleWerte,
     mobileAboTypWerte,
+    telefonTypWerte,
     schluesselTypWerte,
     schluesselAnlageWerte,
     funktionWerte,
@@ -33,6 +35,9 @@ export default ({ store }) => {
   onPatch(mobileAbos, (patch, inversePatch) =>
     addMutation({ tableName: 'mobileAbos', patch, inversePatch }),
   )
+  onPatch(telefones, (patch, inversePatch) =>
+    addMutation({ tableName: 'telefones', patch, inversePatch }),
+  )
   onPatch(funktionen, (patch, inversePatch) =>
     addMutation({ tableName: 'funktionen', patch, inversePatch }),
   )
@@ -50,6 +55,9 @@ export default ({ store }) => {
   )
   onPatch(mobileAboTypWerte, (patch, inversePatch) =>
     addMutation({ tableName: 'mobileAboTypWerte', patch, inversePatch }),
+  )
+  onPatch(telefonTypWerte, (patch, inversePatch) =>
+    addMutation({ tableName: 'telefonTypWerte', patch, inversePatch }),
   )
   onPatch(schluesselTypWerte, (patch, inversePatch) =>
     addMutation({ tableName: 'schluesselTypWerte', patch, inversePatch }),

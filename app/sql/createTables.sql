@@ -223,6 +223,7 @@ create table telefones (
   id integer primary key autoincrement,
   deleted integer default 0,
   idPerson integer references personen(id) on update cascade on delete cascade,
+  nr text,
   typ text references telefonTypWerte(value) on update cascade on delete no action,
   bemerkungen text,
   letzteMutationZeit TEXT,

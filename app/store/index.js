@@ -17,9 +17,11 @@ import KostenstelleWert from './KostenstelleWert'
 import Link from './Link'
 import Schluessel from './Schluessel'
 import MobileAbo from './MobileAbo'
+import Telefon from './Telefon'
 import Funktion from './Funktion'
 import MobileAboKostenstelleWert from './MobileAboKostenstelleWert'
 import MobileAboTypWert from './MobileAboTypWert'
+import TelefonTypWert from './TelefonTypWert'
 import SchluesselTypWert from './SchluesselTypWert'
 import SchluesselAnlageWert from './SchluesselAnlageWert'
 import EtikettWert from './EtikettWert'
@@ -42,9 +44,11 @@ export default (db: Object) =>
       links: types.array(Link),
       schluessel: types.array(Schluessel),
       mobileAbos: types.array(MobileAbo),
+      telefones: types.array(Telefon),
       funktionen: types.array(Funktion),
       mobileAboKostenstelleWerte: types.array(MobileAboKostenstelleWert),
       mobileAboTypWerte: types.array(MobileAboTypWert),
+      telefonTypWerte: types.array(TelefonTypWert),
       schluesselTypWerte: types.array(SchluesselTypWert),
       schluesselAnlageWerte: types.array(SchluesselAnlageWert),
       etikettWerte: types.array(EtikettWert),
@@ -68,6 +72,7 @@ export default (db: Object) =>
       filterLink: types.optional(Link, {}),
       filterSchluessel: types.optional(Schluessel, {}),
       filterMobileAbo: types.optional(MobileAbo, {}),
+      filterTelefon: types.optional(Telefon, {}),
       filterFunktion: types.optional(Funktion, {}),
       showFilter: types.optional(types.boolean, false),
       filterFulltext: types.maybe(
@@ -84,6 +89,7 @@ export default (db: Object) =>
           filterLink,
           filterSchluessel,
           filterMobileAbo,
+          filterTelefon,
           filterFunktion,
         } = self
         return (
@@ -95,6 +101,7 @@ export default (db: Object) =>
             ...Object.values(filterLink),
             ...Object.values(filterSchluessel),
             ...Object.values(filterMobileAbo),
+            ...Object.values(filterTelefon),
             ...Object.values(filterFunktion),
           ].filter(v => v).length > 0
         )
@@ -103,6 +110,7 @@ export default (db: Object) =>
         const {
           filterSchluessel,
           filterMobileAbo,
+          filterTelefon,
           filterFunktion,
           filterEtikett,
           filterPerson,
@@ -156,6 +164,24 @@ export default (db: Object) =>
             })
           }
         })
+        let telefones = self.telefones.filter(p => {
+          if (!self.showDeleted) return p.deleted === 0
+          return true
+        })
+        let telefonesIsFiltered = false
+        Object.keys(filterTelefon).forEach(key => {
+          if (filterTelefon[key]) {
+            telefonesIsFiltered = true
+            telefones = telefones.filter(p => {
+              if (!filterTelefon[key]) return true
+              if (!p[key]) return false
+              return p[key]
+                .toString()
+                .toLowerCase()
+                .includes(filterTelefon[key].toString().toLowerCase())
+            })
+          }
+        })
         let funktionen = self.funktionen.filter(p => {
           if (!self.showDeleted) return p.deleted === 0
           return true
@@ -206,6 +232,10 @@ export default (db: Object) =>
             return mobileAbos.filter(s => s.idPerson === p.id).length > 0
           })
           .filter(p => {
+            if (!telefonesIsFiltered) return true
+            return telefones.filter(s => s.idPerson === p.id).length > 0
+          })
+          .filter(p => {
             if (!funktionenIsFiltered) return true
             return funktionen.filter(s => s.idPerson === p.id).length > 0
           })
@@ -238,6 +268,15 @@ export default (db: Object) =>
                     .map(e => e[1]),
                 ),
             )
+            const telefonValues = flatten(
+              self.telefones
+                .filter(s => s.idPerson === p.id)
+                .map(s =>
+                  Object.entries(s)
+                    .filter(e => e[0] !== 'id')
+                    .map(e => e[1]),
+                ),
+            )
             const funktionValues = flatten(
               self.funktionen
                 .filter(s => s.idPerson === p.id)
@@ -261,6 +300,7 @@ export default (db: Object) =>
                 ...personValues,
                 schluesselValues,
                 mobileAboValues,
+                telefonValues,
                 funktionValues,
                 etikettValues,
               ].filter(v => {
@@ -410,6 +450,7 @@ export default (db: Object) =>
           self.filterSchluessel = {}
           self.filterKostenstelle = {}
           self.filterMobileAbo = {}
+          self.filterTelefon = {}
           self.filterFunktion = {}
         },
         setShowFilter(value) {
@@ -472,6 +513,11 @@ export default (db: Object) =>
         setMobileAbos(mobileAbos) {
           self.watchMutations = false
           self.mobileAbos = mobileAbos
+          self.watchMutations = true
+        },
+        setTelefones(telefones) {
+          self.watchMutations = false
+          self.telefones = telefones
           self.watchMutations = true
         },
         setFunktionen(funktionen) {
@@ -1069,6 +1115,30 @@ export default (db: Object) =>
           })
           self.updatePersonsMutation(idPerson)
         },
+        addTelefon() {
+          // grab idPerson from location
+          const { location } = self
+          const idPerson = ifIsNumericAsNumber(location[1])
+          // 1. create new link in db, returning id
+          let info
+          try {
+            info = db
+              .prepare(
+                'insert into telefones (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)',
+              )
+              .run(idPerson, self.username, Date.now())
+          } catch (error) {
+            return console.log(error)
+          }
+          // 2. add to store
+          self.telefones.push({
+            id: info.lastInsertRowid,
+            idPerson,
+            letzteMutationUser: self.username,
+            letzteMutationZeit: Date.now(),
+          })
+          self.updatePersonsMutation(idPerson)
+        },
         deleteMobileAbo(id) {
           // write to db
           try {
@@ -1081,6 +1151,20 @@ export default (db: Object) =>
             findIndex(self.mobileAbos, p => p.id === id),
             1,
           )
+          // set persons letzteMutation
+          const { location } = self
+          const idPerson = ifIsNumericAsNumber(location[1])
+          self.updatePersonsMutation(idPerson)
+        },
+        deleteTelefone(id) {
+          // write to db
+          try {
+            db.prepare('delete from telefones where id = ?').run(id)
+          } catch (error) {
+            return console.log(error)
+          }
+          // write to store
+          self.telefones.splice(findIndex(self.telefones, p => p.id === id), 1)
           // set persons letzteMutation
           const { location } = self
           const idPerson = ifIsNumericAsNumber(location[1])
@@ -1162,6 +1246,7 @@ export default (db: Object) =>
               'links',
               'schluessel',
               'mobileAbos',
+              'telefones',
               'funktionen',
               'etiketten',
             ].includes(parentModel)
