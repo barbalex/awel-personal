@@ -62,10 +62,38 @@ values
 
 -------------------------------------------
 
+drop table if exists aemter;
+create table aemter (
+  id integer primary key autoincrement,
+  deleted integer default 0,
+  name text,
+  kurzzeichen text,
+  telefonNr text,
+  email text check (email like '%_@__%.__%'),
+  standort text,
+  leiter integer REFERENCES personen(id) on update cascade on delete restrict,
+  kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iAmtDeleted;
+create index iAmtDeleted on aemter (deleted);
+drop index if exists iAmtName;
+create index iAmtName on aemter (name);
+
+insert into
+  aemter(name, id)
+values
+  ('AWEL', 1);
+
+-------------------------------------------
+
 drop table if exists abteilungen;
 create table abteilungen (
   id integer primary key autoincrement,
   deleted integer default 0,
+  amt integer REFERENCES aemter (id) on update cascade on delete restrict,
   name text,
   kurzzeichen text,
   telefonNr text,
@@ -84,15 +112,15 @@ drop index if exists iAbteilungName;
 create index iAbteilungName on abteilungen (name);
 
 insert into
-  abteilungen(id, name, kurzzeichen)
+  abteilungen(id, name, kurzzeichen, amt)
 values
-  (1, 'Abfallwirtschaft und Betriebe', 'aw'),
-  (2, 'Dienste', 'di'),
-  (3, 'Energie', 'en'),
-  (4, 'Gewässerschutz', 'gs'),
-  (5, 'Luft', 'lu'),
-  (6, 'Recht', 're'),
-  (7, 'Wasserbau', 'wb');
+  (1, 'Abfallwirtschaft und Betriebe', 'aw', 1),
+  (2, 'Dienste', 'di', 1),
+  (3, 'Energie', 'en', 1),
+  (4, 'Gewässerschutz', 'gs', 1),
+  (5, 'Luft', 'lu', 1),
+  (6, 'Recht', 're', 1),
+  (7, 'Wasserbau', 'wb', 1);
 
 -------------------------------------------
 
