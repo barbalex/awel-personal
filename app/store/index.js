@@ -26,6 +26,7 @@ import SchluesselTypWert from './SchluesselTypWert'
 import SchluesselAnlageWert from './SchluesselAnlageWert'
 import EtikettWert from './EtikettWert'
 import LandWert from './LandWert'
+import BereichWert from './BereichWert'
 import Person from './Person'
 import Mutation from './Mutation'
 import StatusWert from './StatusWert'
@@ -53,6 +54,7 @@ export default (db: Object) =>
       schluesselAnlageWerte: types.array(SchluesselAnlageWert),
       etikettWerte: types.array(EtikettWert),
       landWerte: types.array(LandWert),
+      bereichWerte: types.array(BereichWert),
       personen: types.array(Person),
       abteilungen: types.array(Abteilung),
       settings: types.optional(Settings, { id: 1, schluesselFormPath: null }),

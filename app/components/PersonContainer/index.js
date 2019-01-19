@@ -59,6 +59,7 @@ const PersonContainer = () => {
     fetchEtiketten({ db, store })
     fetchWerte({ db, store, table: 'etikettWerte' })
     fetchWerte({ db, store, table: 'landWerte' })
+    fetchWerte({ db, store, table: 'bereichWerte' })
     fetchLinks({ db, store })
     fetchSchluessel({ db, store })
     fetchMobileAbos({ db, store })

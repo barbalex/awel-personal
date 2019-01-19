@@ -39,6 +39,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
     etikettWerte,
     funktionWerte,
     landWerte,
+    bereichWerte,
     showFilter,
     filterPerson,
     filterEtikett,
@@ -267,6 +268,14 @@ const Person = ({ activeId }: { activeId: ?number }) => {
         value: w.value,
       })),
   )
+  const bereichOptions = useMemo(() =>
+    sortBy(bereichWerte, ['sort', 'value'])
+      .filter(p => p.deleted === 0)
+      .map(w => ({
+        label: w.value,
+        value: w.value,
+      })),
+  )
   const myEtiketten = useMemo(() =>
     sortBy(etiketten.filter(e => e.idPerson === activeId), 'etikett')
       .filter(w => !!w.etikett)
@@ -394,6 +403,14 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           field="sektion"
           label="Sektion"
           options={sektionOptions}
+          saveToDb={saveToDb}
+        />
+        <Select
+          key={`${personId}${existsFilter ? 1 : 0}bereich`}
+          value={person.bereich}
+          field="bereich"
+          label="Bereich"
+          options={bereichOptions}
           saveToDb={saveToDb}
         />
         <Select

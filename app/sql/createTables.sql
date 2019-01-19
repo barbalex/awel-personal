@@ -28,6 +28,7 @@ create table personen (
   bueroNr text,
   abteilung integer references abteilungen(id) on update cascade on delete restrict,
   sektion integer references sektionen(id) on update cascade on delete restrict,
+  bereich text references bereichWerte(value) on update cascade on delete no action,
   vorgesetztId integer references personen(id) on update cascade on delete restrict,
   eintrittDatum text,
   austrittDatum text,
@@ -604,6 +605,43 @@ values
   ('Italien'),
   ('Frankreich'),
   ('Österreich');
+
+
+-------------------------------------------
+
+drop table if exists bereichWerte;
+create table bereichWerte (
+  id integer primary key autoincrement,
+  value text unique,
+  deleted integer default 0,
+  historic integer default 0,
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iBereichWerteBereich;
+create index iBereichWerteBereich on bereichWerte (value);
+drop index if exists iBereichWerteHistorisch;
+create index iBereichWerteHistorisch on bereichWerte (historic);
+drop index if exists iBereichWerteSort;
+create index iBereichWerteSort on bereichWerte (sort);
+
+insert into
+  bereichWerte(value)
+values
+  ('Kernenergietechnik/Radioaktive Abfälle'),
+  ('Tiefenlager'),
+  ('Bearbeitung von Rechtsfragen'),
+  ('Rekurse und Beschwerden'),
+  ('Juristische Beratung'),
+  ('Rechtliche Vertretung des Amtes nach Aussen'),
+  ('Finanz und Rechnungswesen'),
+  ('Controllerdienst'),
+  ('Qualitäts- und Umweltmanagement'),
+  ('Informatik'),
+  ('Internet'),
+  ('Kanzlei AWEL');
 
 -------------------------------------------
 
