@@ -57,7 +57,7 @@ const Telefon = ({ id }: { id: number | string }) => {
   const {
     showFilter,
     telefones,
-    telefoneTypWerte,
+    telefonTypWerte,
     filterTelefon,
     updateField,
     setFilter,
@@ -72,7 +72,7 @@ const Telefon = ({ id }: { id: number | string }) => {
   const location = store.location.toJSON()
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
-  const telefoneTypOptions = sortBy(telefoneTypWerte, ['sort', 'value'])
+  const telefoneTypOptions = sortBy(telefonTypWerte, ['sort', 'value'])
     .filter(w => !!w.value)
     .map(w => ({
       label: w.value,

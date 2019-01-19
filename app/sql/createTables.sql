@@ -23,8 +23,6 @@ create table personen (
   -- land aus Liste auswählen?
   land text  references landWerte(value) on update cascade on delete no action,
   bildUrl text,
-  telefonNr text,
-  telefonNrMobile text,
   email text check (email like '%_@__%.__%'),
   geburtDatum text,
   bueroNr text,

@@ -1156,7 +1156,7 @@ export default (db: Object) =>
           const idPerson = ifIsNumericAsNumber(location[1])
           self.updatePersonsMutation(idPerson)
         },
-        deleteTelefone(id) {
+        deleteTelefon(id) {
           // write to db
           try {
             db.prepare('delete from telefones where id = ?').run(id)

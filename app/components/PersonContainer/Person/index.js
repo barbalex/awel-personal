@@ -360,20 +360,6 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           saveToDb={saveToDb}
         />
         <Input
-          key={`${personId}telefonNr`}
-          value={person.telefonNr}
-          field="telefonNr"
-          label="Telefon"
-          saveToDb={saveToDb}
-        />
-        <Input
-          key={`${personId}telefonNrMobile`}
-          value={person.telefonNrMobile}
-          field="telefonNrMobile"
-          label="Telefon mobile"
-          saveToDb={saveToDb}
-        />
-        <Input
           key={`${personId}email`}
           value={person.email}
           field="email"

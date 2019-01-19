@@ -14,10 +14,6 @@ export default types.model('Person', {
   ort: types.maybe(types.union(types.string, types.integer, types.null)),
   land: types.maybe(types.union(types.string, types.integer, types.null)),
   bildUrl: types.maybe(types.union(types.string, types.integer, types.null)),
-  telefonNr: types.maybe(types.union(types.string, types.integer, types.null)),
-  telefonNrMobile: types.maybe(
-    types.union(types.string, types.integer, types.null),
-  ),
   email: types.maybe(types.union(types.string, types.integer, types.null)),
   geburtDatum: types.maybe(
     types.union(types.string, types.integer, types.null),
