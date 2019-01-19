@@ -1,7 +1,7 @@
 # AWEL Personal
 
 <br/>
-Mit dieser Anwendung plant das [AWEL des Kantons Zuerich](https://awel.zh.ch) ihre Personal-Daten zu verwalten.
+Mit dieser Anwendung möchte das [AWEL des Kantons Zürich](https://awel.zh.ch) Personal-Daten verwalten.
 
 Die Anwendung ist noch in Entwicklung.
 
