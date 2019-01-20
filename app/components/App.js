@@ -14,6 +14,7 @@ import StammdatenContainer from './StammdatenContainer'
 import DeletionModal from './DeletionModal'
 import Mutations from './Mutations'
 import storeContext from '../storeContext'
+import Errors from './Errors'
 
 registerLocale('de', de)
 setDefaultLocale('de')
@@ -36,6 +37,7 @@ const App = () => {
       {activeLocation === 'Abteilungen' && <AbteilungContainer />}
       {activeLocation.includes('Werte') && <StammdatenContainer />}
       {activeLocation === 'mutations' && <Mutations />}
+      <Errors />
       <DeletionModal />
     </Container>
   )

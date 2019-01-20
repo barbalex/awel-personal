@@ -4,6 +4,7 @@ import { UndoManager } from 'mst-middlewares'
 import findIndex from 'lodash/findIndex'
 import flatten from 'lodash/flatten'
 import findLast from 'lodash/findLast'
+import uniqBy from 'lodash/uniqBy'
 import keys from 'lodash/keys'
 import lValues from 'lodash/values'
 
@@ -476,6 +477,7 @@ export default (db: Object) =>
     // so need to define this as volatile
     .volatile(() => ({
       deletionCallback: null,
+      errors: [],
     }))
     .actions(self => {
       setUndoManager(self)
@@ -632,6 +634,7 @@ export default (db: Object) =>
               try {
                 db.prepare(`delete from ${tableName} where id = ${rowId}`).run()
               } catch (error) {
+                self.addError(error)
                 return console.log(error)
               }
               // write to store
@@ -670,6 +673,7 @@ export default (db: Object) =>
               try {
                 db.prepare(sql).run(...objectValues)
               } catch (error) {
+                self.addError(error)
                 return console.log(error)
               }
               // write to store
@@ -690,6 +694,7 @@ export default (db: Object) =>
               )
               .run({ user: self.username, zeit: Date.now(), land: 'Schweiz' })
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // 2. add to store
@@ -711,6 +716,7 @@ export default (db: Object) =>
               )
               .run({ user: self.username, zeit: Date.now() })
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // 2. add to store
@@ -731,6 +737,7 @@ export default (db: Object) =>
               )
               .run({ user: self.username, zeit: Date.now(), amt: 1 })
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // 2. add to store
@@ -751,6 +758,7 @@ export default (db: Object) =>
               )
               .run({ user: self.username, zeit: Date.now() })
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // 2. add to store
@@ -832,6 +840,7 @@ export default (db: Object) =>
                   previousValue,
                 })
             } catch (error) {
+              self.addError(error)
               return console.log(error)
             }
             // 2. add to store
@@ -865,6 +874,7 @@ export default (db: Object) =>
                 letzteMutationZeit: Date.now(),
               })
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // 2. add to store
@@ -880,6 +890,7 @@ export default (db: Object) =>
           try {
             db.prepare(`update ${table} set deleted = 1 where id = ?;`).run(id)
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -892,6 +903,7 @@ export default (db: Object) =>
           try {
             db.prepare(`delete from ${table} where id = ${id}`).run()
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -905,6 +917,7 @@ export default (db: Object) =>
               `update personen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
             ).run({ id, user: self.username, time: Date.now() })
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -919,6 +932,7 @@ export default (db: Object) =>
           try {
             db.prepare('delete from personen where id = ?').run(id)
           } catch (error) {
+            self.addError(error)
             // roll back update
             return console.log(error)
           }
@@ -938,6 +952,7 @@ export default (db: Object) =>
               `update aemter set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
             ).run({ id, user: self.username, time: Date.now() })
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -954,6 +969,7 @@ export default (db: Object) =>
               `update abteilungen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
             ).run({ id, user: self.username, time: Date.now() })
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -968,7 +984,7 @@ export default (db: Object) =>
           try {
             db.prepare('delete from aemter where id = ?').run(id)
           } catch (error) {
-            // roll back update
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -985,7 +1001,7 @@ export default (db: Object) =>
           try {
             db.prepare('delete from abteilungen where id = ?').run(id)
           } catch (error) {
-            // roll back update
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -1007,6 +1023,7 @@ export default (db: Object) =>
               `update sektionen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
             ).run({ id, user: self.username, time: Date.now() })
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -1021,7 +1038,7 @@ export default (db: Object) =>
           try {
             db.prepare('delete from sektionen where id = ?').run(id)
           } catch (error) {
-            // roll back update
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -1046,6 +1063,7 @@ export default (db: Object) =>
               )
               .run(idPerson, etikett, self.username, Date.now())
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // 2. add to store
@@ -1068,6 +1086,7 @@ export default (db: Object) =>
               'delete from etiketten where idPerson = ? and etikett = ?',
             ).run(idPerson, etikett)
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -1093,6 +1112,7 @@ export default (db: Object) =>
               )
               .run(idPerson, url, self.username, Date.now())
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // 2. add to store
@@ -1110,6 +1130,7 @@ export default (db: Object) =>
           try {
             db.prepare('delete from links where id = ?').run(id)
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -1132,6 +1153,7 @@ export default (db: Object) =>
               )
               .run(idPerson, self.username, Date.now())
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // 2. add to store
@@ -1148,6 +1170,7 @@ export default (db: Object) =>
           try {
             db.prepare('delete from schluessel where id = ?').run(id)
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -1173,6 +1196,7 @@ export default (db: Object) =>
               )
               .run(idSektion, self.username, Date.now())
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // 2. add to store
@@ -1189,6 +1213,7 @@ export default (db: Object) =>
           try {
             db.prepare('delete from kostenstelle where id = ?').run(id)
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -1214,6 +1239,7 @@ export default (db: Object) =>
               )
               .run(idPerson, self.username, Date.now())
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // 2. add to store
@@ -1238,6 +1264,7 @@ export default (db: Object) =>
               )
               .run(idPerson, self.username, Date.now())
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // 2. add to store
@@ -1254,6 +1281,7 @@ export default (db: Object) =>
           try {
             db.prepare('delete from mobileAbos where id = ?').run(id)
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -1271,6 +1299,7 @@ export default (db: Object) =>
           try {
             db.prepare('delete from telefones where id = ?').run(id)
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -1293,6 +1322,7 @@ export default (db: Object) =>
               )
               .run(idPerson, funktion, self.username, Date.now())
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // 2. add to store
@@ -1315,6 +1345,7 @@ export default (db: Object) =>
               'delete from funktionen where idPerson = ? and funktion = ?',
             ).run(idPerson, funktion)
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // write to store
@@ -1329,6 +1360,7 @@ export default (db: Object) =>
         },
         updateField({ table, parentModel, field, value, id, setErrors }) {
           // 1. update in db
+          self.addError(new Error(`test error ${field}`))
           try {
             db.prepare(
               `update ${table} set ${field} = @value, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
@@ -1339,6 +1371,7 @@ export default (db: Object) =>
               time: Date.now(),
             })
           } catch (error) {
+            self.addError(error)
             return setErrors({
               [field]: error.message,
             })
@@ -1387,6 +1420,7 @@ export default (db: Object) =>
               id: idPerson,
             })
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // in store
@@ -1405,6 +1439,7 @@ export default (db: Object) =>
               id: idAmt,
             })
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // in store
@@ -1423,6 +1458,7 @@ export default (db: Object) =>
               id: idAbteilung,
             })
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // in store
@@ -1441,6 +1477,7 @@ export default (db: Object) =>
               id: idSektion,
             })
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           // in store
@@ -1455,12 +1492,28 @@ export default (db: Object) =>
           try {
             db.prepare(`update settings set ${key} = ? where id = 1`).run(value)
           } catch (error) {
+            self.addError(error)
             return console.log(error)
           }
           self.settings = {
             ...self.settings,
             [key]: value,
           }
+        },
+        addError(error) {
+          // cannnot pop, need to set new value
+          // or the change will not be observed
+          // use uniq in case multiple same messages arrive
+          self.errors = uniqBy([...self.errors, error], 'message')
+          setTimeout(() => {
+            // need to use an action inside timeout
+            self.popError()
+          }, 1000 * 10)
+        },
+        popError() {
+          // eslint-disable-next-line no-unused-vars
+          const [first, ...last] = self.errors
+          self.errors = [...last]
         },
       }
     })
