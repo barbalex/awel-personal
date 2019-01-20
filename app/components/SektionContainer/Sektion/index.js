@@ -1,5 +1,11 @@
 // @flow
-import React, { useContext, useCallback, useMemo } from 'react'
+import React, {
+  useContext,
+  useCallback,
+  useMemo,
+  useState,
+  useEffect,
+} from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
@@ -31,6 +37,7 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
     filterSektion,
     existsFilter,
     setFilter,
+    updateField,
   } = store
 
   let sektion
@@ -42,37 +49,38 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
   }
   const sektionId = showFilter ? '' : sektion.id
 
-  const saveToDb = useCallback(
-    ({ field, value }) => {
-      if (!sektion && !showFilter)
-        throw new Error(`Sektion with id ${activeId} not found`)
-      let newValue
-      if (isDateField(field)) {
-        if (value) newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
-        if (newValue && newValue.includes('Invalid date')) {
-          newValue = newValue.replace('Invalid date', 'Format: DD.MM.YYYY')
-        }
-      } else {
-        newValue = ifIsNumericAsNumber(value)
-      }
+  const [errors, setErrors] = useState({})
+  useEffect(() => setErrors({}), [sektion])
 
-      if (showFilter) {
-        setFilter({
-          model: 'filterSektion',
-          value: { ...filterSektion, ...{ [field]: newValue } },
-        })
-      } else {
-        store.updateField({
-          table: 'sektionen',
-          parentModel: 'sektionen',
-          field,
-          value: newValue,
-          id: sektion.id,
-        })
+  const saveToDb = useCallback(({ field, value }) => {
+    if (!sektion && !showFilter)
+      throw new Error(`Sektion with id ${activeId} not found`)
+    let newValue
+    if (isDateField(field)) {
+      if (value) newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
+      if (newValue && newValue.includes('Invalid date')) {
+        newValue = newValue.replace('Invalid date', 'Format: DD.MM.YYYY')
       }
-    },
-    [activeId, sektionen.length, filterSektion, showFilter],
-  )
+    } else {
+      newValue = ifIsNumericAsNumber(value)
+    }
+
+    if (showFilter) {
+      setFilter({
+        model: 'filterSektion',
+        value: { ...filterSektion, ...{ [field]: newValue } },
+      })
+    } else {
+      updateField({
+        table: 'sektionen',
+        parentModel: 'sektionen',
+        field,
+        value: newValue,
+        id: sektion.id,
+        setErrors,
+      })
+    }
+  }, [activeId, sektionen.length, filterSektion, showFilter])
 
   // filter out options with empty values - makes no sense and errors
   const personOptions = useMemo(
@@ -117,6 +125,7 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
             field="deleted"
             label="gelöscht"
             saveToDb={saveToDb}
+            error={errors.deleted}
           />
         )}
         <Input
@@ -125,6 +134,7 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
           field="name"
           label="Name"
           saveToDb={saveToDb}
+          error={errors.name}
         />
         <Select
           key={`${sektionId}${existsFilter ? 1 : 0}abteilung`}
@@ -133,6 +143,7 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
           label="Abteilung"
           options={abteilungOptions}
           saveToDb={saveToDb}
+          error={errors.abteilung}
         />
         <Input
           key={`${sektionId}kurzzeichen`}
@@ -140,6 +151,7 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
           field="kurzzeichen"
           label="Kurzzeichen"
           saveToDb={saveToDb}
+          error={errors.kurzzeichen}
         />
         <Input
           key={`${sektionId}telefonNr`}
@@ -147,6 +159,7 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
           field="telefonNr"
           label="Telefon"
           saveToDb={saveToDb}
+          error={errors.telefonNr}
         />
         <Input
           key={`${sektionId}email`}
@@ -154,6 +167,7 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
           field="email"
           label="Email"
           saveToDb={saveToDb}
+          error={errors.email}
         />
         <Input
           key={`${sektionId}standort`}
@@ -161,6 +175,7 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
           field="standort"
           label="Standort"
           saveToDb={saveToDb}
+          error={errors.standort}
         />
         <Select
           key={`${sektionId}${existsFilter ? 1 : 0}leiter`}
@@ -169,6 +184,7 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
           label="Leiter"
           options={personOptions}
           saveToDb={saveToDb}
+          error={errors.leiter}
         />
         <Select
           key={`${sektionId}${existsFilter ? 1 : 0}kostenstelle`}
@@ -177,6 +193,7 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
           label="Kostenstelle"
           options={kostenstelleOptions}
           saveToDb={saveToDb}
+          error={errors.kostenstelle}
         />
         {!showFilter && <Zuletzt />}
       </StyledForm>

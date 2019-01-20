@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext, useCallback } from 'react'
+import React, { useContext, useCallback, useState, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { UncontrolledTooltip } from 'reactstrap'
@@ -70,6 +70,10 @@ const SchluesselComponent = ({ id }: { id: number | string }) => {
   } else {
     schluessel = store.schluessel.find(s => s.id === id)
   }
+
+  const [errors, setErrors] = useState({})
+  useEffect(() => setErrors({}), [schluessel])
+
   const location = store.location.toJSON()
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
@@ -89,26 +93,24 @@ const SchluesselComponent = ({ id }: { id: number | string }) => {
       value: w.value,
     }))
 
-  const onBlur = useCallback(
-    ({ field, value }) => {
-      const newValue = ifIsNumericAsNumber(value)
-      if (showFilter) {
-        setFilter({
-          model: 'filterSchluessel',
-          value: { ...filterSchluessel, ...{ [field]: newValue } },
-        })
-      } else {
-        updateField({
-          table: 'schluessel',
-          parentModel: 'schluessel',
-          field,
-          value: newValue,
-          id: schluessel.id,
-        })
-      }
-    },
-    [showFilter, filterSchluessel, id],
-  )
+  const onBlur = useCallback(({ field, value }) => {
+    const newValue = ifIsNumericAsNumber(value)
+    if (showFilter) {
+      setFilter({
+        model: 'filterSchluessel',
+        value: { ...filterSchluessel, ...{ [field]: newValue } },
+      })
+    } else {
+      updateField({
+        table: 'schluessel',
+        parentModel: 'schluessel',
+        field,
+        value: newValue,
+        id: schluessel.id,
+        setErrors,
+      })
+    }
+  }, [showFilter, filterSchluessel, id])
   const onChangeSelectSchluesselTyp = useCallback(({ field, value }) => {
     const newValue = ifIsNumericAsNumber(value)
     if (showFilter) {
@@ -123,6 +125,7 @@ const SchluesselComponent = ({ id }: { id: number | string }) => {
         field,
         value: newValue,
         id,
+        setErrors,
       })
     }
   }, (showFilter, filterSchluesselTyp, id))
@@ -140,6 +143,7 @@ const SchluesselComponent = ({ id }: { id: number | string }) => {
         field,
         value: newValue,
         id,
+        setErrors,
       })
     }
   }, (showFilter, filterSchluesselAnlage, id))
@@ -155,6 +159,7 @@ const SchluesselComponent = ({ id }: { id: number | string }) => {
           label="Typ"
           options={schluesselTypOptions}
           saveToDb={onChangeSelectSchluesselTyp}
+          error={errors.typ}
         />
       </Typ>
       <Anlage>
@@ -165,6 +170,7 @@ const SchluesselComponent = ({ id }: { id: number | string }) => {
           label="Anlage"
           options={schluesselAnlageOptions}
           saveToDb={onChangeSelectSchluesselAnlage}
+          error={errors.anlage}
         />
       </Anlage>
       <Bezeichnung>
@@ -175,6 +181,7 @@ const SchluesselComponent = ({ id }: { id: number | string }) => {
           saveToDb={onBlur}
           type="textarea"
           rows={1}
+          error={errors.bezeichnung}
         />
       </Bezeichnung>
       <Nr>
@@ -184,6 +191,7 @@ const SchluesselComponent = ({ id }: { id: number | string }) => {
           field="nr"
           saveToDb={onBlur}
           type="text"
+          error={errors.nr}
         />
       </Nr>
       {!(isPdf || showFilter) && (

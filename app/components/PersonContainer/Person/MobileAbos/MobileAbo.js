@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext, useCallback } from 'react'
+import React, { useContext, useCallback, useState, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { UncontrolledTooltip } from 'reactstrap'
@@ -70,6 +70,10 @@ const MobileAbo = ({ id }: { id: number | string }) => {
   } else {
     mobileAbo = mobileAbos.find(s => s.id === id)
   }
+
+  const [errors, setErrors] = useState({})
+  useEffect(() => setErrors({}), [mobileAbo])
+
   const location = store.location.toJSON()
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
@@ -103,6 +107,7 @@ const MobileAbo = ({ id }: { id: number | string }) => {
         field,
         value: newValue,
         id,
+        setErrors,
       })
     }
   }, (showFilter, filterMobileAbo, id))
@@ -120,6 +125,7 @@ const MobileAbo = ({ id }: { id: number | string }) => {
         field,
         value: newValue,
         id,
+        setErrors,
       })
     }
   }, (showFilter, filterMobileAbo, id))
@@ -135,6 +141,7 @@ const MobileAbo = ({ id }: { id: number | string }) => {
           label="Typ"
           options={mobileAboTypOptions}
           saveToDb={onChangeSelect}
+          error={errors.typ}
         />
       </Typ>
       <Kostenstelle>
@@ -145,6 +152,7 @@ const MobileAbo = ({ id }: { id: number | string }) => {
           label="Kostenstelle"
           options={mobileAboKostenstelleOptions}
           saveToDb={onChangeSelect}
+          error={errors.kostenstelle}
         />
       </Kostenstelle>
       <Bemerkungen>
@@ -155,6 +163,7 @@ const MobileAbo = ({ id }: { id: number | string }) => {
           saveToDb={onBlur}
           type="textarea"
           rows={1}
+          error={errors.bemerkungen}
         />
       </Bemerkungen>
       {!(isPdf || showFilter) && (
