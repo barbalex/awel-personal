@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext, useCallback } from 'react'
+import React, { useContext, useCallback, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
@@ -17,30 +17,31 @@ const StyledForm = styled(Form)`
 
 const Data = ({
   activeId,
-  activeTable
+  activeTable,
 }: {
   activeId: ?number,
-  activeTable: ?string
+  activeTable: ?string,
 }) => {
   const store = useContext(storeContext)
   const { showDeleted, updateField } = store
   const dat = store[activeTable].find(p => p.id === activeId)
 
-  const saveToDb = useCallback(
-    ({ field, value }) => {
-      const newValue = ifIsNumericAsNumber(value)
-      const { parentModel } = tables.find(t => t.table === activeTable)
+  const [errors, setErrors] = useState({})
+  useEffect(() => setErrors({}), [dat])
 
-      updateField({
-        table: activeTable,
-        parentModel,
-        field,
-        value: newValue,
-        id: dat.id
-      })
-    },
-    [activeTable, activeId]
-  )
+  const saveToDb = useCallback(({ field, value }) => {
+    const newValue = ifIsNumericAsNumber(value)
+    const { parentModel } = tables.find(t => t.table === activeTable)
+
+    updateField({
+      table: activeTable,
+      parentModel,
+      field,
+      value: newValue,
+      id: dat.id,
+      setErrors,
+    })
+  }, [activeTable, activeId])
 
   if (!activeId) return null
   if (!dat) {
@@ -60,6 +61,7 @@ const Data = ({
           label="id"
           saveToDb={saveToDb}
           disabled
+          error={errors.id}
         />
         <Input
           key={`${dat.id}value`}
@@ -67,6 +69,7 @@ const Data = ({
           field="value"
           label="Wert"
           saveToDb={saveToDb}
+          error={errors.value}
         />
         {showDeleted && (
           <SharedCheckbox
@@ -75,6 +78,7 @@ const Data = ({
             field="deleted"
             label="gelöscht"
             saveToDb={saveToDb}
+            error={errors.deleted}
           />
         )}
         <SharedCheckbox
@@ -83,6 +87,7 @@ const Data = ({
           field="historic"
           label="historisch"
           saveToDb={saveToDb}
+          error={errors.historic}
         />
         <Input
           key={`${dat.id}sort`}
@@ -91,6 +96,7 @@ const Data = ({
           label="Sortierung"
           type="number"
           saveToDb={saveToDb}
+          error={errors.sort}
         />
       </StyledForm>
     </Container>

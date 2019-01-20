@@ -6,7 +6,8 @@ import {
   Label,
   Input,
   InputGroup,
-  InputGroupAddon
+  InputGroupAddon,
+  FormFeedback,
 } from 'reactstrap'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
@@ -61,41 +62,40 @@ const DateField = ({
   value,
   field,
   label,
-  saveToDb
+  saveToDb,
+  error,
 }: {
   value: number | string,
   field: string,
   label: string,
-  saveToDb: () => void
+  saveToDb: () => void,
+  error: string,
 }) => {
   const [open, setOpen] = useState(false)
   const [stateValue, setStateValue] = useState(
-    value || value === 0 ? value : ''
+    value || value === 0 ? value : '',
   )
 
   const onChange = useCallback(async event => {
     setStateValue(event.target.value)
     return null
   })
-  const onBlur = useCallback(
-    event => {
-      let newValue = event.target.value
-      // save nulls if empty
-      if (newValue === '') newValue = null
-      // only save if value has changed
-      if (!newValue && !value && value !== 0 && newValue !== 0) return
-      if (newValue === value) return
-      saveToDb({ value: newValue, field })
-    },
-    [value, field]
-  )
+  const onBlur = useCallback(event => {
+    let newValue = event.target.value
+    // save nulls if empty
+    if (newValue === '') newValue = null
+    // only save if value has changed
+    if (!newValue && !value && value !== 0 && newValue !== 0) return
+    if (newValue === value) return
+    saveToDb({ value: newValue, field })
+  }, [value, field])
   const openPicker = useCallback(() => setOpen(true))
   const closePicker = useCallback(() => setOpen(false))
   const onChangeDatePicker = useCallback(async date => {
     const myEvent = {
       target: {
-        value: moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')
-      }
+        value: moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY'),
+      },
     }
     await onChange(myEvent)
     onBlur(myEvent)
@@ -120,6 +120,7 @@ const DateField = ({
             value={stateValue}
             onChange={onChange}
             onBlur={onBlur}
+            invalid={!!error}
           />
           <StyledInputGroupAddon
             addonType="append"
@@ -144,6 +145,7 @@ const DateField = ({
               />
             )}
           </StyledInputGroupAddon>
+          <FormFeedback>{error}</FormFeedback>
         </InputGroup>
       </Col>
     </StyledFormGroup>

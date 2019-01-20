@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext, useCallback } from 'react'
+import React, { useContext, useCallback, useState, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { UncontrolledTooltip } from 'reactstrap'
@@ -63,12 +63,16 @@ const Telefon = ({ id }: { id: number | string }) => {
     setFilter,
     deleteTelefon,
   } = store
-  let telefone
+  let telefon
   if (showFilter) {
-    telefone = filterTelefon
+    telefon = filterTelefon
   } else {
-    telefone = telefones.find(s => s.id === id)
+    telefon = telefones.find(s => s.id === id)
   }
+
+  const [errors, setErrors] = useState({})
+  useEffect(() => setErrors({}), [telefon])
+
   const location = store.location.toJSON()
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
@@ -93,6 +97,7 @@ const Telefon = ({ id }: { id: number | string }) => {
         field,
         value: newValue,
         id,
+        setErrors,
       })
     }
   }, (showFilter, filterTelefon, id))
@@ -110,6 +115,7 @@ const Telefon = ({ id }: { id: number | string }) => {
         field,
         value: newValue,
         id,
+        setErrors,
       })
     }
   }, (showFilter, filterTelefon, id))
@@ -120,30 +126,33 @@ const Telefon = ({ id }: { id: number | string }) => {
       <Nr>
         <InputWithoutLabel
           key={`${id}nr`}
-          value={telefone.nr}
+          value={telefon.nr}
           field="nr"
           saveToDb={onBlur}
           type="text"
+          error={errors.nr}
         />
       </Nr>
       <Typ>
         <Select
           key={`${id}typ`}
-          value={telefone.typ}
+          value={telefon.typ}
           field="typ"
           label="Typ"
           options={telefoneTypOptions}
           saveToDb={onChangeSelect}
+          error={errors.typ}
         />
       </Typ>
       <Bemerkungen>
         <InputWithoutLabel
           key={`${id}bemerkungen`}
-          value={telefone.bemerkungen}
+          value={telefon.bemerkungen}
           field="bemerkungen"
           saveToDb={onBlur}
           type="textarea"
           rows={1}
+          error={errors.bemerkungen}
         />
       </Bemerkungen>
       {!(isPdf || showFilter) && (
