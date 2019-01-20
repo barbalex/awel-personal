@@ -1,7 +1,7 @@
 // @flow
 import React, { useCallback, useMemo } from 'react'
 import { observer } from 'mobx-react-lite'
-import { Col, FormGroup, Label } from 'reactstrap'
+import { Col, FormGroup, Label, FormFeedback } from 'reactstrap'
 import Select from 'react-select'
 import styled from 'styled-components'
 
@@ -30,12 +30,14 @@ const SharedSelect = ({
   label,
   options,
   saveToDb,
+  error,
 }: {
   value?: ?number | ?string,
   field: string,
   label: string,
   options: Array<Object>,
   saveToDb: () => void,
+  error: string,
 }) => {
   const onChange = useCallback(
     option => saveToDb({ value: option ? option.value : null, field }),
@@ -64,7 +66,9 @@ const SharedSelect = ({
           isClearable
           isSearchable
           noOptionsMessage={noOptionsMessage}
+          invalid={!!error}
         />
+        <FormFeedback>{error}</FormFeedback>
       </Col>
     </FormGroup>
   )

@@ -1,5 +1,11 @@
 // @flow
-import React, { useContext, useCallback, useMemo } from 'react'
+import React, {
+  useContext,
+  useCallback,
+  useMemo,
+  useState,
+  useEffect,
+} from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
@@ -29,6 +35,7 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
     filterAbteilung,
     existsFilter,
     setFilter,
+    updateField,
   } = store
 
   let abteilung
@@ -40,29 +47,30 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
   }
   const abteilungId = showFilter ? '' : abteilung.id
 
-  const saveToDb = useCallback(
-    ({ field, value }) => {
-      if (!abteilung && !showFilter)
-        throw new Error(`Abteilung with id ${activeId} not found`)
-      const newValue = ifIsNumericAsNumber(value)
+  const [errors, setErrors] = useState({})
+  useEffect(() => setErrors({}), [abteilung])
 
-      if (showFilter) {
-        setFilter({
-          model: 'filterAbteilung',
-          value: { ...filterAbteilung, ...{ [field]: newValue } },
-        })
-      } else {
-        store.updateField({
-          table: 'abteilungen',
-          parentModel: 'abteilungen',
-          field,
-          value: newValue,
-          id: abteilung.id,
-        })
-      }
-    },
-    [activeId, abteilungen.length, filterAbteilung, showFilter],
-  )
+  const saveToDb = useCallback(({ field, value }) => {
+    if (!abteilung && !showFilter)
+      throw new Error(`Abteilung with id ${activeId} not found`)
+    const newValue = ifIsNumericAsNumber(value)
+
+    if (showFilter) {
+      setFilter({
+        model: 'filterAbteilung',
+        value: { ...filterAbteilung, ...{ [field]: newValue } },
+      })
+    } else {
+      updateField({
+        table: 'abteilungen',
+        parentModel: 'abteilungen',
+        field,
+        value: newValue,
+        id: abteilung.id,
+        setErrors,
+      })
+    }
+  }, [activeId, abteilungen.length, filterAbteilung, showFilter])
 
   // filter out options with empty values - makes no sense and errors
   const personOptions = useMemo(
@@ -107,6 +115,7 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
             field="deleted"
             label="gelöscht"
             saveToDb={saveToDb}
+            error={errors.deleted}
           />
         )}
         <Input
@@ -115,6 +124,7 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
           field="name"
           label="Name"
           saveToDb={saveToDb}
+          error={errors.name}
         />
         <Select
           key={`${abteilungId}${existsFilter ? 1 : 0}amt`}
@@ -123,6 +133,7 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
           label="Amt"
           options={amtOptions}
           saveToDb={saveToDb}
+          error={errors.amt}
         />
         <Input
           key={`${abteilungId}kurzzeichen`}
@@ -130,6 +141,7 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
           field="kurzzeichen"
           label="Kurzzeichen"
           saveToDb={saveToDb}
+          error={errors.kurzzeichen}
         />
         <Input
           key={`${abteilungId}telefonNr`}
@@ -137,6 +149,7 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
           field="telefonNr"
           label="Telefon"
           saveToDb={saveToDb}
+          error={errors.telefonNr}
         />
         <Input
           key={`${abteilungId}email`}
@@ -144,6 +157,7 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
           field="email"
           label="Email"
           saveToDb={saveToDb}
+          error={errors.email}
         />
         <Input
           key={`${abteilungId}standort`}
@@ -151,6 +165,7 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
           field="standort"
           label="Standort"
           saveToDb={saveToDb}
+          error={errors.standort}
         />
         <Select
           key={`${abteilungId}${existsFilter ? 1 : 0}leiter`}
@@ -159,6 +174,7 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
           label="Leiter"
           options={personOptions}
           saveToDb={saveToDb}
+          error={errors.leiter}
         />
         <Select
           key={`${abteilungId}${existsFilter ? 1 : 0}kostenstelle`}
@@ -167,6 +183,7 @@ const Abteilung = ({ activeId }: { activeId: ?number }) => {
           label="Kostenstelle"
           options={kostenstelleOptions}
           saveToDb={saveToDb}
+          error={errors.kostenstelle}
         />
         {!showFilter && <Zuletzt />}
       </StyledForm>
