@@ -53,8 +53,6 @@ const SharedInput = ({
   // when filter is emptied, value needs to reset
   useEffect(() => setStateValue(value || value === 0 ? value : ''), [value])
 
-  !!error && console.log({ error })
-
   return (
     <FormGroup row>
       <Label for={field} sm={2}>
