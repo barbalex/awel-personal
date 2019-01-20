@@ -1,5 +1,11 @@
 // @flow
-import React, { useContext, useCallback, useMemo } from 'react'
+import React, {
+  useContext,
+  useCallback,
+  useMemo,
+  useState,
+  useEffect,
+} from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
@@ -48,7 +54,10 @@ const Person = ({ activeId }: { activeId: ?number }) => {
     filterFunktion,
     existsFilter,
     setFilter,
+    updateField,
   } = store
+
+  const [errors, setErrors] = useState({})
 
   let person
   if (showFilter) {
@@ -58,6 +67,8 @@ const Person = ({ activeId }: { activeId: ?number }) => {
     if (!person) person = {}
   }
   const personId = showFilter ? '' : person.id
+
+  useEffect(() => setErrors({}), [person])
 
   const saveToDb = useCallback(({ field, value }) => {
     // const person = personen.find(p => p.id === activeId)
@@ -102,43 +113,47 @@ const Person = ({ activeId }: { activeId: ?number }) => {
         })
       }
     } else {
-      store.updateField({
+      updateField({
         table: 'personen',
         parentModel: 'personen',
         field,
         value: newValue,
         id: person.id,
+        setErrors,
       })
       if (field === 'amt') {
         if (person.abteilung) {
           // reset abteilung
-          store.updateField({
+          updateField({
             table: 'personen',
             parentModel: 'personen',
             field: 'abteilung',
             value: null,
             id: person.id,
+            setErrors,
           })
         }
         if (person.sektion) {
           // reset sektion
-          store.updateField({
+          updateField({
             table: 'personen',
             parentModel: 'personen',
             field: 'sektion',
             value: null,
             id: person.id,
+            setErrors,
           })
         }
       }
       if (field === 'abteilung' && person.sektion) {
         // reset sektion
-        store.updateField({
+        updateField({
           table: 'personen',
           parentModel: 'personen',
           field: 'sektion',
           value: null,
           id: person.id,
+          setErrors,
         })
       }
     }
@@ -351,6 +366,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           field="name"
           label="Name"
           saveToDb={saveToDb}
+          error={errors.name}
         />
         <Input
           key={`${personId}vorname`}
@@ -358,6 +374,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           field="vorname"
           label="Vorname"
           saveToDb={saveToDb}
+          error={errors.vorname}
         />
         <Select
           key={`${personId}${existsFilter ? 1 : 0}anrede`}
@@ -373,6 +390,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           field="kurzzeichen"
           label="Kurzzeichen"
           saveToDb={saveToDb}
+          error={errors.kurzzeichen}
         />
         <Input
           key={`${personId}adresse`}
@@ -380,6 +398,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           field="adresse"
           label="Adresse"
           saveToDb={saveToDb}
+          error={errors.adresse}
         />
         <Input
           key={`${personId}plz`}
@@ -388,6 +407,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label="PLZ"
           saveToDb={saveToDb}
           type="number"
+          error={errors.plz}
         />
         <Input
           key={`${personId}ort`}
@@ -395,6 +415,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           field="ort"
           label="Ort"
           saveToDb={saveToDb}
+          error={errors.ort}
         />
         <Select
           key={`${personId}${existsFilter ? 1 : 0}land`}
@@ -410,6 +431,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           field="email"
           label="Email"
           saveToDb={saveToDb}
+          error={errors.email}
         />
         <Date
           key={`${personId}geburtDatum`}
@@ -424,6 +446,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           field="bueroNr"
           label="Büro Nr."
           saveToDb={saveToDb}
+          error={errors.bueroNr}
         />
         <Select
           key={`${personId}${existsFilter ? 1 : 0}amt`}
@@ -494,6 +517,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label="Beschaeftigungsgrad (%)"
           saveToDb={saveToDb}
           type="number"
+          error={errors.beschaeftigungsgrad}
         />
         <Input
           key={`${personId}parkplatzNr`}
@@ -501,6 +525,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           field="parkplatzNr"
           label="Parkplatz Nr."
           saveToDb={saveToDb}
+          error={errors.parkplatzNr}
         />
         <Input
           key={`${personId}parkplatzBeitrag`}
@@ -508,6 +533,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           field="parkplatzBeitrag"
           label="Parkplatz Beitrag"
           saveToDb={saveToDb}
+          error={errors.parkplatzBeitrag}
         />
         {showFilter ? (
           <Select
@@ -556,6 +582,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label="Bemerkungen"
           saveToDb={saveToDb}
           type="textarea"
+          error={errors.bemerkungen}
         />
         {!showFilter && <Links />}
         <Schluessels />

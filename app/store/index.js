@@ -1327,7 +1327,7 @@ export default (db: Object) =>
           )
           self.updatePersonsMutation(idPerson)
         },
-        updateField({ table, parentModel, field, value, id }) {
+        updateField({ table, parentModel, field, value, id, setErrors }) {
           // 1. update in db
           try {
             db.prepare(
@@ -1339,14 +1339,16 @@ export default (db: Object) =>
               time: Date.now(),
             })
           } catch (error) {
-            return console.log(error)
+            return setErrors({
+              [field]: error.message,
+            })
           }
           // 2. update in store
           const storeObject = self[parentModel].find(o => o.id === id)
           if (!storeObject) {
-            return console.log(
-              `Error: no ${table} with id "${id}" found in store`,
-            )
+            return setErrors({
+              [field]: `Error: no ${table} with id "${id}" found in store`,
+            })
           }
           storeObject[field] = value
           storeObject.letzteMutationUser = self.username
@@ -1372,6 +1374,7 @@ export default (db: Object) =>
             const idSektion = ifIsNumericAsNumber(location[1])
             self.updateSektionsMutation(idSektion)
           }
+          setErrors({})
         },
         updatePersonsMutation(idPerson) {
           // in db
