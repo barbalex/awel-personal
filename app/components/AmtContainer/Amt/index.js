@@ -1,5 +1,11 @@
 // @flow
-import React, { useContext, useCallback, useMemo } from 'react'
+import React, {
+  useContext,
+  useCallback,
+  useMemo,
+  useState,
+  useEffect,
+} from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
@@ -28,6 +34,7 @@ const Amt = ({ activeId }: { activeId: ?number }) => {
     filterAmt,
     existsFilter,
     setFilter,
+    updateField,
   } = store
 
   let amt
@@ -39,29 +46,30 @@ const Amt = ({ activeId }: { activeId: ?number }) => {
   }
   const amtId = showFilter ? '' : amt.id
 
-  const saveToDb = useCallback(
-    ({ field, value }) => {
-      if (!amt && !showFilter)
-        throw new Error(`Amt with id ${activeId} not found`)
-      const newValue = ifIsNumericAsNumber(value)
+  const [errors, setErrors] = useState({})
+  useEffect(() => setErrors({}), [amt])
 
-      if (showFilter) {
-        setFilter({
-          model: 'filterAmt',
-          value: { ...filterAmt, ...{ [field]: newValue } },
-        })
-      } else {
-        store.updateField({
-          table: 'aemter',
-          parentModel: 'aemter',
-          field,
-          value: newValue,
-          id: amt.id,
-        })
-      }
-    },
-    [activeId, aemter.length, filterAmt, showFilter],
-  )
+  const saveToDb = useCallback(({ field, value }) => {
+    if (!amt && !showFilter)
+      throw new Error(`Amt with id ${activeId} not found`)
+    const newValue = ifIsNumericAsNumber(value)
+
+    if (showFilter) {
+      setFilter({
+        model: 'filterAmt',
+        value: { ...filterAmt, ...{ [field]: newValue } },
+      })
+    } else {
+      updateField({
+        table: 'aemter',
+        parentModel: 'aemter',
+        field,
+        value: newValue,
+        id: amt.id,
+        setErrors,
+      })
+    }
+  }, [activeId, aemter.length, filterAmt, showFilter])
 
   // filter out options with empty values - makes no sense and errors
   const personOptions = useMemo(
@@ -96,6 +104,7 @@ const Amt = ({ activeId }: { activeId: ?number }) => {
             field="deleted"
             label="gelöscht"
             saveToDb={saveToDb}
+            error={errors.deleted}
           />
         )}
         <Input
@@ -104,6 +113,7 @@ const Amt = ({ activeId }: { activeId: ?number }) => {
           field="name"
           label="Name"
           saveToDb={saveToDb}
+          error={errors.name}
         />
         <Input
           key={`${amtId}kurzzeichen`}
@@ -111,6 +121,7 @@ const Amt = ({ activeId }: { activeId: ?number }) => {
           field="kurzzeichen"
           label="Kurzzeichen"
           saveToDb={saveToDb}
+          error={errors.kurzzeichen}
         />
         <Input
           key={`${amtId}telefonNr`}
@@ -118,6 +129,7 @@ const Amt = ({ activeId }: { activeId: ?number }) => {
           field="telefonNr"
           label="Telefon"
           saveToDb={saveToDb}
+          error={errors.telefonNr}
         />
         <Input
           key={`${amtId}email`}
@@ -125,6 +137,7 @@ const Amt = ({ activeId }: { activeId: ?number }) => {
           field="email"
           label="Email"
           saveToDb={saveToDb}
+          error={errors.email}
         />
         <Input
           key={`${amtId}standort`}
@@ -132,6 +145,7 @@ const Amt = ({ activeId }: { activeId: ?number }) => {
           field="standort"
           label="Standort"
           saveToDb={saveToDb}
+          error={errors.standort}
         />
         <Select
           key={`${amtId}${existsFilter ? 1 : 0}leiter`}
@@ -140,6 +154,7 @@ const Amt = ({ activeId }: { activeId: ?number }) => {
           label="Leiter"
           options={personOptions}
           saveToDb={saveToDb}
+          error={errors.leiter}
         />
         <Select
           key={`${amtId}${existsFilter ? 1 : 0}kostenstelle`}
@@ -148,6 +163,7 @@ const Amt = ({ activeId }: { activeId: ?number }) => {
           label="Kostenstelle"
           options={kostenstelleOptions}
           saveToDb={saveToDb}
+          error={errors.kostenstelle}
         />
         {!showFilter && <Zuletzt />}
       </StyledForm>

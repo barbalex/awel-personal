@@ -48,6 +48,10 @@ const PersonImage = () => {
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const person = personen.find(p => p.id === activeId) || {}
+
+  const [errors, setErrors] = useState({})
+  useEffect(() => setErrors({}), [person])
+
   // TODO: refactor when pdf is built
   const isPdf = location[0] === 'personPdf'
 
@@ -64,6 +68,7 @@ const PersonImage = () => {
       field: 'bildUrl',
       value: files[0].path,
       id: person.id,
+      setErrors,
     }),
   )
 
