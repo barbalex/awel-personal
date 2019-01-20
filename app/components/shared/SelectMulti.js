@@ -1,7 +1,7 @@
 // @flow
 import React, { useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
-import { Col, FormGroup, Label } from 'reactstrap'
+import { Col, FormGroup, Label, FormFeedback } from 'reactstrap'
 import Select from 'react-select'
 import styled from 'styled-components'
 
@@ -31,6 +31,7 @@ const SharedSelectMulti = ({
   options,
   add,
   remove,
+  error,
 }: {
   value?: Array<Object>,
   field: string,
@@ -38,6 +39,7 @@ const SharedSelectMulti = ({
   options: Array<Object>,
   add: () => void,
   remove: () => void,
+  error: string,
 }) => {
   const onChange = useCallback(
     (unusedOption, { action, option, removedValue }) => {
@@ -68,7 +70,9 @@ const SharedSelectMulti = ({
           isClearable={false}
           isSearchable
           noOptionsMessage={noOptionsMessage}
+          invalid={!!error}
         />
+        <FormFeedback>{error}</FormFeedback>
       </Col>
     </FormGroup>
   )

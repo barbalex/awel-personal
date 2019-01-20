@@ -57,8 +57,6 @@ const Person = ({ activeId }: { activeId: ?number }) => {
     updateField,
   } = store
 
-  const [errors, setErrors] = useState({})
-
   let person
   if (showFilter) {
     person = filterPerson
@@ -68,6 +66,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
   }
   const personId = showFilter ? '' : person.id
 
+  const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [person])
 
   const saveToDb = useCallback(({ field, value }) => {
@@ -358,6 +357,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
             field="deleted"
             label="gelöscht"
             saveToDb={saveToDb}
+            error={errors.deleted}
           />
         )}
         <Input
@@ -383,6 +383,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label="Anrede"
           options={anredeOptions}
           saveToDb={saveToDb}
+          error={errors.anrede}
         />
         <Input
           key={`${personId}kurzzeichen`}
@@ -424,6 +425,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label="Land"
           options={landOptions}
           saveToDb={saveToDb}
+          error={errors.land}
         />
         <Input
           key={`${personId}email`}
@@ -439,6 +441,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           field="geburtDatum"
           label="Geburtsdatum"
           saveToDb={saveToDb}
+          error={errors.geburtDatum}
         />
         <Input
           key={`${personId}bueroNr`}
@@ -455,6 +458,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label="Amt"
           options={amtOptions}
           saveToDb={saveToDb}
+          error={errors.amt}
         />
         <Select
           key={`${personId}${existsFilter ? 1 : 0}abteilung`}
@@ -463,6 +467,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label="Abteilung"
           options={abteilungOptions}
           saveToDb={saveToDb}
+          error={errors.abteilung}
         />
         <Select
           key={`${personId}${existsFilter ? 1 : 0}sektion`}
@@ -471,6 +476,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label="Sektion"
           options={sektionOptions}
           saveToDb={saveToDb}
+          error={errors.sektion}
         />
         <Select
           key={`${personId}${existsFilter ? 1 : 0}bereich`}
@@ -479,6 +485,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label="Bereich"
           options={bereichOptions}
           saveToDb={saveToDb}
+          error={errors.bereich}
         />
         <Select
           key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
@@ -487,6 +494,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label="Vorgesetzte(r)"
           options={personOptions}
           saveToDb={saveToDb}
+          error={errors.vorgesetztId}
         />
         <Date
           key={`${personId}${existsFilter ? 1 : 0}eintrittDatum`}
@@ -494,6 +502,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           field="eintrittDatum"
           label="Eintritt Datum"
           saveToDb={saveToDb}
+          error={errors.eintrittDatum}
         />
         <Date
           key={`${personId}${existsFilter ? 1 : 0}austrittDatum`}
@@ -501,6 +510,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           field="austrittDatum"
           label="Austritt Datum"
           saveToDb={saveToDb}
+          error={errors.austrittDatum}
         />
         <Select
           key={`${personId}${existsFilter ? 1 : 0}status`}
@@ -509,6 +519,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           label="Status"
           options={statusOptions}
           saveToDb={saveToDb}
+          error={errors.status}
         />
         <Input
           key={`${personId}beschaeftigungsgrad`}
@@ -543,6 +554,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
             label="Funktion"
             options={funktionenOptions}
             saveToDb={saveToDbFunktion}
+            error={errors.funktion}
           />
         ) : (
           <SelectMulti
@@ -553,6 +565,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
             options={funktionenOptions}
             add={addFunktion}
             remove={deleteFunktion}
+            error={errors.funktion}
           />
         )}
         {showFilter ? (
@@ -563,6 +576,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
             label="Etikett"
             options={etikettenOptions}
             saveToDb={saveToDbEtikett}
+            error={errors.etikett}
           />
         ) : (
           <SelectMulti
@@ -573,6 +587,7 @@ const Person = ({ activeId }: { activeId: ?number }) => {
             options={etikettenOptions}
             add={addEtikett}
             remove={deleteEtikett}
+            error={errors.etikett}
           />
         )}
         <Input
