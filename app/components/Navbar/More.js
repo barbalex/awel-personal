@@ -12,6 +12,7 @@ import { FaEllipsisV } from 'react-icons/fa'
 
 import storeContext from '../../storeContext'
 import dbContext from '../../dbContext'
+import chooseDbConnection from '../../src/chooseDbConnection'
 
 const DbPath = styled.span`
   font-style: italic;
@@ -51,7 +52,7 @@ const More = () => {
         <FaEllipsisV />
       </DropdownToggle>
       <DropdownMenu right>
-        <DropdownItem>
+        <DropdownItem onClick={chooseDbConnection}>
           Datenbank wählen (TODO)
           <br />
           <DbPath>{`Aktuell: ${db.name}`}</DbPath>

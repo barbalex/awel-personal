@@ -6,9 +6,7 @@ import saveConfig from './saveConfig'
 
 export default async () => {
   const config = getConfig()
-  console.log('getDbConnection, config', config)
   let dbPath = config.dbPath || 'C:/Users/alexa/personal.db'
-  console.log('getDbConnection, dbPath', dbPath)
   let db
   try {
     db = new Database(dbPath, { fileMustExist: true })
@@ -32,6 +30,5 @@ export default async () => {
       return console.log('index.js, Error opening db file:', error)
     }
   }
-  console.log('getDbConnection, db', db)
   return db
 }

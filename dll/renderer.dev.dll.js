@@ -99,18 +99,6 @@ eval("module.exports = __webpack_require__;\n\n//# sourceURL=webpack://renderer/
 
 /***/ }),
 
-/***/ "ampersand-app":
-/*!********************************!*\
-  !*** external "ampersand-app" ***!
-  \********************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports) {
-
-eval("module.exports = ampersand-app;\n\n//# sourceURL=webpack://renderer/external_%22ampersand-app%22?");
-
-/***/ }),
-
 /***/ "better-sqlite3":
 /*!*********************************!*\
   !*** external "better-sqlite3" ***!
