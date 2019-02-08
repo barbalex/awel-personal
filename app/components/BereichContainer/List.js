@@ -80,7 +80,7 @@ const BereichList = ({ dimensions, activeId }) => {
                 <Svg>
                   <FaTrashAlt id={`deletedIcon${row.id}`} />
                   <UncontrolledTooltip
-                    placement="left"
+                    placement="bottom"
                     target={`deletedIcon${row.id}`}
                   >
                     Dieser Bereich wurde gelöscht
@@ -91,7 +91,7 @@ const BereichList = ({ dimensions, activeId }) => {
                 <Svg>
                   <FaRegEdit id={`mutationNoetig${row.id}`} />
                   <UncontrolledTooltip
-                    placement="left"
+                    placement="bottom"
                     target={`mutationNoetig${row.id}`}
                   >
                     Handlungs-Bedarf
