@@ -1,4 +1,3 @@
-// @flow
 import React, { useCallback, useMemo } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Col, FormGroup, Label, FormFeedback } from 'reactstrap'
@@ -24,21 +23,7 @@ const StyledSelect = styled(Select)`
 
 const noOptionsMessage = () => '(keine)'
 
-const SharedSelect = ({
-  value,
-  field,
-  label,
-  options,
-  saveToDb,
-  error,
-}: {
-  value?: ?number | ?string,
-  field: string,
-  label: string,
-  options: Array<Object>,
-  saveToDb: () => void,
-  error: string,
-}) => {
+const SharedSelect = ({ value, field, label, options, saveToDb, error }) => {
   const onChange = useCallback(
     option => saveToDb({ value: option ? option.value : null, field }),
     [field],

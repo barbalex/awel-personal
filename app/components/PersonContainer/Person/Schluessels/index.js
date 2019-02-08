@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext, useRef, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
@@ -86,18 +85,15 @@ const SchluesselsComponent = () => {
       console.log('Path not set')
     }
   })
-  const onClickForm = useCallback(
-    () => {
-      let success = false
-      if (settings.schluesselFormPath) {
-        success = shell.openItem(settings.schluesselFormPath)
-        if (!success) console.log('File could not be opened')
-        return
-      }
-      console.log('no schluesselFormPath to open')
-    },
-    [settings.schluesselFormPath],
-  )
+  const onClickForm = useCallback(() => {
+    let success = false
+    if (settings.schluesselFormPath) {
+      success = shell.openItem(settings.schluesselFormPath)
+      if (!success) console.log('File could not be opened')
+      return
+    }
+    console.log('no schluesselFormPath to open')
+  }, [settings.schluesselFormPath])
 
   return (
     <FormGroup row>

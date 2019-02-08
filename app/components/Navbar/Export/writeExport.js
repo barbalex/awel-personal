@@ -13,19 +13,19 @@ export default (path, dataArray) => {
       {
         state: 'frozen',
         xSplit: 0,
-        ySplit: 1
-      }
+        ySplit: 1,
+      },
     ],
     autoFilter: {
       from: {
         row: 1,
-        column: 1
+        column: 1,
       },
       to: {
         row: 1,
-        column: numberOfColumns
-      }
-    }
+        column: numberOfColumns,
+      },
+    },
   })
   worksheet.addRows(dataArray)
   worksheet.getRow(1).fill = {
@@ -34,16 +34,16 @@ export default (path, dataArray) => {
     degree: 0,
     stops: [
       { position: 0, color: { argb: 'FFD3D3D3' } },
-      { position: 1, color: { argb: 'FFD3D3D3' } }
-    ]
+      { position: 1, color: { argb: 'FFD3D3D3' } },
+    ],
   }
   worksheet.getRow(1).font = {
-    bold: true
+    bold: true,
   }
   worksheet.getRow(1).border = {
     bottom: {
-      style: 'thin'
-    }
+      style: 'thin',
+    },
   }
   return workbook.xlsx
     .writeFile(path)

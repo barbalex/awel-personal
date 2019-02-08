@@ -1,4 +1,3 @@
-// @flow
 import React, {
   useContext,
   useCallback,
@@ -25,7 +24,7 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Sektion = ({ activeId }: { activeId: ?number }) => {
+const Sektion = ({ activeId }) => {
   const store = useContext(storeContext)
   const {
     personen,
@@ -52,35 +51,38 @@ const Sektion = ({ activeId }: { activeId: ?number }) => {
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [sektion])
 
-  const saveToDb = useCallback(({ field, value }) => {
-    if (!sektion && !showFilter)
-      throw new Error(`Sektion with id ${activeId} not found`)
-    let newValue
-    if (isDateField(field)) {
-      if (value) newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
-      if (newValue && newValue.includes('Invalid date')) {
-        newValue = newValue.replace('Invalid date', 'Format: DD.MM.YYYY')
+  const saveToDb = useCallback(
+    ({ field, value }) => {
+      if (!sektion && !showFilter)
+        throw new Error(`Sektion with id ${activeId} not found`)
+      let newValue
+      if (isDateField(field)) {
+        if (value) newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
+        if (newValue && newValue.includes('Invalid date')) {
+          newValue = newValue.replace('Invalid date', 'Format: DD.MM.YYYY')
+        }
+      } else {
+        newValue = ifIsNumericAsNumber(value)
       }
-    } else {
-      newValue = ifIsNumericAsNumber(value)
-    }
 
-    if (showFilter) {
-      setFilter({
-        model: 'filterSektion',
-        value: { ...filterSektion, ...{ [field]: newValue } },
-      })
-    } else {
-      updateField({
-        table: 'sektionen',
-        parentModel: 'sektionen',
-        field,
-        value: newValue,
-        id: sektion.id,
-        setErrors,
-      })
-    }
-  }, [activeId, sektionen.length, filterSektion, showFilter])
+      if (showFilter) {
+        setFilter({
+          model: 'filterSektion',
+          value: { ...filterSektion, ...{ [field]: newValue } },
+        })
+      } else {
+        updateField({
+          table: 'sektionen',
+          parentModel: 'sektionen',
+          field,
+          value: newValue,
+          id: sektion.id,
+          setErrors,
+        })
+      }
+    },
+    [activeId, sektionen.length, filterSektion, showFilter],
+  )
 
   // filter out options with empty values - makes no sense and errors
   const personOptions = useMemo(

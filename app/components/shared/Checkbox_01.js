@@ -1,4 +1,3 @@
-// @flow
 import React, { useState, useCallback, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Col, FormGroup, Label, Input, FormFeedback } from 'reactstrap'
@@ -9,19 +8,7 @@ const StyledInput = styled(Input)`
   top: 10px;
 `
 
-const SharedCheckbox = ({
-  value,
-  field,
-  label,
-  saveToDb,
-  error,
-}: {
-  value: number,
-  field: string,
-  label: string,
-  saveToDb: () => void,
-  error: string,
-}) => {
+const SharedCheckbox = ({ value, field, label, saveToDb, error }) => {
   const [stateValue, setStateValue] = useState(!!value)
   const onChange = useCallback(() => {
     const newValue = !stateValue

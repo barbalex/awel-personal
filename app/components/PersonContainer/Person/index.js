@@ -1,4 +1,3 @@
-// @flow
 import React, {
   useContext,
   useCallback,
@@ -32,7 +31,7 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Person = ({ activeId }: { activeId: ?number }) => {
+const Person = ({ activeId }) => {
   const store = useContext(storeContext)
   const {
     personen,
@@ -69,70 +68,83 @@ const Person = ({ activeId }: { activeId: ?number }) => {
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [person])
 
-  const saveToDb = useCallback(({ field, value }) => {
-    // const person = personen.find(p => p.id === activeId)
-    if (!person && !showFilter)
-      throw new Error(`Person with id ${activeId} not found`)
-    let newValue
-    if (isDateField(field)) {
-      if (value) newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
-      if (newValue && newValue.includes('Invalid date')) {
-        newValue = newValue.replace('Invalid date', 'Format: DD.MM.YYYY')
-      }
-    } else {
-      newValue = ifIsNumericAsNumber(value)
-    }
-
-    if (showFilter) {
-      setFilter({
-        model: 'filterPerson',
-        value: { ...filterPerson, ...{ [field]: newValue } },
-      })
-      if (field === 'amt') {
-        if (person.abteilung) {
-          // reset abteilung
-          setFilter({
-            model: 'filterPerson',
-            value: { ...filterPerson, ...{ abteilung: null } },
-          })
+  const saveToDb = useCallback(
+    ({ field, value }) => {
+      // const person = personen.find(p => p.id === activeId)
+      if (!person && !showFilter)
+        throw new Error(`Person with id ${activeId} not found`)
+      let newValue
+      if (isDateField(field)) {
+        if (value) newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
+        if (newValue && newValue.includes('Invalid date')) {
+          newValue = newValue.replace('Invalid date', 'Format: DD.MM.YYYY')
         }
-        if (person.sektion) {
+      } else {
+        newValue = ifIsNumericAsNumber(value)
+      }
+
+      if (showFilter) {
+        setFilter({
+          model: 'filterPerson',
+          value: { ...filterPerson, ...{ [field]: newValue } },
+        })
+        if (field === 'amt') {
+          if (person.abteilung) {
+            // reset abteilung
+            setFilter({
+              model: 'filterPerson',
+              value: { ...filterPerson, ...{ abteilung: null } },
+            })
+          }
+          if (person.sektion) {
+            // reset sektion
+            setFilter({
+              model: 'filterPerson',
+              value: { ...filterPerson, ...{ sektion: null } },
+            })
+          }
+        }
+        if (field === 'abteilung' && person.sektion) {
           // reset sektion
           setFilter({
             model: 'filterPerson',
             value: { ...filterPerson, ...{ sektion: null } },
           })
         }
-      }
-      if (field === 'abteilung' && person.sektion) {
-        // reset sektion
-        setFilter({
-          model: 'filterPerson',
-          value: { ...filterPerson, ...{ sektion: null } },
+      } else {
+        updateField({
+          table: 'personen',
+          parentModel: 'personen',
+          field,
+          value: newValue,
+          id: person.id,
+          setErrors,
         })
-      }
-    } else {
-      updateField({
-        table: 'personen',
-        parentModel: 'personen',
-        field,
-        value: newValue,
-        id: person.id,
-        setErrors,
-      })
-      if (field === 'amt') {
-        if (person.abteilung) {
-          // reset abteilung
-          updateField({
-            table: 'personen',
-            parentModel: 'personen',
-            field: 'abteilung',
-            value: null,
-            id: person.id,
-            setErrors,
-          })
+        if (field === 'amt') {
+          if (person.abteilung) {
+            // reset abteilung
+            updateField({
+              table: 'personen',
+              parentModel: 'personen',
+              field: 'abteilung',
+              value: null,
+              id: person.id,
+              setErrors,
+            })
+          }
+          if (person.sektion) {
+            // reset sektion
+            updateField({
+              table: 'personen',
+              parentModel: 'personen',
+              field: 'sektion',
+              value: null,
+              id: person.id,
+              setErrors,
+            })
+          }
         }
-        if (person.sektion) {
+        if (field === 'abteilung' && person.sektion) {
           // reset sektion
           updateField({
             table: 'personen',
@@ -144,84 +156,92 @@ const Person = ({ activeId }: { activeId: ?number }) => {
           })
         }
       }
-      if (field === 'abteilung' && person.sektion) {
-        // reset sektion
-        updateField({
-          table: 'personen',
-          parentModel: 'personen',
-          field: 'sektion',
-          value: null,
-          id: person.id,
-          setErrors,
+    },
+    [activeId, personen.length, filterPerson, showFilter],
+  )
+  const addEtikett = useCallback(
+    etikett => {
+      if (showFilter) {
+        setFilter({
+          model: 'filterEtikett',
+          value: { ...filterEtikett, ...{ etikett } },
+        })
+      } else {
+        store.addEtikett(etikett)
+      }
+    },
+    [showFilter, filterEtikett],
+  )
+  const deleteEtikett = useCallback(
+    etikett => {
+      if (showFilter) {
+        setFilter({
+          model: 'filterEtikett',
+          value: { ...filterEtikett, ...{ etikett: null } },
+        })
+      } else {
+        store.deleteEtikett(etikett)
+      }
+    },
+    [filterEtikett, showFilter],
+  )
+  const saveToDbEtikett = useCallback(
+    ({ value }) => {
+      if (value) {
+        return setFilter({
+          model: 'filterEtikett',
+          value: { ...filterEtikett, ...{ etikett: value } },
         })
       }
-    }
-  }, [activeId, personen.length, filterPerson, showFilter])
-  const addEtikett = useCallback(etikett => {
-    if (showFilter) {
-      setFilter({
-        model: 'filterEtikett',
-        value: { ...filterEtikett, ...{ etikett } },
-      })
-    } else {
-      store.addEtikett(etikett)
-    }
-  }, [showFilter, filterEtikett])
-  const deleteEtikett = useCallback(etikett => {
-    if (showFilter) {
       setFilter({
         model: 'filterEtikett',
         value: { ...filterEtikett, ...{ etikett: null } },
       })
-    } else {
-      store.deleteEtikett(etikett)
-    }
-  }, [filterEtikett, showFilter])
-  const saveToDbEtikett = useCallback(({ value }) => {
-    if (value) {
-      return setFilter({
-        model: 'filterEtikett',
-        value: { ...filterEtikett, ...{ etikett: value } },
-      })
-    }
-    setFilter({
-      model: 'filterEtikett',
-      value: { ...filterEtikett, ...{ etikett: null } },
-    })
-  }, [filterEtikett])
+    },
+    [filterEtikett],
+  )
 
-  const addFunktion = useCallback(funktion => {
-    if (showFilter) {
-      setFilter({
-        model: 'filterFunktion',
-        value: { ...filterFunktion, ...{ funktion } },
-      })
-    } else {
-      store.addFunktion(funktion)
-    }
-  }, [showFilter, filterFunktion])
-  const deleteFunktion = useCallback(funktion => {
-    if (showFilter) {
+  const addFunktion = useCallback(
+    funktion => {
+      if (showFilter) {
+        setFilter({
+          model: 'filterFunktion',
+          value: { ...filterFunktion, ...{ funktion } },
+        })
+      } else {
+        store.addFunktion(funktion)
+      }
+    },
+    [showFilter, filterFunktion],
+  )
+  const deleteFunktion = useCallback(
+    funktion => {
+      if (showFilter) {
+        setFilter({
+          model: 'filterFunktion',
+          value: { ...filterFunktion, ...{ funktion: null } },
+        })
+      } else {
+        store.deleteFunktion(funktion)
+      }
+    },
+    [filterFunktion, showFilter],
+  )
+  const saveToDbFunktion = useCallback(
+    ({ value }) => {
+      if (value) {
+        return setFilter({
+          model: 'filterFunktion',
+          value: { ...filterFunktion, ...{ funktion: value } },
+        })
+      }
       setFilter({
         model: 'filterFunktion',
         value: { ...filterFunktion, ...{ funktion: null } },
       })
-    } else {
-      store.deleteFunktion(funktion)
-    }
-  }, [filterFunktion, showFilter])
-  const saveToDbFunktion = useCallback(({ value }) => {
-    if (value) {
-      return setFilter({
-        model: 'filterFunktion',
-        value: { ...filterFunktion, ...{ funktion: value } },
-      })
-    }
-    setFilter({
-      model: 'filterFunktion',
-      value: { ...filterFunktion, ...{ funktion: null } },
-    })
-  }, [filterFunktion])
+    },
+    [filterFunktion],
+  )
 
   // filter out options with empty values - makes no sense and errors
   const personOptions = useMemo(

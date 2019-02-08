@@ -1,6 +1,4 @@
-// @flow
-
-export default (exportObjects: Array<Object>) => {
+export default exportObjects => {
   const dataArray = []
   // first the field names:
   dataArray.push(Object.keys(exportObjects[0]))
@@ -16,8 +14,8 @@ export default (exportObjects: Array<Object>) => {
           return ''
         }
         return object[key]
-      })
-    )
+      }),
+    ),
   )
   return dataArray
 }

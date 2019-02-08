@@ -1,5 +1,3 @@
-// @flow
-
 import React, { useContext } from 'react'
 import moment from 'moment'
 import { Col, FormGroup, Label } from 'reactstrap'

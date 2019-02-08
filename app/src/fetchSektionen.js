@@ -1,5 +1,4 @@
-// @flow
-export default ({ db, store }: { db: Object, store: Object }) => {
+export default ({ db, store }) => {
   const sektionen = db.prepare('SELECT * from sektionen').all()
   store.setSektionen(sektionen)
 }

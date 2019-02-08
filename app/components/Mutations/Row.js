@@ -1,5 +1,4 @@
 /* eslint-disable no-nested-ternary */
-// @flow
 import React, { useContext, useCallback } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
@@ -59,17 +58,7 @@ const RevertButton = styled(Button)`
   align-self: center;
 `
 
-const MutationsRow = ({
-  style,
-  listIndex,
-  mutations,
-  activeId,
-}: {
-  style: Object,
-  listIndex: number,
-  mutations: Array<Object>,
-  activeId: number,
-}) => {
+const MutationsRow = ({ style, listIndex, mutations, activeId }) => {
   const store = useContext(storeContext)
   const { setLocation, revertMutation } = store
   const row = mutations[listIndex]
@@ -86,12 +75,9 @@ const MutationsRow = ({
   } = row
 
   const revert = useCallback(() => revertMutation(row.id), [row.id])
-  const onClickRow = useCallback(
-    () => {
-      setLocation(['mutations', row.id.toString()])
-    },
-    [row.id],
-  )
+  const onClickRow = useCallback(() => {
+    setLocation(['mutations', row.id.toString()])
+  }, [row.id])
 
   return (
     <Row style={style} onClick={onClickRow} active={activeId === id}>

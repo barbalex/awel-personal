@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext } from 'react'
 import { FixedSizeList as List } from 'react-window'
 import styled from 'styled-components'
@@ -32,13 +31,7 @@ const Row = styled.div`
   }
 `
 
-const AbteilungList = ({
-  dimensions,
-  activeId,
-}: {
-  dimensions: Object,
-  activeId: ?number,
-}) => {
+const AbteilungList = ({ dimensions, activeId }) => {
   const store = useContext(storeContext)
   const { setLocation, showFilter, setShowFilter } = store
   const height = isNaN(dimensions.height) ? 250 : dimensions.height

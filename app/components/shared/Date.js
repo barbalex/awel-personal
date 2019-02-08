@@ -1,4 +1,3 @@
-// @flow
 import React, { useState, useCallback, useEffect } from 'react'
 import {
   Col,
@@ -58,19 +57,7 @@ const StyledInputGroupAddon = styled(InputGroupAddon)`
   cursor: pointer;
 `
 
-const DateField = ({
-  value,
-  field,
-  label,
-  saveToDb,
-  error,
-}: {
-  value: number | string,
-  field: string,
-  label: string,
-  saveToDb: () => void,
-  error: string,
-}) => {
+const DateField = ({ value, field, label, saveToDb, error }) => {
   const [open, setOpen] = useState(false)
   const [stateValue, setStateValue] = useState(
     value || value === 0 ? value : '',
@@ -80,15 +67,18 @@ const DateField = ({
     setStateValue(event.target.value)
     return null
   })
-  const onBlur = useCallback(event => {
-    let newValue = event.target.value
-    // save nulls if empty
-    if (newValue === '') newValue = null
-    // only save if value has changed
-    if (!newValue && !value && value !== 0 && newValue !== 0) return
-    if (newValue === value) return
-    saveToDb({ value: newValue, field })
-  }, [value, field])
+  const onBlur = useCallback(
+    event => {
+      let newValue = event.target.value
+      // save nulls if empty
+      if (newValue === '') newValue = null
+      // only save if value has changed
+      if (!newValue && !value && value !== 0 && newValue !== 0) return
+      if (newValue === value) return
+      saveToDb({ value: newValue, field })
+    },
+    [value, field],
+  )
   const openPicker = useCallback(() => setOpen(true))
   const closePicker = useCallback(() => setOpen(false))
   const onChangeDatePicker = useCallback(async date => {

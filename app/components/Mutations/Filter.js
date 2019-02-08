@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react'
 import { InputGroup, InputGroupAddon, Input } from 'reactstrap'
 import styled from 'styled-components'
@@ -15,15 +13,7 @@ const EmptyAddon = styled(InputGroupAddon)`
   }
 `
 
-const Filter = ({
-  value,
-  onChange,
-  empty
-}: {
-  value?: ?string | ?number,
-  onChange: () => void,
-  empty: () => void
-}) => (
+const Filter = ({ value, onChange, empty }) => (
   <div>
     <FilterInputGroup size="sm">
       <Input value={value || ''} placeholder="filtern" onChange={onChange} />

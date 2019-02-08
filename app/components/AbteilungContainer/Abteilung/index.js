@@ -1,4 +1,3 @@
-// @flow
 import React, {
   useContext,
   useCallback,
@@ -23,7 +22,7 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Abteilung = ({ activeId }: { activeId: ?number }) => {
+const Abteilung = ({ activeId }) => {
   const store = useContext(storeContext)
   const {
     personen,

@@ -1,4 +1,3 @@
-// @flow
 import { onPatch } from 'mobx-state-tree'
 
 export default ({ store }) => {

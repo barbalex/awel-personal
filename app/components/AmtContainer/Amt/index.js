@@ -1,4 +1,3 @@
-// @flow
 import React, {
   useContext,
   useCallback,
@@ -23,7 +22,7 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Amt = ({ activeId }: { activeId: ?number }) => {
+const Amt = ({ activeId }) => {
   const store = useContext(storeContext)
   const {
     personen,
@@ -49,27 +48,30 @@ const Amt = ({ activeId }: { activeId: ?number }) => {
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [amt])
 
-  const saveToDb = useCallback(({ field, value }) => {
-    if (!amt && !showFilter)
-      throw new Error(`Amt with id ${activeId} not found`)
-    const newValue = ifIsNumericAsNumber(value)
+  const saveToDb = useCallback(
+    ({ field, value }) => {
+      if (!amt && !showFilter)
+        throw new Error(`Amt with id ${activeId} not found`)
+      const newValue = ifIsNumericAsNumber(value)
 
-    if (showFilter) {
-      setFilter({
-        model: 'filterAmt',
-        value: { ...filterAmt, ...{ [field]: newValue } },
-      })
-    } else {
-      updateField({
-        table: 'aemter',
-        parentModel: 'aemter',
-        field,
-        value: newValue,
-        id: amt.id,
-        setErrors,
-      })
-    }
-  }, [activeId, aemter.length, filterAmt, showFilter])
+      if (showFilter) {
+        setFilter({
+          model: 'filterAmt',
+          value: { ...filterAmt, ...{ [field]: newValue } },
+        })
+      } else {
+        updateField({
+          table: 'aemter',
+          parentModel: 'aemter',
+          field,
+          value: newValue,
+          id: amt.id,
+          setErrors,
+        })
+      }
+    },
+    [activeId, aemter.length, filterAmt, showFilter],
+  )
 
   // filter out options with empty values - makes no sense and errors
   const personOptions = useMemo(

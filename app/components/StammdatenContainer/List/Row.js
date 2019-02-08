@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext, useCallback } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
@@ -30,17 +29,7 @@ const Row = styled.div`
   }
 `
 
-const StammdatenRow = ({
-  index,
-  style,
-  activeId,
-  activeTable,
-}: {
-  index: number,
-  style: Object,
-  activeId: ?number,
-  activeTable: ?string,
-}) => {
+const StammdatenRow = ({ index, style, activeId, activeTable }) => {
   const store = useContext(storeContext)
   const { showDeleted, setLocation } = store
 

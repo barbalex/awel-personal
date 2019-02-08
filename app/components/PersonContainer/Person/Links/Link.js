@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext, useCallback } from 'react'
 import { shell } from 'electron'
 import { observer } from 'mobx-react-lite'
@@ -43,7 +42,7 @@ const StyledA = styled.a`
   color: black;
 `
 
-const LinkComponent = ({ link }: { link: Object }) => {
+const LinkComponent = ({ link }) => {
   const store = useContext(storeContext)
   const { deleteLink } = store
   const location = store.location.toJSON()

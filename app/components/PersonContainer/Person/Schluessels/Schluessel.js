@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext, useCallback, useState, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
@@ -51,7 +50,7 @@ const Delete = styled.div`
   }
 `
 
-const SchluesselComponent = ({ id }: { id: number | string }) => {
+const SchluesselComponent = ({ id }) => {
   const store = useContext(storeContext)
   const {
     showFilter,
@@ -93,24 +92,27 @@ const SchluesselComponent = ({ id }: { id: number | string }) => {
       value: w.value,
     }))
 
-  const onBlur = useCallback(({ field, value }) => {
-    const newValue = ifIsNumericAsNumber(value)
-    if (showFilter) {
-      setFilter({
-        model: 'filterSchluessel',
-        value: { ...filterSchluessel, ...{ [field]: newValue } },
-      })
-    } else {
-      updateField({
-        table: 'schluessel',
-        parentModel: 'schluessel',
-        field,
-        value: newValue,
-        id: schluessel.id,
-        setErrors,
-      })
-    }
-  }, [showFilter, filterSchluessel, id])
+  const onBlur = useCallback(
+    ({ field, value }) => {
+      const newValue = ifIsNumericAsNumber(value)
+      if (showFilter) {
+        setFilter({
+          model: 'filterSchluessel',
+          value: { ...filterSchluessel, ...{ [field]: newValue } },
+        })
+      } else {
+        updateField({
+          table: 'schluessel',
+          parentModel: 'schluessel',
+          field,
+          value: newValue,
+          id: schluessel.id,
+          setErrors,
+        })
+      }
+    },
+    [showFilter, filterSchluessel, id],
+  )
   const onChangeSelectSchluesselTyp = useCallback(({ field, value }) => {
     const newValue = ifIsNumericAsNumber(value)
     if (showFilter) {

@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext, useState, useCallback, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Col, FormGroup, Label, Input, FormFeedback } from 'reactstrap'
@@ -15,16 +14,6 @@ const SharedInput = ({
   disabled = false,
   saveToDb,
   error,
-}: {
-  value: number | string,
-  field: string,
-  label?: string,
-  type?: string,
-  rows?: number,
-  placeholder?: string,
-  disabled?: boolean,
-  saveToDb: () => void,
-  error: string,
 }) => {
   const store = useContext(storeContext)
   const { showFilter } = store
@@ -32,22 +21,28 @@ const SharedInput = ({
     value || value === 0 ? value : '',
   )
 
-  const onBlur = useCallback(event => {
-    let newValue = event.target.value
-    // save nulls if empty
-    if (newValue === '') newValue = null
-    // only save if value has changed
-    if (!newValue && !value && value !== 0 && newValue !== 0) return
-    if (newValue === value) return
-    saveToDb({ value: newValue, field })
-  }, [field])
-  const onChange = useCallback(event => {
-    setStateValue(event.target.value)
-    if (showFilter) {
-      // call onBlur to immediately update filters
-      onBlur(event)
-    }
-  }, [showFilter])
+  const onBlur = useCallback(
+    event => {
+      let newValue = event.target.value
+      // save nulls if empty
+      if (newValue === '') newValue = null
+      // only save if value has changed
+      if (!newValue && !value && value !== 0 && newValue !== 0) return
+      if (newValue === value) return
+      saveToDb({ value: newValue, field })
+    },
+    [field],
+  )
+  const onChange = useCallback(
+    event => {
+      setStateValue(event.target.value)
+      if (showFilter) {
+        // call onBlur to immediately update filters
+        onBlur(event)
+      }
+    },
+    [showFilter],
+  )
 
   // need this check because of filtering:
   // when filter is emptied, value needs to reset

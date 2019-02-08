@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext, useCallback, useState, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
@@ -52,7 +51,7 @@ const Delete = styled.div`
   }
 `
 
-const MobileAbo = ({ id }: { id: number | string }) => {
+const MobileAbo = ({ id }) => {
   const store = useContext(storeContext)
   const {
     showFilter,

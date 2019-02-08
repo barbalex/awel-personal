@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
@@ -8,20 +7,12 @@ const Container = styled.div`
 const ErrorTitle = styled.div`
   margin-bottom: 10px;
 `
-type Props = {
-  // eslint-disable-next-line flowtype/no-weak-types
-  children: Object
-};
-type State = {
-  // eslint-disable-next-line flowtype/no-weak-types
-  error: Object
-};
 
-class ErrorBoundary extends Component<Props, State> {
+class ErrorBoundary extends Component {
   static getDerivedStateFromError(error) {
     // Catch errors in any components below and re-render with error message
     return {
-      error
+      error,
     }
   }
 
@@ -44,7 +35,7 @@ class ErrorBoundary extends Component<Props, State> {
     }
     const { children } = this.props
     const childrenWithProps = React.Children.map(children, child =>
-      React.cloneElement(child, { ...this.props })
+      React.cloneElement(child, { ...this.props }),
     )
 
     // Normally, just render children

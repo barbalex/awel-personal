@@ -1,4 +1,3 @@
-// @flow
 import { types, splitJsonPath, getSnapshot } from 'mobx-state-tree'
 import { UndoManager } from 'mst-middlewares'
 import findIndex from 'lodash/findIndex'
@@ -35,7 +34,7 @@ import StatusWert from './StatusWert'
 import TagWert from './TagWert'
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 
-export default (db: Object) =>
+export default db =>
   types
     .model({
       deletionMessage: types.maybeNull(types.string),

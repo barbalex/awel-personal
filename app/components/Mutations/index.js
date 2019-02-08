@@ -1,5 +1,4 @@
 /* eslint-disable no-nested-ternary */
-// @flow
 import React, { useContext, useState, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'

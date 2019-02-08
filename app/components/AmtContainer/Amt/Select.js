@@ -1,4 +1,3 @@
-// @flow
 import React, { useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 import Select from 'react-select'
@@ -21,20 +20,10 @@ const StyledSelect = styled(Select)`
   }
 `
 
-const SharedSelect = ({
-  value,
-  field,
-  options,
-  saveToDb
-}: {
-  value?: ?number | ?string,
-  field: string,
-  options: Array<Object>,
-  saveToDb: () => void
-}) => {
+const SharedSelect = ({ value, field, options, saveToDb }) => {
   const onChange = useCallback(
     option => saveToDb({ value: option ? option.value : null, field }),
-    [field]
+    [field],
   )
 
   return (

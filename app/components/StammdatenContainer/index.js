@@ -1,4 +1,3 @@
-// @flow
 import React, { useEffect, useContext } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'

@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext, useCallback, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
@@ -15,13 +14,7 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Data = ({
-  activeId,
-  activeTable,
-}: {
-  activeId: ?number,
-  activeTable: ?string,
-}) => {
+const Data = ({ activeId, activeTable }) => {
   const store = useContext(storeContext)
   const { showDeleted, updateField } = store
   const dat = store[activeTable].find(p => p.id === activeId)
@@ -29,19 +22,22 @@ const Data = ({
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [dat])
 
-  const saveToDb = useCallback(({ field, value }) => {
-    const newValue = ifIsNumericAsNumber(value)
-    const { parentModel } = tables.find(t => t.table === activeTable)
+  const saveToDb = useCallback(
+    ({ field, value }) => {
+      const newValue = ifIsNumericAsNumber(value)
+      const { parentModel } = tables.find(t => t.table === activeTable)
 
-    updateField({
-      table: activeTable,
-      parentModel,
-      field,
-      value: newValue,
-      id: dat.id,
-      setErrors,
-    })
-  }, [activeTable, activeId])
+      updateField({
+        table: activeTable,
+        parentModel,
+        field,
+        value: newValue,
+        id: dat.id,
+        setErrors,
+      })
+    },
+    [activeTable, activeId],
+  )
 
   if (!activeId) return null
   if (!dat) {

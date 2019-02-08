@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext } from 'react'
 import { FixedSizeList as List } from 'react-window'
 import styled from 'styled-components'
@@ -32,13 +31,7 @@ const Row = styled.div`
   }
 `
 
-const SektionList = ({
-  dimensions,
-  activeId,
-}: {
-  dimensions: Object,
-  activeId: ?number,
-}) => {
+const SektionList = ({ dimensions, activeId }) => {
   const store = useContext(storeContext)
   const { setLocation, showFilter, setShowFilter } = store
   // eslint-disable-next-line no-restricted-globals

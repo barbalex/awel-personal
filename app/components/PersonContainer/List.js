@@ -1,8 +1,7 @@
-// @flow
 import React, { useContext } from 'react'
 import { FixedSizeList as List } from 'react-window'
 import styled from 'styled-components'
-import {  observer } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { UncontrolledTooltip } from 'reactstrap'
 import { FaTrashAlt } from 'react-icons/fa'
 
@@ -32,13 +31,7 @@ const Row = styled.div`
   }
 `
 
-const PersonList = ({
-  dimensions,
-  activeId
-}: {
-  dimensions: Object,
-  activeId: ?number
-}) => {
+const PersonList = ({ dimensions, activeId }) => {
   const store = useContext(storeContext)
   const { setLocation, showFilter, setShowFilter } = store
   // eslint-disable-next-line no-restricted-globals

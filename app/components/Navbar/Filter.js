@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
@@ -7,7 +6,7 @@ import {
   InputGroupAddon,
   InputGroupText,
   Input,
-  UncontrolledTooltip
+  UncontrolledTooltip,
 } from 'reactstrap'
 import { FaTimes, FaEdit, FaFilter } from 'react-icons/fa'
 
@@ -22,10 +21,10 @@ const Filter = () => {
   const { showFilter, setShowFilter, filterFulltext, setFilterFulltext } = store
 
   const toggleShowFilter = useCallback(() => setShowFilter(!showFilter), [
-    showFilter
+    showFilter,
   ])
   const onChangeFilterFulltext = useCallback(e =>
-    setFilterFulltext(e.target.value)
+    setFilterFulltext(e.target.value),
   )
   const onEmptyFilterFulltext = useCallback(() => setFilterFulltext(null))
 

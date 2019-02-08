@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext } from 'react'
 import { FixedSizeList as List } from 'react-window'
 import styled from 'styled-components'
@@ -12,15 +11,7 @@ const Container = styled.div`
   border-right: 1px solid rgb(46, 125, 50);
 `
 
-const DataList = ({
-  dimensions,
-  activeId,
-  activeTable,
-}: {
-  dimensions: Object,
-  activeId: ?number,
-  activeTable: ?string,
-}) => {
+const DataList = ({ dimensions, activeId, activeTable }) => {
   const store = useContext(storeContext)
   const { showDeleted } = store
 

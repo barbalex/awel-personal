@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext, useCallback, useEffect, useState } from 'react'
 import Dropzone from 'react-dropzone'
 import { observer } from 'mobx-react-lite'

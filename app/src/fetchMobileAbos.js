@@ -1,5 +1,4 @@
-// @flow
-export default ({ db, store }: { db: Object, store: Object }) => {
+export default ({ db, store }) => {
   const mobileAbos = db.prepare('SELECT * from mobileAbos').all()
   store.setMobileAbos(mobileAbos)
 }
