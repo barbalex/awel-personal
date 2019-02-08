@@ -8,7 +8,6 @@ import {
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { shell } from 'electron'
-import { FaEllipsisV } from 'react-icons/fa'
 import { FaTrashAlt } from 'react-icons/fa'
 import { FaRegEdit } from 'react-icons/fa'
 
@@ -21,7 +20,6 @@ const DbPath = styled.span`
   color: grey;
 `
 const MoreMenu = styled(UncontrolledDropdown)`
-  width: 40px;
   > a {
     padding-left: 18px !important;
   }
@@ -71,8 +69,8 @@ const More = () => {
 
   return (
     <MoreMenu nav inNavbar>
-      <DropdownToggle nav>
-        <FaEllipsisV />
+      <DropdownToggle nav caret>
+        Mehr
       </DropdownToggle>
       <DropdownMenu right>
         <DropdownItem onClick={chooseDbConnection}>
