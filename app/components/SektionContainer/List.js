@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { UncontrolledTooltip } from 'reactstrap'
 import { FaTrashAlt } from 'react-icons/fa'
-import { FaExclamationCircle } from 'react-icons/fa'
+import { FaRegEdit } from 'react-icons/fa'
 
 import storeContext from '../../storeContext'
 
@@ -29,15 +29,17 @@ const Row = styled.div`
 const Text = styled.div`
   max-width: calc(100% - 30px - 36px);
   max-width: ${props =>
-    `calc(100% - 30px${props.nrOfSvgs ? ` - ${18 * props.nrOfSvgs}px` : ''})`};
+    `calc(100% ${props.nrOfSvgs ? ` - ${22 * props.nrOfSvgs}px` : ''})`};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   float: left;
 `
 const Svg = styled.div`
-  margin: 0 3px;
+  margin-top: -4px;
+  margin-left: 4px;
   float: right;
+  font-size: large;
 `
 
 const SektionList = ({ dimensions, activeId }) => {
@@ -88,7 +90,7 @@ const SektionList = ({ dimensions, activeId }) => {
               )}
               {showMutationNoetigSvg && (
                 <Svg>
-                  <FaExclamationCircle id={`mutationNoetig${row.id}`} />
+                  <FaRegEdit id={`mutationNoetig${row.id}`} />
                   <UncontrolledTooltip
                     placement="left"
                     target={`mutationNoetig${row.id}`}

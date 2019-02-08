@@ -9,6 +9,8 @@ import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { shell } from 'electron'
 import { FaEllipsisV } from 'react-icons/fa'
+import { FaTrashAlt } from 'react-icons/fa'
+import { FaRegEdit } from 'react-icons/fa'
 
 import storeContext from '../../storeContext'
 import dbContext from '../../dbContext'
@@ -29,6 +31,16 @@ const Version = styled.div`
   color: rgba(0, 0, 0, 0.87);
   user-select: none;
   font-style: italic;
+`
+const StyledDropdownItem = styled(DropdownItem)`
+  display: flex !important;
+  justify-content: space-between;
+`
+const Svg = styled.div`
+  svg {
+    margin-left: 9px;
+    font-size: large;
+  }
 `
 
 const onClickIssues = () => {
@@ -69,25 +81,35 @@ const More = () => {
           <DbPath>{`Aktuell: ${db.name}`}</DbPath>
         </DropdownItem>
         {!activeLocation !== 'mutations' && (
-          <>
+          <div>
             <DropdownItem divider />
             <DropdownItem onClick={showMutations}>
               Daten-Änderungen anzeigen
             </DropdownItem>
-          </>
+          </div>
         )}
         <DropdownItem divider />
-        <DropdownItem onClick={toggleShowDeleted}>
-          {showDeleted
-            ? 'Gelöschte Datensätze verbergen'
-            : 'Gelöschte Datensätze anzeigen'}
-        </DropdownItem>
+        <StyledDropdownItem onClick={toggleShowDeleted}>
+          <div>
+            {showDeleted
+              ? 'Gelöschte Datensätze verbergen'
+              : 'Gelöschte Datensätze anzeigen'}
+          </div>
+          <Svg>
+            <FaTrashAlt />
+          </Svg>
+        </StyledDropdownItem>
         <DropdownItem divider />
-        <DropdownItem onClick={toggleShowMutationNoetig}>
-          {showMutationNoetig
-            ? 'Datensätze mit Handlungsbedarf nicht hervorheben'
-            : 'Datensätze mit Handlungsbedarf hervorheben'}
-        </DropdownItem>
+        <StyledDropdownItem onClick={toggleShowMutationNoetig}>
+          <div>
+            {showMutationNoetig
+              ? 'Datensätze mit Handlungsbedarf nicht hervorheben'
+              : 'Datensätze mit Handlungsbedarf hervorheben'}
+          </div>
+          <Svg>
+            <FaRegEdit />
+          </Svg>
+        </StyledDropdownItem>
         <DropdownItem divider />
         <DropdownItem onClick={onClickIssues}>
           Fehler und Wünsche melden
