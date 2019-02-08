@@ -28,7 +28,6 @@ import SchluesselTypWert from './SchluesselTypWert'
 import SchluesselAnlageWert from './SchluesselAnlageWert'
 import EtikettWert from './EtikettWert'
 import LandWert from './LandWert'
-import BereichWert from './BereichWert'
 import Person from './Person'
 import Mutation from './Mutation'
 import StatusWert from './StatusWert'
@@ -65,6 +64,7 @@ export default db =>
       mutations: types.array(Mutation),
       location: types.optional(types.array(types.string), ['Personen']),
       showDeleted: types.optional(types.boolean, false),
+      showMutationNoetig: types.optional(types.boolean, false),
       statusWerte: types.array(StatusWert),
       tagWerte: types.array(TagWert),
       username: types.maybe(types.string),
@@ -646,6 +646,9 @@ export default db =>
         },
         setShowDeleted(show) {
           self.showDeleted = show
+        },
+        setShowMutationNoetig(show) {
+          self.showMutationNoetig = show
         },
         revertMutation(mutationId) {
           const { mutations } = self

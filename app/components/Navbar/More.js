@@ -38,12 +38,23 @@ const onClickIssues = () => {
 const More = () => {
   const store = useContext(storeContext)
   const db = useContext(dbContext)
-  const { showDeleted, setShowDeleted, location, setLocation } = store
+  const {
+    showDeleted,
+    setShowDeleted,
+    showMutationNoetig,
+    setShowMutationNoetig,
+    location,
+    setLocation,
+  } = store
   const activeLocation = location.toJSON()[0]
 
   const toggleShowDeleted = useCallback(() => setShowDeleted(!showDeleted), [
     showDeleted,
   ])
+  const toggleShowMutationNoetig = useCallback(
+    () => setShowMutationNoetig(!showMutationNoetig),
+    [showMutationNoetig],
+  )
   const showMutations = useCallback(() => setLocation(['mutations']))
 
   return (
@@ -68,8 +79,14 @@ const More = () => {
         <DropdownItem divider />
         <DropdownItem onClick={toggleShowDeleted}>
           {showDeleted
-            ? 'gelöschte Datensätze verbergen'
-            : 'gelöschte Datensätze anzeigen'}
+            ? 'Gelöschte Datensätze verbergen'
+            : 'Gelöschte Datensätze anzeigen'}
+        </DropdownItem>
+        <DropdownItem divider />
+        <DropdownItem onClick={toggleShowMutationNoetig}>
+          {showMutationNoetig
+            ? 'Datensätze mit Handlungsbedarf nicht hervorheben'
+            : 'Datensätze mit Handlungsbedarf hervorheben'}
         </DropdownItem>
         <DropdownItem divider />
         <DropdownItem onClick={onClickIssues}>

@@ -63,6 +63,7 @@ create table personen (
   parkplatzBeitrag text,
   bemerkungen text,
   beschaeftigungsgrad integer,
+  mutationNoetig integer default 0,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT
 );
@@ -99,6 +100,7 @@ create table aemter (
   standort text,
   leiter integer REFERENCES personen(id) on update cascade on delete restrict,
   kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
+  mutationNoetig integer default 0,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT
 );
@@ -127,7 +129,7 @@ create table abteilungen (
   standort text,
   leiter integer REFERENCES personen(id) on update cascade on delete restrict,
   kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
-  -- schluessel?,
+  mutationNoetig integer default 0,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT
 );
@@ -162,6 +164,7 @@ create table sektionen (
   standort text,
   leiter integer REFERENCES personen(id) on update cascade on delete restrict,
   kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
+  mutationNoetig integer default 0,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT
 );
@@ -230,6 +233,7 @@ create table bereiche (
   standort text,
   leiter integer REFERENCES personen(id) on update cascade on delete restrict,
   kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
+  mutationNoetig integer default 0,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT
 );
