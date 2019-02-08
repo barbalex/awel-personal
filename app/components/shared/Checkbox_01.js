@@ -6,6 +6,10 @@ import styled from 'styled-components'
 const StyledInput = styled(Input)`
   position: relative;
   top: 10px;
+  /* larger-sized Checkboxes */
+  -webkit-transform: scale(1.5); /* Safari and Chrome */
+  padding: 10px;
+  margin-left: -1.1rem !important;
 `
 
 const SharedCheckbox = ({ value, field, label, saveToDb, error }) => {

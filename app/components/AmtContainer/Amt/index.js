@@ -28,6 +28,7 @@ const Amt = ({ activeId }) => {
     personen,
     aemter,
     showDeleted,
+    showMutationNoetig,
     kostenstelleWerte,
     showFilter,
     filterAmt,
@@ -167,6 +168,16 @@ const Amt = ({ activeId }) => {
           saveToDb={saveToDb}
           error={errors.kostenstelle}
         />
+        {showMutationNoetig && (
+          <SharedCheckbox
+            key={`${amtId}mutationNoetig`}
+            value={amt.mutationNoetig}
+            field="mutationNoetig"
+            label="Handlungsbedarf"
+            saveToDb={saveToDb}
+            error={errors.mutationNoetig}
+          />
+        )}
         {!showFilter && <Zuletzt />}
       </StyledForm>
     </Container>

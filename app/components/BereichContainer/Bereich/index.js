@@ -33,6 +33,7 @@ const Bereich = ({ activeId }) => {
     aemter,
     bereiche,
     showDeleted,
+    showMutationNoetig,
     kostenstelleWerte,
     showFilter,
     filterBereich,
@@ -237,6 +238,16 @@ const Bereich = ({ activeId }) => {
           saveToDb={saveToDb}
           error={errors.kostenstelle}
         />
+        {showMutationNoetig && (
+          <SharedCheckbox
+            key={`${bereichId}mutationNoetig`}
+            value={bereich.mutationNoetig}
+            field="mutationNoetig"
+            label="Handlungsbedarf"
+            saveToDb={saveToDb}
+            error={errors.mutationNoetig}
+          />
+        )}
         {!showFilter && <Zuletzt />}
       </StyledForm>
     </Container>

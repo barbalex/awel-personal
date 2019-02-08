@@ -29,6 +29,7 @@ const Abteilung = ({ activeId }) => {
     aemter,
     abteilungen,
     showDeleted,
+    showMutationNoetig,
     kostenstelleWerte,
     showFilter,
     filterAbteilung,
@@ -49,27 +50,30 @@ const Abteilung = ({ activeId }) => {
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [abteilung])
 
-  const saveToDb = useCallback(({ field, value }) => {
-    if (!abteilung && !showFilter)
-      throw new Error(`Abteilung with id ${activeId} not found`)
-    const newValue = ifIsNumericAsNumber(value)
+  const saveToDb = useCallback(
+    ({ field, value }) => {
+      if (!abteilung && !showFilter)
+        throw new Error(`Abteilung with id ${activeId} not found`)
+      const newValue = ifIsNumericAsNumber(value)
 
-    if (showFilter) {
-      setFilter({
-        model: 'filterAbteilung',
-        value: { ...filterAbteilung, ...{ [field]: newValue } },
-      })
-    } else {
-      updateField({
-        table: 'abteilungen',
-        parentModel: 'abteilungen',
-        field,
-        value: newValue,
-        id: abteilung.id,
-        setErrors,
-      })
-    }
-  }, [activeId, abteilungen.length, filterAbteilung, showFilter])
+      if (showFilter) {
+        setFilter({
+          model: 'filterAbteilung',
+          value: { ...filterAbteilung, ...{ [field]: newValue } },
+        })
+      } else {
+        updateField({
+          table: 'abteilungen',
+          parentModel: 'abteilungen',
+          field,
+          value: newValue,
+          id: abteilung.id,
+          setErrors,
+        })
+      }
+    },
+    [activeId, abteilungen.length, filterAbteilung, showFilter],
+  )
 
   // filter out options with empty values - makes no sense and errors
   const personOptions = useMemo(
@@ -184,6 +188,16 @@ const Abteilung = ({ activeId }) => {
           saveToDb={saveToDb}
           error={errors.kostenstelle}
         />
+        {showMutationNoetig && (
+          <SharedCheckbox
+            key={`${abteilungId}mutationNoetig`}
+            value={abteilung.mutationNoetig}
+            field="mutationNoetig"
+            label="Handlungsbedarf"
+            saveToDb={saveToDb}
+            error={errors.mutationNoetig}
+          />
+        )}
         {!showFilter && <Zuletzt />}
       </StyledForm>
     </Container>

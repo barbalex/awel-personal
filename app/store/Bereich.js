@@ -3,6 +3,7 @@ import { types } from 'mobx-state-tree'
 export default types.model('Abteilung', {
   id: types.maybe(types.integer),
   deleted: types.optional(types.integer, 0),
+  mutationNoetig: types.optional(types.integer, 0),
   sektion: types.maybeNull(types.integer),
   abteilung: types.maybeNull(types.integer),
   amt: types.maybeNull(types.integer),

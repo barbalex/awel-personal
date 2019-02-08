@@ -31,6 +31,7 @@ const Sektion = ({ activeId }) => {
     abteilungen,
     sektionen,
     showDeleted,
+    showMutationNoetig,
     kostenstelleWerte,
     showFilter,
     filterSektion,
@@ -197,6 +198,16 @@ const Sektion = ({ activeId }) => {
           saveToDb={saveToDb}
           error={errors.kostenstelle}
         />
+        {showMutationNoetig && (
+          <SharedCheckbox
+            key={`${sektionId}mutationNoetig`}
+            value={sektion.mutationNoetig}
+            field="mutationNoetig"
+            label="Handlungsbedarf"
+            saveToDb={saveToDb}
+            error={errors.mutationNoetig}
+          />
+        )}
         {!showFilter && <Zuletzt />}
       </StyledForm>
     </Container>

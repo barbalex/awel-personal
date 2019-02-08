@@ -42,6 +42,7 @@ const Person = ({ activeId }) => {
     etiketten,
     funktionen,
     showDeleted,
+    showMutationNoetig,
     statusWerte,
     anredeWerte,
     etikettWerte,
@@ -625,6 +626,16 @@ const Person = ({ activeId }) => {
         <Schluessels />
         <MobileAbos />
         <Telefones />
+        {showMutationNoetig && (
+          <SharedCheckbox
+            key={`${personId}mutationNoetig`}
+            value={person.mutationNoetig}
+            field="mutationNoetig"
+            label="Handlungsbedarf"
+            saveToDb={saveToDb}
+            error={errors.mutationNoetig}
+          />
+        )}
         {!showFilter && <Zuletzt />}
       </StyledForm>
     </Container>
