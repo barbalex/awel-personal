@@ -9,6 +9,7 @@ import PersonContainer from './PersonContainer'
 import AmtContainer from './AmtContainer'
 import AbteilungContainer from './AbteilungContainer'
 import SektionContainer from './SektionContainer'
+import BereichContainer from './BereichContainer'
 import StammdatenContainer from './StammdatenContainer'
 import DeletionModal from './DeletionModal'
 import Mutations from './Mutations'
@@ -33,6 +34,7 @@ const App = () => {
       {activeLocation === 'Personen' && <PersonContainer />}
       {activeLocation === 'Aemter' && <AmtContainer />}
       {activeLocation === 'Sektionen' && <SektionContainer />}
+      {activeLocation === 'Bereiche' && <BereichContainer />}
       {activeLocation === 'Abteilungen' && <AbteilungContainer />}
       {activeLocation.includes('Werte') && <StammdatenContainer />}
       {activeLocation === 'mutations' && <Mutations />}

@@ -10,6 +10,7 @@ import lValues from 'lodash/values'
 import Amt from './Amt'
 import Abteilung from './Abteilung'
 import Settings from './Settings'
+import Bereich from './Bereich'
 import Sektion from './Sektion'
 import Etikett from './Etikett'
 import AnredeWert from './AnredeWert'
@@ -55,11 +56,11 @@ export default db =>
       schluesselAnlageWerte: types.array(SchluesselAnlageWert),
       etikettWerte: types.array(EtikettWert),
       landWerte: types.array(LandWert),
-      bereichWerte: types.array(BereichWert),
       personen: types.array(Person),
       aemter: types.array(Amt),
       abteilungen: types.array(Abteilung),
       settings: types.optional(Settings, { id: 1, schluesselFormPath: null }),
+      bereiche: types.array(Bereich),
       sektionen: types.array(Sektion),
       mutations: types.array(Mutation),
       location: types.optional(types.array(types.string), ['Personen']),
@@ -72,6 +73,7 @@ export default db =>
       filterPerson: types.optional(Person, {}),
       filterAmt: types.optional(Amt, {}),
       filterAbteilung: types.optional(Abteilung, {}),
+      filterBereich: types.optional(Bereich, {}),
       filterSektion: types.optional(Sektion, {}),
       filterEtikett: types.optional(Etikett, {}),
       filterLink: types.optional(Link, {}),
@@ -90,6 +92,7 @@ export default db =>
           filterPerson,
           filterAmt,
           filterAbteilung,
+          filterBereich,
           filterSektion,
           filterEtikett,
           filterLink,
@@ -103,6 +106,7 @@ export default db =>
             ...Object.values(filterPerson),
             ...Object.values(filterAmt),
             ...Object.values(filterAbteilung),
+            ...Object.values(filterBereich),
             ...Object.values(filterSektion),
             ...Object.values(filterEtikett),
             ...Object.values(filterLink),
@@ -425,6 +429,52 @@ export default db =>
           })
         return abteilungen
       },
+      get bereicheFiltered() {
+        const { filterFulltext } = self
+        let bereiche = getSnapshot(self.bereiche)
+        const filterBereich = getSnapshot(self.filterBereich)
+        Object.keys(filterBereich).forEach(key => {
+          if (filterBereich[key] || filterBereich[key] === 0) {
+            bereiche = bereiche.filter(p => {
+              if (!filterBereich[key]) return true
+              if (!p[key]) return false
+              return p[key]
+                .toString()
+                .toLowerCase()
+                .includes(filterBereich[key].toString().toLowerCase())
+            })
+          }
+        })
+        bereiche = bereiche
+          .filter(p => {
+            if (!self.showDeleted) return p.deleted === 0
+            return true
+          })
+          .filter(p => {
+            if (!filterFulltext) return true
+            // now check for any value if includes
+            const personValues = Object.entries(p)
+              .filter(e => e[0] !== 'id')
+              .map(e => e[1])
+            return (
+              [...personValues].filter(v => {
+                if (!v) return false
+                if (!v.toString()) return false
+                return v
+                  .toString()
+                  .toLowerCase()
+                  .includes(filterFulltext.toString().toLowerCase())
+              }).length > 0
+            )
+          })
+          .sort((a, b) => {
+            if (!a.name && b.name) return -1
+            if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
+              return -1
+            return 1
+          })
+        return bereiche
+      },
       get sektionenFiltered() {
         const { filterFulltext } = self
         let sektionen = getSnapshot(self.sektionen)
@@ -497,6 +547,7 @@ export default db =>
         emptyFilter() {
           self.filterPerson = {}
           self.filterAbteilung = {}
+          self.filterBereich = {}
           self.filterSektion = {}
           self.filterEtikett = {}
           self.filterLink = {}
@@ -538,6 +589,11 @@ export default db =>
         setAbteilungen(abteilungen) {
           self.watchMutations = false
           self.abteilungen = abteilungen
+          self.watchMutations = true
+        },
+        setBereiche(bereiche) {
+          self.watchMutations = false
+          self.bereiche = bereiche
           self.watchMutations = true
         },
         setSektionen(sektionen) {
@@ -746,6 +802,27 @@ export default db =>
             letzteMutationZeit: Date.now(),
           })
           self.setLocation(['Abteilungen', info.lastInsertRowid.toString()])
+        },
+        addBereich() {
+          // 1. create new Bereich in db, returning id
+          let info
+          try {
+            info = db
+              .prepare(
+                'insert into bereiche (letzteMutationUser, letzteMutationZeit) values (@user, @zeit)',
+              )
+              .run({ user: self.username, zeit: Date.now() })
+          } catch (error) {
+            self.addError(error)
+            return console.log(error)
+          }
+          // 2. add to store
+          self.bereiche.push({
+            id: info.lastInsertRowid,
+            letzteMutationUser: self.username,
+            letzteMutationZeit: Date.now(),
+          })
+          self.setLocation(['Bereiche', info.lastInsertRowid.toString()])
         },
         addSektion() {
           // 1. create new Sektion in db, returning id
@@ -1014,6 +1091,40 @@ export default db =>
             1,
           )
           self.setLocation(['Abteilungen'])
+        },
+        setBereichDeleted(id) {
+          // write to db
+          try {
+            db.prepare(
+              `update bereiche set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+            ).run({ id, user: self.username, time: Date.now() })
+          } catch (error) {
+            self.addError(error)
+            return console.log(error)
+          }
+          // write to store
+          const bereich = self.bereiche.find(p => p.id === id)
+          bereich.deleted = 1
+          bereich.letzteMutationUser = self.username
+          bereich.letzteMutationZeit = Date.now()
+          if (!self.showDeleted) self.setLocation(['Bereichen'])
+        },
+        deleteBereich(id) {
+          // write to db
+          try {
+            db.prepare('delete from bereiche where id = ?').run(id)
+          } catch (error) {
+            self.addError(error)
+            return console.log(error)
+          }
+          // write to store
+          /**
+           * Do not use filter! Reason:
+           * rebuilds self.bereiche. Consequence:
+           * all other bereiche are re-added and listet as mutations of op 'add'
+           */
+          self.bereiche.splice(findIndex(self.bereiche, p => p.id === id), 1)
+          self.setLocation(['Bereichen'])
         },
         setSektionDeleted(id) {
           // write to db
@@ -1464,6 +1575,25 @@ export default db =>
           const abteilung = self.abteilungen.find(p => p.id === idAbteilung)
           abteilung.letzteMutationUser = self.username
           abteilung.letzteMutationZeit = Date.now()
+        },
+        updateBereichsMutation(idBereich) {
+          // in db
+          try {
+            db.prepare(
+              `update bereiche set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+            ).run({
+              user: self.username,
+              time: Date.now(),
+              id: idBereich,
+            })
+          } catch (error) {
+            self.addError(error)
+            return console.log(error)
+          }
+          // in store
+          const person = self.bereiche.find(p => p.id === idBereich)
+          person.letzteMutationUser = self.username
+          person.letzteMutationZeit = Date.now()
         },
         updateSektionsMutation(idSektion) {
           // in db

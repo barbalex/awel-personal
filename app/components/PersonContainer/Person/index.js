@@ -38,6 +38,7 @@ const Person = ({ activeId }) => {
     aemter,
     abteilungen,
     sektionen,
+    bereiche,
     etiketten,
     funktionen,
     showDeleted,
@@ -46,7 +47,6 @@ const Person = ({ activeId }) => {
     etikettWerte,
     funktionWerte,
     landWerte,
-    bereichWerte,
     showFilter,
     filterPerson,
     filterEtikett,
@@ -297,6 +297,16 @@ const Person = ({ activeId }) => {
         })),
     [sektionen.length, person.abteilung, person.amt],
   )
+  const bereichOptions = useMemo(
+    () =>
+      sortBy(bereiche, ['name'])
+        .filter(w => !!w.name && w.deleted === 0)
+        .map(w => ({
+          label: w.name,
+          value: w.id,
+        })),
+    [bereiche.length],
+  )
   const statusOptions = useMemo(() =>
     sortBy(statusWerte, ['sort', 'value'])
       .filter(p => p.deleted === 0)
@@ -331,14 +341,6 @@ const Person = ({ activeId }) => {
   )
   const landOptions = useMemo(() =>
     sortBy(landWerte, ['sort', 'value'])
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
-  )
-  const bereichOptions = useMemo(() =>
-    sortBy(bereichWerte, ['sort', 'value'])
       .filter(p => p.deleted === 0)
       .map(w => ({
         label: w.value,

@@ -4,6 +4,31 @@ PRAGMA foreign_keys = OFF;
 
 -------------------------------------------
 
+drop table if exists kostenstelleWerte;
+create table kostenstelleWerte (
+  id integer primary key autoincrement,
+  value text unique,
+  deleted integer default 0,
+  historic integer default 0,
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iKostenstelleWerteKostenstelle;
+create index iKostenstelleWerteKostenstelle on kostenstelleWerte (value);
+drop index if exists iKostenstelleWerteHistorisch;
+create index iKostenstelleWerteHistorisch on kostenstelleWerte (historic);
+drop index if exists iKostenstelleWerteSort;
+create index iKostenstelleWerteSort on kostenstelleWerte (sort);
+
+insert into
+  kostenstelleWerte(value, sort)
+values
+  ('TODO kostenstelleWert', 1);
+
+-------------------------------------------
+
 drop table if exists personen;
 create table personen (
   -- use autoincrement to prevent unused id's from being reused
@@ -29,7 +54,7 @@ create table personen (
   amt integer default 1 references aemter(id) on update cascade on delete restrict,
   abteilung integer references abteilungen(id) on update cascade on delete restrict,
   sektion integer references sektionen(id) on update cascade on delete restrict,
-  bereich text references bereichWerte(value) on update cascade on delete no action,
+  bereich text references bereiche(id) on update cascade on delete restrict,
   vorgesetztId integer references personen(id) on update cascade on delete restrict,
   eintrittDatum text,
   austrittDatum text,
@@ -123,52 +148,6 @@ values
   (6, 'Recht', 're', 1),
   (7, 'Wasserbau', 'wb', 1);
 
-
--------------------------------------------
-
-drop table if exists bereichWerte;
-
--------------------------------------------
-
-drop table if exists bereiche;
-create table bereiche (
-  id integer primary key autoincrement,
-  deleted integer default 0,
-  sektion integer REFERENCES sektionen (id) on update cascade on delete restrict,
-  abteilung integer REFERENCES abteilungen (id) on update cascade on delete restrict,
-  amt integer REFERENCES aemter (id) on update cascade on delete restrict,
-  name text,
-  kurzzeichen text,
-  telefonNr text,
-  email text check (email like '%_@__%.__%'),
-  standort text,
-  leiter integer REFERENCES personen(id) on update cascade on delete restrict,
-  kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
-  letzteMutationZeit TEXT,
-  letzteMutationUser TEXT
-);
-
-drop index if exists iBereichDeleted;
-create index iBereichDeleted on bereiche (deleted);
-drop index if exists iBereichName;
-create index iBereichName on bereiche (name);
-
-insert into
-  bereiche(name)
-values
-  ('Kernenergietechnik/Radioaktive Abfälle'),
-  ('Tiefenlager'),
-  ('Bearbeitung von Rechtsfragen'),
-  ('Rekurse und Beschwerden'),
-  ('Juristische Beratung'),
-  ('Rechtliche Vertretung des Amtes nach Aussen'),
-  ('Finanz und Rechnungswesen'),
-  ('Controllerdienst'),
-  ('Qualitäts- und Umweltmanagement'),
-  ('Informatik'),
-  ('Internet'),
-  ('Kanzlei AWEL');
-
 -------------------------------------------
 
 drop table if exists sektionen;
@@ -229,6 +208,52 @@ values
   ('Gewässernutzung', '', 7), -- Wasserbau
   ('Bau', '', 7), -- Wasserbau
   ('Gewässerunterhalt', '', 7); -- Wasserbau
+
+
+-------------------------------------------
+
+drop table if exists bereichWerte;
+
+-------------------------------------------
+
+drop table if exists bereiche;
+create table bereiche (
+  id integer primary key autoincrement,
+  deleted integer default 0,
+  sektion integer REFERENCES sektionen (id) on update cascade on delete restrict,
+  abteilung integer REFERENCES abteilungen (id) on update cascade on delete restrict,
+  amt integer REFERENCES aemter (id) on update cascade on delete restrict,
+  name text,
+  kurzzeichen text,
+  telefonNr text,
+  email text check (email like '%_@__%.__%'),
+  standort text,
+  leiter integer REFERENCES personen(id) on update cascade on delete restrict,
+  kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iBereichDeleted;
+create index iBereichDeleted on bereiche (deleted);
+drop index if exists iBereichName;
+create index iBereichName on bereiche (name);
+
+insert into
+  bereiche(name)
+values
+  ('Kernenergietechnik/Radioaktive Abfälle'),
+  ('Tiefenlager'),
+  ('Bearbeitung von Rechtsfragen'),
+  ('Rekurse und Beschwerden'),
+  ('Juristische Beratung'),
+  ('Rechtliche Vertretung des Amtes nach Aussen'),
+  ('Finanz und Rechnungswesen'),
+  ('Controllerdienst'),
+  ('Qualitäts- und Umweltmanagement'),
+  ('Informatik'),
+  ('Internet'),
+  ('Kanzlei AWEL');
 
 -------------------------------------------
 
@@ -444,31 +469,6 @@ values
 -------------------------------------------
 
 drop table if exists abteilungWerte;
-
--------------------------------------------
-
-drop table if exists kostenstelleWerte;
-create table kostenstelleWerte (
-  id integer primary key autoincrement,
-  value text unique,
-  deleted integer default 0,
-  historic integer default 0,
-  sort integer,
-  letzteMutationZeit TEXT,
-  letzteMutationUser TEXT
-);
-
-drop index if exists iKostenstelleWerteKostenstelle;
-create index iKostenstelleWerteKostenstelle on kostenstelleWerte (value);
-drop index if exists iKostenstelleWerteHistorisch;
-create index iKostenstelleWerteHistorisch on kostenstelleWerte (historic);
-drop index if exists iKostenstelleWerteSort;
-create index iKostenstelleWerteSort on kostenstelleWerte (sort);
-
-insert into
-  kostenstelleWerte(value, sort)
-values
-  ('TODO kostenstelleWert', 1);
 
 -------------------------------------------
 

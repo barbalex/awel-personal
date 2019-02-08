@@ -1,11 +1,14 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
-import Data from './Data'
+import Bereich from './Bereich'
 import List from './List'
+import fetchPersonen from '../../src/fetchPersonen'
+import fetchBereiche from '../../src/fetchBereiche'
+import fetchAbteilungen from '../../src/fetchAbteilungen'
 import fetchWerte from '../../src/fetchWerte'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
@@ -13,40 +16,35 @@ import dbContext from '../../dbContext'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
-// seems that navbar is not finished when StammdatenContainer is built
+// seems that navbar is not finished when BereichContainer is built
 const Container = styled.div`
-  height: calc(100% - 56px);
+  height: calc(100vh - 56px);
 `
 // seems needed to prevent unnessecary scrollbars
 const StyledReflexElement = styled(ReflexElement)`
+  background-color: ${props =>
+    props.showfilter ? '#f7f791' : 'rgba(0,0,0,0)'};
+  overflow-x: hidden !important;
   > div {
     height: unset !important;
   }
 `
 
-const StammdatenContainer = () => {
+const BereichContainer = () => {
   const store = useContext(storeContext)
   const db = useContext(dbContext)
+  const { showFilter, bereiche } = store
   const location = store.location.toJSON()
-  const activeTable = location[0]
-  const activeId = ifIsNumericAsNumber(location[1])
-  const data = store[activeTable]
-  const dat = data.find(d => d.id === activeId)
-  // pass list the active dat's props to enable instant updates
-  const datJson = dat || {}
+  const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
+  const bereich = bereiche.find(p => p.id === activeId)
+  // pass list the active bereich's props to enable instant updates
+  const bereichJson = bereich ? bereich.toJSON() : {}
 
   useEffect(() => {
-    fetchWerte({ db, store, table: 'statusWerte' })
-    fetchWerte({ db, store, table: 'anredeWerte' })
+    fetchBereiche({ db, store })
+    fetchAbteilungen({ db, store })
+    fetchPersonen({ db, store })
     fetchWerte({ db, store, table: 'kostenstelleWerte' })
-    fetchWerte({ db, store, table: 'mobileAboTypWerte' })
-    fetchWerte({ db, store, table: 'telefonTypWerte' })
-    fetchWerte({ db, store, table: 'schluesselTypWerte' })
-    fetchWerte({ db, store, table: 'schluesselAnlageWerte' })
-    fetchWerte({ db, store, table: 'funktionWerte' })
-    fetchWerte({ db, store, table: 'mobileAboKostenstelleWerte' })
-    fetchWerte({ db, store, table: 'etikettWerte' })
-    fetchWerte({ db, store, table: 'landWerte' })
   }, [])
 
   return (
@@ -54,16 +52,16 @@ const StammdatenContainer = () => {
       <ErrorBoundary>
         <ReflexContainer orientation="vertical">
           <ReflexElement
-            flex={0.33}
+            flex={0.25}
             propagateDimensions
             renderOnResizeRate={100}
             renderOnResize
           >
-            <List activeId={activeId} activeTable={activeTable} {...datJson} />
+            <List activeId={activeId} {...bereichJson} />
           </ReflexElement>
           <ReflexSplitter />
-          <StyledReflexElement>
-            <Data activeId={activeId} activeTable={activeTable} />
+          <StyledReflexElement showfilter={showFilter}>
+            <Bereich activeId={activeId} />
           </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>
@@ -71,4 +69,4 @@ const StammdatenContainer = () => {
   )
 }
 
-export default observer(StammdatenContainer)
+export default observer(BereichContainer)

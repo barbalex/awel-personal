@@ -9,6 +9,7 @@ import List from './List'
 import fetchPersonen from '../../src/fetchPersonen'
 import fetchAemter from '../../src/fetchAemter'
 import fetchAbteilungen from '../../src/fetchAbteilungen'
+import fetchBereiche from '../../src/fetchBereiche'
 import fetchSektionen from '../../src/fetchSektionen'
 import fetchEtiketten from '../../src/fetchEtiketten'
 import fetchLinks from '../../src/fetchLinks'
@@ -52,6 +53,7 @@ const PersonContainer = () => {
     fetchPersonen({ db, store })
     fetchAemter({ db, store })
     fetchAbteilungen({ db, store })
+    fetchBereiche({ db, store })
     fetchSektionen({ db, store })
     fetchWerte({ db, store, table: 'statusWerte' })
     fetchWerte({ db, store, table: 'anredeWerte' })
@@ -60,7 +62,6 @@ const PersonContainer = () => {
     fetchEtiketten({ db, store })
     fetchWerte({ db, store, table: 'etikettWerte' })
     fetchWerte({ db, store, table: 'landWerte' })
-    fetchWerte({ db, store, table: 'bereichWerte' })
     fetchLinks({ db, store })
     fetchSchluessel({ db, store })
     fetchMobileAbos({ db, store })
