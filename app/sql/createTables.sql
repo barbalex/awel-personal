@@ -123,6 +123,52 @@ values
   (6, 'Recht', 're', 1),
   (7, 'Wasserbau', 'wb', 1);
 
+
+-------------------------------------------
+
+drop table if exists bereichWerte;
+
+-------------------------------------------
+
+drop table if exists bereiche;
+create table bereiche (
+  id integer primary key autoincrement,
+  deleted integer default 0,
+  sektion integer REFERENCES sektionen (id) on update cascade on delete restrict,
+  abteilung integer REFERENCES abteilungen (id) on update cascade on delete restrict,
+  amt integer REFERENCES aemter (id) on update cascade on delete restrict,
+  name text,
+  kurzzeichen text,
+  telefonNr text,
+  email text check (email like '%_@__%.__%'),
+  standort text,
+  leiter integer REFERENCES personen(id) on update cascade on delete restrict,
+  kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iBereichDeleted;
+create index iBereichDeleted on bereiche (deleted);
+drop index if exists iBereichName;
+create index iBereichName on bereiche (name);
+
+insert into
+  bereiche(name)
+values
+  ('Kernenergietechnik/Radioaktive Abfälle'),
+  ('Tiefenlager'),
+  ('Bearbeitung von Rechtsfragen'),
+  ('Rekurse und Beschwerden'),
+  ('Juristische Beratung'),
+  ('Rechtliche Vertretung des Amtes nach Aussen'),
+  ('Finanz und Rechnungswesen'),
+  ('Controllerdienst'),
+  ('Qualitäts- und Umweltmanagement'),
+  ('Informatik'),
+  ('Internet'),
+  ('Kanzlei AWEL');
+
 -------------------------------------------
 
 drop table if exists sektionen;
@@ -634,43 +680,6 @@ values
   ('Italien'),
   ('Frankreich'),
   ('Österreich');
-
-
--------------------------------------------
-
-drop table if exists bereichWerte;
-create table bereichWerte (
-  id integer primary key autoincrement,
-  value text unique,
-  deleted integer default 0,
-  historic integer default 0,
-  sort integer,
-  letzteMutationZeit TEXT,
-  letzteMutationUser TEXT
-);
-
-drop index if exists iBereichWerteBereich;
-create index iBereichWerteBereich on bereichWerte (value);
-drop index if exists iBereichWerteHistorisch;
-create index iBereichWerteHistorisch on bereichWerte (historic);
-drop index if exists iBereichWerteSort;
-create index iBereichWerteSort on bereichWerte (sort);
-
-insert into
-  bereichWerte(value)
-values
-  ('Kernenergietechnik/Radioaktive Abfälle'),
-  ('Tiefenlager'),
-  ('Bearbeitung von Rechtsfragen'),
-  ('Rekurse und Beschwerden'),
-  ('Juristische Beratung'),
-  ('Rechtliche Vertretung des Amtes nach Aussen'),
-  ('Finanz und Rechnungswesen'),
-  ('Controllerdienst'),
-  ('Qualitäts- und Umweltmanagement'),
-  ('Informatik'),
-  ('Internet'),
-  ('Kanzlei AWEL');
 
 -------------------------------------------
 
