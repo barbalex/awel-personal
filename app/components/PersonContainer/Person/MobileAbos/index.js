@@ -57,7 +57,7 @@ const MobileAbosComponent = () => {
   return (
     <FormGroup row>
       <Label for="mobileAbo" sm={2}>
-        mobile Abo
+        Mobile Abo
       </Label>
       <Col sm={10}>
         <Container data-ispdf={isPdf} name="mobileAbo">

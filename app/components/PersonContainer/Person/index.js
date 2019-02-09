@@ -4,7 +4,6 @@ import React, {
   useMemo,
   useState,
   useEffect,
-  useRef,
 } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
@@ -27,9 +26,58 @@ import Zuletzt from './Zuletzt'
 import storeContext from '../../../storeContext'
 import PersonImage from './PersonImage'
 
-const Container = styled.div``
-const StyledForm = styled(Form)`
-  margin: 20px;
+const Container = styled.div`
+  hyphens: auto;
+  word-wrap: break-word;
+`
+const StyledForm = styled(Form)``
+const WrapperNarrow = styled.div`
+  display: grid;
+  grid-template-columns: repeat(1, 100%);
+  grid-template-rows: auto;
+  grid-template-areas: 'personalien' 'anstellung' 'funktionen' 'verzeichnis';
+`
+const WrapperWide = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  grid-template-rows: auto;
+  grid-template-areas:
+    'personalien anstellung'
+    'funktionen verzeichnis';
+`
+
+const AreaPersonalien = styled.div`
+  grid-area: personalien;
+  background-color: ${props => (props.isPdf ? 'white' : 'rgb(252, 255, 194)')};
+  padding: 8px;
+  border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
+  border-bottom: none;
+`
+const AreaAnstellung = styled.div`
+  grid-area: anstellung;
+  background-color: ${props => (props.isPdf ? 'white' : 'rgb(255, 186, 137)')};
+  padding: 8px;
+  border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
+  border-bottom: none;
+`
+const AreaFunktionen = styled.div`
+  grid-area: funktionen;
+  background-color: ${props => (props.isPdf ? 'white' : 'rgb(246, 255, 245)')};
+  padding: 8px;
+  border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
+  border-bottom: none;
+`
+const AreaVerzeichnis = styled.div`
+  grid-area: verzeichnis;
+  background-color: ${props => (props.isPdf ? 'white' : 'rgb(227, 232, 255)')};
+  padding: 8px;
+  border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
+  border-bottom: none;
+`
+const Title = styled.div`
+font-weight: 900;
+font-size: 16px
+grid-area: areaGeschaeftTitle;
 `
 
 const Person = ({ activeId, dimensions }) => {
@@ -372,26 +420,6 @@ const Person = ({ activeId, dimensions }) => {
 
   if (!showFilter && !activeId) return null
 
-  const WrapperNarrow = styled.div`
-    display: grid;
-    grid-template-columns: repeat(1, 100%);
-    grid-template-rows: auto;
-    grid-template-areas:
-      'areaNummern' 'areaGeschaeft' 'areaForGeschaeftsart' 'areaFristen' 'areaPersonen' 'areaLinks' 'areaHistory'
-      'areaZuletztMutiert';
-  `
-  const WrapperWide = styled.div`
-    display: grid;
-    grid-template-columns: repeat(12, 8.33333%);
-    grid-template-rows: auto;
-    grid-template-areas:
-      'areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaNummern areaNummern areaNummern areaNummern'
-      'areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaForGeschaeftsart areaForGeschaeftsart areaForGeschaeftsart areaForGeschaeftsart'
-      'areaFristen areaFristen areaFristen areaPersonen areaPersonen areaPersonen areaPersonen areaPersonen areaPersonen areaPersonen areaPersonen areaPersonen'
-      'areaLinks areaLinks areaLinks areaLinks areaLinks areaLinks areaLinks areaLinks areaLinks areaLinks areaLinks areaLinks'
-      'areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory'
-      'areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert';
-  `
   const { width } = dimensions
   const viewIsNarrow = width < 860
   let Wrapper = viewIsNarrow ? WrapperNarrow : WrapperWide
@@ -399,271 +427,285 @@ const Person = ({ activeId, dimensions }) => {
   return (
     <Container showfilter={showFilter}>
       <StyledForm>
-        <PersonImage person={person} />
-        {showDeleted && (
-          <SharedCheckbox
-            key={`${personId}deleted`}
-            value={person.deleted}
-            field="deleted"
-            label="gelöscht"
-            saveToDb={saveToDb}
-            error={errors.deleted}
-          />
-        )}
-        <Input
-          key={`${personId}name`}
-          value={person.name}
-          field="name"
-          label="Name"
-          saveToDb={saveToDb}
-          error={errors.name}
-        />
-        <Input
-          key={`${personId}vorname`}
-          value={person.vorname}
-          field="vorname"
-          label="Vorname"
-          saveToDb={saveToDb}
-          error={errors.vorname}
-        />
-        <Select
-          key={`${personId}${existsFilter ? 1 : 0}anrede`}
-          value={person.anrede}
-          field="anrede"
-          label="Anrede"
-          options={anredeOptions}
-          saveToDb={saveToDb}
-          error={errors.anrede}
-        />
-        <Input
-          key={`${personId}kurzzeichen`}
-          value={person.kurzzeichen}
-          field="kurzzeichen"
-          label="Kurzzeichen"
-          saveToDb={saveToDb}
-          error={errors.kurzzeichen}
-        />
-        <Input
-          key={`${personId}adresse`}
-          value={person.adresse}
-          field="adresse"
-          label="Adresse"
-          saveToDb={saveToDb}
-          error={errors.adresse}
-        />
-        <Input
-          key={`${personId}plz`}
-          value={person.plz}
-          field="plz"
-          label="PLZ"
-          saveToDb={saveToDb}
-          type="number"
-          error={errors.plz}
-        />
-        <Input
-          key={`${personId}ort`}
-          value={person.ort}
-          field="ort"
-          label="Ort"
-          saveToDb={saveToDb}
-          error={errors.ort}
-        />
-        <Select
-          key={`${personId}${existsFilter ? 1 : 0}land`}
-          value={person.land}
-          field="land"
-          label="Land"
-          options={landOptions}
-          saveToDb={saveToDb}
-          error={errors.land}
-        />
-        <Input
-          key={`${personId}email`}
-          value={person.email}
-          field="email"
-          label="Email"
-          saveToDb={saveToDb}
-          error={errors.email}
-        />
-        <Date
-          key={`${personId}geburtDatum`}
-          value={person.geburtDatum}
-          field="geburtDatum"
-          label="Geburtsdatum"
-          saveToDb={saveToDb}
-          error={errors.geburtDatum}
-        />
-        <Select
-          key={`${personId}${existsFilter ? 1 : 0}amt`}
-          value={person.amt}
-          field="amt"
-          label="Amt"
-          options={amtOptions}
-          saveToDb={saveToDb}
-          error={errors.amt}
-        />
-        <Select
-          key={`${personId}${existsFilter ? 1 : 0}abteilung`}
-          value={person.abteilung}
-          field="abteilung"
-          label="Abteilung"
-          options={abteilungOptions}
-          saveToDb={saveToDb}
-          error={errors.abteilung}
-        />
-        <Select
-          key={`${personId}${existsFilter ? 1 : 0}sektion`}
-          value={person.sektion}
-          field="sektion"
-          label="Sektion"
-          options={sektionOptions}
-          saveToDb={saveToDb}
-          error={errors.sektion}
-        />
-        <Select
-          key={`${personId}${existsFilter ? 1 : 0}bereich`}
-          value={person.bereich}
-          field="bereich"
-          label="Bereich"
-          options={bereichOptions}
-          saveToDb={saveToDb}
-          error={errors.bereich}
-        />
-        <Input
-          key={`${personId}standort`}
-          value={person.standort}
-          field="standort"
-          label="Standort"
-          saveToDb={saveToDb}
-          error={errors.standort}
-        />
-        <Input
-          key={`${personId}bueroNr`}
-          value={person.bueroNr}
-          field="bueroNr"
-          label="Büro Nr."
-          saveToDb={saveToDb}
-          error={errors.bueroNr}
-        />
-        <Select
-          key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
-          value={person.vorgesetztId}
-          field="vorgesetztId"
-          label="Vorgesetzte(r)"
-          options={personOptions}
-          saveToDb={saveToDb}
-          error={errors.vorgesetztId}
-        />
-        <Date
-          key={`${personId}${existsFilter ? 1 : 0}eintrittDatum`}
-          value={person.eintrittDatum}
-          field="eintrittDatum"
-          label="Eintritt Datum"
-          saveToDb={saveToDb}
-          error={errors.eintrittDatum}
-        />
-        <Date
-          key={`${personId}${existsFilter ? 1 : 0}austrittDatum`}
-          value={person.austrittDatum}
-          field="austrittDatum"
-          label="Austritt Datum"
-          saveToDb={saveToDb}
-          error={errors.austrittDatum}
-        />
-        <Select
-          key={`${personId}${existsFilter ? 1 : 0}status`}
-          value={person.status}
-          field="status"
-          label="Status"
-          options={statusOptions}
-          saveToDb={saveToDb}
-          error={errors.status}
-        />
-        <Input
-          key={`${personId}beschaeftigungsgrad`}
-          value={person.beschaeftigungsgrad}
-          field="beschaeftigungsgrad"
-          label="Beschaeftigungsgrad (%)"
-          saveToDb={saveToDb}
-          type="number"
-          error={errors.beschaeftigungsgrad}
-        />
-        <Input
-          key={`${personId}parkplatzNr`}
-          value={person.parkplatzNr}
-          field="parkplatzNr"
-          label="Parkplatz Nr."
-          saveToDb={saveToDb}
-          error={errors.parkplatzNr}
-        />
-        {showFilter ? (
-          <Select
-            key={`${personId}${existsFilter ? 1 : 0}funktion`}
-            value={filterFunktion.funktion}
-            field="funktion"
-            label="Funktion"
-            options={funktionenOptions}
-            saveToDb={saveToDbFunktion}
-            error={errors.funktion}
-          />
-        ) : (
-          <SelectMulti
-            key={`${personId}${existsFilter ? 1 : 0}funktion`}
-            value={myFunktionen}
-            field="funktion"
-            label="Funktionen"
-            options={funktionenOptions}
-            add={addFunktion}
-            remove={deleteFunktion}
-            error={errors.funktion}
-          />
-        )}
-        {showFilter ? (
-          <Select
-            key={`${personId}${existsFilter ? 1 : 0}etikett`}
-            value={filterEtikett.etikett}
-            field="etikett"
-            label="Etikett"
-            options={etikettenOptions}
-            saveToDb={saveToDbEtikett}
-            error={errors.etikett}
-          />
-        ) : (
-          <SelectMulti
-            key={`${personId}${existsFilter ? 1 : 0}etikett`}
-            value={myEtiketten}
-            field="etikett"
-            label="Etiketten"
-            options={etikettenOptions}
-            add={addEtikett}
-            remove={deleteEtikett}
-            error={errors.etikett}
-          />
-        )}
-        <Input
-          key={`${personId}bemerkungen`}
-          value={person.bemerkungen}
-          field="bemerkungen"
-          label="Bemerkungen"
-          saveToDb={saveToDb}
-          type="textarea"
-          error={errors.bemerkungen}
-        />
-        {!showFilter && <Links />}
-        <Schluessels />
-        <MobileAbos />
-        <Telefones />
-        {showMutationNoetig && (
-          <SharedCheckbox
-            key={`${personId}mutationNoetig`}
-            value={person.mutationNoetig}
-            field="mutationNoetig"
-            label="Handlungsbedarf"
-            saveToDb={saveToDb}
-            error={errors.mutationNoetig}
-          />
-        )}
-        {!showFilter && <Zuletzt />}
+        <Wrapper>
+          <AreaPersonalien>
+            <Title>Personalien</Title>
+            <PersonImage person={person} />
+            {showDeleted && (
+              <SharedCheckbox
+                key={`${personId}deleted`}
+                value={person.deleted}
+                field="deleted"
+                label="gelöscht"
+                saveToDb={saveToDb}
+                error={errors.deleted}
+              />
+            )}
+            <Input
+              key={`${personId}name`}
+              value={person.name}
+              field="name"
+              label="Name"
+              saveToDb={saveToDb}
+              error={errors.name}
+            />
+            <Input
+              key={`${personId}vorname`}
+              value={person.vorname}
+              field="vorname"
+              label="Vorname"
+              saveToDb={saveToDb}
+              error={errors.vorname}
+            />
+            <Select
+              key={`${personId}${existsFilter ? 1 : 0}anrede`}
+              value={person.anrede}
+              field="anrede"
+              label="Anrede"
+              options={anredeOptions}
+              saveToDb={saveToDb}
+              error={errors.anrede}
+            />
+            <Input
+              key={`${personId}kurzzeichen`}
+              value={person.kurzzeichen}
+              field="kurzzeichen"
+              label="Kurzzei&shy;chen"
+              saveToDb={saveToDb}
+              error={errors.kurzzeichen}
+            />
+            <Input
+              key={`${personId}adresse`}
+              value={person.adresse}
+              field="adresse"
+              label="Adresse"
+              saveToDb={saveToDb}
+              error={errors.adresse}
+            />
+            <Input
+              key={`${personId}plz`}
+              value={person.plz}
+              field="plz"
+              label="PLZ"
+              saveToDb={saveToDb}
+              type="number"
+              error={errors.plz}
+            />
+            <Input
+              key={`${personId}ort`}
+              value={person.ort}
+              field="ort"
+              label="Ort"
+              saveToDb={saveToDb}
+              error={errors.ort}
+            />
+            <Select
+              key={`${personId}${existsFilter ? 1 : 0}land`}
+              value={person.land}
+              field="land"
+              label="Land"
+              options={landOptions}
+              saveToDb={saveToDb}
+              error={errors.land}
+            />
+            <Input
+              key={`${personId}email`}
+              value={person.email}
+              field="email"
+              label="Email"
+              saveToDb={saveToDb}
+              error={errors.email}
+            />
+            <Date
+              key={`${personId}geburtDatum`}
+              value={person.geburtDatum}
+              field="geburtDatum"
+              label="Geburts&shy;datum"
+              saveToDb={saveToDb}
+              error={errors.geburtDatum}
+            />
+            <Telefones />
+          </AreaPersonalien>
+          <AreaAnstellung>
+            <Title>Anstellung</Title>
+            <Select
+              key={`${personId}${existsFilter ? 1 : 0}status`}
+              value={person.status}
+              field="status"
+              label="Status"
+              options={statusOptions}
+              saveToDb={saveToDb}
+              error={errors.status}
+            />
+            <Date
+              key={`${personId}${existsFilter ? 1 : 0}eintrittDatum`}
+              value={person.eintrittDatum}
+              field="eintrittDatum"
+              label="Eintritt Datum"
+              saveToDb={saveToDb}
+              error={errors.eintrittDatum}
+            />
+            <Date
+              key={`${personId}${existsFilter ? 1 : 0}austrittDatum`}
+              value={person.austrittDatum}
+              field="austrittDatum"
+              label="Austritt Datum"
+              saveToDb={saveToDb}
+              error={errors.austrittDatum}
+            />
+            <Input
+              key={`${personId}beschaeftigungsgrad`}
+              value={person.beschaeftigungsgrad}
+              field="beschaeftigungsgrad"
+              label="Beschaefti&shy;gungs&shy;grad (%)"
+              saveToDb={saveToDb}
+              type="number"
+              error={errors.beschaeftigungsgrad}
+            />
+            <Input
+              key={`${personId}standort`}
+              value={person.standort}
+              field="standort"
+              label="Standort"
+              saveToDb={saveToDb}
+              error={errors.standort}
+            />
+            <Input
+              key={`${personId}bueroNr`}
+              value={person.bueroNr}
+              field="bueroNr"
+              label="Büro Nr."
+              saveToDb={saveToDb}
+              error={errors.bueroNr}
+            />
+          </AreaAnstellung>
+          <AreaFunktionen>
+            <Title>Funktionen</Title>
+            <Select
+              key={`${personId}${existsFilter ? 1 : 0}amt`}
+              value={person.amt}
+              field="amt"
+              label="Amt"
+              options={amtOptions}
+              saveToDb={saveToDb}
+              error={errors.amt}
+            />
+            <Select
+              key={`${personId}${existsFilter ? 1 : 0}abteilung`}
+              value={person.abteilung}
+              field="abteilung"
+              label="Abteilung"
+              options={abteilungOptions}
+              saveToDb={saveToDb}
+              error={errors.abteilung}
+            />
+            <Select
+              key={`${personId}${existsFilter ? 1 : 0}sektion`}
+              value={person.sektion}
+              field="sektion"
+              label="Sektion"
+              options={sektionOptions}
+              saveToDb={saveToDb}
+              error={errors.sektion}
+            />
+            <Select
+              key={`${personId}${existsFilter ? 1 : 0}bereich`}
+              value={person.bereich}
+              field="bereich"
+              label="Bereich"
+              options={bereichOptions}
+              saveToDb={saveToDb}
+              error={errors.bereich}
+            />
+            <Select
+              key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
+              value={person.vorgesetztId}
+              field="vorgesetztId"
+              label="Vorge&shy;setz&shy;te(r)"
+              options={personOptions}
+              saveToDb={saveToDb}
+              error={errors.vorgesetztId}
+            />
+            {showFilter ? (
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}funktion`}
+                value={filterFunktion.funktion}
+                field="funktion"
+                label="Funktion"
+                options={funktionenOptions}
+                saveToDb={saveToDbFunktion}
+                error={errors.funktion}
+              />
+            ) : (
+              <SelectMulti
+                key={`${personId}${existsFilter ? 1 : 0}funktion`}
+                value={myFunktionen}
+                field="funktion"
+                label="Funktio&shy;nen"
+                options={funktionenOptions}
+                add={addFunktion}
+                remove={deleteFunktion}
+                error={errors.funktion}
+              />
+            )}
+          </AreaFunktionen>
+          <AreaVerzeichnis>
+            <Title>Verzeichnis</Title>
+            <Input
+              key={`${personId}parkplatzNr`}
+              value={person.parkplatzNr}
+              field="parkplatzNr"
+              label="Parkplatz Nr."
+              saveToDb={saveToDb}
+              error={errors.parkplatzNr}
+            />
+            {showFilter ? (
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}etikett`}
+                value={filterEtikett.etikett}
+                field="etikett"
+                label="Etikett"
+                options={etikettenOptions}
+                saveToDb={saveToDbEtikett}
+                error={errors.etikett}
+              />
+            ) : (
+              <SelectMulti
+                key={`${personId}${existsFilter ? 1 : 0}etikett`}
+                value={myEtiketten}
+                field="etikett"
+                label="Etiketten"
+                options={etikettenOptions}
+                add={addEtikett}
+                remove={deleteEtikett}
+                error={errors.etikett}
+              />
+            )}
+            <Input
+              key={`${personId}bemerkungen`}
+              value={person.bemerkungen}
+              field="bemerkungen"
+              label="Bemerkun&shy;gen"
+              saveToDb={saveToDb}
+              type="textarea"
+              error={errors.bemerkungen}
+            />
+            {!showFilter && <Links />}
+            <Schluessels />
+            <MobileAbos />
+            {showMutationNoetig && (
+              <SharedCheckbox
+                key={`${personId}mutationNoetig`}
+                value={person.mutationNoetig}
+                field="mutationNoetig"
+                label="Handlungs&shy;bedarf"
+                saveToDb={saveToDb}
+                error={errors.mutationNoetig}
+              />
+            )}
+            {!showFilter && <Zuletzt />}
+          </AreaVerzeichnis>
+        </Wrapper>
       </StyledForm>
     </Container>
   )

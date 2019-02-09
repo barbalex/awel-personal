@@ -97,8 +97,7 @@ const PersonContainer = () => {
           <ReflexElement
             flex={0.25}
             propagateDimensions
-            renderOnResizeRate={100}
-            renderOnResize
+            propagateDimensionsRate={100}
           >
             <List activeId={activeId} {...personJson} />
           </ReflexElement>
@@ -106,8 +105,8 @@ const PersonContainer = () => {
           <StyledReflexElement
             showfilter={showFilter}
             propagateDimensions
-            renderOnResizeRate={100}
-            renderOnResize
+            propagateDimensionsRate={1000}
+            resizeHeight={false}
           >
             <Person activeId={activeId} />
           </StyledReflexElement>
