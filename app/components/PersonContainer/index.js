@@ -103,7 +103,12 @@ const PersonContainer = () => {
             <List activeId={activeId} {...personJson} />
           </ReflexElement>
           <ReflexSplitter />
-          <StyledReflexElement showfilter={showFilter}>
+          <StyledReflexElement
+            showfilter={showFilter}
+            propagateDimensions
+            renderOnResizeRate={100}
+            renderOnResize
+          >
             <Person activeId={activeId} />
           </StyledReflexElement>
         </ReflexContainer>

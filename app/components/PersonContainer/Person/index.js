@@ -4,6 +4,7 @@ import React, {
   useMemo,
   useState,
   useEffect,
+  useRef,
 } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
@@ -31,7 +32,7 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Person = ({ activeId }) => {
+const Person = ({ activeId, dimensions }) => {
   const store = useContext(storeContext)
   const {
     personen,
@@ -56,6 +57,8 @@ const Person = ({ activeId }) => {
     setFilter,
     updateField,
   } = store
+
+  console.log('dimensions', dimensions)
 
   let person
   if (showFilter) {
@@ -368,6 +371,31 @@ const Person = ({ activeId }) => {
   )
 
   if (!showFilter && !activeId) return null
+
+  
+  const WrapperNarrow = styled.div`
+    display: grid;
+    grid-template-columns: repeat(1, 100%);
+    grid-template-rows: auto;
+    grid-template-areas:
+      'areaNummern' 'areaGeschaeft' 'areaForGeschaeftsart' 'areaFristen' 'areaPersonen' 'areaLinks' 'areaHistory'
+      'areaZuletztMutiert';
+  `
+  const WrapperWide = styled.div`
+    display: grid;
+    grid-template-columns: repeat(12, 8.33333%);
+    grid-template-rows: auto;
+    grid-template-areas:
+      'areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaNummern areaNummern areaNummern areaNummern'
+      'areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaGeschaeft areaForGeschaeftsart areaForGeschaeftsart areaForGeschaeftsart areaForGeschaeftsart'
+      'areaFristen areaFristen areaFristen areaPersonen areaPersonen areaPersonen areaPersonen areaPersonen areaPersonen areaPersonen areaPersonen areaPersonen'
+      'areaLinks areaLinks areaLinks areaLinks areaLinks areaLinks areaLinks areaLinks areaLinks areaLinks areaLinks areaLinks'
+      'areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory'
+      'areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert';
+  `
+  const {width}=dimensions
+  const viewIsNarrow = width < 860
+  let Wrapper = viewIsNarrow ? WrapperNarrow : WrapperWide
 
   return (
     <Container showfilter={showFilter}>
