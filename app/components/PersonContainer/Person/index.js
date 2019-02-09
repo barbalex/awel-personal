@@ -561,14 +561,6 @@ const Person = ({ activeId }) => {
           saveToDb={saveToDb}
           error={errors.parkplatzNr}
         />
-        <Input
-          key={`${personId}parkplatzBeitrag`}
-          value={person.parkplatzBeitrag}
-          field="parkplatzBeitrag"
-          label="Parkplatz Beitrag"
-          saveToDb={saveToDb}
-          error={errors.parkplatzBeitrag}
-        />
         {showFilter ? (
           <Select
             key={`${personId}${existsFilter ? 1 : 0}funktion`}

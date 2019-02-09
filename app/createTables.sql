@@ -60,7 +60,6 @@ create table personen (
   austrittDatum text,
   status text references statusWerte(value) on update cascade on delete no action,
   parkplatzNr text,
-  parkplatzBeitrag text,
   bemerkungen text,
   beschaeftigungsgrad integer,
   mutationNoetig integer default 0,
