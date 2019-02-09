@@ -372,7 +372,6 @@ const Person = ({ activeId, dimensions }) => {
 
   if (!showFilter && !activeId) return null
 
-  
   const WrapperNarrow = styled.div`
     display: grid;
     grid-template-columns: repeat(1, 100%);
@@ -393,7 +392,7 @@ const Person = ({ activeId, dimensions }) => {
       'areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory areaHistory'
       'areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert areaZuletztMutiert';
   `
-  const {width}=dimensions
+  const { width } = dimensions
   const viewIsNarrow = width < 860
   let Wrapper = viewIsNarrow ? WrapperNarrow : WrapperWide
 
@@ -494,14 +493,6 @@ const Person = ({ activeId, dimensions }) => {
           saveToDb={saveToDb}
           error={errors.geburtDatum}
         />
-        <Input
-          key={`${personId}bueroNr`}
-          value={person.bueroNr}
-          field="bueroNr"
-          label="Büro Nr."
-          saveToDb={saveToDb}
-          error={errors.bueroNr}
-        />
         <Select
           key={`${personId}${existsFilter ? 1 : 0}amt`}
           value={person.amt}
@@ -537,6 +528,22 @@ const Person = ({ activeId, dimensions }) => {
           options={bereichOptions}
           saveToDb={saveToDb}
           error={errors.bereich}
+        />
+        <Input
+          key={`${personId}standort`}
+          value={person.standort}
+          field="standort"
+          label="Standort"
+          saveToDb={saveToDb}
+          error={errors.standort}
+        />
+        <Input
+          key={`${personId}bueroNr`}
+          value={person.bueroNr}
+          field="bueroNr"
+          label="Büro Nr."
+          saveToDb={saveToDb}
+          error={errors.bueroNr}
         />
         <Select
           key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}

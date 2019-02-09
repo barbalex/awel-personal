@@ -19,11 +19,12 @@ export default types.model('Person', {
   geburtDatum: types.maybe(
     types.union(types.string, types.integer, types.null),
   ),
-  bueroNr: types.maybe(types.union(types.string, types.integer, types.null)),
   amt: types.maybe(types.union(types.integer, types.null)),
   abteilung: types.maybe(types.union(types.integer, types.null)),
   sektion: types.maybe(types.union(types.integer, types.null)),
   bereich: types.maybe(types.union(types.string, types.integer, types.null)),
+  bueroNr: types.maybe(types.union(types.string, types.integer, types.null)),
+  standort: types.maybe(types.union(types.string, types.integer, types.null)),
   vorgesetztId: types.maybeNull(types.integer),
   eintrittDatum: types.maybe(
     types.union(types.string, types.integer, types.null),
