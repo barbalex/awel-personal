@@ -255,15 +255,15 @@ eval("module.exports = mst-middlewares;\n\n//# sourceURL=webpack://renderer/exte
 
 /***/ }),
 
-/***/ "popper":
-/*!*************************!*\
-  !*** external "popper" ***!
-  \*************************/
+/***/ "popper.js":
+/*!****************************!*\
+  !*** external "popper.js" ***!
+  \****************************/
 /*! no static exports found */
 /*! all exports used */
 /***/ (function(module, exports) {
 
-eval("module.exports = popper;\n\n//# sourceURL=webpack://renderer/external_%22popper%22?");
+eval("module.exports = popper.js;\n\n//# sourceURL=webpack://renderer/external_%22popper.js%22?");
 
 /***/ }),
 
