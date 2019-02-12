@@ -1,8 +1,11 @@
 import React, { useContext, useState, useCallback, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Col, FormGroup, Label, Input, FormFeedback } from 'reactstrap'
+import styled from 'styled-components'
 
 import storeContext from '../../storeContext'
+
+const StyledLabel = styled(Label)``
 
 const SharedInput = ({
   value,
@@ -14,6 +17,7 @@ const SharedInput = ({
   disabled = false,
   saveToDb,
   error,
+  row = true,
 }) => {
   const store = useContext(storeContext)
   const { showFilter } = store
@@ -49,25 +53,45 @@ const SharedInput = ({
   useEffect(() => setStateValue(value || value === 0 ? value : ''), [value])
 
   return (
-    <FormGroup row>
-      <Label for={field} sm={2}>
-        {label}
-      </Label>
-      <Col sm={10}>
-        <Input
-          id={field}
-          type={type}
-          name={field}
-          placeholder={placeholder}
-          disabled={disabled}
-          value={stateValue}
-          onChange={onChange}
-          onBlur={onBlur}
-          rows={rows}
-          invalid={!!error}
-        />
-        <FormFeedback>{error}</FormFeedback>
-      </Col>
+    <FormGroup row={row}>
+      {row ? (
+        <>
+          <Label for={field} sm={2}>
+            {label}
+          </Label>
+          <Col sm={10}>
+            <Input
+              id={field}
+              type={type}
+              name={field}
+              placeholder={placeholder}
+              disabled={disabled}
+              value={stateValue}
+              onChange={onChange}
+              onBlur={onBlur}
+              rows={rows}
+              invalid={!!error}
+            />
+            <FormFeedback>{error}</FormFeedback>
+          </Col>
+        </>
+      ) : (
+        <>
+          <Label for={field}>{label}</Label>
+          <Input
+            id={field}
+            type={type}
+            name={field}
+            placeholder={placeholder}
+            disabled={disabled}
+            value={stateValue}
+            onChange={onChange}
+            onBlur={onBlur}
+            rows={rows}
+            invalid={!!error}
+          />
+        </>
+      )}
     </FormGroup>
   )
 }

@@ -106,8 +106,6 @@ const Person = ({ activeId, dimensions }) => {
     updateField,
   } = store
 
-  console.log('dimensions', dimensions)
-
   let person
   if (showFilter) {
     person = filterPerson
@@ -448,6 +446,7 @@ const Person = ({ activeId, dimensions }) => {
               label="Name"
               saveToDb={saveToDb}
               error={errors.name}
+              row={false}
             />
             <Input
               key={`${personId}vorname`}
@@ -456,6 +455,7 @@ const Person = ({ activeId, dimensions }) => {
               label="Vorname"
               saveToDb={saveToDb}
               error={errors.vorname}
+              row={false}
             />
             <Select
               key={`${personId}${existsFilter ? 1 : 0}anrede`}
@@ -473,6 +473,7 @@ const Person = ({ activeId, dimensions }) => {
               label="Kurzzei&shy;chen"
               saveToDb={saveToDb}
               error={errors.kurzzeichen}
+              row={false}
             />
             <Input
               key={`${personId}adresse`}
@@ -481,6 +482,7 @@ const Person = ({ activeId, dimensions }) => {
               label="Adresse"
               saveToDb={saveToDb}
               error={errors.adresse}
+              row={false}
             />
             <Input
               key={`${personId}plz`}
@@ -490,6 +492,7 @@ const Person = ({ activeId, dimensions }) => {
               saveToDb={saveToDb}
               type="number"
               error={errors.plz}
+              row={false}
             />
             <Input
               key={`${personId}ort`}
@@ -498,6 +501,7 @@ const Person = ({ activeId, dimensions }) => {
               label="Ort"
               saveToDb={saveToDb}
               error={errors.ort}
+              row={false}
             />
             <Select
               key={`${personId}${existsFilter ? 1 : 0}land`}
@@ -515,6 +519,7 @@ const Person = ({ activeId, dimensions }) => {
               label="Email"
               saveToDb={saveToDb}
               error={errors.email}
+              row={false}
             />
             <Date
               key={`${personId}geburtDatum`}
@@ -561,6 +566,7 @@ const Person = ({ activeId, dimensions }) => {
               saveToDb={saveToDb}
               type="number"
               error={errors.beschaeftigungsgrad}
+              row={false}
             />
             <Input
               key={`${personId}standort`}
@@ -569,6 +575,7 @@ const Person = ({ activeId, dimensions }) => {
               label="Standort"
               saveToDb={saveToDb}
               error={errors.standort}
+              row={false}
             />
             <Input
               key={`${personId}bueroNr`}
@@ -577,6 +584,7 @@ const Person = ({ activeId, dimensions }) => {
               label="Büro Nr."
               saveToDb={saveToDb}
               error={errors.bueroNr}
+              row={false}
             />
           </AreaAnstellung>
           <AreaFunktionen>
@@ -658,6 +666,7 @@ const Person = ({ activeId, dimensions }) => {
               label="Parkplatz Nr."
               saveToDb={saveToDb}
               error={errors.parkplatzNr}
+              row={false}
             />
             {showFilter ? (
               <Select
@@ -689,6 +698,7 @@ const Person = ({ activeId, dimensions }) => {
               saveToDb={saveToDb}
               type="textarea"
               error={errors.bemerkungen}
+              row={false}
             />
             {!showFilter && <Links />}
             <Schluessels />
