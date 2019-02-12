@@ -31,6 +31,7 @@ const SharedSelectMulti = ({
   add,
   remove,
   error,
+  row = true,
 }) => {
   const onChange = useCallback(
     (unusedOption, { action, option, removedValue }) => {
@@ -44,27 +45,50 @@ const SharedSelectMulti = ({
   )
 
   return (
-    <FormGroup row>
-      <Label for={field} sm={2}>
-        {label}
-      </Label>
-      <Col sm={10}>
-        <StyledSelect
-          id={field}
-          name={field}
-          isMulti
-          value={value || ''}
-          options={options}
-          onChange={onChange}
-          hideSelectedOptions
-          placeholder=""
-          isClearable={false}
-          isSearchable
-          noOptionsMessage={noOptionsMessage}
-          invalid={!!error}
-        />
-        <FormFeedback>{error}</FormFeedback>
-      </Col>
+    <FormGroup row={row}>
+      {row ? (
+        <>
+          <Label for={field} sm={2}>
+            {label}
+          </Label>
+          <Col sm={10}>
+            <StyledSelect
+              id={field}
+              name={field}
+              isMulti
+              value={value || ''}
+              options={options}
+              onChange={onChange}
+              hideSelectedOptions
+              placeholder=""
+              isClearable={false}
+              isSearchable
+              noOptionsMessage={noOptionsMessage}
+              invalid={!!error}
+            />
+            <FormFeedback>{error}</FormFeedback>
+          </Col>
+        </>
+      ) : (
+        <>
+          <Label for={field}>{label}</Label>
+          <StyledSelect
+            id={field}
+            name={field}
+            isMulti
+            value={value || ''}
+            options={options}
+            onChange={onChange}
+            hideSelectedOptions
+            placeholder=""
+            isClearable={false}
+            isSearchable
+            noOptionsMessage={noOptionsMessage}
+            invalid={!!error}
+          />
+          <FormFeedback>{error}</FormFeedback>
+        </>
+      )}
     </FormGroup>
   )
 }

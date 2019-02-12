@@ -465,6 +465,7 @@ const Person = ({ activeId, dimensions }) => {
               options={anredeOptions}
               saveToDb={saveToDb}
               error={errors.anrede}
+              row={false}
             />
             <Input
               key={`${personId}kurzzeichen`}
@@ -511,6 +512,7 @@ const Person = ({ activeId, dimensions }) => {
               options={landOptions}
               saveToDb={saveToDb}
               error={errors.land}
+              row={false}
             />
             <Input
               key={`${personId}email`}
@@ -528,6 +530,7 @@ const Person = ({ activeId, dimensions }) => {
               label="Geburts&shy;datum"
               saveToDb={saveToDb}
               error={errors.geburtDatum}
+              row={false}
             />
             <Telefones />
           </AreaPersonalien>
@@ -541,6 +544,7 @@ const Person = ({ activeId, dimensions }) => {
               options={statusOptions}
               saveToDb={saveToDb}
               error={errors.status}
+              row={false}
             />
             <Date
               key={`${personId}${existsFilter ? 1 : 0}eintrittDatum`}
@@ -549,6 +553,7 @@ const Person = ({ activeId, dimensions }) => {
               label="Eintritt Datum"
               saveToDb={saveToDb}
               error={errors.eintrittDatum}
+              row={false}
             />
             <Date
               key={`${personId}${existsFilter ? 1 : 0}austrittDatum`}
@@ -557,6 +562,7 @@ const Person = ({ activeId, dimensions }) => {
               label="Austritt Datum"
               saveToDb={saveToDb}
               error={errors.austrittDatum}
+              row={false}
             />
             <Input
               key={`${personId}beschaeftigungsgrad`}
@@ -597,6 +603,7 @@ const Person = ({ activeId, dimensions }) => {
               options={amtOptions}
               saveToDb={saveToDb}
               error={errors.amt}
+              row={false}
             />
             <Select
               key={`${personId}${existsFilter ? 1 : 0}abteilung`}
@@ -606,6 +613,7 @@ const Person = ({ activeId, dimensions }) => {
               options={abteilungOptions}
               saveToDb={saveToDb}
               error={errors.abteilung}
+              row={false}
             />
             <Select
               key={`${personId}${existsFilter ? 1 : 0}sektion`}
@@ -615,6 +623,7 @@ const Person = ({ activeId, dimensions }) => {
               options={sektionOptions}
               saveToDb={saveToDb}
               error={errors.sektion}
+              row={false}
             />
             <Select
               key={`${personId}${existsFilter ? 1 : 0}bereich`}
@@ -624,6 +633,7 @@ const Person = ({ activeId, dimensions }) => {
               options={bereichOptions}
               saveToDb={saveToDb}
               error={errors.bereich}
+              row={false}
             />
             <Select
               key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
@@ -633,6 +643,7 @@ const Person = ({ activeId, dimensions }) => {
               options={personOptions}
               saveToDb={saveToDb}
               error={errors.vorgesetztId}
+              row={false}
             />
             {showFilter ? (
               <Select
@@ -643,6 +654,7 @@ const Person = ({ activeId, dimensions }) => {
                 options={funktionenOptions}
                 saveToDb={saveToDbFunktion}
                 error={errors.funktion}
+                row={false}
               />
             ) : (
               <SelectMulti
@@ -654,6 +666,7 @@ const Person = ({ activeId, dimensions }) => {
                 add={addFunktion}
                 remove={deleteFunktion}
                 error={errors.funktion}
+                row={false}
               />
             )}
           </AreaFunktionen>
@@ -677,6 +690,7 @@ const Person = ({ activeId, dimensions }) => {
                 options={etikettenOptions}
                 saveToDb={saveToDbEtikett}
                 error={errors.etikett}
+                row={false}
               />
             ) : (
               <SelectMulti
@@ -688,6 +702,7 @@ const Person = ({ activeId, dimensions }) => {
                 add={addEtikett}
                 remove={deleteEtikett}
                 error={errors.etikett}
+                row={false}
               />
             )}
             <Input

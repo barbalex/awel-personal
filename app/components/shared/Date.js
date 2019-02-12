@@ -57,7 +57,7 @@ const StyledInputGroupAddon = styled(InputGroupAddon)`
   cursor: pointer;
 `
 
-const DateField = ({ value, field, label, saveToDb, error }) => {
+const DateField = ({ value, field, label, saveToDb, error, row = true }) => {
   const [open, setOpen] = useState(false)
   const [stateValue, setStateValue] = useState(
     value || value === 0 ? value : '',
@@ -96,48 +96,61 @@ const DateField = ({ value, field, label, saveToDb, error }) => {
   // after user enters new date
   useEffect(() => setStateValue(value || value === 0 ? value : ''), [value])
 
-  return (
-    <StyledFormGroup row>
-      <Label for={field} sm={2}>
-        {label}
-      </Label>
-      <Col sm={10}>
-        <InputGroup>
-          <Input
-            id={field}
-            type="text"
-            name={field}
-            value={stateValue}
-            onChange={onChange}
-            onBlur={onBlur}
-            invalid={!!error}
+  const Inner = () => (
+    <InputGroup>
+      <Input
+        id={field}
+        type="text"
+        name={field}
+        value={stateValue}
+        onChange={onChange}
+        onBlur={onBlur}
+        invalid={!!error}
+      />
+      <StyledInputGroupAddon
+        addonType="append"
+        id="datePickerInputGroup"
+        onClick={openPicker}
+      >
+        <span className="input-group-text">
+          <FaCalendarAlt />
+        </span>
+        {open && (
+          <DatePicker
+            selected={
+              moment(stateValue, 'DD.MM.YYYY').isValid()
+                ? moment(stateValue, 'DD.MM.YYYY').toDate()
+                : null
+            }
+            onChange={onChangeDatePicker}
+            dateFormat="DD.MM.YYYY"
+            withPortal
+            inline
+            onClickOutside={closePicker}
           />
-          <StyledInputGroupAddon
-            addonType="append"
-            id="datePickerInputGroup"
-            onClick={openPicker}
-          >
-            <span className="input-group-text">
-              <FaCalendarAlt />
-            </span>
-            {open && (
-              <DatePicker
-                selected={
-                  moment(stateValue, 'DD.MM.YYYY').isValid()
-                    ? moment(stateValue, 'DD.MM.YYYY').toDate()
-                    : null
-                }
-                onChange={onChangeDatePicker}
-                dateFormat="DD.MM.YYYY"
-                withPortal
-                inline
-                onClickOutside={closePicker}
-              />
-            )}
-          </StyledInputGroupAddon>
-          <FormFeedback>{error}</FormFeedback>
-        </InputGroup>
-      </Col>
+        )}
+      </StyledInputGroupAddon>
+      <FormFeedback>{error}</FormFeedback>
+    </InputGroup>
+  )
+
+  return (
+    <StyledFormGroup row={row}>
+      {row ? (
+        <>
+          <Label for={field} sm={2}>
+            {label}
+          </Label>
+          <Col sm={10}>
+            <Inner />
+          </Col>
+        </>
+      ) : (
+        <>
+          <Label for={field}>{label}</Label>
+          <Inner />
+        </>
+      )}
     </StyledFormGroup>
   )
 }

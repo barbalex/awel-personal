@@ -23,7 +23,15 @@ const StyledSelect = styled(Select)`
 
 const noOptionsMessage = () => '(keine)'
 
-const SharedSelect = ({ value, field, label, options, saveToDb, error }) => {
+const SharedSelect = ({
+  value,
+  field,
+  label,
+  options,
+  saveToDb,
+  error,
+  row = true,
+}) => {
   const onChange = useCallback(
     option => saveToDb({ value: option ? option.value : null, field }),
     [field],
@@ -35,26 +43,48 @@ const SharedSelect = ({ value, field, label, options, saveToDb, error }) => {
   ])
 
   return (
-    <FormGroup row>
-      <Label for={field} sm={2}>
-        {label}
-      </Label>
-      <Col sm={10}>
-        <StyledSelect
-          id={field}
-          name={field}
-          value={option}
-          options={options}
-          onChange={onChange}
-          hideSelectedOptions
-          placeholder=""
-          isClearable
-          isSearchable
-          noOptionsMessage={noOptionsMessage}
-          invalid={!!error}
-        />
-        <FormFeedback>{error}</FormFeedback>
-      </Col>
+    <FormGroup row={row}>
+      {row ? (
+        <>
+          <Label for={field} sm={2}>
+            {label}
+          </Label>
+          <Col sm={10}>
+            <StyledSelect
+              id={field}
+              name={field}
+              value={option}
+              options={options}
+              onChange={onChange}
+              hideSelectedOptions
+              placeholder=""
+              isClearable
+              isSearchable
+              noOptionsMessage={noOptionsMessage}
+              invalid={!!error}
+            />
+            <FormFeedback>{error}</FormFeedback>
+          </Col>
+        </>
+      ) : (
+        <>
+          <Label for={field}>{label}</Label>
+          <StyledSelect
+            id={field}
+            name={field}
+            value={option}
+            options={options}
+            onChange={onChange}
+            hideSelectedOptions
+            placeholder=""
+            isClearable
+            isSearchable
+            noOptionsMessage={noOptionsMessage}
+            invalid={!!error}
+          />
+          <FormFeedback>{error}</FormFeedback>
+        </>
+      )}
     </FormGroup>
   )
 }
