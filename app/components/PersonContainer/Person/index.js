@@ -728,7 +728,7 @@ const Person = ({ activeId, dimensions }) => {
                 error={errors.mutationNoetig}
               />
             )}
-            {!showFilter && <Zuletzt />}
+            {!showFilter && <Zuletzt row={false} />}
           </AreaVerzeichnis>
         </Wrapper>
       </StyledForm>
