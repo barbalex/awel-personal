@@ -5,7 +5,12 @@ import styled from 'styled-components'
 
 import storeContext from '../../storeContext'
 
-const StyledLabel = styled(Label)``
+const NonRowLabel = styled(Label)`
+  margin-bottom: 3px;
+`
+const StyledFormGroup = styled(FormGroup)`
+  margin-bottom: ${props => (props.row ? 'unset' : '8px !important')};
+`
 
 const SharedInput = ({
   value,
@@ -53,7 +58,7 @@ const SharedInput = ({
   useEffect(() => setStateValue(value || value === 0 ? value : ''), [value])
 
   return (
-    <FormGroup row={row}>
+    <StyledFormGroup row={row}>
       {row ? (
         <>
           <Label for={field} sm={2}>
@@ -77,7 +82,7 @@ const SharedInput = ({
         </>
       ) : (
         <>
-          <Label for={field}>{label}</Label>
+          <NonRowLabel for={field}>{label}</NonRowLabel>
           <Input
             id={field}
             type={type}
@@ -92,7 +97,7 @@ const SharedInput = ({
           />
         </>
       )}
-    </FormGroup>
+    </StyledFormGroup>
   )
 }
 

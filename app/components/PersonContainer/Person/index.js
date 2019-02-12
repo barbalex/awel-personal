@@ -717,7 +717,7 @@ const Person = ({ activeId, dimensions }) => {
             />
             {!showFilter && <Links row={false} />}
             <Schluessels />
-            <MobileAbos />
+            <MobileAbos row={false} />
             {showMutationNoetig && (
               <SharedCheckbox
                 key={`${personId}mutationNoetig`}

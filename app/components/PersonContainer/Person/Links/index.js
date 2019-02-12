@@ -57,7 +57,7 @@ const LinksComponent = ({ row = true }) => {
 
   const Drop = () => (
     <Container data-ispdf={isPdf} name="links">
-      {isPdf && (
+      {!isPdf && (
         <DropzoneContainer>
           <StyledDropzone onDrop={onDrop}>
             {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {

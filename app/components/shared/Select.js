@@ -20,6 +20,12 @@ const StyledSelect = styled(Select)`
     border-color: rgb(204, 204, 204);
   }
 `
+const NonRowLabel = styled(Label)`
+  margin-bottom: 3px;
+`
+const StyledFormGroup = styled(FormGroup)`
+  margin-bottom: ${props => (props.row ? 'unset' : '8px !important')};
+`
 
 const noOptionsMessage = () => '(keine)'
 
@@ -43,7 +49,7 @@ const SharedSelect = ({
   ])
 
   return (
-    <FormGroup row={row}>
+    <StyledFormGroup row={row}>
       {row ? (
         <>
           <Label for={field} sm={2}>
@@ -68,7 +74,7 @@ const SharedSelect = ({
         </>
       ) : (
         <>
-          <Label for={field}>{label}</Label>
+          <NonRowLabel for={field}>{label}</NonRowLabel>
           <StyledSelect
             id={field}
             name={field}
@@ -85,7 +91,7 @@ const SharedSelect = ({
           <FormFeedback>{error}</FormFeedback>
         </>
       )}
-    </FormGroup>
+    </StyledFormGroup>
   )
 }
 

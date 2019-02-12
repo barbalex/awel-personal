@@ -34,8 +34,14 @@ const Kostenstelle = styled.div`
 const Bemerkungen = styled.div`
   grid-column: 3 / span 1;
 `
+const NonRowLabel = styled(Label)`
+  margin-bottom: 3px;
+`
+const StyledFormGroup = styled(FormGroup)`
+  margin-bottom: ${props => (props.row ? 'unset' : '8px !important')};
+`
 
-const MobileAbosComponent = () => {
+const MobileAbosComponent = ({ row = true }) => {
   const store = useContext(storeContext)
   const { showFilter, filterMobileAbo, addMobileAbo } = store
   const location = store.location.toJSON()
@@ -54,35 +60,48 @@ const MobileAbosComponent = () => {
     (mobileAbos.length === 0 ||
       !mobileAbos.map(s => s.name).some(n => n === null))
 
+  const Content = () => (
+    <Container data-ispdf={isPdf} name="mobileAbo">
+      {mobileAbos.length > 0 && (
+        <Row data-ispdf={isPdf}>
+          <Typ>Typ</Typ>
+          <Kostenstelle>Kostenstelle</Kostenstelle>
+          <Bemerkungen>Bemerkungen</Bemerkungen>
+          {!isPdf && <div />}
+        </Row>
+      )}
+      {mobileAbos.map(mobileAbo => (
+        <MobileAbo
+          key={mobileAbo.id || 'filter'}
+          id={mobileAbo.id || 'filter'}
+        />
+      ))}
+      {mayAddNew && (
+        <StyledButton onClick={addMobileAbo} outline>
+          neues mobile Abo
+        </StyledButton>
+      )}
+    </Container>
+  )
+
   return (
-    <FormGroup row>
-      <Label for="mobileAbo" sm={2}>
-        Mobile Abo
-      </Label>
-      <Col sm={10}>
-        <Container data-ispdf={isPdf} name="mobileAbo">
-          {mobileAbos.length > 0 && (
-            <Row data-ispdf={isPdf}>
-              <Typ>Typ</Typ>
-              <Kostenstelle>Kostenstelle</Kostenstelle>
-              <Bemerkungen>Bemerkungen</Bemerkungen>
-              {!isPdf && <div />}
-            </Row>
-          )}
-          {mobileAbos.map(mobileAbo => (
-            <MobileAbo
-              key={mobileAbo.id || 'filter'}
-              id={mobileAbo.id || 'filter'}
-            />
-          ))}
-          {mayAddNew && (
-            <StyledButton onClick={addMobileAbo} outline>
-              neues mobile Abo
-            </StyledButton>
-          )}
-        </Container>
-      </Col>
-    </FormGroup>
+    <StyledFormGroup row={row}>
+      {row ? (
+        <>
+          <Label for="mobileAbo" sm={2}>
+            Mobile Abo
+          </Label>
+          <Col sm={10}>
+            <Content />
+          </Col>
+        </>
+      ) : (
+        <>
+          <NonRowLabel for="mobileAbo">Mobile Abo</NonRowLabel>
+          <Content />
+        </>
+      )}
+    </StyledFormGroup>
   )
 }
 

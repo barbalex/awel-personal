@@ -18,6 +18,7 @@ moment.locale('de')
 
 const StyledFormGroup = styled(FormGroup)`
   grid-column: 1;
+  margin-bottom: ${props => (props.row ? 'unset' : '8px !important')};
   .react-datepicker-popper {
     z-index: 10;
   }
@@ -52,6 +53,9 @@ const StyledFormGroup = styled(FormGroup)`
     border-left-color: #ccc;
     right: 1em;
   }
+`
+const NonRowLabel = styled(Label)`
+  margin-bottom: 3px;
 `
 const StyledInputGroupAddon = styled(InputGroupAddon)`
   cursor: pointer;
@@ -147,7 +151,7 @@ const DateField = ({ value, field, label, saveToDb, error, row = true }) => {
         </>
       ) : (
         <>
-          <Label for={field}>{label}</Label>
+          <NonRowLabel for={field}>{label}</NonRowLabel>
           <Inner />
         </>
       )}
