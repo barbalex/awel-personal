@@ -35,15 +35,30 @@ const WrapperNarrow = styled.div`
   display: grid;
   grid-template-columns: repeat(1, 100%);
   grid-template-rows: auto;
-  grid-template-areas: 'personalien' 'anstellung' 'funktionen' 'verzeichnis';
+  grid-template-areas: 'personalien' 'verzeichnis' 'anstellung' 'funktionen' 'zuletzt';
+`
+const WrapperNarrowShowFilter = styled.div`
+  display: grid;
+  grid-template-columns: repeat(1, 100%);
+  grid-template-rows: auto;
+  grid-template-areas: 'personalien' 'verzeichnis' 'anstellung' 'funktionen';
 `
 const WrapperWide = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 50%);
   grid-template-rows: auto;
   grid-template-areas:
-    'personalien anstellung'
-    'funktionen verzeichnis';
+    'personalien verzeichnis'
+    'anstellung funktionen'
+    'zuletzt zuletzt';
+`
+const WrapperWideShowFilter = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  grid-template-rows: auto;
+  grid-template-areas:
+    'personalien verzeichnis'
+    'anstellung funktionen';
 `
 
 const AreaPersonalien = styled.div`
@@ -69,6 +84,13 @@ const AreaFunktionen = styled.div`
 `
 const AreaVerzeichnis = styled.div`
   grid-area: verzeichnis;
+  background-color: ${props => (props.isPdf ? 'white' : 'rgb(227, 232, 255)')};
+  padding: 8px;
+  border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
+  border-bottom: none;
+`
+const AreaZuletzt = styled.div`
+  grid-area: zuletzt;
   background-color: ${props => (props.isPdf ? 'white' : 'rgb(227, 232, 255)')};
   padding: 8px;
   border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
@@ -420,7 +442,13 @@ const Person = ({ activeId, dimensions }) => {
 
   const { width } = dimensions
   const viewIsNarrow = width < 860
-  let Wrapper = viewIsNarrow ? WrapperNarrow : WrapperWide
+  let Wrapper = viewIsNarrow
+    ? showFilter
+      ? WrapperNarrowShowFilter
+      : WrapperNarrow
+    : showFilter
+    ? WrapperWideShowFilter
+    : WrapperWide
 
   return (
     <Container showfilter={showFilter}>
@@ -728,8 +756,10 @@ const Person = ({ activeId, dimensions }) => {
                 error={errors.mutationNoetig}
               />
             )}
-            {!showFilter && <Zuletzt row={false} />}
           </AreaVerzeichnis>
+          <AreaZuletzt>
+            <Zuletzt row={false} />
+          </AreaZuletzt>
         </Wrapper>
       </StyledForm>
     </Container>
