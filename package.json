@@ -1,8 +1,8 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "Personal",
-  "version": "0.19.0",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "name": "AWEL-Personal",
+  "productName": "Personal-DB",
+  "version": "0.20.0",
+  "description": "Damit verwaltet das AWEL Kt. ZH Personal-Daten",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",
@@ -34,8 +34,8 @@
   },
   "main": "./app/main.prod.js",
   "build": {
-    "productName": "Personal",
-    "appId": "ch.gabriel-software.awel-personal",
+    "productName": "Personal-DB",
+    "appId": "ch.zh.awel.personal",
     "files": [
       "app/dist/",
       "app/app.html",
@@ -44,8 +44,7 @@
       "package.json"
     ],
     "dmg": {
-      "contents": [
-        {
+      "contents": [{
           "x": 130,
           "y": 220
         },
@@ -88,8 +87,8 @@
     "url": "git+https://github.com/barbalex/awel-personal.git"
   },
   "author": {
-    "name": "Alexander Gabriel",
-    "email": "alex.barbalex@gmail.com",
+    "name": "Gabriel-Software",
+    "email": "alex@gabriel-software.ch",
     "url": "https://gabriel-software.ch"
   },
   "license": "MIT",
