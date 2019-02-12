@@ -63,28 +63,31 @@ const WrapperWideShowFilter = styled.div`
 
 const AreaPersonalien = styled.div`
   grid-area: personalien;
-  background-color: ${props => (props.isPdf ? 'white' : 'rgb(252, 255, 194)')};
+  background-color: ${props =>
+    props.isPdf ? 'white' : 'rgba(249, 230, 0, .3)'};
   padding: 8px;
   border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
   border-bottom: none;
 `
 const AreaAnstellung = styled.div`
   grid-area: anstellung;
-  background-color: ${props => (props.isPdf ? 'white' : 'rgb(255, 186, 137)')};
+  background-color: ${props =>
+    props.isPdf ? 'white' : 'rgba(0, 103, 249, .3)'};
   padding: 8px;
   border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
   border-bottom: none;
 `
 const AreaFunktionen = styled.div`
   grid-area: funktionen;
-  background-color: ${props => (props.isPdf ? 'white' : 'rgb(246, 255, 245)')};
+  background-color: ${props => (props.isPdf ? 'white' : 'rgba(61, 0, 247,.3)')};
   padding: 8px;
   border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
   border-bottom: none;
 `
 const AreaVerzeichnis = styled.div`
   grid-area: verzeichnis;
-  background-color: ${props => (props.isPdf ? 'white' : 'rgb(227, 232, 255)')};
+  background-color: ${props =>
+    props.isPdf ? 'white' : 'rgba(249, 115, 0, .3)'};
   padding: 8px;
   border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
   border-bottom: none;
@@ -757,9 +760,11 @@ const Person = ({ activeId, dimensions }) => {
               />
             )}
           </AreaVerzeichnis>
-          <AreaZuletzt>
-            <Zuletzt row={false} />
-          </AreaZuletzt>
+          {!showFilter && (
+            <AreaZuletzt>
+              <Zuletzt row={false} />
+            </AreaZuletzt>
+          )}
         </Wrapper>
       </StyledForm>
     </Container>
