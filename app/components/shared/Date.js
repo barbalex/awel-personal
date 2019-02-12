@@ -115,6 +115,7 @@ const DateField = ({ value, field, label, saveToDb, error, row = true }) => {
         addonType="append"
         id="datePickerInputGroup"
         onClick={openPicker}
+        title="Kalender öffnen"
       >
         <span className="input-group-text">
           <FaCalendarAlt />
