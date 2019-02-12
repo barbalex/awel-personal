@@ -12,7 +12,6 @@ const Container = styled.div`
   grid-area: areaLinks;
   background-color: ${props =>
     props['data-ispdf'] ? 'rgba(0, 0, 0,0)' : 'rgba(0, 0, 0,0)'};
-  display: grid;
   grid-template-columns: ${props =>
     props['data-ispdf'] ? '1fr' : '1fr 1fr 1fr'};
   grid-template-areas: ${props =>
@@ -23,16 +22,10 @@ const Container = styled.div`
   border-bottom: none;
   font-size: ${props => (props['data-ispdf'] ? '10px' : 'inherit')};
 `
-const Links = styled.div`
-  grid-area: links;
-  display: ${props => (props['data-ispdf'] ? 'grid' : 'block')};
-  grid-template-columns: ${props => (props['data-ispdf'] ? '100%' : 'none')};
-`
+const Links = styled.div``
 const DropzoneContainer = styled.div`
-  grid-area: dropzone;
   width: 100%;
   height: 100%;
-  display: ${props => (props['data-ispdf'] ? 'none' : 'block')};
   cursor: pointer;
 `
 const StyledDropzone = styled(Dropzone)`
@@ -50,7 +43,7 @@ const DropzoneInnerDiv = styled.div`
   padding: 5px;
 `
 
-const LinksComponent = () => {
+const LinksComponent = ({ row = true }) => {
   const store = useContext(storeContext)
   const { showFilter, links, addLink } = store
   const location = store.location.toJSON()
@@ -62,52 +55,62 @@ const LinksComponent = () => {
 
   const onDrop = useCallback(files => addLink(files[0].path))
 
-  return (
-    <FormGroup row>
-      <Label for="links" sm={2}>
-        Datei-Links
-      </Label>
-      <Col sm={10}>
-        <Container data-ispdf={isPdf} name="links">
-          <Links data-ispdf={isPdf}>
-            {myLinks.map(link => (
-              <Link key={`${link.idPerson}${link.url}`} link={link} />
-            ))}
-          </Links>
-          <DropzoneContainer data-ispdf={isPdf}>
-            <StyledDropzone onDrop={onDrop}>
-              {({
-                getRootProps,
-                getInputProps,
-                isDragActive,
-                isDragReject,
-              }) => {
-                if (isDragActive) {
-                  return (
-                    <DropzoneInnerDiv {...getRootProps()}>
-                      <div>jetzt fallen lassen...</div>
-                    </DropzoneInnerDiv>
-                  )
-                }
-                if (isDragReject) {
-                  return (
-                    <DropzoneInnerDiv {...getRootProps()}>
-                      <div>Hm. Da ging etwas schief :-(</div>
-                    </DropzoneInnerDiv>
-                  )
-                }
+  const Drop = () => (
+    <Container data-ispdf={isPdf} name="links">
+      {isPdf && (
+        <DropzoneContainer>
+          <StyledDropzone onDrop={onDrop}>
+            {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
+              if (isDragActive) {
                 return (
                   <DropzoneInnerDiv {...getRootProps()}>
-                    <input {...getInputProps()} />
-                    <div>Datei hierhin ziehen...</div>
-                    <div>...oder klicken, um sie zu wählen.</div>
+                    <div>jetzt fallen lassen...</div>
                   </DropzoneInnerDiv>
                 )
-              }}
-            </StyledDropzone>
-          </DropzoneContainer>
-        </Container>
-      </Col>
+              }
+              if (isDragReject) {
+                return (
+                  <DropzoneInnerDiv {...getRootProps()}>
+                    <div>Hm. Da ging etwas schief :-(</div>
+                  </DropzoneInnerDiv>
+                )
+              }
+              return (
+                <DropzoneInnerDiv {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <div>Datei hierhin ziehen...</div>
+                  <div>...oder klicken, um sie zu wählen.</div>
+                </DropzoneInnerDiv>
+              )
+            }}
+          </StyledDropzone>
+        </DropzoneContainer>
+      )}
+      <Links>
+        {myLinks.map(link => (
+          <Link key={`${link.idPerson}${link.url}`} link={link} />
+        ))}
+      </Links>
+    </Container>
+  )
+
+  return (
+    <FormGroup row={row}>
+      {row ? (
+        <>
+          <Label for="links" sm={2}>
+            Datei-Links
+          </Label>
+          <Col sm={10}>
+            <Drop />
+          </Col>
+        </>
+      ) : (
+        <>
+          <Label for="links">Datei-Links</Label>
+          <Drop />
+        </>
+      )}
     </FormGroup>
   )
 }

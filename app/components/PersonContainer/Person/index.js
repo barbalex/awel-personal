@@ -715,7 +715,7 @@ const Person = ({ activeId, dimensions }) => {
               error={errors.bemerkungen}
               row={false}
             />
-            {!showFilter && <Links />}
+            {!showFilter && <Links row={false} />}
             <Schluessels />
             <MobileAbos />
             {showMutationNoetig && (
