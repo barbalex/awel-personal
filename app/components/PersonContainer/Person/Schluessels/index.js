@@ -126,25 +126,27 @@ const SchluesselsComponent = ({ row = true }) => {
           <PlusIcon id={`plusIconSchluessel${activePersonenId}`} />
         </StyledButton>
       )}
-      <EFButtonGroup>
-        <Button
-          onClick={onClickForm}
-          outline
-          title={settings.schluesselFormPath || ''}
-        >
-          Empfangsformular
-        </Button>
-        <Button title="Pfad ändern" outline onClick={onClickChangePath}>
-          <EditIcon size="22" id={`editIcon${activePersonenId}`} />
-          <input
-            type="file"
-            id="file"
-            ref={uploader}
-            style={{ display: 'none' }}
-            onChange={onChangeFormPath}
-          />
-        </Button>
-      </EFButtonGroup>
+      {!showFilter && (
+        <EFButtonGroup>
+          <Button
+            onClick={onClickForm}
+            outline
+            title={settings.schluesselFormPath || ''}
+          >
+            Empfangsformular
+          </Button>
+          <Button title="Pfad ändern" outline onClick={onClickChangePath}>
+            <EditIcon size="22" id={`editIcon${activePersonenId}`} />
+            <input
+              type="file"
+              id="file"
+              ref={uploader}
+              style={{ display: 'none' }}
+              onChange={onChangeFormPath}
+            />
+          </Button>
+        </EFButtonGroup>
+      )}
     </Container>
   )
 
