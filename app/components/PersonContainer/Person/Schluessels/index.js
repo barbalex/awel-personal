@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { Col, FormGroup, Label, Button, ButtonGroup } from 'reactstrap'
 import { MdEdit } from 'react-icons/md'
+import { FaPlus } from 'react-icons/fa'
 import { shell } from 'electron'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
@@ -44,6 +45,9 @@ const Nr = styled.div`
   grid-column: 4 / span 1;
 `
 const EditIcon = styled(MdEdit)`
+  margin-top: -4px;
+`
+const PlusIcon = styled(FaPlus)`
   margin-top: -4px;
 `
 const NonRowLabel = styled(Label)`
@@ -118,8 +122,8 @@ const SchluesselsComponent = ({ row = true }) => {
         />
       ))}
       {mayAddNew && (
-        <StyledButton onClick={addSchluessel} outline>
-          neuer Schlüssel
+        <StyledButton title="neuer Schlüssel" onClick={addSchluessel} outline>
+          <PlusIcon id={`plusIconSchluessel${activePersonenId}`} />
         </StyledButton>
       )}
       <EFButtonGroup>

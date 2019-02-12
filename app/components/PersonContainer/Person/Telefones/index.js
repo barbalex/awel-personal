@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { Col, FormGroup, Label, Button } from 'reactstrap'
+import { FaPlus } from 'react-icons/fa'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import Telefon from './Telefon'
@@ -40,6 +41,9 @@ const NonRowLabel = styled(Label)`
 const StyledFormGroup = styled(FormGroup)`
   margin-bottom: ${props => (props.row ? 'unset' : '8px !important')};
 `
+const PlusIcon = styled(FaPlus)`
+  margin-top: -4px;
+`
 
 const TelefonesComponent = ({ row = true }) => {
   const store = useContext(storeContext)
@@ -73,8 +77,8 @@ const TelefonesComponent = ({ row = true }) => {
         <Telefon key={telefone.id || 'filter'} id={telefone.id || 'filter'} />
       ))}
       {mayAddNew && (
-        <StyledButton onClick={addTelefon} outline>
-          neues Telefon
+        <StyledButton title="neues Telefon" onClick={addTelefon} outline>
+          <PlusIcon id={`plusIconTelefon${activePersonenId}`} />
         </StyledButton>
       )}
     </Container>

@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { Col, FormGroup, Label, Button } from 'reactstrap'
+import { FaPlus } from 'react-icons/fa'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import MobileAbo from './MobileAbo'
@@ -40,6 +41,9 @@ const NonRowLabel = styled(Label)`
 const StyledFormGroup = styled(FormGroup)`
   margin-bottom: ${props => (props.row ? 'unset' : '8px !important')};
 `
+const PlusIcon = styled(FaPlus)`
+  margin-top: -4px;
+`
 
 const MobileAbosComponent = ({ row = true }) => {
   const store = useContext(storeContext)
@@ -77,8 +81,8 @@ const MobileAbosComponent = ({ row = true }) => {
         />
       ))}
       {mayAddNew && (
-        <StyledButton onClick={addMobileAbo} outline>
-          neues mobile Abo
+        <StyledButton title="neues mobile Abo" onClick={addMobileAbo} outline>
+          <PlusIcon id={`plusIconMobileAbo${activePersonenId}`} />
         </StyledButton>
       )}
     </Container>
