@@ -2,7 +2,7 @@ import React, { useContext, useCallback, useEffect, useState } from 'react'
 import Dropzone from 'react-dropzone'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { Col, FormGroup, Label } from 'reactstrap'
+import { Col, FormGroup } from 'reactstrap'
 
 import storeContext from '../../../storeContext'
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
@@ -51,6 +51,7 @@ const PersonImage = () => {
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const person = personen.find(p => p.id === activeId) || {}
 
+  // eslint-disable-next-line no-unused-vars
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [person])
 
@@ -113,7 +114,7 @@ const PersonImage = () => {
                       <img
                         src={image}
                         alt={`${person.vorname} ${person.name}`}
-                        height="300"
+                        height="230"
                       />
                     </DropzoneInnerDiv>
                   )
