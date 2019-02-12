@@ -40,6 +40,9 @@ const DropzoneInnerDiv = styled.div`
   border-radius: 5px;
   padding: 5px;
 `
+const StyledFormGroup = styled(FormGroup)`
+  margin-bottom: 8px !important;
+`
 
 const PersonImage = () => {
   const store = useContext(storeContext)
@@ -75,11 +78,8 @@ const PersonImage = () => {
   if (showFilter) return null
 
   return (
-    <FormGroup row>
-      <Label for="links" sm={2}>
-        Bild
-      </Label>
-      <Col sm={10}>
+    <StyledFormGroup row>
+      <Col sm={12}>
         <Container data-ispdf={isPdf} name="links">
           <DropzoneContainer data-ispdf={isPdf} title="Bild wählen">
             <StyledDropzone
@@ -130,7 +130,7 @@ const PersonImage = () => {
           </DropzoneContainer>
         </Container>
       </Col>
-    </FormGroup>
+    </StyledFormGroup>
   )
 }
 

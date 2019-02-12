@@ -34,8 +34,14 @@ const Typ = styled.div`
 const Bemerkungen = styled.div`
   grid-column: 3 / span 1;
 `
+const NonRowLabel = styled(Label)`
+  margin-bottom: 3px;
+`
+const StyledFormGroup = styled(FormGroup)`
+  margin-bottom: ${props => (props.row ? 'unset' : '8px !important')};
+`
 
-const TelefonesComponent = () => {
+const TelefonesComponent = ({ row = true }) => {
   const store = useContext(storeContext)
   const { showFilter, filterTelefon, addTelefon } = store
   const location = store.location.toJSON()
@@ -53,36 +59,45 @@ const TelefonesComponent = () => {
     !showFilter &&
     (telefones.length === 0 ||
       !telefones.map(s => s.name).some(n => n === null))
+  const Content = () => (
+    <Container data-ispdf={isPdf} name="telefone">
+      {telefones.length > 0 && (
+        <Row data-ispdf={isPdf}>
+          <Nr>Nr.</Nr>
+          <Typ>Typ</Typ>
+          <Bemerkungen>Bemerkungen</Bemerkungen>
+          {!isPdf && <div />}
+        </Row>
+      )}
+      {telefones.map(telefone => (
+        <Telefon key={telefone.id || 'filter'} id={telefone.id || 'filter'} />
+      ))}
+      {mayAddNew && (
+        <StyledButton onClick={addTelefon} outline>
+          neues Telefon
+        </StyledButton>
+      )}
+    </Container>
+  )
 
   return (
-    <FormGroup row>
-      <Label for="telefone" sm={2}>
-        Telefon
-      </Label>
-      <Col sm={10}>
-        <Container data-ispdf={isPdf} name="telefone">
-          {telefones.length > 0 && (
-            <Row data-ispdf={isPdf}>
-              <Nr>Nr.</Nr>
-              <Typ>Typ</Typ>
-              <Bemerkungen>Bemerkungen</Bemerkungen>
-              {!isPdf && <div />}
-            </Row>
-          )}
-          {telefones.map(telefone => (
-            <Telefon
-              key={telefone.id || 'filter'}
-              id={telefone.id || 'filter'}
-            />
-          ))}
-          {mayAddNew && (
-            <StyledButton onClick={addTelefon} outline>
-              neues Telefon
-            </StyledButton>
-          )}
-        </Container>
-      </Col>
-    </FormGroup>
+    <StyledFormGroup row={row}>
+      {row ? (
+        <>
+          <Label for="telefone" sm={2}>
+            Telefon
+          </Label>
+          <Col sm={10}>
+            <Content />
+          </Col>
+        </>
+      ) : (
+        <>
+          <NonRowLabel for="telefone">Telefon</NonRowLabel>
+          <Content />
+        </>
+      )}
+    </StyledFormGroup>
   )
 }
 

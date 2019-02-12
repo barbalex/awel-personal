@@ -46,8 +46,14 @@ const Nr = styled.div`
 const EditIcon = styled(MdEdit)`
   margin-top: -4px;
 `
+const NonRowLabel = styled(Label)`
+  margin-bottom: 3px;
+`
+const StyledFormGroup = styled(FormGroup)`
+  margin-bottom: ${props => (props.row ? 'unset' : '8px !important')};
+`
 
-const SchluesselsComponent = () => {
+const SchluesselsComponent = ({ row = true }) => {
   const store = useContext(storeContext)
   const {
     showFilter,
@@ -94,56 +100,68 @@ const SchluesselsComponent = () => {
     }
     console.log('no schluesselFormPath to open')
   }, [settings.schluesselFormPath])
+  const Content = () => (
+    <Container data-ispdf={isPdf} name="schluessel">
+      {schluessels.length > 0 && (
+        <Row data-ispdf={isPdf}>
+          <Typ>Typ</Typ>
+          <Anlage>Anlage</Anlage>
+          <Bezeichnung>Bezeichnung</Bezeichnung>
+          <Nr>Nr.</Nr>
+          {!isPdf && <div />}
+        </Row>
+      )}
+      {schluessels.map(schluessel => (
+        <Schluessel
+          key={schluessel.id || 'filter'}
+          id={schluessel.id || 'filter'}
+        />
+      ))}
+      {mayAddNew && (
+        <StyledButton onClick={addSchluessel} outline>
+          neuer Schlüssel
+        </StyledButton>
+      )}
+      <EFButtonGroup>
+        <Button
+          onClick={onClickForm}
+          outline
+          title={settings.schluesselFormPath || ''}
+        >
+          Empfangsformular
+        </Button>
+        <Button title="Pfad ändern" outline onClick={onClickChangePath}>
+          <EditIcon size="22" id={`editIcon${activePersonenId}`} />
+          <input
+            type="file"
+            id="file"
+            ref={uploader}
+            style={{ display: 'none' }}
+            onChange={onChangeFormPath}
+          />
+        </Button>
+      </EFButtonGroup>
+    </Container>
+  )
 
   return (
-    <FormGroup row>
-      <Label for="schluessel" sm={2}>
-        Schlüssel
-      </Label>
-      <Col sm={10}>
-        <Container data-ispdf={isPdf} name="schluessel">
-          {schluessels.length > 0 && (
-            <Row data-ispdf={isPdf}>
-              <Typ>Typ</Typ>
-              <Anlage>Anlage</Anlage>
-              <Bezeichnung>Bezeichnung</Bezeichnung>
-              <Nr>Nr.</Nr>
-              {!isPdf && <div />}
-            </Row>
-          )}
-          {schluessels.map(schluessel => (
-            <Schluessel
-              key={schluessel.id || 'filter'}
-              id={schluessel.id || 'filter'}
-            />
-          ))}
-          {mayAddNew && (
-            <StyledButton onClick={addSchluessel} outline>
-              neuer Schlüssel
-            </StyledButton>
-          )}
-          <EFButtonGroup>
-            <Button
-              onClick={onClickForm}
-              outline
-              title={settings.schluesselFormPath || ''}
-            >
-              Empfangsformular
-            </Button>
-            <Button title="Pfad ändern" outline onClick={onClickChangePath}>
-              <EditIcon size="22" id={`editIcon${activePersonenId}`} />
-              <input
-                type="file"
-                id="file"
-                ref={uploader}
-                style={{ display: 'none' }}
-                onChange={onChangeFormPath}
-              />
-            </Button>
-          </EFButtonGroup>
-        </Container>
-      </Col>
-    </FormGroup>
+    <StyledFormGroup row={row}>
+      {row ? (
+        <>
+          <Label for="schluessel" sm={2}>
+            Schlüssel
+          </Label>
+          <Col sm={10}>
+            <Content />
+          </Col>
+        </>
+      ) : (
+        <>
+          <NonRowLabel for="schluessel">Schlüssel</NonRowLabel>
+          <Content />
+        </>
+      )}
+    </StyledFormGroup>
   )
 }
 

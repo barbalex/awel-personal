@@ -532,7 +532,7 @@ const Person = ({ activeId, dimensions }) => {
               error={errors.geburtDatum}
               row={false}
             />
-            <Telefones />
+            <Telefones row={false} />
           </AreaPersonalien>
           <AreaAnstellung>
             <Title>Anstellung</Title>
@@ -716,7 +716,7 @@ const Person = ({ activeId, dimensions }) => {
               row={false}
             />
             {!showFilter && <Links row={false} />}
-            <Schluessels />
+            <Schluessels row={false} />
             <MobileAbos row={false} />
             {showMutationNoetig && (
               <SharedCheckbox
