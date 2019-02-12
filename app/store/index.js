@@ -1473,7 +1473,6 @@ export default db =>
         },
         updateField({ table, parentModel, field, value, id, setErrors }) {
           // 1. update in db
-          self.addError(new Error(`test error ${field}`))
           try {
             db.prepare(
               `update ${table} set ${field} = @value, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
