@@ -76,7 +76,7 @@ const AreaVerzeichnis = styled.div`
 `
 const Title = styled.div`
 font-weight: 900;
-font-size: 16px
+font-size: 18px
 grid-area: areaGeschaeftTitle;
 `
 
@@ -550,7 +550,7 @@ const Person = ({ activeId, dimensions }) => {
               key={`${personId}${existsFilter ? 1 : 0}eintrittDatum`}
               value={person.eintrittDatum}
               field="eintrittDatum"
-              label="Eintritt Datum"
+              label="Eintritt"
               saveToDb={saveToDb}
               error={errors.eintrittDatum}
               row={false}
@@ -559,7 +559,7 @@ const Person = ({ activeId, dimensions }) => {
               key={`${personId}${existsFilter ? 1 : 0}austrittDatum`}
               value={person.austrittDatum}
               field="austrittDatum"
-              label="Austritt Datum"
+              label="Austritt"
               saveToDb={saveToDb}
               error={errors.austrittDatum}
               row={false}
@@ -568,7 +568,7 @@ const Person = ({ activeId, dimensions }) => {
               key={`${personId}beschaeftigungsgrad`}
               value={person.beschaeftigungsgrad}
               field="beschaeftigungsgrad"
-              label="Beschaefti&shy;gungs&shy;grad (%)"
+              label="Beschäfti&shy;gungs&shy;grad (%)"
               saveToDb={saveToDb}
               type="number"
               error={errors.beschaeftigungsgrad}
