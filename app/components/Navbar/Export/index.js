@@ -11,6 +11,9 @@ import { observer } from 'mobx-react-lite'
 
 import personenPrepareData from './personenPrepareData'
 import bereichePrepareData from './bereichePrepareData'
+import sektionenPrepareData from './sektionenPrepareData'
+import abteilungenPrepareData from './abteilungenPrepareData'
+import aemterPrepareData from './aemterPrepareData'
 import doExport from './doExport'
 import storeContext from '../../../storeContext'
 import fetchAemter from '../../../src/fetchAemter'
@@ -22,7 +25,13 @@ import dbContext from '../../../dbContext'
 const Export = () => {
   const db = useContext(dbContext)
   const store = useContext(storeContext)
-  const { personenFiltered, bereicheFiltered } = store
+  const {
+    personenFiltered,
+    bereicheFiltered,
+    sektionenFiltered,
+    abteilungenFiltered,
+    aemterFiltered,
+  } = store
 
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
@@ -52,6 +61,33 @@ const Export = () => {
       subject: 'Bereiche',
     })
   }, [bereicheFiltered])
+  const onClickExportSektionen = useCallback(() => {
+    const exportObjects = sektionenPrepareData({ store })
+    doExport({
+      exportObjects,
+      setModalOpen,
+      setModalMessage,
+      subject: 'Sektionen',
+    })
+  }, [sektionenFiltered])
+  const onClickExportAbteilungen = useCallback(() => {
+    const exportObjects = abteilungenPrepareData({ store })
+    doExport({
+      exportObjects,
+      setModalOpen,
+      setModalMessage,
+      subject: 'Abteilungen',
+    })
+  }, [abteilungenFiltered])
+  const onClickExportAemter = useCallback(() => {
+    const exportObjects = aemterPrepareData({ store })
+    doExport({
+      exportObjects,
+      setModalOpen,
+      setModalMessage,
+      subject: 'Aemter',
+    })
+  }, [aemterFiltered])
   const toggleModal = useCallback(() => setModalOpen(!modalOpen), [modalOpen])
 
   return (
@@ -66,6 +102,18 @@ const Export = () => {
         <DropdownItem divider />
         <DropdownItem onClick={onClickExportBereiche}>
           Bereiche (gefiltert)
+        </DropdownItem>
+        <DropdownItem divider />
+        <DropdownItem onClick={onClickExportSektionen}>
+          Sektionen (gefiltert)
+        </DropdownItem>
+        <DropdownItem divider />
+        <DropdownItem onClick={onClickExportAbteilungen}>
+          Abteilungen (gefiltert)
+        </DropdownItem>
+        <DropdownItem divider />
+        <DropdownItem onClick={onClickExportAemter}>
+          Ämter (gefiltert)
         </DropdownItem>
       </DropdownMenu>
       <Modal isOpen={modalOpen} toggle={toggleModal}>
