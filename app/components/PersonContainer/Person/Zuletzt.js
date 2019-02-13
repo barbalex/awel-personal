@@ -7,14 +7,8 @@ import styled from 'styled-components'
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
 import storeContext from '../../../storeContext'
 
-const Value = styled.div`
-  padding-top: 7px;
-`
-const NonRowLabel = styled(Label)`
-  margin-bottom: 3px;
-`
 const StyledFormGroup = styled(FormGroup)`
-  margin-bottom: ${props => (props.row ? 'unset' : '8px !important')};
+  margin-bottom: ${props => (props.row ? 'unset' : '2px !important')};
 `
 
 moment.locale('de')
@@ -28,7 +22,7 @@ const Zuletzt = ({ row = true }) => {
   const person = personen.find(p => p.id === activeId)
 
   const Content = () => (
-    <Value name="letzteAenderung">
+    <div name="letzteAenderung">
       {`${
         moment.unix(person.letzteMutationZeit / 1000).isValid()
           ? moment
@@ -36,7 +30,7 @@ const Zuletzt = ({ row = true }) => {
               .format('DD.MM.YYYY H:mm:ss')
           : ''
       }, ${person.letzteMutationUser || ''}`}
-    </Value>
+    </div>
   )
   const NonRowContainer = styled.div`
     display: flex;
@@ -55,7 +49,7 @@ const Zuletzt = ({ row = true }) => {
         </>
       ) : (
         <NonRowContainer>
-          <Value>Zuletzt geändert:&nbsp;</Value>
+          <div>Zuletzt geändert:&nbsp;</div>
           <Content />
         </NonRowContainer>
       )}
