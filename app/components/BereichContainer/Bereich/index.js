@@ -148,7 +148,7 @@ const Bereich = ({ activeId }) => {
             key={`${bereichId}deleted`}
             value={bereich.deleted}
             field="deleted"
-            label="gelöscht"
+            label="Gelöscht"
             saveToDb={saveToDb}
             error={errors.deleted}
           />

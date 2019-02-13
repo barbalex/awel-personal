@@ -465,9 +465,10 @@ const Person = ({ activeId, dimensions }) => {
                 key={`${personId}deleted`}
                 value={person.deleted}
                 field="deleted"
-                label="gelöscht"
+                label="Gelöscht"
                 saveToDb={saveToDb}
                 error={errors.deleted}
+                row={false}
               />
             )}
             <Input
@@ -757,6 +758,7 @@ const Person = ({ activeId, dimensions }) => {
                 label="Handlungs&shy;bedarf"
                 saveToDb={saveToDb}
                 error={errors.mutationNoetig}
+                row={false}
               />
             )}
           </AreaVerzeichnis>

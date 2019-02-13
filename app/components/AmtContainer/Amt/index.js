@@ -105,7 +105,7 @@ const Amt = ({ activeId }) => {
             key={`${amtId}deleted`}
             value={amt.deleted}
             field="deleted"
-            label="gelöscht"
+            label="Gelöscht"
             saveToDb={saveToDb}
             error={errors.deleted}
           />

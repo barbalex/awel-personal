@@ -5,14 +5,27 @@ import styled from 'styled-components'
 
 const StyledInput = styled(Input)`
   position: relative;
-  top: 10px;
+  top: ${props => (props.row ? '10px' : '5px')};
   /* larger-sized Checkboxes */
   -webkit-transform: scale(1.5); /* Safari and Chrome */
   padding: 10px;
   margin-left: -1.1rem !important;
 `
+const NonRowLabel = styled(Label)`
+  margin-bottom: 3px;
+`
+const StyledFormGroup = styled(FormGroup)`
+  margin-bottom: ${props => (props.row ? 'unset' : '8px !important')};
+`
 
-const SharedCheckbox = ({ value, field, label, saveToDb, error }) => {
+const SharedCheckbox = ({
+  value,
+  field,
+  label,
+  saveToDb,
+  error,
+  row = true,
+}) => {
   const [stateValue, setStateValue] = useState(!!value)
   const onChange = useCallback(() => {
     const newValue = !stateValue
@@ -22,26 +35,39 @@ const SharedCheckbox = ({ value, field, label, saveToDb, error }) => {
   useEffect(() => {
     setStateValue(!!value)
   })
+  const Content = () => (
+    <StyledFormGroup check>
+      <Label check>
+        <StyledInput
+          id={field}
+          type="checkbox"
+          checked={value === 1}
+          onChange={onChange}
+          invalid={!!error}
+          row={row}
+        />
+      </Label>
+      <FormFeedback>{error}</FormFeedback>
+    </StyledFormGroup>
+  )
 
   return (
-    <FormGroup row>
-      <Label for={field} sm={2}>
-        {label}
-      </Label>
-      <Col sm={{ size: 10 }}>
-        <FormGroup check>
-          <Label check>
-            <StyledInput
-              id={field}
-              type="checkbox"
-              checked={value === 1}
-              onChange={onChange}
-              invalid={!!error}
-            />
+    <FormGroup row={row}>
+      {row ? (
+        <>
+          <Label for={field} sm={2}>
+            {label}
           </Label>
-          <FormFeedback>{error}</FormFeedback>
-        </FormGroup>
-      </Col>
+          <Col sm={{ size: 10 }}>
+            <Content />
+          </Col>
+        </>
+      ) : (
+        <>
+          <NonRowLabel for={field}>{label}</NonRowLabel>
+          <Content />
+        </>
+      )}
     </FormGroup>
   )
 }

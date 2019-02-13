@@ -116,7 +116,7 @@ const Abteilung = ({ activeId }) => {
             key={`${abteilungId}deleted`}
             value={abteilung.deleted}
             field="deleted"
-            label="gelöscht"
+            label="Gelöscht"
             saveToDb={saveToDb}
             error={errors.deleted}
           />

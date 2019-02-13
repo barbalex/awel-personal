@@ -72,7 +72,7 @@ const Data = ({ activeId, activeTable }) => {
             key={`${dat.id}deleted`}
             value={dat.deleted}
             field="deleted"
-            label="gelöscht"
+            label="Gelöscht"
             saveToDb={saveToDb}
             error={errors.deleted}
           />
