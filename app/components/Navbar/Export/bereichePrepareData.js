@@ -1,7 +1,8 @@
 export default ({ store }) =>
   store.bereicheFiltered
     .slice()
-    .map(p => {
+    .map(pOrig => {
+      const p = { ...pOrig }
       const amt = store.aemter.find(a => a.id === p.amt) || {}
       p.amt_id = amt.id || ''
       p.amt_name = amt.name || ''
