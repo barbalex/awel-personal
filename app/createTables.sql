@@ -53,7 +53,7 @@ create table personen (
   amt integer default 1 references aemter(id) on update cascade on delete restrict,
   abteilung integer references abteilungen(id) on update cascade on delete restrict,
   sektion integer references sektionen(id) on update cascade on delete restrict,
-  bereich text references bereiche(id) on update cascade on delete restrict,
+  bereich integer references bereiche(id) on update cascade on delete restrict,
   bueroNr text,
   standort text,
   vorgesetztId integer references personen(id) on update cascade on delete restrict,
