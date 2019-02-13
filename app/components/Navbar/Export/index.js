@@ -10,7 +10,8 @@ import {
 import { observer } from 'mobx-react-lite'
 
 import personenPrepareData from './personenPrepareData'
-import personenExport from './personenExport'
+import bereichePrepareData from './bereichePrepareData'
+import doExport from './doExport'
 import storeContext from '../../../storeContext'
 import fetchAemter from '../../../src/fetchAemter'
 import fetchAbteilungen from '../../../src/fetchAbteilungen'
@@ -21,7 +22,7 @@ import dbContext from '../../../dbContext'
 const Export = () => {
   const db = useContext(dbContext)
   const store = useContext(storeContext)
-  const { personenFiltered } = store
+  const { personenFiltered, bereicheFiltered } = store
 
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
@@ -34,9 +35,23 @@ const Export = () => {
   }, [])
 
   const onClickExportPersonen = useCallback(() => {
-    const personenReadable = personenPrepareData({ store })
-    personenExport({ personenReadable, setModalOpen, setModalMessage })
+    const exportObjects = personenPrepareData({ store })
+    doExport({
+      exportObjects,
+      setModalOpen,
+      setModalMessage,
+      subject: 'Personen',
+    })
   }, [personenFiltered])
+  const onClickExportBereiche = useCallback(() => {
+    const exportObjects = bereichePrepareData({ store })
+    doExport({
+      exportObjects,
+      setModalOpen,
+      setModalMessage,
+      subject: 'Bereiche',
+    })
+  }, [bereicheFiltered])
   const toggleModal = useCallback(() => setModalOpen(!modalOpen), [modalOpen])
 
   return (
@@ -49,7 +64,9 @@ const Export = () => {
           Personen (gefiltert)
         </DropdownItem>
         <DropdownItem divider />
-        <DropdownItem>mehr?</DropdownItem>
+        <DropdownItem onClick={onClickExportBereiche}>
+          Bereiche (gefiltert)
+        </DropdownItem>
       </DropdownMenu>
       <Modal isOpen={modalOpen} toggle={toggleModal}>
         <ModalBody>{modalMessage}</ModalBody>
