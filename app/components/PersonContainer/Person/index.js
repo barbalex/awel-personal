@@ -453,8 +453,6 @@ const Person = ({ activeId, dimensions }) => {
     ? WrapperWideShowFilter
     : WrapperWide
 
-  console.log('Person', person)
-
   return (
     <Container showfilter={showFilter}>
       <StyledForm>
