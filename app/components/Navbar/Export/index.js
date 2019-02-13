@@ -46,7 +46,7 @@ const Export = () => {
       </DropdownToggle>
       <DropdownMenu>
         <DropdownItem onClick={onClickExportPersonen}>
-          Gefilterte Personen mit allen Feldern
+          Personen (gefiltert)
         </DropdownItem>
         <DropdownItem divider />
         <DropdownItem>mehr?</DropdownItem>
