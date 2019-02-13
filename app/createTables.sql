@@ -93,7 +93,7 @@ drop table if exists aemter;
 create table aemter (
   id integer primary key autoincrement,
   deleted integer default 0,
-  name text,
+  name text unique,
   kurzzeichen text,
   telefonNr text,
   email text check (email like '%_@__%.__%'),
@@ -131,7 +131,8 @@ create table abteilungen (
   kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
   mutationNoetig integer default 0,
   letzteMutationZeit TEXT,
-  letzteMutationUser TEXT
+  letzteMutationUser TEXT,
+  unique(amt, name)
 );
 
 drop index if exists iAbteilungDeleted;
@@ -166,7 +167,8 @@ create table sektionen (
   kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
   mutationNoetig integer default 0,
   letzteMutationZeit TEXT,
-  letzteMutationUser TEXT
+  letzteMutationUser TEXT,
+  unique(abteilung, name)
 );
 
 drop index if exists iSektionDeleted;
@@ -268,7 +270,8 @@ create table links (
   idPerson integer references personen(id) on update cascade on delete cascade,
   url text,
   letzteMutationZeit TEXT,
-  letzteMutationUser TEXT
+  letzteMutationUser TEXT,
+  unique(idPerson, url)
 );
 
 drop index if exists iLinkDeleted;
@@ -331,7 +334,8 @@ create table telefones (
   typ text references telefonTypWerte(value) on update cascade on delete no action,
   bemerkungen text,
   letzteMutationZeit TEXT,
-  letzteMutationUser TEXT
+  letzteMutationUser TEXT,
+  unique(idPerson, nr)
 );
 
 drop index if exists iTelefonDeleted;
@@ -350,7 +354,8 @@ create table funktionen (
   idPerson integer references personen(id) on update cascade on delete cascade,
   funktion text references funktionWerte(value) on update cascade on delete no action,
   letzteMutationZeit TEXT,
-  letzteMutationUser TEXT
+  letzteMutationUser TEXT,
+  unique(idPerson, funktion)
 );
 
 drop index if exists iFunktionDeleted;
@@ -369,7 +374,8 @@ create table etiketten (
   idPerson integer references personen(id) on update cascade on delete cascade,
   etikett text references etikettWerte(value) on update cascade on delete cascade,
   letzteMutationZeit TEXT,
-  letzteMutationUser TEXT
+  letzteMutationUser TEXT,
+  unique(idPerson, etikett)
 );
 
 drop index if exists iEtikettDeleted;
