@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from 'react'
+import React, { useContext, useState, useCallback, useEffect } from 'react'
 import {
   DropdownItem,
   DropdownMenu,
@@ -12,16 +12,30 @@ import { observer } from 'mobx-react-lite'
 import personenPrepareData from './personenPrepareData'
 import personenExport from './personenExport'
 import storeContext from '../../../storeContext'
+import fetchAemter from '../../../src/fetchAemter'
+import fetchAbteilungen from '../../../src/fetchAbteilungen'
+import fetchBereiche from '../../../src/fetchBereiche'
+import fetchSektionen from '../../../src/fetchSektionen'
+import dbContext from '../../../dbContext'
 
 const Export = () => {
+  const db = useContext(dbContext)
   const store = useContext(storeContext)
   const { personenFiltered } = store
 
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
 
+  useEffect(() => {
+    fetchAemter({ db, store })
+    fetchAbteilungen({ db, store })
+    fetchBereiche({ db, store })
+    fetchSektionen({ db, store })
+  }, [])
+
   const onClickExportPersonen = useCallback(() => {
     const personenReadable = personenPrepareData({ store })
+    console.log({ personenReadable, store })
     personenExport({ personenReadable, setModalOpen, setModalMessage })
   }, [personenFiltered])
   const toggleModal = useCallback(() => setModalOpen(!modalOpen), [modalOpen])
