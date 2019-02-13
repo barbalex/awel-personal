@@ -460,17 +460,6 @@ const Person = ({ activeId, dimensions }) => {
           <AreaPersonalien>
             <Title>Personalien</Title>
             <PersonImage person={person} />
-            {showDeleted && (
-              <SharedCheckbox
-                key={`${personId}deleted`}
-                value={person.deleted}
-                field="deleted"
-                label="Gelöscht"
-                saveToDb={saveToDb}
-                error={errors.deleted}
-                row={false}
-              />
-            )}
             <Input
               key={`${personId}name`}
               value={person.name}
@@ -750,20 +739,31 @@ const Person = ({ activeId, dimensions }) => {
             {!showFilter && <Links row={false} />}
             <Schluessels row={false} />
             <MobileAbos row={false} />
-            {showMutationNoetig && (
-              <SharedCheckbox
-                key={`${personId}mutationNoetig`}
-                value={person.mutationNoetig}
-                field="mutationNoetig"
-                label="Handlungs&shy;bedarf"
-                saveToDb={saveToDb}
-                error={errors.mutationNoetig}
-                row={false}
-              />
-            )}
           </AreaVerzeichnis>
           {!showFilter && (
             <AreaZuletzt>
+              {showDeleted && (
+                <SharedCheckbox
+                  key={`${personId}deleted`}
+                  value={person.deleted}
+                  field="deleted"
+                  label="Gelöscht"
+                  saveToDb={saveToDb}
+                  error={errors.deleted}
+                  row={false}
+                />
+              )}
+              {showMutationNoetig && (
+                <SharedCheckbox
+                  key={`${personId}mutationNoetig`}
+                  value={person.mutationNoetig}
+                  field="mutationNoetig"
+                  label="Handlungs&shy;bedarf"
+                  saveToDb={saveToDb}
+                  error={errors.mutationNoetig}
+                  row={false}
+                />
+              )}
               <Zuletzt row={false} />
             </AreaZuletzt>
           )}

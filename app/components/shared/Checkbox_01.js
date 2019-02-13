@@ -5,14 +5,11 @@ import styled from 'styled-components'
 
 const StyledInput = styled(Input)`
   position: relative;
-  top: ${props => (props.row ? '10px' : '5px')};
+  top: ${props => (props['data-row'] ? '10px' : '2px')};
   /* larger-sized Checkboxes */
   -webkit-transform: scale(1.5); /* Safari and Chrome */
   padding: 10px;
   margin-left: -1.1rem !important;
-`
-const NonRowLabel = styled(Label)`
-  margin-bottom: 3px;
 `
 const StyledFormGroup = styled(FormGroup)`
   margin-bottom: ${props => (props.row ? 'unset' : '8px !important')};
@@ -32,9 +29,11 @@ const SharedCheckbox = ({
     saveToDb({ value: newValue ? 1 : 0, field })
     return setStateValue(newValue)
   }, [stateValue, field])
+
   useEffect(() => {
     setStateValue(!!value)
   })
+
   const Content = () => (
     <StyledFormGroup check>
       <Label check>
@@ -44,32 +43,28 @@ const SharedCheckbox = ({
           checked={value === 1}
           onChange={onChange}
           invalid={!!error}
-          row={row}
+          data-row={row}
         />
+        {!row && ` ${label}`}
       </Label>
       <FormFeedback>{error}</FormFeedback>
     </StyledFormGroup>
   )
 
-  return (
-    <FormGroup row={row}>
-      {row ? (
-        <>
-          <Label for={field} sm={2}>
-            {label}
-          </Label>
-          <Col sm={{ size: 10 }}>
-            <Content />
-          </Col>
-        </>
-      ) : (
-        <>
-          <NonRowLabel for={field}>{label}</NonRowLabel>
+  if (row) {
+    return (
+      <FormGroup row={row}>
+        <Label for={field} sm={2}>
+          {label}
+        </Label>
+        <Col sm={{ size: 10 }}>
           <Content />
-        </>
-      )}
-    </FormGroup>
-  )
+        </Col>
+      </FormGroup>
+    )
+  }
+
+  return <Content />
 }
 
 export default observer(SharedCheckbox)
