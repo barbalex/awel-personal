@@ -5,7 +5,7 @@ import {
   DropdownToggle,
   Modal,
   ModalBody,
-  UncontrolledDropdown
+  UncontrolledDropdown,
 } from 'reactstrap'
 import { observer } from 'mobx-react-lite'
 
@@ -20,13 +20,11 @@ const Export = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
 
-  const onClickExportPersonen = useCallback(
-    () => {
-      const personenReadable = personenPrepareData({ store })
-      personenExport({ personenReadable, setModalOpen, setModalMessage })
-    },
-    [personenFiltered]
-  )
+  const onClickExportPersonen = useCallback(() => {
+    const personenReadable = personenPrepareData({ store })
+    console.log({ personenReadable })
+    personenExport({ personenReadable, setModalOpen, setModalMessage })
+  }, [personenFiltered])
   const toggleModal = useCallback(() => setModalOpen(!modalOpen), [modalOpen])
 
   return (
