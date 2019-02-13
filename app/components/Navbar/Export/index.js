@@ -35,7 +35,6 @@ const Export = () => {
 
   const onClickExportPersonen = useCallback(() => {
     const personenReadable = personenPrepareData({ store })
-    console.log({ personenReadable, store })
     personenExport({ personenReadable, setModalOpen, setModalMessage })
   }, [personenFiltered])
   const toggleModal = useCallback(() => setModalOpen(!modalOpen), [modalOpen])
