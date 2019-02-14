@@ -8,6 +8,7 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap'
 import { observer } from 'mobx-react-lite'
+import styled from 'styled-components'
 
 import personenPrepareData from './personenPrepareData'
 import bereichePrepareData from './bereichePrepareData'
@@ -21,6 +22,16 @@ import fetchAbteilungen from '../../../src/fetchAbteilungen'
 import fetchBereiche from '../../../src/fetchBereiche'
 import fetchSektionen from '../../../src/fetchSektionen'
 import dbContext from '../../../dbContext'
+
+const Hint = styled.div`
+  padding: 4px 24px;
+  color: rgba(0, 0, 0, 0.87);
+  user-select: none;
+  font-style: italic;
+  font-size: small;
+  width: 200px;
+  padding-top: 0;
+`
 
 const Export = () => {
   const db = useContext(dbContext)
@@ -96,25 +107,18 @@ const Export = () => {
         Exporte
       </DropdownToggle>
       <DropdownMenu>
-        <DropdownItem onClick={onClickExportPersonen}>
-          Personen (gefiltert)
-        </DropdownItem>
+        <Hint>Exporte übernehmen Filter</Hint>
+        <DropdownItem onClick={onClickExportPersonen}>Personen</DropdownItem>
         <DropdownItem divider />
-        <DropdownItem onClick={onClickExportBereiche}>
-          Bereiche (gefiltert)
-        </DropdownItem>
+        <DropdownItem onClick={onClickExportBereiche}>Bereiche</DropdownItem>
         <DropdownItem divider />
-        <DropdownItem onClick={onClickExportSektionen}>
-          Sektionen (gefiltert)
-        </DropdownItem>
+        <DropdownItem onClick={onClickExportSektionen}>Sektionen</DropdownItem>
         <DropdownItem divider />
         <DropdownItem onClick={onClickExportAbteilungen}>
-          Abteilungen (gefiltert)
+          Abteilungen
         </DropdownItem>
         <DropdownItem divider />
-        <DropdownItem onClick={onClickExportAemter}>
-          Ämter (gefiltert)
-        </DropdownItem>
+        <DropdownItem onClick={onClickExportAemter}>Ämter</DropdownItem>
       </DropdownMenu>
       <Modal isOpen={modalOpen} toggle={toggleModal}>
         <ModalBody>{modalMessage}</ModalBody>
