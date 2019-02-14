@@ -935,7 +935,7 @@ export default db =>
             try {
               info = db
                 .prepare(
-                  'insert into mutations (time, user, op, tableName, rowId, field, value, previousValue, reverts) values (@time, @username, @op, @tableName, @rowId, @field, @value, @previousValue)',
+                  'insert into mutations (time, user, op, tableName, rowId, field, value, previousValue, reverts) values (@time, @username, @op, @tableName, @rowId, @field, @value, @previousValue, @reverts)',
                 )
                 .run({
                   username,
@@ -963,9 +963,7 @@ export default db =>
               rowId,
               field,
               value,
-              previousValue,
-              reverts: self.revertingMutationId
-            })
+              previousValue,reverts: self.revertingMutationId})
           })
           self.revertingMutationId = null
         },
@@ -1516,16 +1514,20 @@ export default db =>
             })
           } catch (error) {
             self.addError(error)
-            return setErrors({
+            if (setErrors) {return setErrors({
               [field]: error.message,
-            })
+            })}
+            return
           }
           // 2. update in store
           const storeObject = self[parentModel].find(o => o.id === id)
           if (!storeObject) {
+            if (setErrors){
             return setErrors({
               [field]: `Error: no ${table} with id "${id}" found in store`,
-            })
+            })} else {
+              self.addError(`Error: no ${table} with id "${id}" found in store`)
+            }
           }
           storeObject[field] = value
           storeObject.letzteMutationUser = self.username
@@ -1551,7 +1553,7 @@ export default db =>
             const idSektion = ifIsNumericAsNumber(location[1])
             self.updateSektionsMutation(idSektion)
           }
-          setErrors({})
+          if (setErrors) setErrors({})
         },
         updatePersonsMutation(idPerson) {
           // in db
