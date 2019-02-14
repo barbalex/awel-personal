@@ -47,7 +47,6 @@ const MyNavbar = () => {
     addError,
   } = store
   const onClickRevert = useCallback(() => {
-    console.log({ lastUserMutation })
     if (!lastUserMutation) {
       return addError(
         'Es gibt keine Ation, die rückgängig gemacht werden könnte',
