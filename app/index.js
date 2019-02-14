@@ -19,13 +19,7 @@ const run = async () => {
   } catch (error) {
     return console.log(error)
   }
-  // TODO:
-  // check if is valid db
-  // if not: ask for other file
   const store = createStore(db).create()
-
-  // expose store to console
-  window.store = store
 
   watchMutations({ store })
 
@@ -45,7 +39,7 @@ const run = async () => {
         </StoreContextProvider>
       </DbContextProvider>
     </HotLoaderContainer>,
-    document.getElementById('root')
+    document.getElementById('root'),
   )
 }
 

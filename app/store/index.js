@@ -4,6 +4,8 @@ import findIndex from 'lodash/findIndex'
 import flatten from 'lodash/flatten'
 import findLast from 'lodash/findLast'
 import uniqBy from 'lodash/uniqBy'
+import sortBy from 'lodash/sortBy'
+import last from 'lodash/last'
 import keys from 'lodash/keys'
 import lValues from 'lodash/values'
 
@@ -69,6 +71,7 @@ export default db =>
       tagWerte: types.array(TagWert),
       username: types.maybe(types.string),
       watchMutations: types.optional(types.boolean, false),
+      revertingMutationId: types.maybe(types.union(types.integer, types.null)),
       history: types.optional(UndoManager, {}),
       filterPerson: types.optional(Person, {}),
       filterAmt: types.optional(Amt, {}),
@@ -521,6 +524,35 @@ export default db =>
           })
         return sektionen
       },
+      get revertedMutationIds(){
+        return  self.mutations
+        .filter(m => !!m.reverts)
+        .map(m => m.reverts)
+      },
+      get userRevertions() {
+        return sortBy(self.mutations.filter(m => m.user === self.username)
+        .filter(m => self.revertedMutationIds.includes(m.id)), 'time')
+      },
+      get userMutations() {
+        // lists active user's mutations
+        // that have not been reverted
+        // and are themselves not revertions
+        return sortBy(
+          self.mutations
+            .filter(m => m.user === self.username)
+            .filter(m => !m.reverts)
+            .filter(m => !self.revertedMutationIds.includes(m.id)),
+          'time'
+        )
+      },
+      get lastUserMutation(){
+        // revert this one to undo last action
+        return last(self.userMutations)
+      },
+      get lastUserMutationRevertion(){
+        // revert this one to revert last undo
+        return last(self.userRevertions)
+      }
     }))
     // functions are not serializable
     // so need to define this as volatile
@@ -656,6 +688,7 @@ export default db =>
           if (!mutation) {
             throw new Error(`Keine Mutation mit id ${mutationId} gefunden`)
           }
+          self.revertingMutationId = mutationId
           const { op, tableName, rowId, field, previousValue } = mutation
           switch (op) {
             case 'replace': {
@@ -719,10 +752,6 @@ export default db =>
                 key =>
                   previousObject[key] == null && delete previousObject[key],
               )
-              console.log('store, revertMutation', {
-                mutationId,
-                previousObject,
-              })
               const objectKeys = keys(previousObject).join()
               const objectValues = lValues(previousObject)
               const sql = `insert into ${tableName} (${objectKeys}) values (${objectValues
@@ -906,7 +935,7 @@ export default db =>
             try {
               info = db
                 .prepare(
-                  'insert into mutations (time, user, op, tableName, rowId, field, value, previousValue) values (@time, @username, @op, @tableName, @rowId, @field, @value, @previousValue)',
+                  'insert into mutations (time, user, op, tableName, rowId, field, value, previousValue, reverts) values (@time, @username, @op, @tableName, @rowId, @field, @value, @previousValue)',
                 )
                 .run({
                   username,
@@ -917,6 +946,7 @@ export default db =>
                   field,
                   value,
                   previousValue,
+                  reverts: self.revertingMutationId
                 })
             } catch (error) {
               self.addError(error)
@@ -934,8 +964,10 @@ export default db =>
               field,
               value,
               previousValue,
+              reverts: self.revertingMutationId
             })
           })
+          self.revertingMutationId = null
         },
         mutate(mutation) {
           self.mutations.push(mutation)

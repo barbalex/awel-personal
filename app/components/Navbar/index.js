@@ -8,8 +8,11 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  Button,
 } from 'reactstrap'
 import { observer } from 'mobx-react-lite'
+import { FaUndo } from 'react-icons/fa'
+import styled from 'styled-components'
 
 import Filter from './Filter'
 import Stammdaten from './Stammdaten'
@@ -22,12 +25,36 @@ import Export from './Export'
 import More from './More'
 import storeContext from '../../storeContext'
 
+const RevertButton = styled(Button)`
+  font-size: 0.8rem !important;
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+  margin-top: -5px;
+  height: 27px;
+  align-self: center;
+`
+
 const MyNavbar = () => {
   const store = useContext(storeContext)
   const [open, setOpen] = useState(false)
   const toggleNavbar = useCallback(() => {
     setOpen(!open)
   }, [open])
+  const {
+    lastUserMutation,
+    lastUserMutationRevertion,
+    revertMutation,
+    addError,
+  } = store
+  const onClickRevert = useCallback(() => {
+    console.log({ lastUserMutation })
+    if (!lastUserMutation) {
+      return addError(
+        'Es gibt keine Ation, die rückgängig gemacht werden könnte',
+      )
+    }
+    revertMutation(lastUserMutation.id)
+  })
 
   const location = store.location.toJSON()
   const activeLocation = location[0]
@@ -60,6 +87,13 @@ const MyNavbar = () => {
           <Stammdaten />
         </Nav>
         <Nav className="ml-auto" navbar>
+          <RevertButton
+            disabled={!lastUserMutation}
+            onClick={onClickRevert}
+            outline
+          >
+            <FaUndo />
+          </RevertButton>
           {[
             'Personen',
             'Aemter',
