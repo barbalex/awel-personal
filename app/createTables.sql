@@ -419,6 +419,8 @@ drop index if exists iMutationsValue;
 create index iMutationsValue on mutations (value);
 drop index if exists iMutationsPreviousValue;
 create index iMutationsPreviousValue on mutations (previousValue);
+drop index if exists iMutationsReverts;
+create index iMutationsReverts on mutations (reverts);
 
 -------------------------------------------
 
