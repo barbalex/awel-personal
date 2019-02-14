@@ -1,6 +1,6 @@
 {
   "name": "AWEL-Personal",
-  "productName": "Personal-DB",
+  "productName": "Personal",
   "version": "0.20.0",
   "description": "Damit verwaltet das AWEL Kt. ZH Personal-Daten",
   "scripts": {
@@ -34,7 +34,7 @@
   },
   "main": "./app/main.prod.js",
   "build": {
-    "productName": "Personal-DB",
+    "productName": "Personal",
     "appId": "ch.zh.awel.personal",
     "files": [
       "app/dist/",
