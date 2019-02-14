@@ -49,7 +49,7 @@ const MyNavbar = () => {
       )
     }
     revertMutation(lastUserMutation.id)
-  })
+  }, [lastUserMutation])
 
   const location = store.location.toJSON()
   const activeLocation = location[0]
