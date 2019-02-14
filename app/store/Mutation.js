@@ -10,6 +10,7 @@ export default types.model('Mutation', {
   field: types.maybe(types.union(types.string, types.integer, types.null)),
   value: types.maybe(types.union(types.string, types.integer, types.null)),
   previousValue: types.maybe(
-    types.union(types.string, types.integer, types.null)
-  )
+    types.union(types.string, types.integer, types.null),
+  ),
+  reverts: types.maybe(types.union(types.integer, types.null)),
 })

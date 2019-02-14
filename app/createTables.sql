@@ -397,7 +397,10 @@ create table mutations (
   rowId integer,
   field TEXT,
   value TEXT,
-  previousValue TEXT
+  previousValue TEXT,
+  -- mark revertions by noting what mutation id
+  -- is reverted
+  reverts integer
 );
 
 drop index if exists iMutationsTime;
