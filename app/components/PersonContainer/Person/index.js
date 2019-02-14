@@ -129,20 +129,7 @@ const Person = ({ activeId, dimensions }) => {
     existsFilter,
     setFilter,
     updateField,
-    revertedMutationIds,
-    userRevertions,
-    userMutations,
-    lastUserMutation,
-    lastUserMutationRevertion,
   } = store
-
-  console.log('Person', {
-    revertedMutationIds,
-    userRevertions,
-    userMutations,
-    lastUserMutation,
-    lastUserMutationRevertion,
-  })
 
   let person
   if (showFilter) {

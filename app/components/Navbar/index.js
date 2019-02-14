@@ -25,13 +25,14 @@ import Export from './Export'
 import More from './More'
 import storeContext from '../../storeContext'
 
-const RevertButton = styled(Button)`
-  font-size: 0.8rem !important;
-  padding-top: 3px !important;
-  padding-bottom: 3px !important;
-  margin-top: -5px;
-  height: 27px;
-  align-self: center;
+const UndoButton = styled(Button)`
+  margin-right: 5px;
+  background-color: transparent !important;
+  border: none !important;
+  &:hover {
+    background-color: ${props =>
+      props.disabled ? 'transparent !important' : '#6c757d !important'};
+  }
 `
 
 const MyNavbar = () => {
@@ -40,16 +41,11 @@ const MyNavbar = () => {
   const toggleNavbar = useCallback(() => {
     setOpen(!open)
   }, [open])
-  const {
-    lastUserMutation,
-    lastUserMutationRevertion,
-    revertMutation,
-    addError,
-  } = store
-  const onClickRevert = useCallback(() => {
+  const { lastUserMutation, revertMutation, addError } = store
+  const onClickUndo = useCallback(() => {
     if (!lastUserMutation) {
       return addError(
-        'Es gibt keine Ation, die rückgängig gemacht werden könnte',
+        'Es gibt keine Aktion, die rückgängig gemacht werden könnte',
       )
     }
     revertMutation(lastUserMutation.id)
@@ -86,13 +82,17 @@ const MyNavbar = () => {
           <Stammdaten />
         </Nav>
         <Nav className="ml-auto" navbar>
-          <RevertButton
+          <UndoButton
             disabled={!lastUserMutation}
-            onClick={onClickRevert}
-            outline
+            onClick={onClickUndo}
+            title={
+              lastUserMutation
+                ? 'letzte Aktion rückgängig machen'
+                : 'keine Aktion, die rückgängig gemacht werden könnte'
+            }
           >
             <FaUndo />
-          </RevertButton>
+          </UndoButton>
           {[
             'Personen',
             'Aemter',
