@@ -142,17 +142,11 @@ const Title = styled.div`
   font-weight: 900;
   font-size: 18px;
 `
-const Content = styled.div`
-  display: flex;
-`
+const Content = styled.div``
 const Label = styled.label`
-  width: 3cm;
-  flex-grow: 0;
-  flex-shrink: 0;
+  font-size: small;
 `
-const Value = styled.p`
-  flex-grow: 1;
-`
+const Value = styled.p``
 
 const PersonPrint = ({ activeId }) => {
   const store = useContext(storeContext)
@@ -178,7 +172,224 @@ const PersonPrint = ({ activeId }) => {
     <Container>
       <PageContainer className="hochformat">
         <GlobalStyle />
-        <Person activeId={activeId} />
+        <AreaPersonalien>
+          <Title>Personalien</Title>
+          <PersonImage person={person} />
+          <Input
+            key={`${personId}name`}
+            value={person.name}
+            field="name"
+            label="Name"
+          />
+          <Input
+            key={`${personId}vorname`}
+            value={person.vorname}
+            field="vorname"
+            label="Vorname"
+          />
+          <Select
+            key={`${personId}${existsFilter ? 1 : 0}anrede`}
+            value={person.anrede}
+            field="anrede"
+            label="Anrede"
+            options={anredeOptions}
+          />
+          <Input
+            key={`${personId}kurzzeichen`}
+            value={person.kurzzeichen}
+            field="kurzzeichen"
+            label="Kurzzei&shy;chen"
+          />
+          <Input
+            key={`${personId}adresse`}
+            value={person.adresse}
+            field="adresse"
+            label="Adresse"
+          />
+          <Input
+            key={`${personId}plz`}
+            value={person.plz}
+            field="plz"
+            label="PLZ"
+          />
+          <Input
+            key={`${personId}ort`}
+            value={person.ort}
+            field="ort"
+            label="Ort"
+          />
+          <Select
+            key={`${personId}${existsFilter ? 1 : 0}land`}
+            value={person.land}
+            field="land"
+            label="Land"
+            options={landOptions}
+          />
+          <Input
+            key={`${personId}email`}
+            value={person.email}
+            field="email"
+            label="Email"
+          />
+          <Date
+            key={`${personId}geburtDatum`}
+            value={person.geburtDatum}
+            field="geburtDatum"
+            label="Geburts&shy;datum"
+          />
+          <Telefones row={false} />
+        </AreaPersonalien>
+        <AreaAnstellung>
+          <Title>Anstellung</Title>
+          <Select
+            key={`${personId}${existsFilter ? 1 : 0}status`}
+            value={person.status}
+            field="status"
+            label="Status"
+            options={statusOptions}
+          />
+          <Date
+            key={`${personId}${existsFilter ? 1 : 0}eintrittDatum`}
+            value={person.eintrittDatum}
+            field="eintrittDatum"
+            label="Eintritt"
+          />
+          <Date
+            key={`${personId}${existsFilter ? 1 : 0}austrittDatum`}
+            value={person.austrittDatum}
+            field="austrittDatum"
+            label="Austritt"
+          />
+          <Input
+            key={`${personId}beschaeftigungsgrad`}
+            value={person.beschaeftigungsgrad}
+            field="beschaeftigungsgrad"
+            label="Beschäfti&shy;gungs&shy;grad (%)"
+          />
+          <Input
+            key={`${personId}standort`}
+            value={person.standort}
+            field="standort"
+            label="Standort"
+          />
+          <Input
+            key={`${personId}bueroNr`}
+            value={person.bueroNr}
+            field="bueroNr"
+            label="Büro Nr."
+          />
+        </AreaAnstellung>
+        <AreaFunktionen>
+          <Title>Funktionen</Title>
+          <Select
+            key={`${personId}${existsFilter ? 1 : 0}amt`}
+            value={person.amt}
+            field="amt"
+            label="Amt"
+            options={amtOptions}
+          />
+          <Select
+            key={`${personId}${existsFilter ? 1 : 0}abteilung`}
+            value={person.abteilung}
+            field="abteilung"
+            label="Abteilung"
+            options={abteilungOptions}
+          />
+          <Select
+            key={`${personId}${existsFilter ? 1 : 0}sektion`}
+            value={person.sektion}
+            field="sektion"
+            label="Sektion"
+            options={sektionOptions}
+          />
+          <Select
+            key={`${personId}${existsFilter ? 1 : 0}bereich`}
+            value={person.bereich}
+            field="bereich"
+            label="Bereich"
+            options={bereichOptions}
+          />
+          <Select
+            key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
+            value={person.vorgesetztId}
+            field="vorgesetztId"
+            label="Vorge&shy;setz&shy;te(r)"
+            options={personOptions}
+          />
+          {showFilter ? (
+            <Select
+              key={`${personId}${existsFilter ? 1 : 0}funktion`}
+              value={filterFunktion.funktion}
+              field="funktion"
+              label="Funktion"
+              options={funktionenOptions}
+            />
+          ) : (
+            <SelectMulti
+              key={`${personId}${existsFilter ? 1 : 0}funktion`}
+              value={myFunktionen}
+              field="funktion"
+              label="Funktio&shy;nen"
+              options={funktionenOptions}
+            />
+          )}
+        </AreaFunktionen>
+        <AreaVerzeichnis>
+          <Title>Verzeichnis</Title>
+          <Input
+            key={`${personId}parkplatzNr`}
+            value={person.parkplatzNr}
+            field="parkplatzNr"
+            label="Parkplatz Nr."
+          />
+          {showFilter ? (
+            <Select
+              key={`${personId}${existsFilter ? 1 : 0}etikett`}
+              value={filterEtikett.etikett}
+              field="etikett"
+              label="Etikett"
+              options={etikettenOptions}
+            />
+          ) : (
+            <SelectMulti
+              key={`${personId}${existsFilter ? 1 : 0}etikett`}
+              value={myEtiketten}
+              field="etikett"
+              label="Etiketten"
+              options={etikettenOptions}
+            />
+          )}
+          <Input
+            key={`${personId}bemerkungen`}
+            value={person.bemerkungen}
+            field="bemerkungen"
+            label="Bemerkun&shy;gen"
+          />
+          {!showFilter && <Links row={false} />}
+          <Schluessels row={false} />
+          <MobileAbos row={false} />
+        </AreaVerzeichnis>
+        {!showFilter && (
+          <AreaZuletzt>
+            {showDeleted && (
+              <SharedCheckbox
+                key={`${personId}deleted`}
+                value={person.deleted}
+                field="deleted"
+                label="Gelöscht"
+              />
+            )}
+            {showMutationNoetig && (
+              <SharedCheckbox
+                key={`${personId}mutationNoetig`}
+                value={person.mutationNoetig}
+                field="mutationNoetig"
+                label="Handlungs&shy;bedarf"
+              />
+            )}
+            <Zuletzt row={false} />
+          </AreaZuletzt>
+        )}
         <Footer>{moment().format('DD.MM.YYYY')}</Footer>
       </PageContainer>
     </Container>
