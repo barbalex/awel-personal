@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import moment from 'moment'
 import styled, { createGlobalStyle } from 'styled-components'
+import get from 'lodash/get'
 
-import Person from './Person'
 import storeContext from '../../../storeContext'
 /**
  * TODO:
@@ -168,6 +168,103 @@ const PersonPrint = ({ activeId }) => {
 
   const person = personen.find(p => p.id === activeId) || {}
 
+  const personOptions = useMemo(
+    () =>
+      personen
+        .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
+        .filter(w => w.id !== person.id)
+        .map(w => ({
+          label: `${w.name} ${w.vorname}`,
+          value: w.id,
+        })),
+    [personen.length],
+  )
+  const abteilungOptions = useMemo(
+    () =>
+      abteilungen
+        .filter(w => !!w.name && w.deleted === 0)
+        .filter(w => {
+          if (person.amt) {
+            return w.amt === person.amt
+          }
+          return true
+        })
+        .map(w => ({
+          label: w.name,
+          value: w.id,
+        })),
+    [abteilungen.length],
+  )
+  const sektionOptions = useMemo(
+    () =>
+      sektionen
+        .filter(w => !!w.name && w.deleted === 0)
+        .filter(w => {
+          if (person.abteilung) {
+            return w.abteilung === person.abteilung
+          }
+          return true
+        })
+        .map(w => ({
+          label: w.name,
+          value: w.id,
+        })),
+    [sektionen.length, person.abteilung, person.amt],
+  )
+  const bereichOptions = useMemo(
+    () =>
+      bereiche
+        .filter(w => !!w.name && w.deleted === 0)
+        .map(w => ({
+          label: w.name,
+          value: w.id,
+        })),
+    [bereiche.length],
+  )
+  const etikettenOptions = useMemo(() =>
+    etikettWerte
+      .filter(p => p.deleted === 0)
+      .map(w => ({
+        label: w.value,
+        value: w.value,
+      })),
+  )
+  const funktionenOptions = useMemo(() =>
+    funktionWerte
+      .filter(p => p.deleted === 0)
+      .map(w => ({
+        label: w.value,
+        value: w.value,
+      })),
+  )
+  const myEtiketten = useMemo(() =>
+    etiketten
+      .filter(e => e.idPerson === activeId)
+      .filter(w => !!w.etikett)
+      .filter(p => p.deleted === 0)
+      .map(e => ({
+        label: e.etikett,
+        value: e.etikett,
+      })),
+  )
+  const myFunktionen = useMemo(() =>
+    funktionen
+      .filter(e => e.idPerson === activeId)
+      .filter(w => !!w.funktion)
+      .filter(p => p.deleted === 0)
+      .map(e => ({
+        label: e.funktion,
+        value: e.funktion,
+      })),
+  )
+
+  const InputValue = ({ label, value }) => (
+    <Content>
+      <Label>{label}</Label>
+      <Value>{value}</Value>
+    </Content>
+  )
+
   return (
     <Container>
       <PageContainer className="hochformat">
@@ -175,119 +272,36 @@ const PersonPrint = ({ activeId }) => {
         <Wrapper>
           <AreaPersonalien>
             <Title>Personalien</Title>
-            <PersonImage person={person} />
-            <Input
-              key={`${personId}name`}
-              value={person.name}
-              field="name"
-              label="Name"
-            />
-            <Input
-              key={`${personId}vorname`}
-              value={person.vorname}
-              field="vorname"
-              label="Vorname"
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}anrede`}
-              value={person.anrede}
-              field="anrede"
-              label="Anrede"
-              options={anredeOptions}
-            />
-            <Input
-              key={`${personId}kurzzeichen`}
-              value={person.kurzzeichen}
-              field="kurzzeichen"
-              label="Kurzzei&shy;chen"
-            />
-            <Input
-              key={`${personId}adresse`}
-              value={person.adresse}
-              field="adresse"
-              label="Adresse"
-            />
-            <Input
-              key={`${personId}plz`}
-              value={person.plz}
-              field="plz"
-              label="PLZ"
-            />
-            <Input
-              key={`${personId}ort`}
-              value={person.ort}
-              field="ort"
-              label="Ort"
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}land`}
-              value={person.land}
-              field="land"
-              label="Land"
-              options={landOptions}
-            />
-            <Input
-              key={`${personId}email`}
-              value={person.email}
-              field="email"
-              label="Email"
-            />
-            <Date
-              key={`${personId}geburtDatum`}
-              value={person.geburtDatum}
-              field="geburtDatum"
-              label="Geburts&shy;datum"
-            />
-            <Telefones row={false} />
+            {/*<PersonImage person={person} />*/}
+            <InputValue value={person.name} label="Name" />
+            <InputValue value={person.vorname} label="Vorname" />
+            <InputValue value={person.anrede} label="Anrede" />
+            <InputValue value={person.kurzzeichen} label="Kurzzei&shy;chen" />
+            <InputValue value={person.adresse} label="Adresse" />
+            <InputValue value={person.plz} label="PLZ" />
+            <InputValue value={person.ort} label="Ort" />
+            <InputValue label="Land" value={person.land} />
+            <InputValue value={person.email} label="Email" />
+            <InputValue value={person.geburtDatum} label="Geburtsdatum" />
+            {/*<Telefones row={false} />*/}
           </AreaPersonalien>
           <AreaAnstellung>
             <Title>Anstellung</Title>
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}status`}
-              value={person.status}
-              field="status"
-              label="Status"
-              options={statusOptions}
-            />
-            <Date
-              key={`${personId}${existsFilter ? 1 : 0}eintrittDatum`}
-              value={person.eintrittDatum}
-              field="eintrittDatum"
-              label="Eintritt"
-            />
-            <Date
-              key={`${personId}${existsFilter ? 1 : 0}austrittDatum`}
-              value={person.austrittDatum}
-              field="austrittDatum"
-              label="Austritt"
-            />
-            <Input
-              key={`${personId}beschaeftigungsgrad`}
+            <InputValue value={person.status} label="Status" />
+            <InputValue value={person.eintrittDatum} label="Eintritt" />
+            <InputValue value={person.austrittDatum} label="Austritt" />
+            <InputValue
               value={person.beschaeftigungsgrad}
-              field="beschaeftigungsgrad"
-              label="Beschäfti&shy;gungs&shy;grad (%)"
+              label="Beschäftigungsgrad (%)"
             />
-            <Input
-              key={`${personId}standort`}
-              value={person.standort}
-              field="standort"
-              label="Standort"
-            />
-            <Input
-              key={`${personId}bueroNr`}
-              value={person.bueroNr}
-              field="bueroNr"
-              label="Büro Nr."
-            />
+            <InputValue value={person.standort} label="Standort" />
+            <InputValue value={person.bueroNr} label="Büro Nr." />
           </AreaAnstellung>
           <AreaFunktionen>
             <Title>Funktionen</Title>
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}amt`}
-              value={person.amt}
-              field="amt"
+            <InputValue
+              value={get(aemter.find(a => a.id === person.amt), 'name') || ''}
               label="Amt"
-              options={amtOptions}
             />
             <Select
               key={`${personId}${existsFilter ? 1 : 0}abteilung`}
