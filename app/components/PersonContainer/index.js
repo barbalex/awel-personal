@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
+import useDetectPrint from 'use-detect-print'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Person from './Person'
@@ -40,6 +41,7 @@ const StyledReflexElement = styled(ReflexElement)`
 `
 
 const PersonContainer = () => {
+  const isPrinting = useDetectPrint()
   const store = useContext(storeContext)
   const db = useContext(dbContext)
   const { showFilter, personen } = store
@@ -89,6 +91,12 @@ const PersonContainer = () => {
       }
       */
   }, [])
+
+  if (isPrinting) {
+    // TODO:
+    // pass dimensions?
+    return <Person activeId={activeId} />
+  }
 
   return (
     <Container>

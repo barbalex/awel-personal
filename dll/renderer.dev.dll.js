@@ -447,6 +447,18 @@ eval("module.exports = styled-components;\n\n//# sourceURL=webpack://renderer/ex
 
 /***/ }),
 
+/***/ "use-detect-print":
+/*!***********************************!*\
+  !*** external "use-detect-print" ***!
+  \***********************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+eval("module.exports = use-detect-print;\n\n//# sourceURL=webpack://renderer/external_%22use-detect-print%22?");
+
+/***/ }),
+
 /***/ "username":
 /*!***************************!*\
   !*** external "username" ***!
