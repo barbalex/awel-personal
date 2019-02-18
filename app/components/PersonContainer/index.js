@@ -94,8 +94,6 @@ const PersonContainer = () => {
   }, [])
 
   if (isPrinting) {
-    // TODO:
-    // pass dimensions?
     return <PersonPrint activeId={activeId} />
   }
 
