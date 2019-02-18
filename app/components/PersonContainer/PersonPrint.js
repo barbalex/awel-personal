@@ -178,12 +178,15 @@ const PersonPrint = ({ activeId }) => {
       .map(e => e.funktion),
   )
 
-  const InputValue = ({ label, value }) => (
-    <Content>
-      <Label>{label}</Label>
-      <Value>{value}</Value>
-    </Content>
-  )
+  const InputValue = ({ label, value }) => {
+    if (!value && value !== 0) return null
+    return (
+      <Content>
+        <Label>{label}</Label>
+        <Value>{value}</Value>
+      </Content>
+    )
+  }
 
   const personVorgesetzt = personen.find(a => a.id === person.vorgesetztId)
 
