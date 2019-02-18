@@ -6,6 +6,7 @@ import useDetectPrint from 'use-detect-print'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Person from './Person'
+import PersonPrint from './PersonPrint'
 import List from './List'
 import fetchPersonen from '../../src/fetchPersonen'
 import fetchAemter from '../../src/fetchAemter'
@@ -95,7 +96,7 @@ const PersonContainer = () => {
   if (isPrinting) {
     // TODO:
     // pass dimensions?
-    return <Person activeId={activeId} />
+    return <PersonPrint activeId={activeId} />
   }
 
   return (
