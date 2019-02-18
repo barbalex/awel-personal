@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import moment from 'moment'
 import styled, { createGlobalStyle } from 'styled-components'
 
 import Person from './Person'
+import storeContext from '../../../storeContext'
+/**
+ * TODO:
+ * Grid layout for areas
+ * flex layout for label/value
+ * pass every area it's fields with values
+ */
 
 /*
  * need defined height and overflow
@@ -102,15 +109,80 @@ const Footer = styled.div`
     page-break-after: avoid !important;
   }
 `
+const Wrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  grid-template-rows: auto;
+  grid-template-areas:
+    'personalien verzeichnis'
+    'anstellung funktionen'
+    'zuletzt zuletzt';
+`
+const Area = styled.div`
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-bottom: none;
+`
+const AreaPersonalien = styled(Area)`
+  grid-area: personalien;
+`
+const AreaAnstellung = styled(Area)`
+  grid-area: anstellung;
+`
+const AreaFunktionen = styled(Area)`
+  grid-area: funktionen;
+`
+const AreaVerzeichnis = styled(Area)`
+  grid-area: verzeichnis;
+`
+const AreaZuletzt = styled(Area)`
+  grid-area: zuletzt;
+`
+const Title = styled.div`
+  font-weight: 900;
+  font-size: 18px;
+`
+const Content = styled.div`
+  display: flex;
+`
+const Label = styled.label`
+  width: 3cm;
+  flex-grow: 0;
+  flex-shrink: 0;
+`
+const Value = styled.p`
+  flex-grow: 1;
+`
 
-const PersonPrint = ({activeId}) => (
-  <Container>
-    <PageContainer className="hochformat">
-      <GlobalStyle />
-      <Person activeId={activeId} />
-      <Footer>{moment().format('DD.MM.YYYY')}</Footer>
-    </PageContainer>
-  </Container>
-)
+const PersonPrint = ({ activeId }) => {
+  const store = useContext(storeContext)
+  const {
+    personen,
+    aemter,
+    abteilungen,
+    sektionen,
+    bereiche,
+    etiketten,
+    funktionen,
+    showMutationNoetig,
+    statusWerte,
+    anredeWerte,
+    etikettWerte,
+    funktionWerte,
+    landWerte,
+  } = store
+
+  const person = personen.find(p => p.id === activeId) || {}
+
+  return (
+    <Container>
+      <PageContainer className="hochformat">
+        <GlobalStyle />
+        <Person activeId={activeId} />
+        <Footer>{moment().format('DD.MM.YYYY')}</Footer>
+      </PageContainer>
+    </Container>
+  )
+}
 
 export default PersonPrint
