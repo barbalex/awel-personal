@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from 'styled-components'
 import get from 'lodash/get'
 
 import storeContext from '../../../storeContext'
+import Zuletzt from './Person/Zuletzt'
 /**
  * TODO:
  * Grid layout for areas
@@ -158,51 +159,23 @@ const PersonPrint = ({ activeId }) => {
     bereiche,
     etiketten,
     funktionen,
-    showMutationNoetig,
-    statusWerte,
-    anredeWerte,
-    etikettWerte,
-    funktionWerte,
-    landWerte,
   } = store
 
   const person = personen.find(p => p.id === activeId) || {}
 
-  const etikettenOptions = useMemo(() =>
-    etikettWerte
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
-  )
-  const funktionenOptions = useMemo(() =>
-    funktionWerte
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
-  )
   const myEtiketten = useMemo(() =>
     etiketten
       .filter(e => e.idPerson === activeId)
       .filter(w => !!w.etikett)
       .filter(p => p.deleted === 0)
-      .map(e => ({
-        label: e.etikett,
-        value: e.etikett,
-      })),
+      .map(e => e.etikett),
   )
   const myFunktionen = useMemo(() =>
     funktionen
       .filter(e => e.idPerson === activeId)
       .filter(w => !!w.funktion)
       .filter(p => p.deleted === 0)
-      .map(e => ({
-        label: e.funktion,
-        value: e.funktion,
-      })),
+      .map(e => e.funktion),
   )
 
   const InputValue = ({ label, value }) => (
@@ -279,24 +252,12 @@ const PersonPrint = ({ activeId }) => {
                   : ''
               }
             />
-            <SelectMulti
-              key={`${personId}${existsFilter ? 1 : 0}funktion`}
-              value={myFunktionen}
-              field="funktion"
-              label="Funktionen"
-              options={funktionenOptions}
-            />
+            <InputValue label="Funktionen" value={myFunktionen.join(', ')} />
           </AreaFunktionen>
           <AreaVerzeichnis>
             <Title>Verzeichnis</Title>
             <InputValue value={person.parkplatzNr} label="Parkplatz Nr." />
-            <SelectMulti
-              key={`${personId}${existsFilter ? 1 : 0}etikett`}
-              value={myEtiketten}
-              field="etikett"
-              label="Etiketten"
-              options={etikettenOptions}
-            />
+            <InputValue label="Etiketten" value={myEtiketten.join(', ')} />
             <InputValue value={person.bemerkungen} label="Bemerkun&shy;gen" />
             {/*<Links row={false} />
             <Schluessels row={false} />
