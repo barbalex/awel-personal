@@ -100,9 +100,8 @@ const AreaZuletzt = styled.div`
   border-bottom: none;
 `
 const Title = styled.div`
-font-weight: 900;
-font-size: 18px
-grid-area: areaGeschaeftTitle;
+  font-weight: 900;
+  font-size: 18px
 `
 
 const Person = ({ activeId, dimensions }) => {
