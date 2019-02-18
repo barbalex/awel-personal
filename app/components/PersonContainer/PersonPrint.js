@@ -168,59 +168,6 @@ const PersonPrint = ({ activeId }) => {
 
   const person = personen.find(p => p.id === activeId) || {}
 
-  const personOptions = useMemo(
-    () =>
-      personen
-        .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-        .filter(w => w.id !== person.id)
-        .map(w => ({
-          label: `${w.name} ${w.vorname}`,
-          value: w.id,
-        })),
-    [personen.length],
-  )
-  const abteilungOptions = useMemo(
-    () =>
-      abteilungen
-        .filter(w => !!w.name && w.deleted === 0)
-        .filter(w => {
-          if (person.amt) {
-            return w.amt === person.amt
-          }
-          return true
-        })
-        .map(w => ({
-          label: w.name,
-          value: w.id,
-        })),
-    [abteilungen.length],
-  )
-  const sektionOptions = useMemo(
-    () =>
-      sektionen
-        .filter(w => !!w.name && w.deleted === 0)
-        .filter(w => {
-          if (person.abteilung) {
-            return w.abteilung === person.abteilung
-          }
-          return true
-        })
-        .map(w => ({
-          label: w.name,
-          value: w.id,
-        })),
-    [sektionen.length, person.abteilung, person.amt],
-  )
-  const bereichOptions = useMemo(
-    () =>
-      bereiche
-        .filter(w => !!w.name && w.deleted === 0)
-        .map(w => ({
-          label: w.name,
-          value: w.id,
-        })),
-    [bereiche.length],
-  )
   const etikettenOptions = useMemo(() =>
     etikettWerte
       .filter(p => p.deleted === 0)
@@ -265,6 +212,8 @@ const PersonPrint = ({ activeId }) => {
     </Content>
   )
 
+  const personVorgesetzt = personen.find(a => a.id === person.vorgesetztId)
+
   return (
     <Container>
       <PageContainer className="hochformat">
@@ -303,50 +252,44 @@ const PersonPrint = ({ activeId }) => {
               value={get(aemter.find(a => a.id === person.amt), 'name') || ''}
               label="Amt"
             />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}abteilung`}
-              value={person.abteilung}
-              field="abteilung"
+            <InputValue
               label="Abteilung"
-              options={abteilungOptions}
+              value={
+                get(abteilungen.find(a => a.id === person.abteilung), 'name') ||
+                ''
+              }
             />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}sektion`}
-              value={person.sektion}
-              field="sektion"
+            <InputValue
               label="Sektion"
-              options={sektionOptions}
+              value={
+                get(sektionen.find(a => a.id === person.sektion), 'name') || ''
+              }
             />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}bereich`}
-              value={person.bereich}
-              field="bereich"
+            <InputValue
               label="Bereich"
-              options={bereichOptions}
+              value={
+                get(bereiche.find(a => a.id === person.bereich), 'name') || ''
+              }
             />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
-              value={person.vorgesetztId}
-              field="vorgesetztId"
-              label="Vorge&shy;setz&shy;te(r)"
-              options={personOptions}
+            <InputValue
+              label="Vorgesetzte(r)"
+              value={
+                personVorgesetzt
+                  ? `${personVorgesetzt.name} ${personVorgesetzt.vorname}`
+                  : ''
+              }
             />
             <SelectMulti
               key={`${personId}${existsFilter ? 1 : 0}funktion`}
               value={myFunktionen}
               field="funktion"
-              label="Funktio&shy;nen"
+              label="Funktionen"
               options={funktionenOptions}
             />
           </AreaFunktionen>
           <AreaVerzeichnis>
             <Title>Verzeichnis</Title>
-            <Input
-              key={`${personId}parkplatzNr`}
-              value={person.parkplatzNr}
-              field="parkplatzNr"
-              label="Parkplatz Nr."
-            />
+            <InputValue value={person.parkplatzNr} label="Parkplatz Nr." />
             <SelectMulti
               key={`${personId}${existsFilter ? 1 : 0}etikett`}
               value={myEtiketten}
@@ -354,15 +297,10 @@ const PersonPrint = ({ activeId }) => {
               label="Etiketten"
               options={etikettenOptions}
             />
-            <Input
-              key={`${personId}bemerkungen`}
-              value={person.bemerkungen}
-              field="bemerkungen"
-              label="Bemerkun&shy;gen"
-            />
-            <Links row={false} />
+            <InputValue value={person.bemerkungen} label="Bemerkun&shy;gen" />
+            {/*<Links row={false} />
             <Schluessels row={false} />
-            <MobileAbos row={false} />
+            <MobileAbos row={false} />*/}
           </AreaVerzeichnis>
           <AreaZuletzt>
             <Zuletzt row={false} />
