@@ -1,15 +1,5 @@
 import React, { useContext, useState, useCallback } from 'react'
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  Nav,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Button,
-} from 'reactstrap'
+import { Collapse, Navbar, NavbarToggler, Nav, Button } from 'reactstrap'
 import { observer } from 'mobx-react-lite'
 import { FaUndo } from 'react-icons/fa'
 import styled from 'styled-components'
@@ -22,6 +12,7 @@ import Abteilungen from './Abteilungen'
 import Sektionen from './Sektionen'
 import Bereiche from './Bereiche'
 import Export from './Export'
+import Berichte from './Berichte'
 import More from './More'
 import storeContext from '../../storeContext'
 
@@ -65,20 +56,7 @@ const MyNavbar = () => {
           <Abteilungen />
           <Aemter />
           <Export />
-          <UncontrolledDropdown
-            nav
-            inNavbar
-            active={activeLocation === 'berichte'}
-          >
-            <DropdownToggle nav caret>
-              Berichte
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem>TODO</DropdownItem>
-              <DropdownItem divider />
-              <DropdownItem>mehr?</DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
+          <Berichte />
           <Stammdaten />
         </Nav>
         <Nav className="ml-auto" navbar>
