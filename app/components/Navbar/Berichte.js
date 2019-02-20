@@ -26,12 +26,19 @@ const StyledButton = styled(Button)`
 
 const Berichte = () => {
   const store = useContext(storeContext)
-  const { setLocation } = store
+  const { setLocation, setPrinting } = store
   const location = store.location.toJSON()
   const showPD = location[0] === 'Personen' && location[1]
   const onClickPD = useCallback(() => {
     setLocation([...location, 'pdf'])
   }, [location])
+  const onClickPrint = useCallback(() => {
+    setPrinting(true)
+    setTimeout(() => {
+      window.print()
+      setTimeout(() => setPrinting(false))
+    })
+  })
 
   return (
     <StyledUncontrolledDropdown nav inNavbar active={location.includes('pdf')}>
@@ -49,7 +56,7 @@ const Berichte = () => {
       </DropdownMenu>
       {location.includes('pdf') && (
         <>
-          <StyledButton title="drucken">
+          <StyledButton title="drucken" onClick={onClickPrint}>
             <FaPrint />
           </StyledButton>
           <StyledButton title="PDF erzeugen">

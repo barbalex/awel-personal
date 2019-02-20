@@ -46,7 +46,7 @@ const PersonContainer = () => {
   const isPrinting = useDetectPrint()
   const store = useContext(storeContext)
   const db = useContext(dbContext)
-  const { showFilter, personen } = store
+  const { showFilter, personen, printing } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const person = personen.find(p => p.id === activeId)
@@ -96,7 +96,9 @@ const PersonContainer = () => {
       */
   }, [])
 
-  if (isPrinting) {
+  console.log('PersonContainer, isPrinting', isPrinting)
+
+  if (printing) {
     return <PersonPrint activeId={activeId} />
   }
 

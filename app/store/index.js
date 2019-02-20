@@ -88,6 +88,7 @@ export default db =>
       filterFulltext: types.maybe(
         types.union(types.string, types.integer, types.null),
       ),
+      printing: types.optional(types.boolean, false),
     })
     .views(self => ({
       get existsFilter() {
@@ -681,6 +682,9 @@ export default db =>
         },
         setShowMutationNoetig(show) {
           self.showMutationNoetig = show
+        },
+        setPrinting (val){
+self.printing = val
         },
         revertMutation(mutationId) {
           const { mutations } = self
