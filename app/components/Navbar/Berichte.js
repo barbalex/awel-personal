@@ -49,8 +49,11 @@ const Berichte = () => {
       </DropdownMenu>
       {location.includes('pdf') && (
         <>
-          <StyledButton id="newPersonButton">
+          <StyledButton title="drucken">
             <FaPrint />
+          </StyledButton>
+          <StyledButton title="PDF erzeugen">
+            <FaRegFilePdf />
           </StyledButton>
         </>
       )}
