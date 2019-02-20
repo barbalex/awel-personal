@@ -9,8 +9,12 @@ import {
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { FaPrint, FaRegFilePdf } from 'react-icons/fa'
+import { remote, shell } from 'electron'
+import fs from 'fs'
 
 import storeContext from '../../storeContext'
+
+const { dialog } = remote
 
 const StyledUncontrolledDropdown = styled(UncontrolledDropdown)`
   display: flex;
@@ -39,6 +43,42 @@ const Berichte = () => {
       setTimeout(() => setPrinting(false))
     })
   })
+  const onClickCreatePdf = useCallback(() => {
+    const win = remote.getCurrentWindow()
+    const printToPDFOptions = {
+      marginsType: 0,
+      pageSize: 'A4',
+      landscape: false,
+      printBackground: false,
+    }
+    const dialogOptions = {
+      title: 'pdf speichern',
+      filters: [
+        {
+          name: 'pdf',
+          extensions: ['pdf'],
+        },
+      ],
+    }
+
+    // https://github.com/electron/electron/blob/master/docs/api/web-contents.md#contentsprinttopdfoptions-callback
+
+    setPrinting(true)
+    setTimeout(() => {
+      win.webContents.printToPDF(printToPDFOptions, (error, data) => {
+        if (error) throw error
+        dialog.showSaveDialog(dialogOptions, filePath => {
+          if (filePath) {
+            fs.writeFile(filePath, data, err => {
+              if (err) throw err
+              shell.openItem(filePath)
+            })
+          }
+        })
+      })
+      setTimeout(() => setPrinting(false))
+    })
+  })
 
   return (
     <StyledUncontrolledDropdown nav inNavbar active={location.includes('pdf')}>
@@ -59,7 +99,7 @@ const Berichte = () => {
           <StyledButton title="drucken" onClick={onClickPrint}>
             <FaPrint />
           </StyledButton>
-          <StyledButton title="PDF erzeugen">
+          <StyledButton title="PDF erzeugen" onClick={onClickCreatePdf}>
             <FaRegFilePdf />
           </StyledButton>
         </>
