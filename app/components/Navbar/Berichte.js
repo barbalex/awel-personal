@@ -12,18 +12,13 @@ import storeContext from '../../storeContext'
 
 const Berichte = () => {
   const store = useContext(storeContext)
-  const { lastUserMutation, revertMutation, addError } = store
-  const onClickUndo = useCallback(() => {
-    if (!lastUserMutation) {
-      return addError(
-        'Es gibt keine Aktion, die rückgängig gemacht werden könnte',
-      )
-    }
-    revertMutation(lastUserMutation.id)
-  }, [lastUserMutation])
-
+  const { setLocation } = store
   const location = store.location.toJSON()
   const activeLocation = location[0]
+  const showPD = location[0] === 'Personen' && location[1]
+  const onClickPD = useCallback(() => {
+    setLocation([...location, 'pdf'])
+  }, [location])
 
   return (
     <UncontrolledDropdown nav inNavbar active={activeLocation === 'berichte'}>
@@ -31,8 +26,12 @@ const Berichte = () => {
         Berichte
       </DropdownToggle>
       <DropdownMenu>
-        <DropdownItem>Personalblatt</DropdownItem>
-        <DropdownItem divider />
+        {showPD && (
+          <>
+            <DropdownItem onClick={onClickPD}>Personalblatt</DropdownItem>
+            <DropdownItem divider />
+          </>
+        )}
         <DropdownItem>mehr?</DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>

@@ -3,6 +3,7 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import useDetectPrint from 'use-detect-print'
+import last from 'lodash/last'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Person from './Person'
@@ -51,6 +52,8 @@ const PersonContainer = () => {
   const person = personen.find(p => p.id === activeId)
   // pass list the active person's props to enable instant updates
   const personJson = person ? person.toJSON() : {}
+
+  console.log('PersonContainer, location:', location)
 
   useEffect(() => {
     fetchPersonen({ db, store })
@@ -115,7 +118,11 @@ const PersonContainer = () => {
             propagateDimensionsRate={1000}
             resizeHeight={false}
           >
-            <Person activeId={activeId} />
+            {last(location) === 'pdf' ? (
+              <PersonPrint activeId={activeId} />
+            ) : (
+              <Person activeId={activeId} />
+            )}
           </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>
