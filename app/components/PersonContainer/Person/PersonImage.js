@@ -67,7 +67,8 @@ const PersonImage = () => {
     setImage(person.bildUrl)
   }, [person.bildUrl])
 
-  const onDrop = useCallback(files => 
+  const onDrop = useCallback(files => {
+    //console.log({ files })
     updateField({
       table: 'personen',
       parentModel: 'personen',
@@ -76,7 +77,7 @@ const PersonImage = () => {
       id: person.id,
       setErrors,
     })
-  )
+  })
 
   if (showFilter) return null
 

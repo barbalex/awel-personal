@@ -128,6 +128,7 @@ const AreaPersonalien = styled(Area)`
   display: grid;
   grid-template-columns: repeat(2, 50%);
   grid-template-areas:
+    'p_title p_bild'
     'p_name p_bild'
     'p_vorname p_bild'
     'p_anrede p_bild'
@@ -140,11 +141,15 @@ const AreaPersonalien = styled(Area)`
     'p_geburtsdatum p_geburtsdatum'
     'p_telefon p_telefon';
 `
+const AreaPTitle = styled.div`
+  grid-area: p_title;
+`
 const AreaPName = styled.div`
   grid-area: p_name;
 `
 const AreaPBild = styled.div`
   grid-area: p_bild;
+  justify-self: end;
 `
 const AreaPVorname = styled.div`
   grid-area: p_vorname;
@@ -232,8 +237,16 @@ const PersonPrint = ({ activeId }) => {
         <GlobalStyle />
         <Wrapper>
           <AreaPersonalien>
-            <Title>Personalien</Title>
-            <AreaPBild>Bild</AreaPBild>
+            <AreaPTitle>
+              <Title>Personalien</Title>
+            </AreaPTitle>
+            <AreaPBild>
+              <img
+                src={person.bildUrl}
+                alt={`${person.vorname} ${person.name}`}
+                height="180"
+              />
+            </AreaPBild>
             <AreaPName>
               <InputValue value={person.name} label="Name" />
             </AreaPName>
