@@ -3,8 +3,8 @@ import moment from 'moment'
 import styled, { createGlobalStyle } from 'styled-components'
 import get from 'lodash/get'
 
-import storeContext from '../../storeContext'
-import Zuletzt from './Person/Zuletzt'
+import storeContext from '../../../storeContext'
+import Zuletzt from '../Person/Zuletzt'
 /**
  * TODO:
  * Grid layout for areas
