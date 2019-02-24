@@ -61,7 +61,6 @@ const PersonContainer = () => {
     fetchSektionen({ db, store })
     fetchWerte({ db, store, table: 'statusWerte' })
     fetchWerte({ db, store, table: 'anredeWerte' })
-    // fetchWerte({ db, store, table: 'kostenstelleWerte' })
     fetchWerte({ db, store, table: 'funktionWerte' })
     fetchEtiketten({ db, store })
     fetchWerte({ db, store, table: 'etikettWerte' })
@@ -77,21 +76,6 @@ const PersonContainer = () => {
     fetchWerte({ db, store, table: 'schluesselAnlageWerte' })
     fetchFunktionen({ db, store })
     fetchSettings({ db, store })
-    // set initial active id
-    // nope, better not
-    // for instance: after deleting do not show another user
-    // generally: never sho a person the user has not choosen
-    /*
-      let { personen } = props.store
-      personen = sortBy(personen, ['name', 'vorname'])
-      const { showDeleted, location } = props.store
-      if (!showDeleted) personen = personen.filter(p => p.deleted === 0)
-      const activeId = location.toJSON()[1]
-      if (personen && personen.length && personen.length > 0 && !activeId) {
-        const row = personen[0]
-        props.setInitialId(row.id)
-      }
-      */
   }, [])
 
   if (printing) {

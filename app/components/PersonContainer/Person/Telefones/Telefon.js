@@ -72,9 +72,6 @@ const Telefon = ({ id }) => {
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [telefon])
 
-  const location = store.location.toJSON()
-  // TODO: refactor when pdf is built
-  const isPdf = location[0] === 'personPdf'
   const telefoneTypOptions = sortBy(telefonTypWerte, ['sort', 'value'])
     .filter(w => !!w.value)
     .map(w => ({
@@ -83,7 +80,7 @@ const Telefon = ({ id }) => {
     }))
 
   const onBlur = useCallback(({ field, value }) => {
-    const newValue = ifIsNumericAsNumber(value)
+    const newValue = value
     if (showFilter) {
       setFilter({
         model: 'filterTelefon',
@@ -121,7 +118,7 @@ const Telefon = ({ id }) => {
   const onClickDelete = useCallback(() => deleteTelefon(id), [id])
 
   return (
-    <Row key={`${id}`} nosymbol={isPdf || showFilter}>
+    <Row key={`${id}`} nosymbol={showFilter}>
       <Nr>
         <InputWithoutLabel
           key={`${id}nr`}
@@ -154,13 +151,9 @@ const Telefon = ({ id }) => {
           error={errors.bemerkungen}
         />
       </Bemerkungen>
-      {!(isPdf || showFilter) && (
+      {!showFilter && (
         <DeleteContainer>
-          <Delete
-            data-ispdf={isPdf}
-            onClick={onClickDelete}
-            id={`deleteTelefonIcon${id}`}
-          >
+          <Delete onClick={onClickDelete} id={`deleteTelefonIcon${id}`}>
             <FaTimes />
           </Delete>
           <UncontrolledTooltip
