@@ -7,6 +7,7 @@ import storeContext from '../../../storeContext'
 import Zuletzt from '../Person/Zuletzt'
 import InputValue from './InputValue'
 import Telefones from './Telefones'
+import Links from './Links'
 
 /*
  * need defined height and overflow
@@ -243,6 +244,7 @@ const PersonPrint = ({ activeId }) => {
             <InputValue value={person.parkplatzNr} label="Parkplatz Nr." />
             <InputValue label="Etiketten" value={myEtiketten.join(', ')} />
             <InputValue value={person.bemerkungen} label="Bemerkun&shy;gen" />
+            <Links activeId={activeId} />
             {/*<Links row={false} />
             <Schluessels row={false} />
             <MobileAbos row={false} />*/}
