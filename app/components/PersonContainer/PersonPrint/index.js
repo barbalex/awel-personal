@@ -125,6 +125,56 @@ const Area = styled.div`
 `
 const AreaPersonalien = styled(Area)`
   grid-area: personalien;
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  grid-template-areas:
+    'p_name p_bild'
+    'p_vorname p_bild'
+    'p_anrede p_bild'
+    'p_kurzzeichen p_bild'
+    'p_adresse p_adresse'
+    'p_plz p_plz'
+    'p_ort p_ort'
+    'p_land p_land'
+    'p_email p_email'
+    'p_geburtsdatum p_geburtsdatum'
+    'p_telefon p_telefon';
+`
+const AreaPName = styled.div`
+  grid-area: p_name;
+`
+const AreaPBild = styled.div`
+  grid-area: p_bild;
+`
+const AreaPVorname = styled.div`
+  grid-area: p_vorname;
+`
+const AreaPAnrede = styled.div`
+  grid-area: p_anrede;
+`
+const AreaPKurzzeichen = styled.div`
+  grid-area: p_kurzzeichen;
+`
+const AreaPAdresse = styled.div`
+  grid-area: p_adresse;
+`
+const AreaPPLZ = styled.div`
+  grid-area: p_plz;
+`
+const AreaPOrt = styled.div`
+  grid-area: p_ort;
+`
+const AreaPLand = styled.div`
+  grid-area: p_land;
+`
+const AreaPEmail = styled.div`
+  grid-area: p_email;
+`
+const AreaPGeburtsdatum = styled.div`
+  grid-area: p_geburtsdatum;
+`
+const AreaPTelefon = styled.div`
+  grid-area: p_telefon;
 `
 const AreaAnstellung = styled(Area)`
   grid-area: anstellung;
@@ -183,18 +233,40 @@ const PersonPrint = ({ activeId }) => {
         <Wrapper>
           <AreaPersonalien>
             <Title>Personalien</Title>
-            {/*<PersonImage person={person} />*/}
-            <InputValue value={person.name} label="Name" />
-            <InputValue value={person.vorname} label="Vorname" />
-            <InputValue value={person.anrede} label="Anrede" />
-            <InputValue value={person.kurzzeichen} label="Kurzzei&shy;chen" />
-            <InputValue value={person.adresse} label="Adresse" />
-            <InputValue value={person.plz} label="PLZ" />
-            <InputValue value={person.ort} label="Ort" />
-            <InputValue label="Land" value={person.land} />
-            <InputValue value={person.email} label="Email" />
-            <InputValue value={person.geburtDatum} label="Geburtsdatum" />
-            <Telefones activeId={activeId} />
+            <AreaPBild>Bild</AreaPBild>
+            <AreaPName>
+              <InputValue value={person.name} label="Name" />
+            </AreaPName>
+            <AreaPVorname>
+              <InputValue value={person.vorname} label="Vorname" />
+            </AreaPVorname>
+            <AreaPAnrede>
+              <InputValue value={person.anrede} label="Anrede" />
+            </AreaPAnrede>
+            <AreaPKurzzeichen>
+              <InputValue value={person.kurzzeichen} label="Kurzzeichen" />
+            </AreaPKurzzeichen>
+            <AreaPAdresse>
+              <InputValue value={person.adresse} label="Adresse" />
+            </AreaPAdresse>
+            <AreaPPLZ>
+              <InputValue value={person.plz} label="PLZ" />
+            </AreaPPLZ>
+            <AreaPOrt>
+              <InputValue value={person.ort} label="Ort" />
+            </AreaPOrt>
+            <AreaPLand>
+              <InputValue label="Land" value={person.land} />
+            </AreaPLand>
+            <AreaPEmail>
+              <InputValue value={person.email} label="Email" />
+            </AreaPEmail>
+            <AreaPGeburtsdatum>
+              <InputValue value={person.geburtDatum} label="Geburtsdatum" />
+            </AreaPGeburtsdatum>
+            <AreaPTelefon>
+              <Telefones activeId={activeId} />
+            </AreaPTelefon>
           </AreaPersonalien>
           <AreaAnstellung>
             <Title>Anstellung</Title>
