@@ -10,11 +10,7 @@ import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import Schluessel from './Schluessel'
 import storeContext from '../../../../storeContext'
 
-const Container = styled.div`
-  border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
-  border-bottom: none;
-  font-size: ${props => (props['data-ispdf'] ? '10px' : 'inherit')};
-`
+const Container = styled.div``
 const StyledButton = styled(Button)`
   margin-top: 5px;
 `
@@ -25,8 +21,7 @@ const EFButtonGroup = styled(ButtonGroup)`
 const Row = styled.div`
   grid-column: 1;
   display: grid;
-  grid-template-columns: ${props =>
-    props['data-ispdf'] ? '2fr 2fr 2fr 1fr' : '2fr 2fr 2fr 1fr 20px'};
+  grid-template-columns: 2fr 2fr 2fr 1fr 20px;
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
   padding: 3px 0;
@@ -77,8 +72,6 @@ const SchluesselsComponent = ({ row = true }) => {
   } else {
     schluessels = store.schluessel.filter(s => s.idPerson === activePersonenId)
   }
-  // TODO: refactor when pdf is built
-  const isPdf = location[0] === 'personPdf'
   const mayAddNew =
     !showFilter &&
     (schluessels.length === 0 ||
@@ -105,14 +98,14 @@ const SchluesselsComponent = ({ row = true }) => {
     console.log('no schluesselFormPath to open')
   }, [settings.schluesselFormPath])
   const Content = () => (
-    <Container data-ispdf={isPdf} name="schluessel">
+    <Container name="schluessel">
       {schluessels.length > 0 && (
-        <Row data-ispdf={isPdf}>
+        <Row>
           <Typ>Typ</Typ>
           <Anlage>Anlage</Anlage>
           <Bezeichnung>Bezeichnung</Bezeichnung>
           <Nr>Nr.</Nr>
-          {!isPdf && <div />}
+          <div />
         </Row>
       )}
       {schluessels.map(schluessel => (

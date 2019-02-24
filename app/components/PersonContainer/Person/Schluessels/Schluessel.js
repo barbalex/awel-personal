@@ -73,9 +73,6 @@ const SchluesselComponent = ({ id }) => {
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [schluessel])
 
-  const location = store.location.toJSON()
-  // TODO: refactor when pdf is built
-  const isPdf = location[0] === 'personPdf'
   const schluesselTypOptions = sortBy(schluesselTypWerte, ['sort', 'value'])
     .filter(w => !!w.value)
     .map(w => ({
@@ -152,7 +149,7 @@ const SchluesselComponent = ({ id }) => {
   const onClickDelete = useCallback(() => deleteSchluessel(id), [id])
 
   return (
-    <Row key={`${id}`} nosymbol={isPdf || showFilter}>
+    <Row key={`${id}`} nosymbol={showFilter}>
       <Typ>
         <Select
           key={`${id}typ`}
@@ -196,13 +193,9 @@ const SchluesselComponent = ({ id }) => {
           error={errors.nr}
         />
       </Nr>
-      {!(isPdf || showFilter) && (
+      {!showFilter && (
         <>
-          <Delete
-            data-ispdf={isPdf}
-            onClick={onClickDelete}
-            id={`deleteSchluesselIcon${id}`}
-          >
+          <Delete onClick={onClickDelete} id={`deleteSchluesselIcon${id}`}>
             <FaTimes />
           </Delete>
           <UncontrolledTooltip

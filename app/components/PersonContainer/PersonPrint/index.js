@@ -8,6 +8,7 @@ import Zuletzt from '../Person/Zuletzt'
 import InputValue from './InputValue'
 import Telefones from './Telefones'
 import Links from './Links'
+import Schluessels from './Schluessels'
 
 /*
  * need defined height and overflow
@@ -245,8 +246,8 @@ const PersonPrint = ({ activeId }) => {
             <InputValue label="Etiketten" value={myEtiketten.join(', ')} />
             <InputValue value={person.bemerkungen} label="Bemerkun&shy;gen" />
             <Links activeId={activeId} />
+            <Schluessels activeId={activeId} />
             {/*
-            <Schluessels row={false} />
             <MobileAbos row={false} />*/}
           </AreaVerzeichnis>
           <AreaZuletzt>
