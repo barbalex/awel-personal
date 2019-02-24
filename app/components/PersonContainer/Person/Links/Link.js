@@ -16,9 +16,6 @@ const Field = styled.div`
   padding: 3px;
   align-items: center;
   min-height: 35px;
-  &:first-of-type {
-    border-top: thin solid #cccccc;
-  }
   &:hover {
     background-color: rgba(0, 0, 0, 0.05);
   }
