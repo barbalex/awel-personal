@@ -199,6 +199,10 @@ const Title = styled.div`
   font-weight: 900;
   font-size: 18px;
 `
+const Img = styled.img`
+  max-height: 180px;
+  max-width: 160px;
+`
 
 const PersonPrint = ({ activeId }) => {
   const store = useContext(storeContext)
@@ -241,10 +245,9 @@ const PersonPrint = ({ activeId }) => {
               <Title>Personalien</Title>
             </AreaPTitle>
             <AreaPBild>
-              <img
+              <Img
                 src={person.bildUrl}
                 alt={`${person.vorname} ${person.name}`}
-                height="180"
               />
             </AreaPBild>
             <AreaPName>
