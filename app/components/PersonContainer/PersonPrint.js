@@ -145,7 +145,8 @@ const Title = styled.div`
 `
 const Content = styled.div``
 const Label = styled.label`
-  font-size: small;
+  font-size: smaller;
+  margin-bottom: 0;
 `
 const Value = styled.p``
 
