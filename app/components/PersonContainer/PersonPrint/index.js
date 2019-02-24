@@ -5,12 +5,7 @@ import get from 'lodash/get'
 
 import storeContext from '../../../storeContext'
 import Zuletzt from '../Person/Zuletzt'
-/**
- * TODO:
- * Grid layout for areas
- * flex layout for label/value
- * pass every area it's fields with values
- */
+import InputValue from './InputValue'
 
 /*
  * need defined height and overflow
@@ -143,12 +138,6 @@ const Title = styled.div`
   font-weight: 900;
   font-size: 18px;
 `
-const Content = styled.div``
-const Label = styled.label`
-  font-size: smaller;
-  margin-bottom: 0;
-`
-const Value = styled.p``
 
 const PersonPrint = ({ activeId }) => {
   const store = useContext(storeContext)
@@ -178,16 +167,6 @@ const PersonPrint = ({ activeId }) => {
       .filter(p => p.deleted === 0)
       .map(e => e.funktion),
   )
-
-  const InputValue = ({ label, value }) => {
-    if (!value && value !== 0) return null
-    return (
-      <Content>
-        <Label>{label}</Label>
-        <Value>{value}</Value>
-      </Content>
-    )
-  }
 
   const personVorgesetzt = personen.find(a => a.id === person.vorgesetztId)
 
