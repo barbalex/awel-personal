@@ -1,4 +1,11 @@
 import React, { useContext, useCallback, useEffect, useState } from 'react'
+/**
+ * DANGER
+ * DO NOT UPDATE REACT-DROPZONE TO 8.2 OR HIHGHER
+ * There is a breaking change in 8.2 in that the path returned
+ * is only the file name
+ * see: https://github.com/react-dropzone/react-dropzone/issues/769
+ */
 import Dropzone from 'react-dropzone'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
@@ -9,8 +16,7 @@ import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
 
 const Container = styled.div`
   grid-area: areaLinks;
-  background-color: ${props =>
-    props['data-ispdf'] ? 'rgba(0, 0, 0,0)' : 'rgba(0, 0, 0,0)'};
+  background-color: rgba(0, 0, 0, 0);
   display: grid;
   grid-template-columns: '1fr';
   grid-template-areas: 'dropzone';
@@ -23,7 +29,7 @@ const DropzoneContainer = styled.div`
   grid-area: dropzone;
   width: 100%;
   height: 100%;
-  display: ${props => (props['data-ispdf'] ? 'none' : 'block')};
+  display: block;
   cursor: pointer;
 `
 const StyledDropzone = styled(Dropzone)`
@@ -55,16 +61,13 @@ const PersonImage = () => {
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [person])
 
-  // TODO: refactor when pdf is built
-  const isPdf = location[0] === 'personPdf'
-
   const [image, setImage] = useState(null)
 
   useEffect(() => {
     setImage(person.bildUrl)
   }, [person.bildUrl])
 
-  const onDrop = useCallback(files =>
+  const onDrop = useCallback(files => 
     updateField({
       table: 'personen',
       parentModel: 'personen',
@@ -72,17 +75,16 @@ const PersonImage = () => {
       value: files[0].path,
       id: person.id,
       setErrors,
-    }),
+    })
   )
 
-  if (isPdf) return null
   if (showFilter) return null
 
   return (
     <StyledFormGroup row>
       <Col sm={12}>
-        <Container data-ispdf={isPdf} name="links">
-          <DropzoneContainer data-ispdf={isPdf} title="Bild wählen">
+        <Container name="links">
+          <DropzoneContainer title="Bild wählen">
             <StyledDropzone
               onDrop={onDrop}
               accept="image/jpeg, image/png, image/gif, image/bmp, image/webp, image/vnd.microsoft.icon"
