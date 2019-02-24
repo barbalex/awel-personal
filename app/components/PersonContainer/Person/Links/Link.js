@@ -15,7 +15,7 @@ const Field = styled.div`
   border-bottom: thin solid #cccccc;
   padding: 3px;
   align-items: center;
-  min-height: ${props => (props['data-ispdf'] ? 0 : '35px')};
+  min-height: 35px;
   &:first-of-type {
     border-top: thin solid #cccccc;
   }
@@ -30,7 +30,7 @@ const UrlDiv = styled.div`
 const RemoveGlyphiconDiv = styled.div`
   grid-column: 2 / span 1;
   margin-top: -2px;
-  display: ${props => (props['data-ispdf'] ? 'none' : 'block')};
+  display: block;
   color: #cccccc;
   font-size: 18px;
   cursor: pointer;
@@ -45,14 +45,11 @@ const StyledA = styled.a`
 const LinkComponent = ({ link }) => {
   const store = useContext(storeContext)
   const { deleteLink } = store
-  const location = store.location.toJSON()
-  // TODO: refactor when pdf is built
-  const isPdf = location[0] === 'personPdf'
 
   const onClickRemove = useCallback(() => deleteLink(link.id), [link])
 
   return (
-    <Field data-ispdf={isPdf}>
+    <Field>
       <UrlDiv>
         <StyledA
           href={link.url}
@@ -66,7 +63,6 @@ const LinkComponent = ({ link }) => {
       </UrlDiv>
       <RemoveGlyphiconDiv
         name={link.id}
-        data-ispdf={isPdf}
         onClick={onClickRemove}
         id={`removeLinkIcon${link.id}`}
       >
