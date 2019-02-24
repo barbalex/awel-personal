@@ -6,6 +6,7 @@ import get from 'lodash/get'
 import storeContext from '../../../storeContext'
 import Zuletzt from '../Person/Zuletzt'
 import InputValue from './InputValue'
+import Telefones from './Telefones'
 
 /*
  * need defined height and overflow
@@ -188,7 +189,7 @@ const PersonPrint = ({ activeId }) => {
             <InputValue label="Land" value={person.land} />
             <InputValue value={person.email} label="Email" />
             <InputValue value={person.geburtDatum} label="Geburtsdatum" />
-            {/*<Telefones row={false} />*/}
+            <Telefones activeId={activeId} />
           </AreaPersonalien>
           <AreaAnstellung>
             <Title>Anstellung</Title>
