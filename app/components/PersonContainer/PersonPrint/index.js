@@ -245,7 +245,7 @@ const PersonPrint = ({ activeId }) => {
             <InputValue label="Etiketten" value={myEtiketten.join(', ')} />
             <InputValue value={person.bemerkungen} label="Bemerkun&shy;gen" />
             <Links activeId={activeId} />
-            {/*<Links row={false} />
+            {/*
             <Schluessels row={false} />
             <MobileAbos row={false} />*/}
           </AreaVerzeichnis>

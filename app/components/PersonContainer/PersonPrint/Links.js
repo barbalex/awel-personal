@@ -6,14 +6,14 @@ import storeContext from '../../../storeContext'
 const Label = styled.label`
   font-size: smaller;
   margin-bottom: 0;
+  color: grey;
 `
 const Value = styled.p`
   margin-bottom: 0;
 `
 const Row = styled.div`
-  border-bottom: thin solid #cccccc;
-  padding: 3px 0;
-  color: rgba(146, 146, 146, 1);
+  border-bottom: thin solid #dedede;
+  border-top: ${props => (props.index === 0 ? 'thin solid #dedede' : 'none')};
 `
 
 export default ({ activeId }) => {
@@ -26,8 +26,8 @@ export default ({ activeId }) => {
   return (
     <>
       <Label>Datei-Links</Label>
-      {myLinks.map(link => (
-        <Row key={link.id}>
+      {myLinks.map((link, index) => (
+        <Row key={link.id} index={index}>
           <Value>{link.url}</Value>
         </Row>
       ))}

@@ -10,17 +10,13 @@ import Link from './Link'
 
 const Container = styled.div`
   grid-area: areaLinks;
-  background-color: ${props =>
-    props['data-ispdf'] ? 'rgba(0, 0, 0,0)' : 'rgba(0, 0, 0,0)'};
-  grid-template-columns: ${props =>
-    props['data-ispdf'] ? '1fr' : '1fr 1fr 1fr'};
-  grid-template-areas: ${props =>
-    props['data-ispdf'] ? "'links'" : "'links links dropzone'"};
+  background-color: rgba(0, 0, 0, 0);
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas: 'links links dropzone';
   grid-column-gap: 8px;
-  grid-row-gap: ${props => (props['data-ispdf'] ? '1px' : '8px')};
-  border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
+  grid-row-gap: 8px;
+  border: none;
   border-bottom: none;
-  font-size: ${props => (props['data-ispdf'] ? '10px' : 'inherit')};
 `
 const Links = styled.div``
 const DropzoneContainer = styled.div`
@@ -50,42 +46,38 @@ const LinksComponent = ({ row = true }) => {
   if (!location[1] && !showFilter) throw new Error(`no id found`)
   const activePersonenId = ifIsNumericAsNumber(location[1])
   const myLinks = links.filter(l => l.idPerson === activePersonenId)
-  // TODO: refactor when pdf is built
-  const isPdf = location[0] === 'personPdf'
 
   const onDrop = useCallback(files => addLink(files[0].path))
 
   const Drop = () => (
-    <Container data-ispdf={isPdf} name="links">
-      {!isPdf && (
-        <DropzoneContainer>
-          <StyledDropzone onDrop={onDrop}>
-            {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
-              if (isDragActive) {
-                return (
-                  <DropzoneInnerDiv {...getRootProps()}>
-                    <div>jetzt fallen lassen...</div>
-                  </DropzoneInnerDiv>
-                )
-              }
-              if (isDragReject) {
-                return (
-                  <DropzoneInnerDiv {...getRootProps()}>
-                    <div>Hm. Da ging etwas schief :-(</div>
-                  </DropzoneInnerDiv>
-                )
-              }
+    <Container name="links">
+      <DropzoneContainer>
+        <StyledDropzone onDrop={onDrop}>
+          {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
+            if (isDragActive) {
               return (
                 <DropzoneInnerDiv {...getRootProps()}>
-                  <input {...getInputProps()} />
-                  <div>Datei hierhin ziehen...</div>
-                  <div>...oder klicken, um sie zu wählen.</div>
+                  <div>jetzt fallen lassen...</div>
                 </DropzoneInnerDiv>
               )
-            }}
-          </StyledDropzone>
-        </DropzoneContainer>
-      )}
+            }
+            if (isDragReject) {
+              return (
+                <DropzoneInnerDiv {...getRootProps()}>
+                  <div>Hm. Da ging etwas schief :-(</div>
+                </DropzoneInnerDiv>
+              )
+            }
+            return (
+              <DropzoneInnerDiv {...getRootProps()}>
+                <input {...getInputProps()} />
+                <div>Datei hierhin ziehen...</div>
+                <div>...oder klicken, um sie zu wählen.</div>
+              </DropzoneInnerDiv>
+            )
+          }}
+        </StyledDropzone>
+      </DropzoneContainer>
       <Links>
         {myLinks.map(link => (
           <Link key={`${link.idPerson}${link.url}`} link={link} />

@@ -5,6 +5,7 @@ const Content = styled.div``
 const Label = styled.label`
   font-size: smaller;
   margin-bottom: 0;
+  color: grey;
 `
 const Value = styled.p`
   margin-bottom: 2px;
