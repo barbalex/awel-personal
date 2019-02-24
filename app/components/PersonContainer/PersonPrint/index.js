@@ -137,6 +137,8 @@ const AreaVerzeichnis = styled(Area)`
 `
 const AreaZuletzt = styled(Area)`
   grid-area: zuletzt;
+  border-left: none;
+  border-right: none;
 `
 const Title = styled.div`
   font-weight: 900;
