@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
-import useDetectPrint from 'use-detect-print'
+//import useDetectPrint from 'use-detect-print'
 import last from 'lodash/last'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
@@ -43,7 +43,7 @@ const StyledReflexElement = styled(ReflexElement)`
 `
 
 const PersonContainer = () => {
-  const isPrinting = useDetectPrint()
+  //const isPrinting = useDetectPrint()
   const store = useContext(storeContext)
   const db = useContext(dbContext)
   const { showFilter, personen, printing } = store
@@ -52,8 +52,6 @@ const PersonContainer = () => {
   const person = personen.find(p => p.id === activeId)
   // pass list the active person's props to enable instant updates
   const personJson = person ? person.toJSON() : {}
-
-  console.log('PersonContainer, location:', location)
 
   useEffect(() => {
     fetchPersonen({ db, store })
@@ -95,8 +93,6 @@ const PersonContainer = () => {
       }
       */
   }, [])
-
-  console.log('PersonContainer, isPrinting', isPrinting)
 
   if (printing) {
     return <PersonPrint activeId={activeId} />
