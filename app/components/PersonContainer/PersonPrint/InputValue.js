@@ -6,7 +6,9 @@ const Label = styled.label`
   font-size: smaller;
   margin-bottom: 0;
 `
-const Value = styled.p``
+const Value = styled.p`
+  margin-bottom: 2px;
+`
 
 export default ({ label, value }) => {
   if (!value && value !== 0) return null
