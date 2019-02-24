@@ -73,9 +73,6 @@ const MobileAbo = ({ id }) => {
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [mobileAbo])
 
-  const location = store.location.toJSON()
-  // TODO: refactor when pdf is built
-  const isPdf = location[0] === 'personPdf'
   const mobileAboTypOptions = sortBy(mobileAboTypWerte, ['sort', 'value'])
     .filter(w => !!w.value)
     .map(w => ({
@@ -131,7 +128,7 @@ const MobileAbo = ({ id }) => {
   const onClickDelete = useCallback(() => deleteMobileAbo(id), [id])
 
   return (
-    <Row key={`${id}`} nosymbol={isPdf || showFilter}>
+    <Row key={`${id}`} nosymbol={showFilter}>
       <Typ>
         <Select
           key={`${id}typ`}
@@ -165,13 +162,9 @@ const MobileAbo = ({ id }) => {
           error={errors.bemerkungen}
         />
       </Bemerkungen>
-      {!(isPdf || showFilter) && (
+      {!showFilter && (
         <DeleteContainer>
-          <Delete
-            data-ispdf={isPdf}
-            onClick={onClickDelete}
-            id={`deleteMobileAboIcon${id}`}
-          >
+          <Delete onClick={onClickDelete} id={`deleteMobileAboIcon${id}`}>
             <FaTimes />
           </Delete>
           <UncontrolledTooltip

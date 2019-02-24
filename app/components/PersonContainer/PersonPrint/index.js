@@ -9,6 +9,7 @@ import InputValue from './InputValue'
 import Telefones from './Telefones'
 import Links from './Links'
 import Schluessels from './Schluessels'
+import MobileAbos from './MobileAbos'
 
 /*
  * need defined height and overflow
@@ -247,8 +248,7 @@ const PersonPrint = ({ activeId }) => {
             <InputValue value={person.bemerkungen} label="Bemerkun&shy;gen" />
             <Links activeId={activeId} />
             <Schluessels activeId={activeId} />
-            {/*
-            <MobileAbos row={false} />*/}
+            <MobileAbos activeId={activeId} />
           </AreaVerzeichnis>
           <AreaZuletzt>
             <Zuletzt row={false} />

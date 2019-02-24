@@ -9,9 +9,7 @@ import MobileAbo from './MobileAbo'
 import storeContext from '../../../../storeContext'
 
 const Container = styled.div`
-  border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
-  border-bottom: none;
-  font-size: ${props => (props['data-ispdf'] ? '10px' : 'inherit')};
+  border: none;
 `
 const StyledButton = styled(Button)`
   margin-top: 5px;
@@ -19,8 +17,7 @@ const StyledButton = styled(Button)`
 const Row = styled.div`
   grid-column: 1;
   display: grid;
-  grid-template-columns: ${props =>
-    props['data-ispdf'] ? '1fr 1fr 1fr' : '1fr 1fr 1fr 20px'};
+  grid-template-columns: 1fr 1fr 1fr 20px;
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
   padding: 3px 0;
@@ -57,21 +54,19 @@ const MobileAbosComponent = ({ row = true }) => {
   } else {
     mobileAbos = store.mobileAbos.filter(s => s.idPerson === activePersonenId)
   }
-  // TODO: refactor when pdf is built
-  const isPdf = location[0] === 'personPdf'
   const mayAddNew =
     !showFilter &&
     (mobileAbos.length === 0 ||
       !mobileAbos.map(s => s.name).some(n => n === null))
 
   const Content = () => (
-    <Container data-ispdf={isPdf} name="mobileAbo">
+    <Container name="mobileAbo">
       {mobileAbos.length > 0 && (
-        <Row data-ispdf={isPdf}>
+        <Row>
           <Typ>Typ</Typ>
           <Kostenstelle>Kostenstelle</Kostenstelle>
           <Bemerkungen>Bemerkungen</Bemerkungen>
-          {!isPdf && <div />}
+          <div />
         </Row>
       )}
       {mobileAbos.map(mobileAbo => (
