@@ -23,9 +23,39 @@ drop index if exists iKostenstelleWerteSort;
 create index iKostenstelleWerteSort on kostenstelleWerte (sort);
 
 insert into
-  kostenstelleWerte(value, sort)
+  kostenstelleWerte(value)
 values
-  ('TODO kostenstelleWert', 1);
+  '850000',
+  '850020',
+  '850090',
+  '850100',
+  '851200',
+  '851210',
+  '851220',
+  '851230',
+  '851240',
+  '851250',
+  '851400',
+  '851410',
+  '851420',
+  '851430',
+  '851440',
+  '852700',
+  '852710',
+  '852730',
+  '852740',
+  '852760',
+  '852770',
+  '852800',
+  '852810',
+  '852820',
+  '852830',
+  '852840',
+  '852850',
+  '853800',
+  '853810',
+  '853820',
+  '853830';
 
 -------------------------------------------
 
@@ -125,9 +155,9 @@ drop index if exists iAmtName;
 create index iAmtName on aemter (name);
 
 insert into
-  aemter(name, id)
+  aemter(name, id, kostenstelle)
 values
-  ('AWEL', 1);
+  ('AWEL', 1, '850000');
 
 -------------------------------------------
 
@@ -155,15 +185,16 @@ drop index if exists iAbteilungName;
 create index iAbteilungName on abteilungen (name);
 
 insert into
-  abteilungen(id, name, kurzzeichen, amt)
+  abteilungen(id, name, kurzzeichen, amt, kostenstelle)
 values
-  (1, 'Abfallwirtschaft und Betriebe', 'aw', 1),
-  (2, 'Dienste', 'di', 1),
-  (3, 'Energie', 'en', 1),
-  (4, 'Gewässerschutz', 'gs', 1),
-  (5, 'Luft', 'lu', 1),
-  (6, 'Recht', 're', 1),
-  (7, 'Wasserbau', 'wb', 1);
+  (1, 'Abfallwirtschaft', 'aw', 1, '851200'),
+  (2, 'Dienste FRW', '', 1, '850090'),
+  (8, 'Dienste QMS', '', 1, '850100'),
+  (3, 'Energie', 'en', 1, '853800'),
+  (4, 'Gewässerschutz', 'gs', 1, '852800'),
+  (5, 'Luft', 'lu', 1, '851400'),
+  (6, 'Recht', 're', 1, '850020'),
+  (7, 'Wasserbau', 'wb', 1, '852700');
 
 -------------------------------------------
 
@@ -191,42 +222,42 @@ drop index if exists iSektionName;
 create index iSektionName on sektionen (name);
 
 insert into
-  sektionen(name, kurzzeichen, abteilung)
+  sektionen(name, kurzzeichen, abteilung, kostenstelle)
 values
-  ('Abfallwirtschaft', '', 1), -- Abfallwirtschaft und Betriebe
-  ('Altlasten', '', 1), -- Abfallwirtschaft und Betriebe
-  ('Betrieblicher Umweltschutz und Störfallvorsorge', '', 1), -- Abfallwirtschaft und Betriebe
-  ('Biosicherheit', '', 1), -- Abfallwirtschaft und Betriebe
-  ('Tankanlagen und Transportgewerbe', '', 1), -- Abfallwirtschaft und Betriebe
-  ('Finanz und Rechnungswesen', '', 2), -- Dienste
-  ('Controllerdienst', '', 2), -- Dienste
-  ('Qualitäts- und Umweltmanagement', '', 2), -- Dienste
-  ('Informatik', '', 2), -- Dienste
-  ('Internet', '', 2), -- Dienste
-  ('Kanzlei AWEL', '', 2), -- Dienste
-  ('Energieberatung', '', 3), -- Energie
-  ('Energietechnik', '', 3), -- Energie
-  ('Energiewirtschaft', '', 3), -- Energie
-  ('Kernenergietechnik/Radioaktive Abfälle', '', 3), -- Energie
-  ('Tiefenlager', '', 3), -- Energie
-  ('Oberflächengewässerschutz', '', 4), -- Gewässerschutz
-  ('Abwasserreinigungsanlagen', '', 4), -- Gewässerschutz
-  ('Grundwasser und Wasserversorgung', '', 4), -- Gewässerschutz
-  ('Bevölkerungsschutz', '', 4), -- Gewässerschutz
-  ('Siedlungsentwässerung', '', 4), -- Gewässerschutz
-  ('Monitoring', '', 5), -- Luft
-  ('Emissionskontrolle', '', 5), -- Luft
-  ('Klima und Mobilität', '', 5), -- Luft
-  ('Strahlung', '', 5), -- Luft
-  ('Bearbeitung von Rechtsfragen', '', 6), -- Recht
-  ('Rekurse und Beschwerden', '', 6), -- Recht
-  ('Juristische Beratung', '', 6), -- Recht
-  ('Rechtliche Vertretung des Amtes nach Aussen', '', 6), -- Recht
-  ('Beratung und Bewilligungen', '', 7), -- Wasserbau
-  ('Planung', '', 7), -- Wasserbau
-  ('Gewässernutzung', '', 7), -- Wasserbau
-  ('Bau', '', 7), -- Wasserbau
-  ('Gewässerunterhalt', '', 7); -- Wasserbau
+  ('Abfallwirtschaft', '', 1, '851210'), -- Abfallwirtschaft und Betriebe
+  ('Altlasten', '', 1, '851220'), -- Abfallwirtschaft und Betriebe
+  ('Betrieblicher Umweltschutz und Störfallvorsorge', '', 1, '851230'), -- Abfallwirtschaft und Betriebe
+  ('Biosicherheit', '', 1, '851240'), -- Abfallwirtschaft und Betriebe
+  ('Tankanlagen und Transportgewerbe', '', 1, '851250'), -- Abfallwirtschaft und Betriebe
+  ('Finanz und Rechnungswesen', '', 2, ''), -- Dienste
+  ('Controllerdienst', '', 2, ''), -- Dienste
+  ('Qualitäts- und Umweltmanagement', '', 2, ''), -- Dienste
+  ('Informatik', '', 2, ''), -- Dienste
+  ('Internet', '', 2, ''), -- Dienste
+  ('Kanzlei AWEL', '', 2, ''), -- Dienste
+  ('Energieberatung', '', 3, '853830'), -- Energie
+  ('Energietechnik', '', 3, '853810'), -- Energie
+  ('Energiewirtschaft', '', 3, '853820'), -- Energie
+  ('Kernenergietechnik/Radioaktive Abfälle', '', 3, ''), -- Energie
+  ('Tiefenlager', '', 3, ''), -- Energie
+  ('Oberflächengewässerschutz', '', 4, '852810'), -- Gewässerschutz
+  ('Abwasserreinigungsanlagen', '', 4, '852820'), -- Gewässerschutz
+  ('Grundwasser und Wasserversorgung', '', 4, '852840'), -- Gewässerschutz
+  ('Bevölkerungsschutz', '', 4, '852850'), -- Gewässerschutz
+  ('Siedlungsentwässerung', '', 4, '852830'), -- Gewässerschutz
+  ('Monitoring', '', 5, '851410'), -- Luft
+  ('Emissionskontrolle', '', 5, '851440'), -- Luft
+  ('Klima und Mobilität', '', 5, '851420'), -- Luft
+  ('Strahlung', '', 5, '851430'), -- Luft
+  ('Bearbeitung von Rechtsfragen', '', 6, ''), -- Recht
+  ('Rekurse und Beschwerden', '', 6, ''), -- Recht
+  ('Juristische Beratung', '', 6, ''), -- Recht
+  ('Rechtliche Vertretung des Amtes nach Aussen', '', 6, ''), -- Recht
+  ('Beratung und Bewilligungen', '', 7, '852770'), -- Wasserbau
+  ('Planung', '', 7, '852730'), -- Wasserbau
+  ('Gewässernutzung', '', 7, '852740'), -- Wasserbau
+  ('Bau', '', 7, '852710'), -- Wasserbau
+  ('Gewässerunterhalt', '', 7, '852760'); -- Wasserbau
 
 
 -------------------------------------------
