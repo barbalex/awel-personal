@@ -245,10 +245,12 @@ const PersonPrint = ({ activeId }) => {
               <Title>Personalien</Title>
             </AreaPTitle>
             <AreaPBild>
-              <Img
-                src={person.bildUrl}
-                alt={`${person.vorname} ${person.name}`}
-              />
+              {person.bildUrl && (
+                <Img
+                  src={person.bildUrl}
+                  alt={`${person.vorname} ${person.name}`}
+                />
+              )}
             </AreaPBild>
             <AreaPName>
               <InputValue value={person.name} label="Name" />
