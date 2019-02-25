@@ -696,6 +696,41 @@ values
   ('Frankreich'),
   ('Österreich');
 
+
+-------------------------------------------
+
+drop table if exists standortWerte;
+create table standortWerte (
+  id integer primary key autoincrement,
+  value text unique,
+  deleted integer default 0,
+  historic integer default 0,
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iStandortWerteStandort;
+create index iStandortWerteStandort on standortWerte (value);
+drop index if exists iStandortWerteHistorisch;
+create index iStandortWerteHistorisch on standortWerte (historic);
+drop index if exists iStandortWerteSort;
+create index iStandortWerteSort on standortWerte (sort);
+
+insert into
+  standortWerte(value)
+values
+  ('Walcheplatz 2'),
+  ('Stampfenbachstrasse 12/14'),
+  ('Weinbergstrasse 34'),
+  ('Carbahaus'),
+  ('Werkhof Adliswil'),
+  ('Werkhof Obfelden'),
+  ('Werkhof Glattbrugg'),
+  ('Werkhof Hettlingen'),
+  ('Werkhof Andelfingen'),
+  ('Werkhof Hinwil');
+
 -------------------------------------------
 
 insert into
