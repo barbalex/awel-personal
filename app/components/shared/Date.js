@@ -93,7 +93,7 @@ const DateField = ({ value, field, label, saveToDb, error, row = true }) => {
     }
     onChange(myEvent)
     onBlur(myEvent)
-    setOpen(false)
+    setTimeout(() => setOpen(false))
   })
 
   // without lifecycle state value does not immediately update
