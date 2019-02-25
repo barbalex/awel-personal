@@ -67,7 +67,7 @@ const DateField = ({ value, field, label, saveToDb, error, row = true }) => {
     value || value === 0 ? value : '',
   )
 
-  const onChange = useCallback(async event => {
+  const onChange = useCallback(event => {
     setStateValue(event.target.value)
     return null
   })
@@ -85,13 +85,13 @@ const DateField = ({ value, field, label, saveToDb, error, row = true }) => {
   )
   const openPicker = useCallback(() => setOpen(true))
   const closePicker = useCallback(() => setOpen(false))
-  const onChangeDatePicker = useCallback(async date => {
+  const onChangeDatePicker = useCallback(date => {
     const myEvent = {
       target: {
         value: moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY'),
       },
     }
-    await onChange(myEvent)
+    onChange(myEvent)
     onBlur(myEvent)
     setOpen(false)
   })
@@ -99,45 +99,6 @@ const DateField = ({ value, field, label, saveToDb, error, row = true }) => {
   // without lifecycle state value does not immediately update
   // after user enters new date
   useEffect(() => setStateValue(value || value === 0 ? value : ''), [value])
-
-  const Inner = () => (
-    <InputGroup>
-      <Input
-        id={field}
-        type="text"
-        name={field}
-        value={stateValue}
-        onChange={onChange}
-        onBlur={onBlur}
-        invalid={!!error}
-      />
-      <StyledInputGroupAddon
-        addonType="append"
-        id="datePickerInputGroup"
-        onClick={openPicker}
-        title="Kalender öffnen"
-      >
-        <span className="input-group-text">
-          <FaCalendarAlt />
-        </span>
-        {open && (
-          <DatePicker
-            selected={
-              moment(stateValue, 'DD.MM.YYYY').isValid()
-                ? moment(stateValue, 'DD.MM.YYYY').toDate()
-                : null
-            }
-            onChange={onChangeDatePicker}
-            dateFormat="DD.MM.YYYY"
-            withPortal
-            inline
-            onClickOutside={closePicker}
-          />
-        )}
-      </StyledInputGroupAddon>
-      <FormFeedback>{error}</FormFeedback>
-    </InputGroup>
-  )
 
   return (
     <StyledFormGroup row={row}>
@@ -147,13 +108,83 @@ const DateField = ({ value, field, label, saveToDb, error, row = true }) => {
             {label}
           </Label>
           <Col sm={10}>
-            <Inner />
+            <InputGroup>
+              <Input
+                id={field}
+                type="text"
+                name={field}
+                value={stateValue}
+                onChange={onChange}
+                onBlur={onBlur}
+                invalid={!!error}
+              />
+              <StyledInputGroupAddon
+                addonType="append"
+                id="datePickerInputGroup"
+                onClick={openPicker}
+                title="Kalender öffnen"
+              >
+                <span className="input-group-text">
+                  <FaCalendarAlt />
+                </span>
+                {open && (
+                  <DatePicker
+                    selected={
+                      moment(stateValue, 'DD.MM.YYYY').isValid()
+                        ? moment(stateValue, 'DD.MM.YYYY').toDate()
+                        : null
+                    }
+                    onChange={onChangeDatePicker}
+                    dateFormat="DD.MM.YYYY"
+                    withPortal
+                    inline
+                    onClickOutside={closePicker}
+                  />
+                )}
+              </StyledInputGroupAddon>
+              <FormFeedback>{error}</FormFeedback>
+            </InputGroup>
           </Col>
         </>
       ) : (
         <>
           <NonRowLabel for={field}>{label}</NonRowLabel>
-          <Inner />
+          <InputGroup>
+            <Input
+              id={field}
+              type="text"
+              name={field}
+              value={stateValue}
+              onChange={onChange}
+              onBlur={onBlur}
+              invalid={!!error}
+            />
+            <StyledInputGroupAddon
+              addonType="append"
+              id="datePickerInputGroup"
+              onClick={openPicker}
+              title="Kalender öffnen"
+            >
+              <span className="input-group-text">
+                <FaCalendarAlt />
+              </span>
+              {open && (
+                <DatePicker
+                  selected={
+                    moment(stateValue, 'DD.MM.YYYY').isValid()
+                      ? moment(stateValue, 'DD.MM.YYYY').toDate()
+                      : null
+                  }
+                  onChange={onChangeDatePicker}
+                  dateFormat="DD.MM.YYYY"
+                  withPortal
+                  inline
+                  onClickOutside={closePicker}
+                />
+              )}
+            </StyledInputGroupAddon>
+            <FormFeedback>{error}</FormFeedback>
+          </InputGroup>
         </>
       )}
     </StyledFormGroup>
