@@ -30,6 +30,7 @@ import SchluesselTypWert from './SchluesselTypWert'
 import SchluesselAnlageWert from './SchluesselAnlageWert'
 import EtikettWert from './EtikettWert'
 import LandWert from './LandWert'
+import StandortWert from './StandortWert'
 import Person from './Person'
 import Mutation from './Mutation'
 import StatusWert from './StatusWert'
@@ -57,6 +58,7 @@ export default db =>
       schluesselAnlageWerte: types.array(SchluesselAnlageWert),
       etikettWerte: types.array(EtikettWert),
       landWerte: types.array(LandWert),
+      standortWerte: types.array(StandortWert),
       personen: types.array(Person),
       aemter: types.array(Amt),
       abteilungen: types.array(Abteilung),
@@ -525,14 +527,16 @@ export default db =>
           })
         return sektionen
       },
-      get revertedMutationIds(){
-        return  self.mutations
-        .filter(m => !!m.reverts)
-        .map(m => m.reverts)
+      get revertedMutationIds() {
+        return self.mutations.filter(m => !!m.reverts).map(m => m.reverts)
       },
       get userRevertions() {
-        return sortBy(self.mutations.filter(m => m.user === self.username)
-        .filter(m => self.revertedMutationIds.includes(m.id)), 'time')
+        return sortBy(
+          self.mutations
+            .filter(m => m.user === self.username)
+            .filter(m => self.revertedMutationIds.includes(m.id)),
+          'time',
+        )
       },
       get userMutations() {
         // lists active user's mutations
@@ -543,17 +547,17 @@ export default db =>
             .filter(m => m.user === self.username)
             .filter(m => !m.reverts)
             .filter(m => !self.revertedMutationIds.includes(m.id)),
-          'time'
+          'time',
         )
       },
-      get lastUserMutation(){
+      get lastUserMutation() {
         // revert this one to undo last action
         return last(self.userMutations)
       },
-      get lastUserMutationRevertion(){
+      get lastUserMutationRevertion() {
         // revert this one to revert last undo
         return last(self.userRevertions)
-      }
+      },
     }))
     // functions are not serializable
     // so need to define this as volatile
@@ -683,8 +687,8 @@ export default db =>
         setShowMutationNoetig(show) {
           self.showMutationNoetig = show
         },
-        setPrinting (val){
-self.printing = val
+        setPrinting(val) {
+          self.printing = val
         },
         revertMutation(mutationId) {
           const { mutations } = self
@@ -950,7 +954,7 @@ self.printing = val
                   field,
                   value,
                   previousValue,
-                  reverts: self.revertingMutationId
+                  reverts: self.revertingMutationId,
                 })
             } catch (error) {
               self.addError(error)
@@ -967,7 +971,9 @@ self.printing = val
               rowId,
               field,
               value,
-              previousValue,reverts: self.revertingMutationId})
+              previousValue,
+              reverts: self.revertingMutationId,
+            })
           })
           self.revertingMutationId = null
         },
@@ -1518,18 +1524,21 @@ self.printing = val
             })
           } catch (error) {
             self.addError(error)
-            if (setErrors) {return setErrors({
-              [field]: error.message,
-            })}
+            if (setErrors) {
+              return setErrors({
+                [field]: error.message,
+              })
+            }
             return
           }
           // 2. update in store
           const storeObject = self[parentModel].find(o => o.id === id)
           if (!storeObject) {
-            if (setErrors){
-            return setErrors({
-              [field]: `Error: no ${table} with id "${id}" found in store`,
-            })} else {
+            if (setErrors) {
+              return setErrors({
+                [field]: `Error: no ${table} with id "${id}" found in store`,
+              })
+            } else {
               self.addError(`Error: no ${table} with id "${id}" found in store`)
             }
           }

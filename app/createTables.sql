@@ -55,7 +55,7 @@ create table personen (
   sektion integer references sektionen(id) on update cascade on delete restrict,
   bereich integer references bereiche(id) on update cascade on delete restrict,
   bueroNr text,
-  standort text,
+  standort text references standortWerte(value) on update cascade on delete no action,
   vorgesetztId integer references personen(id) on update cascade on delete restrict,
   eintrittDatum text,
   austrittDatum text,

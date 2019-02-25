@@ -84,4 +84,9 @@ export default [
     model: 'LandWert',
     parentModel: 'landWerte',
   },
+  {
+    table: 'standortWerte',
+    model: 'StandortWert',
+    parentModel: 'standortWerte',
+  },
 ]

@@ -101,7 +101,7 @@ const AreaZuletzt = styled.div`
 `
 const Title = styled.div`
   font-weight: 900;
-  font-size: 18px
+  font-size: 18px;
 `
 
 const Person = ({ activeId, dimensions }) => {
@@ -121,6 +121,7 @@ const Person = ({ activeId, dimensions }) => {
     etikettWerte,
     funktionWerte,
     landWerte,
+    standortWerte,
     showFilter,
     filterPerson,
     filterEtikett,
@@ -421,6 +422,14 @@ const Person = ({ activeId, dimensions }) => {
         value: w.value,
       })),
   )
+  const standortOptions = useMemo(() =>
+    sortBy(standortWerte, ['sort', 'value'])
+      .filter(p => p.deleted === 0)
+      .map(w => ({
+        label: w.value,
+        value: w.value,
+      })),
+  )
   const myEtiketten = useMemo(() =>
     sortBy(etiketten.filter(e => e.idPerson === activeId), 'etikett')
       .filter(w => !!w.etikett)
@@ -594,11 +603,12 @@ const Person = ({ activeId, dimensions }) => {
               error={errors.beschaeftigungsgrad}
               row={false}
             />
-            <Input
-              key={`${personId}standort`}
+            <Select
+              key={`${personId}${existsFilter ? 1 : 0}standort`}
               value={person.standort}
               field="standort"
               label="Standort"
+              options={standortOptions}
               saveToDb={saveToDb}
               error={errors.standort}
               row={false}

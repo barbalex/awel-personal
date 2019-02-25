@@ -141,6 +141,9 @@ const Stammdaten = () => {
           <DropdownItem name="landWerte" onClick={onClickStatusTable}>
             Land
           </DropdownItem>
+          <DropdownItem name="standortWerte" onClick={onClickStatusTable}>
+            Standort
+          </DropdownItem>
           <DropdownItem name="statusWerte" onClick={onClickStatusTable}>
             Status
           </DropdownItem>
