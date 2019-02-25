@@ -146,11 +146,14 @@ const Person = ({ activeId, dimensions }) => {
   const saveToDb = useCallback(
     ({ field, value }) => {
       // const person = personen.find(p => p.id === activeId)
-      if (!person && !showFilter)
+      if (!person && !showFilter) {
         throw new Error(`Person with id ${activeId} not found`)
+      }
       let newValue
       if (isDateField(field)) {
-        if (value) newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
+        if (value) {
+          newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
+        }
         if (newValue && newValue.includes('Invalid date')) {
           newValue = newValue.replace('Invalid date', 'Format: DD.MM.YYYY')
         }
