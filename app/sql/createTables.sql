@@ -142,7 +142,7 @@ drop table if exists abteilungen;
 create table abteilungen (
   id integer primary key autoincrement,
   deleted integer default 0,
-  amt integer REFERENCES aemter (id) on update cascade on delete restrict,
+  amt integer REFERENCES aemter(id) on update cascade on delete restrict,
   name text,
   kurzzeichen text,
   telefonNr text,
