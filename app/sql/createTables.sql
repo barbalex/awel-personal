@@ -22,40 +22,48 @@ create index iKostenstelleWerteHistorisch on kostenstelleWerte (historic);
 drop index if exists iKostenstelleWerteSort;
 create index iKostenstelleWerteSort on kostenstelleWerte (sort);
 
-insert into
-  kostenstelleWerte(value)
-values
-  '850000',
-  '850020',
-  '850090',
-  '850100',
-  '851200',
-  '851210',
-  '851220',
-  '851230',
-  '851240',
-  '851250',
-  '851400',
-  '851410',
-  '851420',
-  '851430',
-  '851440',
-  '852700',
-  '852710',
-  '852730',
-  '852740',
-  '852760',
-  '852770',
-  '852800',
-  '852810',
-  '852820',
-  '852830',
-  '852840',
-  '852850',
-  '853800',
-  '853810',
-  '853820',
-  '853830';
+-------------------------------------------
+
+drop table if exists standortWerte;
+create table standortWerte (
+  id integer primary key autoincrement,
+  value text unique,
+  deleted integer default 0,
+  historic integer default 0,
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iStandortWerteStandort;
+create index iStandortWerteStandort on standortWerte (value);
+drop index if exists iStandortWerteHistorisch;
+create index iStandortWerteHistorisch on standortWerte (historic);
+drop index if exists iStandortWerteSort;
+create index iStandortWerteSort on standortWerte (sort);
+
+-------------------------------------------
+
+-- first werte tables
+-- boolean in sqlite is integer
+-- true = 1, false = 0
+drop table if exists statusWerte;
+create table statusWerte (
+  id integer primary key autoincrement,
+  value text unique,
+  deleted integer default 0,
+  historic integer default 0,
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iStatusWerteStatus;
+create index iStatusWerteStatus on statusWerte (value);
+drop index if exists iStatusWerteHistorisch;
+create index iStatusWerteHistorisch on statusWerte (historic);
+drop index if exists iStatusWerteSort;
+create index iStatusWerteSort on statusWerte (sort);
 
 -------------------------------------------
 
@@ -75,8 +83,8 @@ create table personen (
   adresse text,
   plz integer,
   ort text,
-  -- land aus Liste auswählen?
-  land text  references landWerte(value) on update cascade on delete no action,
+-- land aus Liste auswählen?
+  land text references landWerte(value) on update cascade on delete no action,
   bildUrl text,
   email text check (email like '%_@__%.__%'),
   geburtDatum text,
@@ -105,32 +113,6 @@ create index iPersonName on personen (name);
 drop index if exists iPersonVorname;
 create index iPersonVorname on personen (vorname);
 
-insert into
-  personen(id, vorname, name)
-values
-(1, 'Werner',	'Haas'),
-(2, 'Erich',	'Hess'),
-(3, 'Thomas',	'Hofmann'),
-(4, 'Guido',	'Merletti'),
-(5, 'Peter',	'Wyler'),
-(6, 'Fritz',	'Studer'),
-(7, 'Paul',	'Ruckstuhl'),
-(8, 'Götz',	'Christian'),
-(9, 'Beat',	'Koller'),
-(10, 'Thomas',	'Flüeler');
-
--------------------------------------------
-
-drop table if exists settings;
-create table settings (
-  id integer primary key,
-  schluesselFormPath text
-);
-insert into
-  settings(id)
-values
-  (1);
-
 -------------------------------------------
 
 drop table if exists aemter;
@@ -153,11 +135,6 @@ drop index if exists iAmtDeleted;
 create index iAmtDeleted on aemter (deleted);
 drop index if exists iAmtName;
 create index iAmtName on aemter (name);
-
-insert into
-  aemter(name, id, kostenstelle)
-values
-  ('AWEL', 1, '850000');
 
 -------------------------------------------
 
@@ -184,18 +161,6 @@ create index iAbteilungDeleted on abteilungen (deleted);
 drop index if exists iAbteilungName;
 create index iAbteilungName on abteilungen (name);
 
-insert into
-  abteilungen(id, name, kurzzeichen, amt, kostenstelle)
-values
-  (1, 'Abfallwirtschaft', 'aw', 1, '851200'),
-  (2, 'Dienste FRW', '', 1, '850090'),
-  (8, 'Dienste QMS', '', 1, '850100'),
-  (3, 'Energie', 'en', 1, '853800'),
-  (4, 'Gewässerschutz', 'gs', 1, '852800'),
-  (5, 'Luft', 'lu', 1, '851400'),
-  (6, 'Recht', 're', 1, '850020'),
-  (7, 'Wasserbau', 'wb', 1, '852700');
-
 -------------------------------------------
 
 drop table if exists sektionen;
@@ -220,49 +185,6 @@ drop index if exists iSektionDeleted;
 create index iSektionDeleted on sektionen (deleted);
 drop index if exists iSektionName;
 create index iSektionName on sektionen (name);
-
-insert into
-  sektionen(name, kurzzeichen, abteilung, kostenstelle)
-values
-  ('Abfallwirtschaft', '', 1, '851210'), -- Abfallwirtschaft und Betriebe
-  ('Altlasten', '', 1, '851220'), -- Abfallwirtschaft und Betriebe
-  ('Betrieblicher Umweltschutz und Störfallvorsorge', '', 1, '851230'), -- Abfallwirtschaft und Betriebe
-  ('Biosicherheit', '', 1, '851240'), -- Abfallwirtschaft und Betriebe
-  ('Tankanlagen und Transportgewerbe', '', 1, '851250'), -- Abfallwirtschaft und Betriebe
-  ('Finanz und Rechnungswesen', '', 2, ''), -- Dienste
-  ('Controllerdienst', '', 2, ''), -- Dienste
-  ('Qualitäts- und Umweltmanagement', '', 2, ''), -- Dienste
-  ('Informatik', '', 2, ''), -- Dienste
-  ('Internet', '', 2, ''), -- Dienste
-  ('Kanzlei AWEL', '', 2, ''), -- Dienste
-  ('Energieberatung', '', 3, '853830'), -- Energie
-  ('Energietechnik', '', 3, '853810'), -- Energie
-  ('Energiewirtschaft', '', 3, '853820'), -- Energie
-  ('Kernenergietechnik/Radioaktive Abfälle', '', 3, ''), -- Energie
-  ('Tiefenlager', '', 3, ''), -- Energie
-  ('Oberflächengewässerschutz', '', 4, '852810'), -- Gewässerschutz
-  ('Abwasserreinigungsanlagen', '', 4, '852820'), -- Gewässerschutz
-  ('Grundwasser und Wasserversorgung', '', 4, '852840'), -- Gewässerschutz
-  ('Bevölkerungsschutz', '', 4, '852850'), -- Gewässerschutz
-  ('Siedlungsentwässerung', '', 4, '852830'), -- Gewässerschutz
-  ('Monitoring', '', 5, '851410'), -- Luft
-  ('Emissionskontrolle', '', 5, '851440'), -- Luft
-  ('Klima und Mobilität', '', 5, '851420'), -- Luft
-  ('Strahlung', '', 5, '851430'), -- Luft
-  ('Bearbeitung von Rechtsfragen', '', 6, ''), -- Recht
-  ('Rekurse und Beschwerden', '', 6, ''), -- Recht
-  ('Juristische Beratung', '', 6, ''), -- Recht
-  ('Rechtliche Vertretung des Amtes nach Aussen', '', 6, ''), -- Recht
-  ('Beratung und Bewilligungen', '', 7, '852770'), -- Wasserbau
-  ('Planung', '', 7, '852730'), -- Wasserbau
-  ('Gewässernutzung', '', 7, '852740'), -- Wasserbau
-  ('Bau', '', 7, '852710'), -- Wasserbau
-  ('Gewässerunterhalt', '', 7, '852760'); -- Wasserbau
-
-
--------------------------------------------
-
-drop table if exists bereichWerte;
 
 -------------------------------------------
 
@@ -290,21 +212,13 @@ create index iBereichDeleted on bereiche (deleted);
 drop index if exists iBereichName;
 create index iBereichName on bereiche (name);
 
-insert into
-  bereiche(abteilung, sektion, name, standort, leiter)
-values
-  ('Kernenergietechnik/Radioaktive Abfälle'),
-  ('Tiefenlager'),
-  ('Bearbeitung von Rechtsfragen'),
-  ('Rekurse und Beschwerden'),
-  ('Juristische Beratung'),
-  ('Rechtliche Vertretung des Amtes nach Aussen'),
-  ('Finanz und Rechnungswesen'),
-  ('Controllerdienst'),
-  ('Qualitäts- und Umweltmanagement'),
-  ('Informatik'),
-  ('Internet'),
-  ('Kanzlei AWEL');
+-------------------------------------------
+
+drop table if exists settings;
+create table settings (
+  id integer primary key,
+  schluesselFormPath text
+);
 
 -------------------------------------------
 
@@ -469,37 +383,6 @@ create index iMutationsReverts on mutations (reverts);
 
 -------------------------------------------
 
--- first werte tables
--- boolean in sqlite is integer
--- true = 1, false = 0
-drop table if exists statusWerte;
-create table statusWerte (
-  id integer primary key autoincrement,
-  value text unique,
-  deleted integer default 0,
-  historic integer default 0,
-  sort integer,
-  letzteMutationZeit TEXT,
-  letzteMutationUser TEXT
-);
-
-drop index if exists iStatusWerteStatus;
-create index iStatusWerteStatus on statusWerte (value);
-drop index if exists iStatusWerteHistorisch;
-create index iStatusWerteHistorisch on statusWerte (historic);
-drop index if exists iStatusWerteSort;
-create index iStatusWerteSort on statusWerte (sort);
-
-insert into
-  statusWerte(value, sort)
-values
-  ('aktiv', 1),
-  ('pensioniert', 2),
-  ('ehemalig', 3),
-  ('extern', 4);
-
--------------------------------------------
-
 -- boolean in sqlite is integer
 -- true = 1, false = 0
 drop table if exists anredeWerte;
@@ -519,16 +402,6 @@ drop index if exists iGeschlechtWerteHistorisch;
 create index iGeschlechtWerteHistorisch on anredeWerte (historic);
 drop index if exists iGeschlechtWerteSort;
 create index iGeschlechtWerteSort on anredeWerte (sort);
-
-insert into
-  anredeWerte(value, sort)
-values
-  ('Herr', 1),
-  ('Frau', 2);
-
--------------------------------------------
-
-drop table if exists abteilungWerte;
 
 -------------------------------------------
 
@@ -550,11 +423,6 @@ create index iMobileAboTypWerteHistorisch on mobileAboTypWerte (historic);
 drop index if exists iMobileAboTypWerteSort;
 create index iMobileAboTypWerteSort on mobileAboTypWerte (sort);
 
-insert into
-  mobileAboTypWerte(value, sort)
-values
-  ('TODO mobileAboTypWert', 1);
-
 -------------------------------------------
 
 drop table if exists telefonTypWerte;
@@ -574,12 +442,6 @@ drop index if exists iTelefonTypWerteHistorisch;
 create index iTelefonTypWerteHistorisch on telefonTypWerte (historic);
 drop index if exists iTelefonTypWerteSort;
 create index iTelefonTypWerteSort on telefonTypWerte (sort);
-
-insert into
-  telefonTypWerte(value, sort)
-values
-  ('mobile', 1),
-  ('Festnetz', 2);
 
 -------------------------------------------
 
@@ -601,13 +463,6 @@ create index iSchluesselTypWerteHistorisch on schluesselTypWerte (historic);
 drop index if exists iSchluesselTypWerteSort;
 create index iSchluesselTypWerteSort on schluesselTypWerte (sort);
 
-insert into
-  schluesselTypWerte(value)
-values
-  ('Kaba Nova'),
-  ('Kaba Legic'),
-  ('Kaba Star');
-
 -------------------------------------------
 
 drop table if exists schluesselAnlageWerte;
@@ -627,12 +482,6 @@ drop index if exists iSchluesselAnlageWerteHistorisch;
 create index iSchluesselAnlageWerteHistorisch on schluesselAnlageWerte (historic);
 drop index if exists iSchluesselAnlageWerteSort;
 create index iSchluesselAnlageWerteSort on schluesselAnlageWerte (sort);
-
-insert into
-  schluesselAnlageWerte(value)
-values
-  ('RZ0146'),
-  ('RZ0147');
 
 -------------------------------------------
 
@@ -654,12 +503,6 @@ create index iFunktionWerteHistorisch on funktionWerte (historic);
 drop index if exists iFunktionWerteSort;
 create index iFunktionWerteSort on funktionWerte (sort);
 
-insert into
-  funktionWerte(value, sort)
-values
-  ('Chef', 1),
-  ('Knecht', 2);
-
 -------------------------------------------
 
 drop table if exists mobileAboKostenstelleWerte;
@@ -680,11 +523,6 @@ create index iMobileAboKostenstelleWerteHistorisch on mobileAboKostenstelleWerte
 drop index if exists iMobileAboKostenstelleWerteSort;
 create index iMobileAboKostenstelleWerteSort on mobileAboKostenstelleWerte (sort);
 
-insert into
-  mobileAboKostenstelleWerte(value, sort)
-values
-  ('TODO mobileAboKostenstelleWert', 1);
-
 -------------------------------------------
 
 drop table if exists etikettWerte;
@@ -704,12 +542,6 @@ drop index if exists iEtikettWerteHistorisch;
 create index iEtikettWerteHistorisch on etikettWerte (historic);
 drop index if exists iEtikettWerteSort;
 create index iEtikettWerteSort on etikettWerte (sort);
-
-insert into
-  etikettWerte(value, sort)
-values
-  ('Fussballfan', 1),
-  ('Mountainbiker', 2);
 
 
 -------------------------------------------
@@ -732,57 +564,7 @@ create index iLandWerteHistorisch on landWerte (historic);
 drop index if exists iLandWerteSort;
 create index iLandWerteSort on landWerte (sort);
 
-insert into
-  landWerte(value)
-values
-  ('Schweiz'),
-  ('Deutschland'),
-  ('Italien'),
-  ('Frankreich'),
-  ('Österreich');
-
-
 -------------------------------------------
-
-drop table if exists standortWerte;
-create table standortWerte (
-  id integer primary key autoincrement,
-  value text unique,
-  deleted integer default 0,
-  historic integer default 0,
-  sort integer,
-  letzteMutationZeit TEXT,
-  letzteMutationUser TEXT
-);
-
-drop index if exists iStandortWerteStandort;
-create index iStandortWerteStandort on standortWerte (value);
-drop index if exists iStandortWerteHistorisch;
-create index iStandortWerteHistorisch on standortWerte (historic);
-drop index if exists iStandortWerteSort;
-create index iStandortWerteSort on standortWerte (sort);
-
-insert into
-  standortWerte(value)
-values
-  ('Walcheplatz 2'),
-  ('Stampfenbachstrasse 12/14'),
-  ('Weinbergstrasse 34'),
-  ('Carbahaus'),
-  ('Werkhof Adliswil'),
-  ('Werkhof Obfelden'),
-  ('Werkhof Glattbrugg'),
-  ('Werkhof Hettlingen'),
-  ('Werkhof Andelfingen'),
-  ('Werkhof Hinwil');
-
--------------------------------------------
-
-insert into
-  personen(name, vorname)
-values
-  ('Tester', 'Test'),
-  ('Tester_2', 'Test_2');
 
 
 PRAGMA foreign_keys = ON;
