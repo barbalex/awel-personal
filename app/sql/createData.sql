@@ -187,18 +187,18 @@ values
   ('Österreich');
 
 insert into
-  bereiche(abteilung, sektion, name, standort, leiter)
+  bereiche(amt, abteilung, sektion, name, standort, leiter)
 values
-(7,	20,	'Betrieb Sihl',	'Werkhof Adliswil',	1),
-(7,	20,	'Betrieb Reuss / Limmat', 'Werkhof Obfelden',	2),
-(7,	20,	'Betrieb Töss',	'Werkhof Hettlingen',	3),
-(7,	20,	'Betrieb Thur / Rhein',	'Werkhof Andelfingen',	4),
-(7,	20,	'Betrieb Glatt',	'Werkhof Glattbrugg',	5),
-(7,	20,	'Betrieb Oberland / Seen',	'Werkhof Hinwil',	6),
-(4,	10,	'Wasserversorung',	'Stampfenbachstrasse 12/14',	7),
-(4,	8,	'Fachgruppe Analytik',	'Carbahaus',	8),
-(4,	12,	'Liegenschaftenentwässerung',	'Stampfenbachstrasse 12/14',	9),
-(3,	null,	'Kerntechnik',	'Stampfenbachstrasse 12/14',	10);
+(7, 1,	20,	'Betrieb Sihl',	'Werkhof Adliswil',	1),
+(7, 1,	20,	'Betrieb Reuss / Limmat', 'Werkhof Obfelden',	2),
+(7, 1,	20,	'Betrieb Töss',	'Werkhof Hettlingen',	3),
+(7, 1,	20,	'Betrieb Thur / Rhein',	'Werkhof Andelfingen',	4),
+(7, 1,	20,	'Betrieb Glatt',	'Werkhof Glattbrugg',	5),
+(7, 1,	20,	'Betrieb Oberland / Seen',	'Werkhof Hinwil',	6),
+(4, 1,	10,	'Wasserversorung',	'Stampfenbachstrasse 12/14',	7),
+(4, 1,	8,	'Fachgruppe Analytik',	'Carbahaus',	8),
+(4, 1,	12,	'Liegenschaftenentwässerung',	'Stampfenbachstrasse 12/14',	9),
+(3, 1,	null,	'Kerntechnik',	'Stampfenbachstrasse 12/14',	10);
 
 --insert into
 --  bereiche(name)
