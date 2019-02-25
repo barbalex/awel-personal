@@ -45,48 +45,42 @@ const Stammdaten = () => {
   }
   const existsActiveWert = activeTable.includes('Werte') && location[1]
 
-  const addWert = useCallback(
-    () => {
-      store.addWert(activeTable)
-    },
-    [activeTable],
-  )
-  const deleteWert = useCallback(
-    () => {
-      const activeWert = store[activeTable].find(p => p.id === activeId)
-      if (activeWert.deleted === 1) {
-        // deleted is already = 1
-        // prepare true deletion
-        setDeletionCallback(() => {
-          store.deleteWert({ id: activeId, table: activeTable })
-          setDeletionMessage(null)
-          setDeletionTitle(null)
-        })
-        const name = activeWert.value
-          ? `"${activeWert.value}"`
-          : 'Dieser Datensatz'
-        setDeletionMessage(
-          `${name} war schon gelöscht. Wenn Sie ihn nochmals löschen, ist das endgültig und unwiederbringlich. Möchten Sie das?`,
-        )
-        setDeletionTitle(`${activeTable} unwiederbringlich löschen`)
-      } else {
-        // do not true delete yet
-        // only set deleted = 1
-        setDeletionCallback(() => {
-          store.setWertDeleted({ id: activeId, table: activeTable })
-          setDeletionMessage(null)
-          setDeletionTitle(null)
-        })
-        setDeletionMessage(
-          `${
-            activeWert.value ? `"${activeWert.value}"` : 'Diesen Datensatz'
-          } wirklich löschen?`,
-        )
-        setDeletionTitle(`${activeTable} löschen`)
-      }
-    },
-    [activeTable, activeId],
-  )
+  const addWert = useCallback(() => {
+    store.addWert(activeTable)
+  }, [activeTable])
+  const deleteWert = useCallback(() => {
+    const activeWert = store[activeTable].find(p => p.id === activeId)
+    if (activeWert.deleted === 1) {
+      // deleted is already = 1
+      // prepare true deletion
+      setDeletionCallback(() => {
+        store.deleteWert({ id: activeId, table: activeTable })
+        setDeletionMessage(null)
+        setDeletionTitle(null)
+      })
+      const name = activeWert.value
+        ? `"${activeWert.value}"`
+        : 'Dieser Datensatz'
+      setDeletionMessage(
+        `${name} war schon gelöscht. Wenn Sie ihn nochmals löschen, ist das endgültig und unwiederbringlich. Möchten Sie das?`,
+      )
+      setDeletionTitle(`${activeTable} unwiederbringlich löschen`)
+    } else {
+      // do not true delete yet
+      // only set deleted = 1
+      setDeletionCallback(() => {
+        store.setWertDeleted({ id: activeId, table: activeTable })
+        setDeletionMessage(null)
+        setDeletionTitle(null)
+      })
+      setDeletionMessage(
+        `${
+          activeWert.value ? `"${activeWert.value}"` : 'Diesen Datensatz'
+        } wirklich löschen?`,
+      )
+      setDeletionTitle(`${activeTable} löschen`)
+    }
+  }, [activeTable, activeId])
   const onClickStatusTable = useCallback(e => {
     store.setLocation([e.target.name])
   })
@@ -117,20 +111,8 @@ const Stammdaten = () => {
           <DropdownItem name="kostenstelleWerte" onClick={onClickStatusTable}>
             Kostenstelle
           </DropdownItem>
-          <DropdownItem name="mobileAboTypWerte" onClick={onClickStatusTable}>
-            Mobile Abo Typ
-          </DropdownItem>
-          <DropdownItem name="schluesselTypWerte" onClick={onClickStatusTable}>
-            Schlüssel Typ
-          </DropdownItem>
-          <DropdownItem name="telefonTypWerte" onClick={onClickStatusTable}>
-            Telefon Typ
-          </DropdownItem>
-          <DropdownItem
-            name="schluesselAnlageWerte"
-            onClick={onClickStatusTable}
-          >
-            Schlüssel Anlage
+          <DropdownItem name="landWerte" onClick={onClickStatusTable}>
+            Land
           </DropdownItem>
           <DropdownItem
             name="mobileAboKostenstelleWerte"
@@ -138,14 +120,26 @@ const Stammdaten = () => {
           >
             Mobile Abo Kostenstelle
           </DropdownItem>
-          <DropdownItem name="landWerte" onClick={onClickStatusTable}>
-            Land
+          <DropdownItem name="mobileAboTypWerte" onClick={onClickStatusTable}>
+            Mobile Abo Typ
+          </DropdownItem>
+          <DropdownItem
+            name="schluesselAnlageWerte"
+            onClick={onClickStatusTable}
+          >
+            Schlüssel Anlage
+          </DropdownItem>
+          <DropdownItem name="schluesselTypWerte" onClick={onClickStatusTable}>
+            Schlüssel Typ
           </DropdownItem>
           <DropdownItem name="standortWerte" onClick={onClickStatusTable}>
             Standort
           </DropdownItem>
           <DropdownItem name="statusWerte" onClick={onClickStatusTable}>
             Status
+          </DropdownItem>
+          <DropdownItem name="telefonTypWerte" onClick={onClickStatusTable}>
+            Telefon Typ
           </DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
