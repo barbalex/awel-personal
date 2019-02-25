@@ -31,6 +31,7 @@ const Abteilung = ({ activeId }) => {
     showDeleted,
     showMutationNoetig,
     kostenstelleWerte,
+    standortWerte,
     showFilter,
     filterAbteilung,
     existsFilter,
@@ -105,6 +106,14 @@ const Abteilung = ({ activeId }) => {
         value: w.value,
       })),
   )
+  const standortOptions = useMemo(() =>
+    sortBy(standortWerte, ['sort', 'value'])
+      .filter(p => p.deleted === 0)
+      .map(w => ({
+        label: w.value,
+        value: w.value,
+      })),
+  )
 
   if (!showFilter && !activeId) return null
 
@@ -162,11 +171,12 @@ const Abteilung = ({ activeId }) => {
           saveToDb={saveToDb}
           error={errors.email}
         />
-        <Input
-          key={`${abteilungId}standort`}
+        <Select
+          key={`${abteilungId}${existsFilter ? 1 : 0}standort`}
           value={abteilung.standort}
           field="standort"
           label="Standort"
+          options={standortOptions}
           saveToDb={saveToDb}
           error={errors.standort}
         />

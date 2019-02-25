@@ -75,6 +75,20 @@ create index iPersonName on personen (name);
 drop index if exists iPersonVorname;
 create index iPersonVorname on personen (vorname);
 
+insert into
+  personen(id, vorname, name)
+values
+(1, 'Werner',	'Haas'),
+(2, 'Erich',	'Hess'),
+(3, 'Thomas',	'Hofmann'),
+(4, 'Guido',	'Merletti'),
+(5, 'Peter',	'Wyler'),
+(6, 'Fritz',	'Studer'),
+(7, 'Paul',	'Ruckstuhl'),
+(8, 'Götz',	'Christian'),
+(9, 'Beat',	'Koller'),
+(10, 'Thomas',	'Flüeler');
+
 -------------------------------------------
 
 drop table if exists settings;
@@ -97,7 +111,7 @@ create table aemter (
   kurzzeichen text,
   telefonNr text,
   email text check (email like '%_@__%.__%'),
-  standort text,
+  standort text references standortWerte(value) on update cascade on delete no action,
   leiter integer REFERENCES personen(id) on update cascade on delete restrict,
   kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
   mutationNoetig integer default 0,
@@ -126,7 +140,7 @@ create table abteilungen (
   kurzzeichen text,
   telefonNr text,
   email text check (email like '%_@__%.__%'),
-  standort text,
+  standort text references standortWerte(value) on update cascade on delete no action,
   leiter integer REFERENCES personen(id) on update cascade on delete restrict,
   kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
   mutationNoetig integer default 0,
@@ -162,7 +176,7 @@ create table sektionen (
   kurzzeichen text,
   telefonNr text,
   email text check (email like '%_@__%.__%'),
-  standort text,
+  standort text references standortWerte(value) on update cascade on delete no action,
   leiter integer REFERENCES personen(id) on update cascade on delete restrict,
   kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
   mutationNoetig integer default 0,
@@ -232,7 +246,7 @@ create table bereiche (
   kurzzeichen text,
   telefonNr text,
   email text check (email like '%_@__%.__%'),
-  standort text,
+  standort text references standortWerte(value) on update cascade on delete no action,
   leiter integer REFERENCES personen(id) on update cascade on delete restrict,
   kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
   mutationNoetig integer default 0,
@@ -246,7 +260,7 @@ drop index if exists iBereichName;
 create index iBereichName on bereiche (name);
 
 insert into
-  bereiche(name)
+  bereiche(abteilung, sektion, name, standort, leiter)
 values
   ('Kernenergietechnik/Radioaktive Abfälle'),
   ('Tiefenlager'),

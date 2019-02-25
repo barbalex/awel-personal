@@ -35,6 +35,7 @@ const Bereich = ({ activeId }) => {
     showDeleted,
     showMutationNoetig,
     kostenstelleWerte,
+    standortWerte,
     showFilter,
     filterBereich,
     existsFilter,
@@ -102,6 +103,14 @@ const Bereich = ({ activeId }) => {
   const kostenstelleOptions = useMemo(() =>
     sortBy(kostenstelleWerte, ['sort', 'value'])
       .filter(w => !!w.value)
+      .map(w => ({
+        label: w.value,
+        value: w.value,
+      })),
+  )
+  const standortOptions = useMemo(() =>
+    sortBy(standortWerte, ['sort', 'value'])
+      .filter(p => p.deleted === 0)
       .map(w => ({
         label: w.value,
         value: w.value,
@@ -212,11 +221,12 @@ const Bereich = ({ activeId }) => {
           saveToDb={saveToDb}
           error={errors.email}
         />
-        <Input
-          key={`${bereichId}standort`}
+        <Select
+          key={`${bereichId}${existsFilter ? 1 : 0}standort`}
           value={bereich.standort}
           field="standort"
           label="Standort"
+          options={standortOptions}
           saveToDb={saveToDb}
           error={errors.standort}
         />
