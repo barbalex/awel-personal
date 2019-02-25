@@ -187,7 +187,7 @@ values
   ('Österreich');
 
 insert into
-  bereiche(amt, abteilung, sektion, name, standort, leiter)
+  bereiche(abteilung, amt, sektion, name, standort, leiter)
 values
 (7, 1,	20,	'Betrieb Sihl',	'Werkhof Adliswil',	1),
 (7, 1,	20,	'Betrieb Reuss / Limmat', 'Werkhof Obfelden',	2),
