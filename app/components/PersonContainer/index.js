@@ -8,6 +8,7 @@ import last from 'lodash/last'
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Person from './Person'
 import PersonPrint from './PersonPrint'
+import PersonMutationPrint from './PersonMutationPrint'
 import List from './List'
 import fetchPersonen from '../../src/fetchPersonen'
 import fetchAemter from '../../src/fetchAemter'
@@ -79,8 +80,13 @@ const PersonContainer = () => {
     fetchSettings({ db, store })
   }, [])
 
+  const showPersonPrint = location.length === 3 && last(location) === 'pdf'
+  const showPersonMutationPrint =
+    location.length === 4 && last(location) === 'pdf'
+
   if (printing) {
-    return <PersonPrint activeId={activeId} />
+    if (showPersonPrint) return <PersonPrint activeId={activeId} />
+    if (showPersonMutationPrint) return <PersonMutationPrint PersonPrint />
   }
 
   return (
@@ -101,8 +107,10 @@ const PersonContainer = () => {
             propagateDimensionsRate={1000}
             resizeHeight={false}
           >
-            {last(location) === 'pdf' ? (
+            {showPersonPrint ? (
               <PersonPrint activeId={activeId} />
+            ) : showPersonMutationPrint ? (
+              <PersonMutationPrint PersonPrint />
             ) : (
               <Person activeId={activeId} />
             )}
