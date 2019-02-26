@@ -107,234 +107,161 @@ const Footer = styled.div`
 `
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 50%);
   grid-template-rows: auto;
   grid-template-areas:
-    'personalien verzeichnis'
-    'anstellung funktionen'
-    'zuletzt zuletzt';
+    'area1'
+    'area2'
+    'area3'
+    'area4';
   font-family: Arial, Helvetica, sans-serif;
 `
 const Area = styled.div`
   padding: 8px;
+`
+const Area1 = styled(Area)`
+  grid-area: area1;
+  display: grid;
+  grid-template-areas: '1eintritt' '1austritt';
+`
+const Area1Eintritt = styled.div`
+  grid-area: 1eintritt;
   border: 1px solid #ccc;
   border-bottom: none;
 `
-const AreaPersonalien = styled(Area)`
-  grid-area: personalien;
+const Area1Austritt = styled.div`
+  grid-area: 1austritt;
+  border-bottom: 1px solid #ccc;
+`
+const Area2 = styled(Area)`
+  grid-area: area1;
   display: grid;
-  grid-template-columns: repeat(2, 50%);
-  grid-template-areas:
-    'p_title p_bild'
-    'p_name p_bild'
-    'p_vorname p_bild'
-    'p_anrede p_bild'
-    'p_kurzzeichen p_bild'
-    'p_adresse p_adresse'
-    'p_plz p_plz'
-    'p_ort p_ort'
-    'p_land p_land'
-    'p_email p_email'
-    'p_geburtsdatum p_geburtsdatum';
+  grid-template-areas: '2name' '2vorname' '2abteilung' '2sektion' '2kostenstelle';
 `
-const AreaPTitle = styled.div`
-  grid-area: p_title;
+const Area2Name = styled.div`
+  grid-area: 2name;
+  border: 1px solid #ccc;
+  border-bottom: none;
 `
-const AreaPName = styled.div`
-  grid-area: p_name;
+const Area2Vorname = styled.div`
+  grid-area: 2vorname;
+  border: 1px solid #ccc;
+  border-bottom: none;
 `
-const AreaPBild = styled.div`
-  grid-area: p_bild;
-  justify-self: end;
+const Area2Abteilung = styled.div`
+  grid-area: 2abteilung;
+  border: 1px solid #ccc;
+  border-bottom: none;
 `
-const AreaPVorname = styled.div`
-  grid-area: p_vorname;
+const Area2Sektion = styled.div`
+  grid-area: 2sektion;
+  border: 1px solid #ccc;
+  border-bottom: none;
 `
-const AreaPAnrede = styled.div`
-  grid-area: p_anrede;
+const Area2Kostenstelle = styled.div`
+  grid-area: 2kostenstelle;
+  border: 1px solid #ccc;
 `
-const AreaPKurzzeichen = styled.div`
-  grid-area: p_kurzzeichen;
+const Area3 = styled(Area)`
+  grid-area: area3;
+  display: grid;
+  grid-template-areas: '3title' '3telvon' '3rufnummer' '3schluessel';
 `
-const AreaPAdresse = styled.div`
-  grid-area: p_adresse;
+const Area3Title = styled.div`
+  grid-area: 3title;
 `
-const AreaPPLZ = styled.div`
-  grid-area: p_plz;
+const Area3Telvon = styled.div`
+  grid-area: 3telvon;
+  border: 1px solid #ccc;
+  border-bottom: none;
 `
-const AreaPOrt = styled.div`
-  grid-area: p_ort;
+const Area3Rufnummer = styled.div`
+  grid-area: 3rufnummer;
+  border: 1px solid #ccc;
+  border-bottom: none;
 `
-const AreaPLand = styled.div`
-  grid-area: p_land;
+const Area3Schluessel = styled.div`
+  grid-area: 3schluessel;
+  border: 1px solid #ccc;
 `
-const AreaPEmail = styled.div`
-  grid-area: p_email;
+const Area4 = styled(Area)`
+  grid-area: area4;
+  display: grid;
+  grid-template-areas: '4title' '4eroeffnung' '4software' '4hardware' '4abmeldung' '4bemerkungen';
 `
-const AreaPGeburtsdatum = styled.div`
-  grid-area: p_geburtsdatum;
+const Area4Title = styled.div`
+  grid-area: 4title;
 `
-const AreaAnstellung = styled(Area)`
-  grid-area: anstellung;
+const Area4Eroeffnung = styled.div`
+  grid-area: 4eroeffnung;
+  border: 1px solid #ccc;
+  border-bottom: none;
 `
-const AreaFunktionen = styled(Area)`
-  grid-area: funktionen;
+const Area4Software = styled.div`
+  grid-area: 4software;
+  border: 1px solid #ccc;
+  border-bottom: none;
 `
-const AreaVerzeichnis = styled(Area)`
-  grid-area: verzeichnis;
+const Area4Hardware = styled.div`
+  grid-area: 4hardware;
+  border: 1px solid #ccc;
+  border-bottom: none;
 `
-const AreaZuletzt = styled(Area)`
-  grid-area: zuletzt;
-  border-left: none;
-  border-right: none;
+const Area4Abmeldung = styled.div`
+  grid-area: 4abmeldung;
+  border: 1px solid #ccc;
+  border-bottom: none;
+`
+const Area4Bemerkungen = styled.div`
+  grid-area: 4bemerkungen;
+  border: 1px solid #ccc;
 `
 const Title = styled.div`
   font-weight: 900;
   font-size: 14px;
   font-family: Arial Black;
 `
-const Img = styled.img`
-  max-height: 180px;
-  max-width: 160px;
-`
 
 const PersonPrint = ({ activeId }) => {
   const store = useContext(storeContext)
-  const {
-    personen,
-    aemter,
-    abteilungen,
-    sektionen,
-    bereiche,
-    etiketten,
-    funktionen,
-  } = store
+  const { personen, aemter, abteilungen, sektionen, bereiche } = store
 
   const person = personen.find(p => p.id === activeId) || {}
-
-  const myEtiketten = useMemo(() =>
-    etiketten
-      .filter(e => e.idPerson === activeId)
-      .filter(w => !!w.etikett)
-      .filter(p => p.deleted === 0)
-      .map(e => e.etikett),
-  )
-  const myFunktionen = useMemo(() =>
-    funktionen
-      .filter(e => e.idPerson === activeId)
-      .filter(w => !!w.funktion)
-      .filter(p => p.deleted === 0)
-      .map(e => e.funktion),
-  )
-
-  const personVorgesetzt = personen.find(a => a.id === person.vorgesetztId)
 
   return (
     <Container>
       <PageContainer className="hochformat">
         <GlobalStyle />
         <Wrapper>
-          <AreaPersonalien>
-            <AreaPTitle>
-              <Title>Personalien</Title>
-            </AreaPTitle>
-            <AreaPBild>
-              {person.bildUrl && (
-                <Img
-                  src={person.bildUrl}
-                  alt={`${person.vorname} ${person.name}`}
-                />
-              )}
-            </AreaPBild>
-            <AreaPName>
-              <InputValue value={person.name} label="Name" />
-            </AreaPName>
-            <AreaPVorname>
-              <InputValue value={person.vorname} label="Vorname" />
-            </AreaPVorname>
-            <AreaPAnrede>
-              <InputValue value={person.anrede} label="Anrede" />
-            </AreaPAnrede>
-            <AreaPKurzzeichen>
-              <InputValue value={person.kurzzeichen} label="Kurzzeichen" />
-            </AreaPKurzzeichen>
-            <AreaPAdresse>
-              <InputValue value={person.adresse} label="Adresse" />
-            </AreaPAdresse>
-            <AreaPPLZ>
-              <InputValue value={person.plz} label="PLZ" />
-            </AreaPPLZ>
-            <AreaPOrt>
-              <InputValue value={person.ort} label="Ort" />
-            </AreaPOrt>
-            <AreaPLand>
-              <InputValue label="Land" value={person.land} />
-            </AreaPLand>
-            <AreaPEmail>
-              <InputValue value={person.email} label="Email" />
-            </AreaPEmail>
-            <AreaPGeburtsdatum>
-              <InputValue value={person.geburtDatum} label="Geburtsdatum" />
-            </AreaPGeburtsdatum>
-          </AreaPersonalien>
-          <AreaAnstellung>
-            <Title>Anstellung</Title>
-            <InputValue value={person.status} label="Status" />
-            <InputValue value={person.eintrittDatum} label="Eintritt" />
-            <InputValue value={person.austrittDatum} label="Austritt" />
-            <InputValue
-              value={person.beschaeftigungsgrad}
-              label="Beschäftigungsgrad (%)"
-            />
-            <InputValue value={person.standort} label="Standort" />
-            <InputValue value={person.bueroNr} label="Büro Nr." />
-          </AreaAnstellung>
-          <AreaFunktionen>
-            <Title>Funktionen</Title>
-            <InputValue
-              value={get(aemter.find(a => a.id === person.amt), 'name') || ''}
-              label="Amt"
-            />
-            <InputValue
-              label="Abteilung"
-              value={
-                get(abteilungen.find(a => a.id === person.abteilung), 'name') ||
-                ''
-              }
-            />
-            <InputValue
-              label="Sektion"
-              value={
-                get(sektionen.find(a => a.id === person.sektion), 'name') || ''
-              }
-            />
-            <InputValue
-              label="Bereich"
-              value={
-                get(bereiche.find(a => a.id === person.bereich), 'name') || ''
-              }
-            />
-            <InputValue
-              label="Vorgesetzte(r)"
-              value={
-                personVorgesetzt
-                  ? `${personVorgesetzt.name} ${personVorgesetzt.vorname}`
-                  : ''
-              }
-            />
-            <InputValue label="Funktionen" value={myFunktionen.join(', ')} />
-          </AreaFunktionen>
-          <AreaVerzeichnis>
-            <Title>Verzeichnis</Title>
-            <InputValue value={person.parkplatzNr} label="Parkplatz Nr." />
-            <InputValue label="Etiketten" value={myEtiketten.join(', ')} />
-            <InputValue value={person.bemerkungen} label="Bemerkun&shy;gen" />
-          </AreaVerzeichnis>
-          <AreaZuletzt>
-            <Zuletzt row={false} />
-          </AreaZuletzt>
+          <Area1>
+            <Area1Eintritt>Eintritt</Area1Eintritt>
+            <Area1Austritt>Austritt</Area1Austritt>
+          </Area1>
+          <Area2>
+            <Area2Name>Name</Area2Name>
+            <Area2Vorname>Vorname</Area2Vorname>
+            <Area2Abteilung>Abteilung</Area2Abteilung>
+            <Area2Sektion>Sektion</Area2Sektion>
+            <Area2Kostenstelle>Kostenstelle</Area2Kostenstelle>
+          </Area2>
+          <Area3>
+            <Area3Title>
+              <Title>Telefonmutation / Schlüssel / Badge</Title>
+            </Area3Title>
+            <Area3Telvon>Telelefon übernommen von</Area3Telvon>
+            <Area3Rufnummer>Rufnummer</Area3Rufnummer>
+            <Area3Schluessel>Schlüssel / Badge benötigt?</Area3Schluessel>
+          </Area3>
+          <Area4>
+            <Area4Title>
+              <Title>IT Mutation</Title>
+            </Area4Title>
+            <Area4Eroeffnung>Arbeitsplatzeröffnung per</Area4Eroeffnung>
+            <Area4Software>benötigte Software</Area4Software>
+            <Area4Hardware>standardabweichende Hardware</Area4Hardware>
+            <Area4Abmeldung>Abmeldung Arbeitsplatz per</Area4Abmeldung>
+            <Area4Bemerkungen>Bemerkungen</Area4Bemerkungen>
+          </Area4>
         </Wrapper>
-        <Footer>{moment().format('DD.MM.YYYY')}</Footer>
       </PageContainer>
     </Container>
   )
