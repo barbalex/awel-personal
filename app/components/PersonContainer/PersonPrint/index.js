@@ -18,7 +18,7 @@ import MobileAbos from './MobileAbos'
  */
 const Container = styled.div`
   background-color: #eee;
-  font-size: 9pt;
+  font-size: 10.5px;
   cursor: default;
   overflow-y: auto;
   height: 100vh;
@@ -198,7 +198,7 @@ const AreaZuletzt = styled(Area)`
 `
 const Title = styled.div`
   font-weight: 900;
-  font-size: 18px;
+  font-size: 14px;
   font-family: Arial Black;
 `
 const Img = styled.img`
