@@ -113,9 +113,7 @@ const Cell = styled.div`
   grid-template-columns: ${labelWidth}px auto;
   > div {
     padding: 3px;
-    margin-top: auto;
-    margin-bottom: auto;
-    height: 55px;
+    height: 14mm;
   }
   > div:first-of-type {
     border-right: 1px solid #ccc;
@@ -230,8 +228,8 @@ const Title = styled.div`
 `
 const Img = styled.img`
   max-width: 260px;
-  margin-top: -50px;
-  margin-left: -40px;
+  margin-top: -20px;
+  margin-left: -10px;
 `
 
 const PersonMutationPrint = ({ activeId }) => {
