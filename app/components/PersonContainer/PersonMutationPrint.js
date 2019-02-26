@@ -15,7 +15,7 @@ const labelWidth = 200
  */
 const Container = styled.div`
   background-color: #eee;
-  font-size: 10.5px;
+  font-size: 12px;
   cursor: default;
   overflow-y: auto;
   height: 100vh;
@@ -106,7 +106,7 @@ const Wrapper = styled.div`
   border: none;
 `
 const Area = styled.div`
-  padding: 8px;
+  padding: 8px 0;
 `
 const Cell = styled.div`
   display: grid;
@@ -115,7 +115,7 @@ const Cell = styled.div`
     padding: 3px;
     margin-top: auto;
     margin-bottom: auto;
-    height: 30px;
+    height: 55px;
   }
   > div:first-of-type {
     border-right: 1px solid #ccc;
@@ -218,6 +218,11 @@ const Area4Bemerkungen = styled(Cell)`
   grid-area: bemerkungen4;
   border: 1px solid #ccc;
 `
+const MainTitle = styled.div`
+  font-weight: 900;
+  font-size: 18px;
+  font-family: Arial Black;
+`
 const Title = styled.div`
   font-weight: 900;
   font-size: 14px;
@@ -244,6 +249,7 @@ const PersonMutationPrint = ({ activeId }) => {
       <PageContainer className="hochformat">
         <GlobalStyle />
         <Img src={LogoAwel} />
+        <MainTitle>Personal-Mutation</MainTitle>
         <Wrapper>
           <Area1>
             <Area1Eintritt>
