@@ -8,19 +8,14 @@ import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import Telefon from './Telefon'
 import storeContext from '../../../../storeContext'
 
-const Container = styled.div`
-  border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
-  border-bottom: none;
-  font-size: ${props => (props['data-ispdf'] ? '10px' : 'inherit')};
-`
+const Container = styled.div``
 const StyledButton = styled(Button)`
   margin-top: 5px;
 `
 const Row = styled.div`
   grid-column: 1;
   display: grid;
-  grid-template-columns: ${props =>
-    props['data-ispdf'] ? '1fr 1fr 1fr' : '1fr 1fr 1fr 20px'};
+  grid-template-columns: 1fr 1fr 1fr 20px;
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
   padding: 3px 0;
@@ -57,20 +52,18 @@ const TelefonesComponent = ({ row = true }) => {
   } else {
     telefones = store.telefones.filter(s => s.idPerson === activePersonenId)
   }
-  // TODO: refactor when pdf is built
-  const isPdf = location[0] === 'personPdf'
   const mayAddNew =
     !showFilter &&
     (telefones.length === 0 ||
       !telefones.map(s => s.name).some(n => n === null))
   const Content = () => (
-    <Container data-ispdf={isPdf} name="telefone">
+    <Container name="telefone">
       {telefones.length > 0 && (
-        <Row data-ispdf={isPdf}>
+        <Row>
           <Nr>Nr.</Nr>
           <Typ>Typ</Typ>
           <Bemerkungen>Bemerkungen</Bemerkungen>
-          {!isPdf && <div />}
+          <div />
         </Row>
       )}
       {telefones.map(telefone => (

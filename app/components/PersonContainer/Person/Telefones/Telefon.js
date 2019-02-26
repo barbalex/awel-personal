@@ -11,7 +11,6 @@ import InputWithoutLabel from '../../../shared/InputWithoutLabel'
 import storeContext from '../../../../storeContext'
 
 const Row = styled.div`
-  grid-column: 1;
   display: grid;
   grid-template-columns: ${props =>
     props.nosymbol ? '1fr 1fr 1fr' : '1fr 1fr 1fr 20px'};
