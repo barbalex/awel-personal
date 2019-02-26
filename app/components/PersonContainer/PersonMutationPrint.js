@@ -1,11 +1,11 @@
 import React, { useContext, useMemo } from 'react'
 import moment from 'moment'
 import styled, { createGlobalStyle } from 'styled-components'
-import get from 'lodash/get'
 
 import storeContext from '../../storeContext'
-import Zuletzt from './Person/Zuletzt'
-import InputValue from './PersonPrint/InputValue'
+import LogoAwel from '../../etc/LogoAwel.jpg'
+
+const labelWidth = 200
 
 /*
  * need defined height and overflow
@@ -66,10 +66,6 @@ const PageContainer = styled.div`
   /* Show a drop shadow beneath each page */
   box-shadow: 0 4px 5px rgba(75, 75, 75, 0.2);
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
   /* set dimensions */
   height: 29.7cm;
   width: 21cm;
@@ -97,14 +93,6 @@ const GlobalStyle = createGlobalStyle`
     size: A4 portrait;
   }
 `
-const Footer = styled.div`
-  padding-top: 5px;
-  @media print {
-    page-break-inside: avoid !important;
-    page-break-before: avoid !important;
-    page-break-after: avoid !important;
-  }
-`
 const Wrapper = styled.div`
   display: grid;
   grid-template-rows: auto;
@@ -114,50 +102,58 @@ const Wrapper = styled.div`
     'area3'
     'area4';
   font-family: Arial, Helvetica, sans-serif;
+  border: none;
 `
 const Area = styled.div`
   padding: 8px;
+`
+const Cell = styled.div`
+  display: grid;
+  grid-template-columns: ${labelWidth}px auto;
+  > div:first-of-type {
+    border-right: 1px solid #ccc;
+  }
 `
 const Area1 = styled(Area)`
   grid-area: area1;
   display: grid;
   grid-template-areas: '1eintritt' '1austritt';
 `
-const Area1Eintritt = styled.div`
+const Area1Eintritt = styled(Cell)`
   grid-area: 1eintritt;
   border: 1px solid #ccc;
   border-bottom: none;
 `
-const Area1Austritt = styled.div`
+const Area1Austritt = styled(Cell)`
   grid-area: 1austritt;
-  border-bottom: 1px solid #ccc;
+  border: 1px solid #ccc;
 `
 const Area2 = styled(Area)`
-  grid-area: area1;
+  grid-area: area2;
   display: grid;
   grid-template-areas: '2name' '2vorname' '2abteilung' '2sektion' '2kostenstelle';
 `
-const Area2Name = styled.div`
+const Area2Name = styled(Cell)`
   grid-area: 2name;
   border: 1px solid #ccc;
   border-bottom: none;
 `
-const Area2Vorname = styled.div`
+const Area2Vorname = styled(Cell)`
   grid-area: 2vorname;
   border: 1px solid #ccc;
   border-bottom: none;
 `
-const Area2Abteilung = styled.div`
+const Area2Abteilung = styled(Cell)`
   grid-area: 2abteilung;
   border: 1px solid #ccc;
   border-bottom: none;
 `
-const Area2Sektion = styled.div`
+const Area2Sektion = styled(Cell)`
   grid-area: 2sektion;
   border: 1px solid #ccc;
   border-bottom: none;
 `
-const Area2Kostenstelle = styled.div`
+const Area2Kostenstelle = styled(Cell)`
   grid-area: 2kostenstelle;
   border: 1px solid #ccc;
 `
@@ -220,8 +216,13 @@ const Title = styled.div`
   font-size: 14px;
   font-family: Arial Black;
 `
+const Img = styled.img`
+  max-width: 260px;
+  margin-top: -50px;
+  margin-left: -40px;
+`
 
-const PersonPrint = ({ activeId }) => {
+const PersonMutationPrint = ({ activeId }) => {
   const store = useContext(storeContext)
   const { personen, aemter, abteilungen, sektionen, bereiche } = store
 
@@ -231,17 +232,39 @@ const PersonPrint = ({ activeId }) => {
     <Container>
       <PageContainer className="hochformat">
         <GlobalStyle />
+        <Img src={LogoAwel} />
         <Wrapper>
           <Area1>
-            <Area1Eintritt>Eintritt</Area1Eintritt>
-            <Area1Austritt>Austritt</Area1Austritt>
+            <Area1Eintritt>
+              <div>Eintritt per:</div>
+              <div />
+            </Area1Eintritt>
+            <Area1Austritt>
+              <div>Austritt</div>
+              <div />
+            </Area1Austritt>
           </Area1>
           <Area2>
-            <Area2Name>Name</Area2Name>
-            <Area2Vorname>Vorname</Area2Vorname>
-            <Area2Abteilung>Abteilung</Area2Abteilung>
-            <Area2Sektion>Sektion</Area2Sektion>
-            <Area2Kostenstelle>Kostenstelle</Area2Kostenstelle>
+            <Area2Name>
+              <div>Name</div>
+              <div>{person.name}</div>
+            </Area2Name>
+            <Area2Vorname>
+              <div>Vorname</div>
+              <div>{person.vorname}</div>
+            </Area2Vorname>
+            <Area2Abteilung>
+              <div>Abteilung</div>
+              <div>{person.abteilung}</div>
+            </Area2Abteilung>
+            <Area2Sektion>
+              <div>Sektion</div>
+              <div>{person.sektion}</div>
+            </Area2Sektion>
+            <Area2Kostenstelle>
+              <div>Kostenstelle</div>
+              <div>{person.kostenstelle}</div>
+            </Area2Kostenstelle>
           </Area2>
           <Area3>
             <Area3Title>
@@ -267,4 +290,4 @@ const PersonPrint = ({ activeId }) => {
   )
 }
 
-export default PersonPrint
+export default PersonMutationPrint

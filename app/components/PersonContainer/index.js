@@ -86,7 +86,8 @@ const PersonContainer = () => {
 
   if (printing) {
     if (showPersonPrint) return <PersonPrint activeId={activeId} />
-    if (showPersonMutationPrint) return <PersonMutationPrint PersonPrint />
+    if (showPersonMutationPrint)
+      return <PersonMutationPrint activeId={activeId} />
   }
 
   return (
@@ -110,7 +111,7 @@ const PersonContainer = () => {
             {showPersonPrint ? (
               <PersonPrint activeId={activeId} />
             ) : showPersonMutationPrint ? (
-              <PersonMutationPrint PersonPrint />
+              <PersonMutationPrint activeId={activeId} />
             ) : (
               <Person activeId={activeId} />
             )}
