@@ -56,25 +56,25 @@ export default types
       if (self.bereich) {
         const bereich = bereiche.find(b => b.id === self.bereich)
         if (bereich && bereich.kostenstelle) {
-          return bereich.kostenstelle
+          return `${bereich.kostenstelle} (von Bereich ${bereich.name})`
         }
       }
       if (self.sektion) {
         const sektion = sektionen.find(b => b.id === self.sektion)
         if (sektion && sektion.kostenstelle) {
-          return sektion.kostenstelle
+          return `${sektion.kostenstelle} (von Sektion ${sektion.name})`
         }
       }
       if (self.abteilung) {
         const abteilung = abteilungen.find(b => b.id === self.abteilung)
         if (abteilung && abteilung.kostenstelle) {
-          return abteilung.kostenstelle
+          return `${abteilung.kostenstelle} (von Abteilung ${abteilung.name})`
         }
       }
       if (self.amt) {
         const amt = aemter.find(b => b.id === self.amt)
         if (amt && amt.kostenstelle) {
-          return amt.kostenstelle
+          return `${amt.kostenstelle} (von Amt ${amt.name})`
         }
       }
       return '(keine Kostenstelle)'
