@@ -1,6 +1,7 @@
 import React, { useContext, useMemo } from 'react'
 import moment from 'moment'
 import styled, { createGlobalStyle } from 'styled-components'
+import get from 'lodash/get'
 
 import storeContext from '../../storeContext'
 import LogoAwel from '../../etc/LogoAwel.jpg'
@@ -224,9 +225,13 @@ const Img = styled.img`
 
 const PersonMutationPrint = ({ activeId }) => {
   const store = useContext(storeContext)
-  const { personen, aemter, abteilungen, sektionen, bereiche } = store
+  const { personen, abteilungen, sektionen, bereiche } = store
 
   const person = personen.find(p => p.id === activeId) || {}
+  const abteilung = abteilungen.find(a => a.id === person.abteilung)
+  const abteilungName = abteilung && abteilung.name ? abteilung.name : ''
+  const sektion = sektionen.find(a => a.id === person.sektion)
+  const sektionName = sektion && sektion.name ? sektion.name : ''
 
   return (
     <Container>
@@ -255,11 +260,11 @@ const PersonMutationPrint = ({ activeId }) => {
             </Area2Vorname>
             <Area2Abteilung>
               <div>Abteilung</div>
-              <div>{person.abteilung}</div>
+              <div>{abteilungName}</div>
             </Area2Abteilung>
             <Area2Sektion>
               <div>Sektion</div>
-              <div>{person.sektion}</div>
+              <div>{sektionName}</div>
             </Area2Sektion>
             <Area2Kostenstelle>
               <div>Kostenstelle</div>
