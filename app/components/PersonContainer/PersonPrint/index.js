@@ -117,6 +117,7 @@ const Wrapper = styled.div`
     'personalien verzeichnis'
     'anstellung funktionen'
     'zuletzt zuletzt';
+  font-family: Arial, Helvetica, sans-serif;
 `
 const Area = styled.div`
   padding: 8px;
@@ -198,6 +199,7 @@ const AreaZuletzt = styled(Area)`
 const Title = styled.div`
   font-weight: 900;
   font-size: 18px;
+  font-family: Arial Black;
 `
 const Img = styled.img`
   max-height: 180px;
