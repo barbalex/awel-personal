@@ -111,6 +111,12 @@ const Area = styled.div`
 const Cell = styled.div`
   display: grid;
   grid-template-columns: ${labelWidth}px auto;
+  > div {
+    padding: 3px;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 30px;
+  }
   > div:first-of-type {
     border-right: 1px solid #ccc;
   }
@@ -118,98 +124,98 @@ const Cell = styled.div`
 const Area1 = styled(Area)`
   grid-area: area1;
   display: grid;
-  grid-template-areas: '1eintritt' '1austritt';
+  grid-template-areas: 'eintritt1' 'austritt1';
 `
 const Area1Eintritt = styled(Cell)`
-  grid-area: 1eintritt;
+  grid-area: eintritt1;
   border: 1px solid #ccc;
   border-bottom: none;
 `
 const Area1Austritt = styled(Cell)`
-  grid-area: 1austritt;
+  grid-area: austritt1;
   border: 1px solid #ccc;
 `
 const Area2 = styled(Area)`
   grid-area: area2;
   display: grid;
-  grid-template-areas: '2name' '2vorname' '2abteilung' '2sektion' '2kostenstelle';
+  grid-template-areas: 'name2' 'vorname2' 'abteilung2' 'sektion2' 'kostenstelle2';
 `
 const Area2Name = styled(Cell)`
-  grid-area: 2name;
+  grid-area: name2;
   border: 1px solid #ccc;
   border-bottom: none;
 `
 const Area2Vorname = styled(Cell)`
-  grid-area: 2vorname;
+  grid-area: vorname2;
   border: 1px solid #ccc;
   border-bottom: none;
 `
 const Area2Abteilung = styled(Cell)`
-  grid-area: 2abteilung;
+  grid-area: abteilung2;
   border: 1px solid #ccc;
   border-bottom: none;
 `
 const Area2Sektion = styled(Cell)`
-  grid-area: 2sektion;
+  grid-area: sektion2;
   border: 1px solid #ccc;
   border-bottom: none;
 `
 const Area2Kostenstelle = styled(Cell)`
-  grid-area: 2kostenstelle;
+  grid-area: kostenstelle2;
   border: 1px solid #ccc;
 `
 const Area3 = styled(Area)`
   grid-area: area3;
   display: grid;
-  grid-template-areas: '3title' '3telvon' '3rufnummer' '3schluessel';
+  grid-template-areas: 'title3' 'telvon3' 'rufnummer3' 'schluessel3';
 `
 const Area3Title = styled.div`
-  grid-area: 3title;
+  grid-area: title3;
 `
-const Area3Telvon = styled.div`
-  grid-area: 3telvon;
+const Area3Telvon = styled(Cell)`
+  grid-area: telvon3;
   border: 1px solid #ccc;
   border-bottom: none;
 `
-const Area3Rufnummer = styled.div`
-  grid-area: 3rufnummer;
+const Area3Rufnummer = styled(Cell)`
+  grid-area: rufnummer3;
   border: 1px solid #ccc;
   border-bottom: none;
 `
-const Area3Schluessel = styled.div`
-  grid-area: 3schluessel;
+const Area3Schluessel = styled(Cell)`
+  grid-area: schluessel3;
   border: 1px solid #ccc;
 `
 const Area4 = styled(Area)`
   grid-area: area4;
   display: grid;
-  grid-template-areas: '4title' '4eroeffnung' '4software' '4hardware' '4abmeldung' '4bemerkungen';
+  grid-template-areas: 'title4' 'eroeffnung4' 'software4' 'hardware4' 'abmeldung4' 'bemerkungen4';
 `
 const Area4Title = styled.div`
-  grid-area: 4title;
+  grid-area: title4;
 `
-const Area4Eroeffnung = styled.div`
-  grid-area: 4eroeffnung;
+const Area4Eroeffnung = styled(Cell)`
+  grid-area: eroeffnung4;
   border: 1px solid #ccc;
   border-bottom: none;
 `
-const Area4Software = styled.div`
-  grid-area: 4software;
+const Area4Software = styled(Cell)`
+  grid-area: software4;
   border: 1px solid #ccc;
   border-bottom: none;
 `
-const Area4Hardware = styled.div`
-  grid-area: 4hardware;
+const Area4Hardware = styled(Cell)`
+  grid-area: hardware4;
   border: 1px solid #ccc;
   border-bottom: none;
 `
-const Area4Abmeldung = styled.div`
-  grid-area: 4abmeldung;
+const Area4Abmeldung = styled(Cell)`
+  grid-area: abmeldung4;
   border: 1px solid #ccc;
   border-bottom: none;
 `
-const Area4Bemerkungen = styled.div`
-  grid-area: 4bemerkungen;
+const Area4Bemerkungen = styled(Cell)`
+  grid-area: bemerkungen4;
   border: 1px solid #ccc;
 `
 const Title = styled.div`
@@ -225,7 +231,7 @@ const Img = styled.img`
 
 const PersonMutationPrint = ({ activeId }) => {
   const store = useContext(storeContext)
-  const { personen, abteilungen, sektionen, bereiche } = store
+  const { personen, abteilungen, sektionen } = store
 
   const person = personen.find(p => p.id === activeId) || {}
   const abteilung = abteilungen.find(a => a.id === person.abteilung)
