@@ -281,19 +281,43 @@ const PersonMutationPrint = ({ activeId }) => {
             <Area3Title>
               <Title>Telefonmutation / Schlüssel / Badge</Title>
             </Area3Title>
-            <Area3Telvon>Telelefon übernommen von</Area3Telvon>
-            <Area3Rufnummer>Rufnummer</Area3Rufnummer>
-            <Area3Schluessel>Schlüssel / Badge benötigt?</Area3Schluessel>
+            <Area3Telvon>
+              <div>Telelefon übernommen von</div>
+              <div />
+            </Area3Telvon>
+            <Area3Rufnummer>
+              <div>Rufnummer</div>
+              <div />
+            </Area3Rufnummer>
+            <Area3Schluessel>
+              <div>Schlüssel / Badge benötigt?</div>
+              <div />
+            </Area3Schluessel>
           </Area3>
           <Area4>
             <Area4Title>
               <Title>IT Mutation</Title>
             </Area4Title>
-            <Area4Eroeffnung>Arbeitsplatzeröffnung per</Area4Eroeffnung>
-            <Area4Software>benötigte Software</Area4Software>
-            <Area4Hardware>standardabweichende Hardware</Area4Hardware>
-            <Area4Abmeldung>Abmeldung Arbeitsplatz per</Area4Abmeldung>
-            <Area4Bemerkungen>Bemerkungen</Area4Bemerkungen>
+            <Area4Eroeffnung>
+              <div>Arbeitsplatzeröffnung per</div>
+              <div />
+            </Area4Eroeffnung>
+            <Area4Software>
+              <div>benötigte Software</div>
+              <div />
+            </Area4Software>
+            <Area4Hardware>
+              <div>standardabweichende Hardware</div>
+              <div />
+            </Area4Hardware>
+            <Area4Abmeldung>
+              <div>Abmeldung Arbeitsplatz per</div>
+              <div />
+            </Area4Abmeldung>
+            <Area4Bemerkungen>
+              <div>Bemerkungen</div>
+              <div />
+            </Area4Bemerkungen>
           </Area4>
         </Wrapper>
       </PageContainer>
