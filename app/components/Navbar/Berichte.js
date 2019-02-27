@@ -28,6 +28,22 @@ const StyledButton = styled(Button)`
   border: unset !important;
 `
 
+const printToPDFOptions = {
+  marginsType: 0,
+  pageSize: 'A4',
+  landscape: false,
+  printBackground: false,
+}
+const dialogOptions = {
+  title: 'pdf speichern',
+  filters: [
+    {
+      name: 'pdf',
+      extensions: ['pdf'],
+    },
+  ],
+}
+
 const Berichte = () => {
   const store = useContext(storeContext)
   const { setLocation, setPrinting } = store
@@ -48,22 +64,6 @@ const Berichte = () => {
   })
   const onClickCreatePdf = useCallback(() => {
     const win = remote.getCurrentWindow()
-    const printToPDFOptions = {
-      marginsType: 0,
-      pageSize: 'A4',
-      landscape: false,
-      printBackground: false,
-    }
-    const dialogOptions = {
-      title: 'pdf speichern',
-      filters: [
-        {
-          name: 'pdf',
-          extensions: ['pdf'],
-        },
-      ],
-    }
-
     // https://github.com/electron/electron/blob/master/docs/api/web-contents.md#contentsprinttopdfoptions-callback
 
     setPrinting(true)
