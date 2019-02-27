@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import moment from 'moment'
 import styled, { createGlobalStyle } from 'styled-components'
 
 import storeContext from '../../storeContext'
@@ -7,24 +6,17 @@ import LogoAwel from '../../etc/LogoAwel.jpg'
 
 const labelWidth = 200
 
-/*
- * need defined height and overflow
- * to make the pages scrollable in UI
- * is removed in print
- */
 const Container = styled.div`
   background-color: #eee;
   font-size: 12px;
   cursor: default;
+  /*
+   * need defined height and overflow
+   * to make the pages scrollable in UI
+   * is removed in print
+   */
   overflow-y: auto;
   height: 100vh;
-
-  & div {
-    background-color: white !important;
-  }
-  & * {
-    background-color: transparent !important;
-  }
 
   @media print {
     /* remove grey backgrond set for nice UI */
@@ -33,6 +25,7 @@ const Container = styled.div`
     overflow-y: visible;
     /* make sure body grows as needed */
     height: auto !important;
+    width: auto !important;
 
     page-break-inside: avoid;
     page-break-before: avoid;
@@ -58,12 +51,13 @@ const PageContainer = styled.div`
 
   @media print {
     /* this is when it is actually printed */
-    height: inherit;
-    width: inherit;
+    height: auto;
+    width: auto;
 
     margin: 0 !important;
     padding: 0.5cm !important;
-    overflow-y: hidden !important;
+    /*padding: 1cm !important;*/
+    overflow: hidden !important;
     /* try this */
     page-break-inside: avoid !important;
     page-break-before: avoid !important;
@@ -74,28 +68,38 @@ const PageContainer = styled.div`
 const GlobalStyle = createGlobalStyle`
   @page .hochformat {
     size: A4 portrait;
+    /*margin: 1cm;*/
   }
 `
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-areas:
-    'area1'
-    'area2'
-    'area3'
-    'area4';
   font-family: Arial, Helvetica, sans-serif;
   border: none;
+  box-sizing: border-box;
+
+  @media print {
+    /* this is when it is actually printed */
+    height: auto;
+    width: auto;
+    /* try this */
+    page-break-inside: avoid !important;
+    page-break-before: avoid !important;
+    page-break-after: avoid !important;
+  }
 `
 const Area = styled.div`
-  padding: 8px 0;
+  display: grid;
+  padding: 2mm 0;
+  box-sizing: border-box;
 `
 const Cell = styled.div`
   display: grid;
   grid-template-columns: ${labelWidth}px auto;
+  height: 14mm;
+  box-sizing: border-box;
   > div {
     padding: 3px;
     height: 14mm;
+    box-sizing: border-box;
   }
   > div:first-of-type {
     border-right: 1px solid #ccc;
@@ -103,8 +107,8 @@ const Cell = styled.div`
 `
 const Area1 = styled(Area)`
   grid-area: area1;
-  display: grid;
   grid-template-areas: 'eintritt1' 'austritt1';
+  padding-bottom: 4mm;
 `
 const Area1Eintritt = styled(Cell)`
   grid-area: eintritt1;
@@ -117,7 +121,6 @@ const Area1Austritt = styled(Cell)`
 `
 const Area2 = styled(Area)`
   grid-area: area2;
-  display: grid;
   grid-template-areas: 'name2' 'vorname2' 'abteilung2' 'sektion2' 'kostenstelle2';
 `
 const Area2Name = styled(Cell)`
@@ -146,11 +149,11 @@ const Area2Kostenstelle = styled(Cell)`
 `
 const Area3 = styled(Area)`
   grid-area: area3;
-  display: grid;
   grid-template-areas: 'title3' 'telvon3' 'rufnummer3' 'schluessel3';
 `
 const Area3Title = styled.div`
   grid-area: title3;
+  align-self: end;
 `
 const Area3Telvon = styled(Cell)`
   grid-area: telvon3;
@@ -168,11 +171,11 @@ const Area3Schluessel = styled(Cell)`
 `
 const Area4 = styled(Area)`
   grid-area: area4;
-  display: grid;
   grid-template-areas: 'title4' 'eroeffnung4' 'software4' 'hardware4' 'abmeldung4' 'bemerkungen4';
 `
 const Area4Title = styled.div`
   grid-area: title4;
+  align-self: end;
 `
 const Area4Eroeffnung = styled(Cell)`
   grid-area: eroeffnung4;
