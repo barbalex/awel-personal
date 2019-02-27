@@ -1,7 +1,6 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useContext } from 'react'
 import moment from 'moment'
 import styled, { createGlobalStyle } from 'styled-components'
-import get from 'lodash/get'
 
 import storeContext from '../../storeContext'
 import LogoAwel from '../../etc/LogoAwel.jpg'
@@ -25,23 +24,6 @@ const Container = styled.div`
   }
   & * {
     background-color: transparent !important;
-  }
-  & input,
-  & textarea,
-  & select {
-    -webkit-appearance: none;
-    border: none;
-    border-bottom: 1px solid #ccc;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 0;
-    overflow-y: visible;
-  }
-  & .form-control {
-    height: auto;
-  }
-  & .input-group-addon {
-    display: none;
   }
 
   @media print {
@@ -255,7 +237,7 @@ const PersonMutationPrint = ({ activeId }) => {
               <div />
             </Area1Eintritt>
             <Area1Austritt>
-              <div>Austritt</div>
+              <div>Austritt per:</div>
               <div />
             </Area1Austritt>
           </Area1>

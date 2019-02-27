@@ -29,23 +29,6 @@ const Container = styled.div`
   & * {
     background-color: transparent !important;
   }
-  & input,
-  & textarea,
-  & select {
-    -webkit-appearance: none;
-    border: none;
-    border-bottom: 1px solid #ccc;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 0;
-    overflow-y: visible;
-  }
-  & .form-control {
-    height: auto;
-  }
-  & .input-group-addon {
-    display: none;
-  }
 
   @media print {
     /* remove grey backgrond set for nice UI */
