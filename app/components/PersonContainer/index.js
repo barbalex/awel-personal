@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 //import useDetectPrint from 'use-detect-print'
 import last from 'lodash/last'
+import useDetectPrint from 'use-detect-print'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Person from './Person'
@@ -53,6 +54,7 @@ const PersonContainer = () => {
   const person = personen.find(p => p.id === activeId)
   // pass list the active person's props to enable instant updates
   const personJson = person ? person.toJSON() : {}
+  const isPrinting = useDetectPrint()
 
   useEffect(() => {
     fetchPersonen({ db, store })
@@ -84,7 +86,7 @@ const PersonContainer = () => {
   const showPersonMutationPrint =
     location.length === 4 && last(location) === 'pdf'
 
-  if (printing) {
+  if (printing || isPrinting) {
     if (showPersonPrint) return <PersonPrint activeId={activeId} />
     if (showPersonMutationPrint)
       return <PersonMutationPrint activeId={activeId} />
