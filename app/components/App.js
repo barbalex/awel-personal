@@ -22,6 +22,11 @@ setDefaultLocale('de')
 const Container = styled.div`
   height: 100%;
   overflow: hidden;
+  @media print {
+    height: auto !important;
+    width: auto !important;
+    overflow: visible !important;
+  }
 `
 
 const App = () => {
