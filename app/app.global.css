@@ -14,3 +14,21 @@ body {
   width: 100%;
   margin: 0;
 }
+
+@media print {
+
+  /**
+   * ensure html and body
+   * have no margins, no padding,
+   * grow and overflow as needed
+   */
+  html,
+  body,
+  #root {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    width: auto !important;
+    overflow: visible !important;
+  }
+}
