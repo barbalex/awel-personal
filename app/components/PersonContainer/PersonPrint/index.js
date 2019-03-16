@@ -79,6 +79,7 @@ const PageContainer = styled.div`
     page-break-after: avoid !important;
   }
 `
+const Content = styled.div``
 // eslint-disable-next-line no-unused-expressions
 const GlobalStyle = createGlobalStyle`
   @page .hochformat {
@@ -230,114 +231,119 @@ const PersonPrint = ({ activeId }) => {
     <Container>
       <PageContainer className="hochformat">
         <GlobalStyle />
-        <LogoImg src={LogoAwel} />
-        <Wrapper>
-          <AreaPersonalien>
-            <AreaPTitle>
-              <Title>Personalien</Title>
-            </AreaPTitle>
-            <AreaPBild>
-              {person.bildUrl && (
-                <Img
-                  src={person.bildUrl}
-                  alt={`${person.vorname} ${person.name}`}
-                />
-              )}
-            </AreaPBild>
-            <AreaPName>
-              <InputValue value={person.name} label="Name" />
-            </AreaPName>
-            <AreaPVorname>
-              <InputValue value={person.vorname} label="Vorname" />
-            </AreaPVorname>
-            <AreaPAnrede>
-              <InputValue value={person.anrede} label="Anrede" />
-            </AreaPAnrede>
-            <AreaPKurzzeichen>
-              <InputValue value={person.kurzzeichen} label="Kurzzeichen" />
-            </AreaPKurzzeichen>
-            <AreaPAdresse>
-              <InputValue value={person.adresse} label="Adresse" />
-            </AreaPAdresse>
-            <AreaPPLZ>
-              <InputValue value={person.plz} label="PLZ" />
-            </AreaPPLZ>
-            <AreaPOrt>
-              <InputValue value={person.ort} label="Ort" />
-            </AreaPOrt>
-            <AreaPLand>
-              <InputValue label="Land" value={person.land} />
-            </AreaPLand>
-            <AreaPEmail>
-              <InputValue value={person.email} label="Email" />
-            </AreaPEmail>
-            <AreaPGeburtsdatum>
-              <InputValue value={person.geburtDatum} label="Geburtsdatum" />
-            </AreaPGeburtsdatum>
-            <AreaPTelefon>
-              <Telefones activeId={activeId} />
-            </AreaPTelefon>
-          </AreaPersonalien>
-          <AreaAnstellung>
-            <Title>Anstellung</Title>
-            <InputValue value={person.status} label="Status" />
-            <InputValue value={person.eintrittDatum} label="Eintritt" />
-            <InputValue value={person.austrittDatum} label="Austritt" />
-            <InputValue
-              value={person.beschaeftigungsgrad}
-              label="Beschäftigungsgrad (%)"
-            />
-            <InputValue value={person.standort} label="Standort" />
-            <InputValue value={person.bueroNr} label="Büro Nr." />
-          </AreaAnstellung>
-          <AreaFunktionen>
-            <Title>Funktionen</Title>
-            <InputValue
-              value={get(aemter.find(a => a.id === person.amt), 'name') || ''}
-              label="Amt"
-            />
-            <InputValue
-              label="Abteilung"
-              value={
-                get(abteilungen.find(a => a.id === person.abteilung), 'name') ||
-                ''
-              }
-            />
-            <InputValue
-              label="Sektion"
-              value={
-                get(sektionen.find(a => a.id === person.sektion), 'name') || ''
-              }
-            />
-            <InputValue
-              label="Bereich"
-              value={
-                get(bereiche.find(a => a.id === person.bereich), 'name') || ''
-              }
-            />
-            <InputValue
-              label="Vorgesetzte(r)"
-              value={
-                personVorgesetzt
-                  ? `${personVorgesetzt.name} ${personVorgesetzt.vorname}`
-                  : ''
-              }
-            />
-            <InputValue label="Funktionen" value={myFunktionen.join(', ')} />
-          </AreaFunktionen>
-          <AreaVerzeichnis>
-            <Title>Verzeichnis</Title>
-            <InputValue value={person.parkplatzNr} label="Parkplatz Nr." />
-            <InputValue label="Etiketten" value={myEtiketten.join(', ')} />
-            <InputValue value={person.bemerkungen} label="Bemerkun&shy;gen" />
-            <Links activeId={activeId} />
-            <Schluessels activeId={activeId} />
-            <MobileAbos activeId={activeId} />
-          </AreaVerzeichnis>
-          <AreaZuletzt>
-            <Zuletzt row={false} />
-          </AreaZuletzt>
-        </Wrapper>
+        <Content>
+          <LogoImg src={LogoAwel} />
+          <Wrapper>
+            <AreaPersonalien>
+              <AreaPTitle>
+                <Title>Personalien</Title>
+              </AreaPTitle>
+              <AreaPBild>
+                {person.bildUrl && (
+                  <Img
+                    src={person.bildUrl}
+                    alt={`${person.vorname} ${person.name}`}
+                  />
+                )}
+              </AreaPBild>
+              <AreaPName>
+                <InputValue value={person.name} label="Name" />
+              </AreaPName>
+              <AreaPVorname>
+                <InputValue value={person.vorname} label="Vorname" />
+              </AreaPVorname>
+              <AreaPAnrede>
+                <InputValue value={person.anrede} label="Anrede" />
+              </AreaPAnrede>
+              <AreaPKurzzeichen>
+                <InputValue value={person.kurzzeichen} label="Kurzzeichen" />
+              </AreaPKurzzeichen>
+              <AreaPAdresse>
+                <InputValue value={person.adresse} label="Adresse" />
+              </AreaPAdresse>
+              <AreaPPLZ>
+                <InputValue value={person.plz} label="PLZ" />
+              </AreaPPLZ>
+              <AreaPOrt>
+                <InputValue value={person.ort} label="Ort" />
+              </AreaPOrt>
+              <AreaPLand>
+                <InputValue label="Land" value={person.land} />
+              </AreaPLand>
+              <AreaPEmail>
+                <InputValue value={person.email} label="Email" />
+              </AreaPEmail>
+              <AreaPGeburtsdatum>
+                <InputValue value={person.geburtDatum} label="Geburtsdatum" />
+              </AreaPGeburtsdatum>
+              <AreaPTelefon>
+                <Telefones activeId={activeId} />
+              </AreaPTelefon>
+            </AreaPersonalien>
+            <AreaAnstellung>
+              <Title>Anstellung</Title>
+              <InputValue value={person.status} label="Status" />
+              <InputValue value={person.eintrittDatum} label="Eintritt" />
+              <InputValue value={person.austrittDatum} label="Austritt" />
+              <InputValue
+                value={person.beschaeftigungsgrad}
+                label="Beschäftigungsgrad (%)"
+              />
+              <InputValue value={person.standort} label="Standort" />
+              <InputValue value={person.bueroNr} label="Büro Nr." />
+            </AreaAnstellung>
+            <AreaFunktionen>
+              <Title>Funktionen</Title>
+              <InputValue
+                value={get(aemter.find(a => a.id === person.amt), 'name') || ''}
+                label="Amt"
+              />
+              <InputValue
+                label="Abteilung"
+                value={
+                  get(
+                    abteilungen.find(a => a.id === person.abteilung),
+                    'name',
+                  ) || ''
+                }
+              />
+              <InputValue
+                label="Sektion"
+                value={
+                  get(sektionen.find(a => a.id === person.sektion), 'name') ||
+                  ''
+                }
+              />
+              <InputValue
+                label="Bereich"
+                value={
+                  get(bereiche.find(a => a.id === person.bereich), 'name') || ''
+                }
+              />
+              <InputValue
+                label="Vorgesetzte(r)"
+                value={
+                  personVorgesetzt
+                    ? `${personVorgesetzt.name} ${personVorgesetzt.vorname}`
+                    : ''
+                }
+              />
+              <InputValue label="Funktionen" value={myFunktionen.join(', ')} />
+            </AreaFunktionen>
+            <AreaVerzeichnis>
+              <Title>Verzeichnis</Title>
+              <InputValue value={person.parkplatzNr} label="Parkplatz Nr." />
+              <InputValue label="Etiketten" value={myEtiketten.join(', ')} />
+              <InputValue value={person.bemerkungen} label="Bemerkun&shy;gen" />
+              <Links activeId={activeId} />
+              <Schluessels activeId={activeId} />
+              <MobileAbos activeId={activeId} />
+            </AreaVerzeichnis>
+            <AreaZuletzt>
+              <Zuletzt row={false} />
+            </AreaZuletzt>
+          </Wrapper>
+        </Content>
         <Footer>{moment().format('DD.MM.YYYY')}</Footer>
       </PageContainer>
     </Container>
