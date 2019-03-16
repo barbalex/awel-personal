@@ -219,7 +219,7 @@ const Img = styled.img`
 
 const PersonMutationPrint = ({ activeId }) => {
   const store = useContext(storeContext)
-  const { personen, abteilungen, sektionen } = store
+  const { personen, abteilungen, sektionen, settings } = store
 
   const person = personen.find(p => p.id === activeId) || {}
   const abteilung = abteilungen.find(a => a.id === person.abteilung)

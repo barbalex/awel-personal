@@ -62,7 +62,7 @@ export default db =>
       personen: types.array(Person),
       aemter: types.array(Amt),
       abteilungen: types.array(Abteilung),
-      settings: types.optional(Settings, { id: 1, schluesselFormPath: null }),
+      settings: types.optional(Settings, { id: 1, schluesselFormPath: null, personMutationWeiterleiten: null }),
       bereiche: types.array(Bereich),
       sektionen: types.array(Sektion),
       mutations: types.array(Mutation),
