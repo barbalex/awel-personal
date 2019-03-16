@@ -42,12 +42,8 @@ const PageContainer = styled.div`
   /* Show a drop shadow beneath each page */
   box-shadow: 0 4px 5px rgba(75, 75, 75, 0.2);
 
-  /* set dimensions */
-  height: 29.7cm;
-  width: 21cm;
-  padding: 1.5cm;
-
   overflow-y: visible;
+  padding: 30px;
 
   @media print {
     /* this is when it is actually printed */
@@ -106,7 +102,6 @@ const Cell = styled.div`
   }
 `
 const Area1 = styled(Area)`
-  grid-area: area1;
   grid-template-areas: 'eintritt1' 'austritt1';
   padding-bottom: 4mm;
 `
@@ -120,7 +115,6 @@ const Area1Austritt = styled(Cell)`
   border: 1px solid #ccc;
 `
 const Area2 = styled(Area)`
-  grid-area: area2;
   grid-template-areas: 'name2' 'vorname2' 'abteilung2' 'sektion2' 'kostenstelle2';
 `
 const Area2Name = styled(Cell)`
@@ -148,7 +142,6 @@ const Area2Kostenstelle = styled(Cell)`
   border: 1px solid #ccc;
 `
 const Area3 = styled(Area)`
-  grid-area: area3;
   grid-template-areas: 'title3' 'telvon3' 'rufnummer3' 'schluessel3';
 `
 const Area3Title = styled.div`
@@ -170,7 +163,6 @@ const Area3Schluessel = styled(Cell)`
   border: 1px solid #ccc;
 `
 const Area4 = styled(Area)`
-  grid-area: area4;
   grid-template-areas: 'title4' 'eroeffnung4' 'software4' 'hardware4' 'abmeldung4' 'bemerkungen4';
 `
 const Area4Title = styled.div`
@@ -201,6 +193,9 @@ const Area4Bemerkungen = styled(Cell)`
   grid-area: bemerkungen4;
   border: 1px solid #ccc;
 `
+const WeiterleitenRow = styled.div`
+  display: block;
+`
 const MainTitle = styled.div`
   font-weight: 900;
   font-size: 18px;
@@ -226,6 +221,11 @@ const PersonMutation = ({ activeId }) => {
   const abteilungName = abteilung && abteilung.name ? abteilung.name : ''
   const sektion = sektionen.find(a => a.id === person.sektion)
   const sektionName = sektion && sektion.name ? sektion.name : ''
+
+  console.log('PersonMutation', {
+    settings,
+    settingsPersonMutationWeiterleiten: settings.personMutationWeiterleiten,
+  })
 
   return (
     <Container>
@@ -308,6 +308,9 @@ const PersonMutation = ({ activeId }) => {
               <div />
             </Area4Bemerkungen>
           </Area4>
+          <WeiterleitenRow>
+            <p>{settings.personMutationWeiterleiten}</p>
+          </WeiterleitenRow>
         </Wrapper>
       </PageContainer>
     </Container>
