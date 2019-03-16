@@ -44,7 +44,8 @@
       "package.json"
     ],
     "dmg": {
-      "contents": [{
+      "contents": [
+        {
           "x": 130,
           "y": 220
         },
@@ -205,6 +206,7 @@
   "dependencies": {
     "better-sqlite3": "5.4.0",
     "bootstrap": "4.3.1",
+    "classnames": "^2.2.6",
     "date-fns": "^2.0.0-alpha.25",
     "devtron": "1.4.0",
     "electron-debug": "2.1.0",

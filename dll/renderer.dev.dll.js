@@ -123,6 +123,18 @@ eval("module.exports = bootstrap;\n\n//# sourceURL=webpack://renderer/external_%
 
 /***/ }),
 
+/***/ "classnames":
+/*!*****************************!*\
+  !*** external "classnames" ***!
+  \*****************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+eval("module.exports = classnames;\n\n//# sourceURL=webpack://renderer/external_%22classnames%22?");
+
+/***/ }),
+
 /***/ "date-fns":
 /*!***************************!*\
   !*** external "date-fns" ***!

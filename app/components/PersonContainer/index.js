@@ -1,16 +1,31 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState, useCallback } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
+import {
+  TabContent,
+  TabPane,
+  Nav,
+  NavItem,
+  NavLink,
+  Card,
+  Button,
+  CardTitle,
+  CardText,
+  Row,
+  Col,
+} from 'reactstrap'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 //import useDetectPrint from 'use-detect-print'
 import last from 'lodash/last'
 import useDetectPrint from 'use-detect-print'
+import classnames from 'classnames'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Person from './Person'
 import PersonPrint from './PersonPrint'
 import PersonMutationPrint from './PersonMutationPrint'
 import List from './List'
+import PersonTab from './PersonTab'
 import fetchPersonen from '../../src/fetchPersonen'
 import fetchAemter from '../../src/fetchAemter'
 import fetchAbteilungen from '../../src/fetchAbteilungen'
@@ -56,6 +71,8 @@ const PersonContainer = () => {
   const personJson = person ? person.toJSON() : {}
   const isPrinting = useDetectPrint()
 
+  const [tab, setTab] = useState('datenblatt')
+
   useEffect(() => {
     fetchPersonen({ db, store })
     fetchAemter({ db, store })
@@ -92,6 +109,8 @@ const PersonContainer = () => {
       return <PersonMutationPrint activeId={activeId} />
   }
 
+  console.log('PersonContainer', { tab, showPersonPrint })
+
   return (
     <Container>
       <ErrorBoundary>
@@ -110,13 +129,7 @@ const PersonContainer = () => {
             propagateDimensionsRate={1000}
             resizeHeight={false}
           >
-            {showPersonPrint ? (
-              <PersonPrint activeId={activeId} />
-            ) : showPersonMutationPrint ? (
-              <PersonMutationPrint activeId={activeId} />
-            ) : (
-              <Person activeId={activeId} />
-            )}
+            <PersonTab />
           </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>
