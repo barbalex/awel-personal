@@ -10,6 +10,7 @@ import Telefones from './Telefones'
 import Links from './Links'
 import Schluessels from './Schluessels'
 import MobileAbos from './MobileAbos'
+import LogoAwel from '../../../etc/LogoAwel.jpg'
 
 /*
  * need defined height and overflow
@@ -188,6 +189,11 @@ const Img = styled.img`
   max-height: 180px;
   max-width: 160px;
 `
+const LogoImg = styled.img`
+  max-width: 260px;
+  margin-top: -20px;
+  margin-left: -10px;
+`
 
 const PersonPrint = ({ activeId }) => {
   const store = useContext(storeContext)
@@ -224,6 +230,7 @@ const PersonPrint = ({ activeId }) => {
     <Container>
       <PageContainer className="hochformat">
         <GlobalStyle />
+        <LogoImg src={LogoAwel} />
         <Wrapper>
           <AreaPersonalien>
             <AreaPTitle>
