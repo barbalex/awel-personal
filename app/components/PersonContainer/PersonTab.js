@@ -8,7 +8,7 @@ import styled from 'styled-components'
 
 import Person from './Person'
 import PersonPrint from './PersonPrint'
-import PersonMutationPrint from './PersonMutationPrint'
+import PersonMutation from './PersonMutation'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 
@@ -39,7 +39,7 @@ const PersonTab = ({ dimensions }) => {
   if (printing || isPrinting) {
     if (showPersonPrint) return <PersonPrint activeId={activeId} />
     if (showPersonMutationPrint)
-      return <PersonMutationPrint activeId={activeId} />
+      return <PersonMutation activeId={activeId} />
   }
 
   if (!activeId) return null
@@ -73,7 +73,7 @@ const PersonTab = ({ dimensions }) => {
           <Person activeId={activeId} dimensions={dimensions} />
         </TabPane>
         <TabPane tabId="mutation">
-          <PersonMutationPrint activeId={activeId} />
+          <PersonMutation activeId={activeId} />
         </TabPane>
       </TabContent>
     </>

@@ -8,7 +8,7 @@ import useDetectPrint from 'use-detect-print'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import PersonPrint from './PersonPrint'
-import PersonMutationPrint from './PersonMutationPrint'
+import PersonMutation from './PersonMutation'
 import List from './List'
 import PersonTab from './PersonTab'
 import fetchPersonen from '../../src/fetchPersonen'
@@ -89,7 +89,7 @@ const PersonContainer = () => {
   if (printing || isPrinting) {
     if (showPersonPrint) return <PersonPrint activeId={activeId} />
     if (showPersonMutationPrint)
-      return <PersonMutationPrint activeId={activeId} />
+      return <PersonMutation activeId={activeId} />
   }
 
   return (

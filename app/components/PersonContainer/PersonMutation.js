@@ -217,7 +217,7 @@ const Img = styled.img`
   margin-left: -10px;
 `
 
-const PersonMutationPrint = ({ activeId }) => {
+const PersonMutation = ({ activeId }) => {
   const store = useContext(storeContext)
   const { personen, abteilungen, sektionen, settings } = store
 
@@ -314,4 +314,4 @@ const PersonMutationPrint = ({ activeId }) => {
   )
 }
 
-export default PersonMutationPrint
+export default PersonMutation
