@@ -126,9 +126,9 @@ values
 (10, 'Thomas',	'Flüeler');
 
 insert into
-  settings(id)
+  settings(id,personMutationWeiterleiten)
 values
-  (1);
+  (1,'ausgefülltes Formular bitte an awel@bd.zh.ch, silvio.cerutti@bd.zh.ch sowie IKO der Ab-teilung weiterleiten');
 
 insert into
   anredeWerte(value, sort)
