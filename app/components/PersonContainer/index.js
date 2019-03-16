@@ -1,27 +1,12 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
-import {
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
-  Card,
-  Button,
-  CardTitle,
-  CardText,
-  Row,
-  Col,
-} from 'reactstrap'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 //import useDetectPrint from 'use-detect-print'
 import last from 'lodash/last'
 import useDetectPrint from 'use-detect-print'
-import classnames from 'classnames'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
-import Person from './Person'
 import PersonPrint from './PersonPrint'
 import PersonMutationPrint from './PersonMutationPrint'
 import List from './List'
@@ -53,7 +38,7 @@ const Container = styled.div`
 const StyledReflexElement = styled(ReflexElement)`
   background-color: ${props =>
     props.showfilter ? '#f7f791' : 'rgba(0,0,0,0)'};
-  overflow-x: hidden !important;
+  overflow: hidden !important;
   > div {
     height: unset !important;
   }
@@ -70,8 +55,6 @@ const PersonContainer = () => {
   // pass list the active person's props to enable instant updates
   const personJson = person ? person.toJSON() : {}
   const isPrinting = useDetectPrint()
-
-  const [tab, setTab] = useState('datenblatt')
 
   useEffect(() => {
     fetchPersonen({ db, store })
@@ -108,8 +91,6 @@ const PersonContainer = () => {
     if (showPersonMutationPrint)
       return <PersonMutationPrint activeId={activeId} />
   }
-
-  console.log('PersonContainer', { tab, showPersonPrint })
 
   return (
     <Container>

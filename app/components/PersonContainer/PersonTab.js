@@ -4,12 +4,23 @@ import { observer } from 'mobx-react-lite'
 import last from 'lodash/last'
 import useDetectPrint from 'use-detect-print'
 import classnames from 'classnames'
+import styled from 'styled-components'
 
 import Person from './Person'
 import PersonPrint from './PersonPrint'
 import PersonMutationPrint from './PersonMutationPrint'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
+
+const StyledNavItem = styled(NavItem)`
+  cursor: default;
+  a {
+    background-color: ${props => (props.active ? '#eee !important' : 'unset')};
+    border-bottom-color: ${props =>
+      props.active ? '#eee !important' : 'unset'};
+    user-select: none;
+  }
+`
 
 const PersonTab = ({ dimensions }) => {
   const store = useContext(storeContext)
@@ -24,16 +35,19 @@ const PersonTab = ({ dimensions }) => {
   const showPersonMutationPrint =
     location.length === 4 && last(location) === 'pdf'
 
+  if (showPersonPrint) return <PersonPrint activeId={activeId} />
   if (printing || isPrinting) {
     if (showPersonPrint) return <PersonPrint activeId={activeId} />
     if (showPersonMutationPrint)
       return <PersonMutationPrint activeId={activeId} />
   }
 
+  if (!activeId) return null
+
   return (
     <>
-      <Nav tabs className={'justify-content-center'}>
-        <NavItem>
+      <Nav tabs>
+        <StyledNavItem active={tab === 'datenblatt'}>
           <NavLink
             className={classnames({
               active: tab === 'datenblatt',
@@ -42,8 +56,8 @@ const PersonTab = ({ dimensions }) => {
           >
             Datenblatt
           </NavLink>
-        </NavItem>
-        <NavItem>
+        </StyledNavItem>
+        <StyledNavItem active={tab === 'mutation'}>
           <NavLink
             className={classnames({
               active: tab === 'mutation',
@@ -52,7 +66,7 @@ const PersonTab = ({ dimensions }) => {
           >
             Mutation
           </NavLink>
-        </NavItem>
+        </StyledNavItem>
       </Nav>
       <TabContent activeTab={tab}>
         <TabPane tabId="datenblatt">
