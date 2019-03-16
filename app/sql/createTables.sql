@@ -217,7 +217,8 @@ create index iBereichName on bereiche (name);
 drop table if exists settings;
 create table settings (
   id integer primary key,
-  schluesselFormPath text
+  schluesselFormPath text,
+  personMutationWeiterleiten text
 );
 
 -------------------------------------------
