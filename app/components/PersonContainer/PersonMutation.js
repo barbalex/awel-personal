@@ -1,14 +1,17 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useCallback } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import Linkify from 'react-linkify'
+import { MdEdit } from 'react-icons/md'
+import { Button } from 'reactstrap'
 
 import storeContext from '../../storeContext'
 import LogoAwel from '../../etc/LogoAwel.jpg'
+import InputWithoutLabel from '../shared/InputWithoutLabel'
 
 const labelWidth = 200
 
 const Container = styled.div`
-  margin: 1cm auto;
+  margin: 0 15px 10px 15px;
   font-size: 12px;
   cursor: default;
 
@@ -164,7 +167,7 @@ const Area4Bemerkungen = styled(Cell)`
   border: 1px solid #ccc;
 `
 const WeiterleitenRow = styled.div`
-  display: block;
+  display: flex;
 `
 const MainTitle = styled.div`
   font-weight: 900;
@@ -178,24 +181,43 @@ const Title = styled.div`
 `
 const Img = styled.img`
   max-width: 260px;
-  margin-top: -20px;
   margin-left: -10px;
+`
+const StyledButton = styled(Button)`
+  background-color: rgba(0, 0, 0, 0) !important;
+  padding: 0 0.5rem;
+  margin-left: 8px;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    color: black !important;
+  }
+`
+const EditText = styled.div`
+  margin-top: 7px;
+`
+const EditIcon = styled(MdEdit)`
+  margin-top: -4px;
 `
 
 const PersonMutation = ({ activeId }) => {
   const store = useContext(storeContext)
   const { personen, abteilungen, sektionen, settings } = store
 
+  const [editWeiterleiten, setEditWeiterleiten] = useState(false)
+
+  const onClickEditWeiterleiten = useCallback(
+    () => setEditWeiterleiten(!editWeiterleiten),
+    [editWeiterleiten],
+  )
+  const onSaveWeiterleiten = useCallback(() => {
+    console.log('TODO')
+  }, [])
+
   const person = personen.find(p => p.id === activeId) || {}
   const abteilung = abteilungen.find(a => a.id === person.abteilung)
   const abteilungName = abteilung && abteilung.name ? abteilung.name : ''
   const sektion = sektionen.find(a => a.id === person.sektion)
   const sektionName = sektion && sektion.name ? sektion.name : ''
-
-  console.log('PersonMutation', {
-    settings,
-    settingsPersonMutationWeiterleiten: settings.personMutationWeiterleiten,
-  })
 
   return (
     <Container className="hochformat">
@@ -278,7 +300,19 @@ const PersonMutation = ({ activeId }) => {
           </Area4Bemerkungen>
         </Area4>
         <WeiterleitenRow>
-          <Linkify><p>{settings.personMutationWeiterleiten}</p></Linkify>
+          {editWeiterleiten ? (
+            <InputWithoutLabel
+              value={settings.personMutationWeiterleiten}
+              saveToDb={onSaveWeiterleiten}
+            />
+          ) : (
+            <Linkify>
+              <EditText>{settings.personMutationWeiterleiten}</EditText>
+            </Linkify>
+          )}
+          <StyledButton outline={true} onClick={onClickEditWeiterleiten}>
+            <EditIcon />
+          </StyledButton>
         </WeiterleitenRow>
       </Wrapper>
     </Container>
