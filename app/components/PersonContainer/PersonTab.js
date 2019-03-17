@@ -79,7 +79,7 @@ const PersonTab = ({ dimensions }) => {
           <Person activeId={activeId} dimensions={dimensions} />
         </StyledTabPane>
         <StyledTabPane tabId="mutation">
-          <PersonMutation activeId={activeId} />
+          <PersonMutation activeId={activeId} dimensions={dimensions} />
         </StyledTabPane>
       </TabContent>
     </>

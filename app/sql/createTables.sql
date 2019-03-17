@@ -80,7 +80,7 @@ create table personen (
   --anrede text,
   anrede text references anredeWerte(value) on update cascade on delete no action,
   titel text,
-  kurzzeichen text,
+  kurzzeichen text unique,
   adresse text,
   plz integer,
   ort text,
