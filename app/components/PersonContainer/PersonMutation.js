@@ -201,7 +201,7 @@ const EditIcon = styled(MdEdit)`
 
 const PersonMutation = ({ activeId }) => {
   const store = useContext(storeContext)
-  const { personen, abteilungen, sektionen, settings } = store
+  const { personen, abteilungen, sektionen, settings, setSettingsKey } = store
 
   const [editWeiterleiten, setEditWeiterleiten] = useState(false)
 
@@ -209,9 +209,10 @@ const PersonMutation = ({ activeId }) => {
     () => setEditWeiterleiten(!editWeiterleiten),
     [editWeiterleiten],
   )
-  const onSaveWeiterleiten = useCallback(() => {
-    console.log('TODO')
-  }, [])
+  const onSaveWeiterleiten = useCallback(({ value }) => {
+    setSettingsKey({ key: 'personMutationWeiterleiten', value })
+    setEditWeiterleiten(false)
+  })
 
   const person = personen.find(p => p.id === activeId) || {}
   const abteilung = abteilungen.find(a => a.id === person.abteilung)
