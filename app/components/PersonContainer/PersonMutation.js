@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
+import Linkify from 'react-linkify'
 
 import storeContext from '../../storeContext'
 import LogoAwel from '../../etc/LogoAwel.jpg'
@@ -7,43 +8,12 @@ import LogoAwel from '../../etc/LogoAwel.jpg'
 const labelWidth = 200
 
 const Container = styled.div`
-  background-color: #eee;
+  margin: 1cm auto;
   font-size: 12px;
   cursor: default;
-  /*
-   * need defined height and overflow
-   * to make the pages scrollable in UI
-   * is removed in print
-   */
+
   overflow-y: auto;
-  height: 100vh;
-
-  @media print {
-    /* remove grey backgrond set for nice UI */
-    background-color: #fff;
-    /* with overflow auto an empty page is inserted between each page */
-    overflow-y: visible;
-    /* make sure body grows as needed */
-    height: auto !important;
-    width: auto !important;
-
-    page-break-inside: avoid;
-    page-break-before: avoid;
-    page-break-after: avoid;
-  }
-`
-const PageContainer = styled.div`
-  /* this part is for when page preview is shown */
-  /* Divide single pages with some space and center all pages horizontally */
-  /* will be removed in @media print */
-  margin: 1cm auto;
-  /* Define a white paper background that sticks out from the darker overall background */
-  background: #fff;
-  /* Show a drop shadow beneath each page */
-  box-shadow: 0 4px 5px rgba(75, 75, 75, 0.2);
-
-  overflow-y: visible;
-  padding: 30px;
+  padding: 0 30px;
 
   @media print {
     /* this is when it is actually printed */
@@ -228,91 +198,89 @@ const PersonMutation = ({ activeId }) => {
   })
 
   return (
-    <Container>
-      <PageContainer className="hochformat">
-        <GlobalStyle />
-        <Img src={LogoAwel} />
-        <MainTitle>Personal-Mutation</MainTitle>
-        <Wrapper>
-          <Area1>
-            <Area1Eintritt>
-              <div>Eintritt per:</div>
-              <div />
-            </Area1Eintritt>
-            <Area1Austritt>
-              <div>Austritt per:</div>
-              <div />
-            </Area1Austritt>
-          </Area1>
-          <Area2>
-            <Area2Name>
-              <div>Name</div>
-              <div>{person.name}</div>
-            </Area2Name>
-            <Area2Vorname>
-              <div>Vorname</div>
-              <div>{person.vorname}</div>
-            </Area2Vorname>
-            <Area2Abteilung>
-              <div>Abteilung</div>
-              <div>{abteilungName}</div>
-            </Area2Abteilung>
-            <Area2Sektion>
-              <div>Sektion</div>
-              <div>{sektionName}</div>
-            </Area2Sektion>
-            <Area2Kostenstelle>
-              <div>Kostenstelle</div>
-              <div>{person.kostenstelle}</div>
-            </Area2Kostenstelle>
-          </Area2>
-          <Area3>
-            <Area3Title>
-              <Title>Telefonmutation / Schlüssel / Badge</Title>
-            </Area3Title>
-            <Area3Telvon>
-              <div>Telelefon übernommen von</div>
-              <div />
-            </Area3Telvon>
-            <Area3Rufnummer>
-              <div>Rufnummer</div>
-              <div />
-            </Area3Rufnummer>
-            <Area3Schluessel>
-              <div>Schlüssel / Badge benötigt?</div>
-              <div />
-            </Area3Schluessel>
-          </Area3>
-          <Area4>
-            <Area4Title>
-              <Title>IT Mutation</Title>
-            </Area4Title>
-            <Area4Eroeffnung>
-              <div>Arbeitsplatzeröffnung per</div>
-              <div />
-            </Area4Eroeffnung>
-            <Area4Software>
-              <div>benötigte Software</div>
-              <div />
-            </Area4Software>
-            <Area4Hardware>
-              <div>standardabweichende Hardware</div>
-              <div />
-            </Area4Hardware>
-            <Area4Abmeldung>
-              <div>Abmeldung Arbeitsplatz per</div>
-              <div />
-            </Area4Abmeldung>
-            <Area4Bemerkungen>
-              <div>Bemerkungen</div>
-              <div />
-            </Area4Bemerkungen>
-          </Area4>
-          <WeiterleitenRow>
-            <p>{settings.personMutationWeiterleiten}</p>
-          </WeiterleitenRow>
-        </Wrapper>
-      </PageContainer>
+    <Container className="hochformat">
+      <GlobalStyle />
+      <Img src={LogoAwel} />
+      <MainTitle>Personal-Mutation</MainTitle>
+      <Wrapper>
+        <Area1>
+          <Area1Eintritt>
+            <div>Eintritt per:</div>
+            <div />
+          </Area1Eintritt>
+          <Area1Austritt>
+            <div>Austritt per:</div>
+            <div />
+          </Area1Austritt>
+        </Area1>
+        <Area2>
+          <Area2Name>
+            <div>Name</div>
+            <div>{person.name}</div>
+          </Area2Name>
+          <Area2Vorname>
+            <div>Vorname</div>
+            <div>{person.vorname}</div>
+          </Area2Vorname>
+          <Area2Abteilung>
+            <div>Abteilung</div>
+            <div>{abteilungName}</div>
+          </Area2Abteilung>
+          <Area2Sektion>
+            <div>Sektion</div>
+            <div>{sektionName}</div>
+          </Area2Sektion>
+          <Area2Kostenstelle>
+            <div>Kostenstelle</div>
+            <div>{person.kostenstelle}</div>
+          </Area2Kostenstelle>
+        </Area2>
+        <Area3>
+          <Area3Title>
+            <Title>Telefonmutation / Schlüssel / Badge</Title>
+          </Area3Title>
+          <Area3Telvon>
+            <div>Telelefon übernommen von</div>
+            <div />
+          </Area3Telvon>
+          <Area3Rufnummer>
+            <div>Rufnummer</div>
+            <div />
+          </Area3Rufnummer>
+          <Area3Schluessel>
+            <div>Schlüssel / Badge benötigt?</div>
+            <div />
+          </Area3Schluessel>
+        </Area3>
+        <Area4>
+          <Area4Title>
+            <Title>IT Mutation</Title>
+          </Area4Title>
+          <Area4Eroeffnung>
+            <div>Arbeitsplatzeröffnung per</div>
+            <div />
+          </Area4Eroeffnung>
+          <Area4Software>
+            <div>benötigte Software</div>
+            <div />
+          </Area4Software>
+          <Area4Hardware>
+            <div>standardabweichende Hardware</div>
+            <div />
+          </Area4Hardware>
+          <Area4Abmeldung>
+            <div>Abmeldung Arbeitsplatz per</div>
+            <div />
+          </Area4Abmeldung>
+          <Area4Bemerkungen>
+            <div>Bemerkungen</div>
+            <div />
+          </Area4Bemerkungen>
+        </Area4>
+        <WeiterleitenRow>
+          <Linkify><p>{settings.personMutationWeiterleiten}</p></Linkify>
+        </WeiterleitenRow>
+      </Wrapper>
     </Container>
   )
 }

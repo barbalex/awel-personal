@@ -363,6 +363,18 @@ eval("module.exports = react-json-view;\n\n//# sourceURL=webpack://renderer/exte
 
 /***/ }),
 
+/***/ "react-linkify":
+/*!********************************!*\
+  !*** external "react-linkify" ***!
+  \********************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+eval("module.exports = react-linkify;\n\n//# sourceURL=webpack://renderer/external_%22react-linkify%22?");
+
+/***/ }),
+
 /***/ "react-popper":
 /*!*******************************!*\
   !*** external "react-popper" ***!

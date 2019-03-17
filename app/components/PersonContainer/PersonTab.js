@@ -15,11 +15,18 @@ import storeContext from '../../storeContext'
 const StyledNavItem = styled(NavItem)`
   cursor: default;
   a {
-    background-color: ${props => (props.active ? '#eee !important' : 'unset')};
-    border-bottom-color: ${props =>
-      props.active ? '#eee !important' : 'unset'};
+    background-color: ${props =>
+      props.tab === 'datenblatt' ? 'rgba(249,230,0,.3) !important' : 'unset'};
+    border-bottom: ${props =>
+      props.tab === 'datenblatt'
+        ? '1px solid #fff9ad !important'
+        : '1px solid #dee2e6'};
     user-select: none;
   }
+`
+const StyledTabPane = styled(TabPane)`
+  overflow-y: auto;
+  height: calc(100vh - 100px);
 `
 
 const PersonTab = ({ dimensions }) => {
@@ -38,8 +45,7 @@ const PersonTab = ({ dimensions }) => {
   if (showPersonPrint) return <PersonPrint activeId={activeId} />
   if (printing || isPrinting) {
     if (showPersonPrint) return <PersonPrint activeId={activeId} />
-    if (showPersonMutationPrint)
-      return <PersonMutation activeId={activeId} />
+    if (showPersonMutationPrint) return <PersonMutation activeId={activeId} />
   }
 
   if (!activeId) return null
@@ -47,7 +53,7 @@ const PersonTab = ({ dimensions }) => {
   return (
     <>
       <Nav tabs>
-        <StyledNavItem active={tab === 'datenblatt'}>
+        <StyledNavItem tab={tab}>
           <NavLink
             className={classnames({
               active: tab === 'datenblatt',
@@ -69,12 +75,12 @@ const PersonTab = ({ dimensions }) => {
         </StyledNavItem>
       </Nav>
       <TabContent activeTab={tab}>
-        <TabPane tabId="datenblatt">
+        <StyledTabPane tabId="datenblatt">
           <Person activeId={activeId} dimensions={dimensions} />
-        </TabPane>
-        <TabPane tabId="mutation">
+        </StyledTabPane>
+        <StyledTabPane tabId="mutation">
           <PersonMutation activeId={activeId} />
-        </TabPane>
+        </StyledTabPane>
       </TabContent>
     </>
   )
