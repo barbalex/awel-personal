@@ -500,6 +500,15 @@ const Person = ({ activeId, dimensions }) => {
               row={false}
             />
             <Input
+              key={`${personId}titel`}
+              value={person.titel}
+              field="titel"
+              label="Titel"
+              saveToDb={saveToDb}
+              error={errors.titel}
+              row={false}
+            />
+            <Input
               key={`${personId}kurzzeichen`}
               value={person.kurzzeichen}
               field="kurzzeichen"

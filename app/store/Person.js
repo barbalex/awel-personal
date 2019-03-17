@@ -8,6 +8,7 @@ export default types
     personalNr: types.maybe(types.union(types.integer, types.null)),
     name: types.maybe(types.union(types.string, types.integer, types.null)),
     vorname: types.maybe(types.union(types.string, types.integer, types.null)),
+    titel: types.maybe(types.union(types.string, types.integer, types.null)),
     kurzzeichen: types.maybe(
       types.union(types.string, types.integer, types.null),
     ),

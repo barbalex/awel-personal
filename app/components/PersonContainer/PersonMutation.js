@@ -53,6 +53,9 @@ const Wrapper = styled.div`
     page-break-inside: avoid !important;
     page-break-before: avoid !important;
     page-break-after: avoid !important;
+    .no-print {
+      display: none !important;
+    }
   }
 `
 const Area = styled.div`
@@ -193,7 +196,7 @@ const StyledButton = styled(Button)`
   }
 `
 const EditText = styled.div`
-  margin-top: 7px;
+  margin-top: 9px;
 `
 const EditIcon = styled(MdEdit)`
   margin-top: -4px;
@@ -311,7 +314,11 @@ const PersonMutation = ({ activeId }) => {
               <EditText>{settings.personMutationWeiterleiten}</EditText>
             </Linkify>
           )}
-          <StyledButton outline={true} onClick={onClickEditWeiterleiten}>
+          <StyledButton
+            outline={true}
+            onClick={onClickEditWeiterleiten}
+            className="no-print"
+          >
             <EditIcon />
           </StyledButton>
         </WeiterleitenRow>

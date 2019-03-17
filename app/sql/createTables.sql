@@ -79,6 +79,7 @@ create table personen (
   -- anrede nötig oder vom Geschlecht abhängig?
   --anrede text,
   anrede text references anredeWerte(value) on update cascade on delete no action,
+  titel text,
   kurzzeichen text,
   adresse text,
   plz integer,
