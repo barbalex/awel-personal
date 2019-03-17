@@ -68,6 +68,7 @@ const PersonContainer = () => {
     fetchEtiketten({ db, store })
     fetchWerte({ db, store, table: 'etikettWerte' })
     fetchWerte({ db, store, table: 'landWerte' })
+    fetchWerte({ db, store, table: 'mutationartWerte' })
     fetchWerte({ db, store, table: 'standortWerte' })
     fetchLinks({ db, store })
     fetchSchluessel({ db, store })
@@ -88,8 +89,7 @@ const PersonContainer = () => {
 
   if (printing || isPrinting) {
     if (showPersonPrint) return <PersonPrint activeId={activeId} />
-    if (showPersonMutationPrint)
-      return <PersonMutation activeId={activeId} />
+    if (showPersonMutationPrint) return <PersonMutation activeId={activeId} />
   }
 
   return (

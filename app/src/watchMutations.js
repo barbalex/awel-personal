@@ -21,6 +21,7 @@ export default ({ store }) => {
     mobileAboKostenstelleWerte,
     etikettWerte,
     landWerte,
+    mutationartWerte,
     standortWerte,
   } = store
   onPatch(personen, (patch, inversePatch) =>
@@ -80,6 +81,9 @@ export default ({ store }) => {
   )
   onPatch(landWerte, (patch, inversePatch) =>
     addMutation({ tableName: 'landWerte', patch, inversePatch }),
+  )
+  onPatch(mutationartWerte, (patch, inversePatch) =>
+    addMutation({ tableName: 'mutationartWerte', patch, inversePatch }),
   )
   onPatch(standortWerte, (patch, inversePatch) =>
     addMutation({ tableName: 'standortWerte', patch, inversePatch }),

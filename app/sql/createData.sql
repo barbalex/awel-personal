@@ -187,6 +187,12 @@ values
   ('Österreich');
 
 insert into
+  mutationartWerte(value)
+values
+  ('test 1'),
+  ('test 2');
+
+insert into
   bereiche(abteilung, amt, sektion, name, standort, leiter)
 values
 (7, 1,	20,	'Betrieb Sihl',	'Werkhof Adliswil',	1),

@@ -30,6 +30,7 @@ import SchluesselTypWert from './SchluesselTypWert'
 import SchluesselAnlageWert from './SchluesselAnlageWert'
 import EtikettWert from './EtikettWert'
 import LandWert from './LandWert'
+import MutationartWert from './MutationartWert'
 import StandortWert from './StandortWert'
 import Person from './Person'
 import Mutation from './Mutation'
@@ -58,6 +59,7 @@ export default db =>
       schluesselAnlageWerte: types.array(SchluesselAnlageWert),
       etikettWerte: types.array(EtikettWert),
       landWerte: types.array(LandWert),
+      mutationartWerte: types.array(MutationartWert),
       standortWerte: types.array(StandortWert),
       personen: types.array(Person),
       aemter: types.array(Amt),
