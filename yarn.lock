@@ -6834,9 +6834,9 @@ ignore@^4.0.3, ignore@^4.0.6:
   integrity sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==
 
 ignore@^5.0.4:
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.0.5.tgz#c663c548d6ce186fb33616a8ccb5d46e56bdbbf9"
-  integrity sha512-kOC8IUb8HSDMVcYrDVezCxpJkzSQWTAzf3olpKM6o9rM5zpojx23O0Fl8Wr4+qJ6ZbPEHqf1fdwev/DS7v7pmA==
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.0.6.tgz#562dacc7ec27d672dde433aa683c543b24c17694"
+  integrity sha512-/+hp3kUf/Csa32ktIaj0OlRqQxrgs30n62M90UBpNd9k+ENEch5S+hmbW3DtcJGz3sYFTh4F3A6fQ0q7KWsp4w==
 
 immediate@~3.0.5:
   version "3.0.6"
@@ -9336,10 +9336,10 @@ npm-bundled@^1.0.1:
   resolved "https://registry.yarnpkg.com/npm-bundled/-/npm-bundled-1.0.6.tgz#e7ba9aadcef962bb61248f91721cd932b3fe6bdd"
   integrity sha512-8/JCaftHwbd//k6y2rEWp6k1wxVfpFzB6t1p825+cUb7Ym2XQfhwIC5KwhrvzZRJu+LtDE585zVaS32+CGtf0g==
 
-npm-check-updates@3.0.11:
-  version "3.0.11"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-3.0.11.tgz#7c615cacdf0e8f48c563fdaf2022c3489f691dbb"
-  integrity sha512-aMCC/qNhjfYVc66v/ac36G2CQcDSuLFrYaDWM7sig6ERuB9DBMOEfnaYmM8jOardzdhaB39kxFSqJzqsApo6fw==
+npm-check-updates@3.0.12:
+  version "3.0.12"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-3.0.12.tgz#11f376e40bc2c83a02f482e99b9dd8eb3ce6c9cd"
+  integrity sha512-Lwa202GXc8V9zqguJQAHao709aGtFTOf4AJJqC7kY9TaOLxk1Xiq7k6TDWKaSuLkPLK7HZFutr9bygrgKMrVPg==
   dependencies:
     bluebird "^3.5.3"
     chalk "^2.4.2"
@@ -11027,10 +11027,10 @@ react-transition-group@2.6.1, react-transition-group@^2.2.1, react-transition-gr
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react-window@1.6.2:
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/react-window/-/react-window-1.6.2.tgz#ed11df47bd248dc3bb751e77228af74292c66d24"
-  integrity sha512-oB33VVZAF1ts3E8KQclwX0BltholxZAJ5kWrl7NmIDY/lBpIhOsKvBGM+lrLDkFqlp9wtqTb1fjw73+Dgids/Q==
+react-window@1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/react-window/-/react-window-1.7.0.tgz#d9a5f3a2955e0244a3846cc22561dadb94770cc6"
+  integrity sha512-jwRu8anq04ifxmP+/p0bZS16kXqlVnUzHe4syx0fTxaiBhL+CdQw1vvb3nf/BR4Auv4SScQPEJSrw1+F/Wn6jA==
   dependencies:
     "@babel/runtime" "^7.0.0"
     memoize-one ">=3.1.1 <6"
