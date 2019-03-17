@@ -22,7 +22,6 @@ export default types
       types.union(types.string, types.integer, types.null),
     ),
     amt: types.maybe(types.union(types.integer, types.null)),
-    amt: types.maybe(types.union(types.integer, types.null)),
     sektion: types.maybe(types.union(types.integer, types.null)),
     bereich: types.maybe(types.union(types.integer, types.null)),
     bueroNr: types.maybe(types.union(types.string, types.integer, types.null)),
@@ -43,6 +42,31 @@ export default types
       types.union(types.string, types.integer, types.null),
     ),
     beschaeftigungsgrad: types.maybe(types.union(types.integer, types.null)),
+    mutationart: types.maybe(
+      types.union(types.string, types.integer, types.null),
+    ),
+    telefonUebernommenVon: types.maybeNull(types.integer),
+    rufnummer: types.maybe(
+      types.union(types.string, types.integer, types.null),
+    ),
+    schluesselNoetig: types.maybe(
+      types.union(types.string, types.integer, types.null),
+    ),
+    arbeitsplatzeroeffnungPer: types.maybe(
+      types.union(types.string, types.integer, types.null),
+    ),
+    benoetigteSoftware: types.maybe(
+      types.union(types.string, types.integer, types.null),
+    ),
+    standardabweichendeHardware: types.maybe(
+      types.union(types.string, types.integer, types.null),
+    ),
+    abmeldungArbeitsplatzPer: types.maybe(
+      types.union(types.string, types.integer, types.null),
+    ),
+    itMutationBemerkungen: types.maybe(
+      types.union(types.string, types.integer, types.null),
+    ),
     letzteMutationZeit: types.maybe(
       types.union(types.string, types.integer, types.null),
     ),
