@@ -95,6 +95,7 @@ const SharedInput = ({
             rows={rows}
             invalid={!!error}
           />
+          <FormFeedback>{error}</FormFeedback>
         </>
       )}
     </StyledFormGroup>
