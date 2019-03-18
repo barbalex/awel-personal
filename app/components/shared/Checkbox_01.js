@@ -63,6 +63,7 @@ const SharedCheckbox = ({
         <Col sm={{ size: 10 }}>
           <Content />
         </Col>
+        <FormFeedback>{error}</FormFeedback>
       </FormGroup>
     )
   }
