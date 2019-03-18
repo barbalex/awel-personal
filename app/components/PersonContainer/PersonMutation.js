@@ -10,8 +10,12 @@ import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
+import Linkify from 'react-linkify'
+import { MdEdit } from 'react-icons/md'
+import { Button } from 'reactstrap'
 
 import Input from '../shared/Input'
+import InputWithoutLabel from '../shared/InputWithoutLabel'
 import Date from '../shared/Date'
 import Select from '../shared/Select'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
@@ -73,6 +77,25 @@ const AreaWeiterleiten = styled(Area)`
   grid-area: areaWeiterleiten;
   display: flex;
 `
+const WeiterleitenRow = styled.div`
+  display: flex;
+  width: 100%;
+`
+const StyledButton = styled(Button)`
+  background-color: rgba(0, 0, 0, 0) !important;
+  padding: 0 0.5rem;
+  margin-left: 8px;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    color: black !important;
+  }
+`
+const EditText = styled.div`
+  margin-top: 6px;
+`
+const EditIcon = styled(MdEdit)`
+  margin-top: -4px;
+`
 
 const PersonMutation = ({ activeId, dimensions }) => {
   const store = useContext(storeContext)
@@ -89,6 +112,8 @@ const PersonMutation = ({ activeId, dimensions }) => {
     existsFilter,
     setFilter,
     updateField,
+    settings,
+    setSettingsKey,
   } = store
 
   let person
@@ -99,6 +124,16 @@ const PersonMutation = ({ activeId, dimensions }) => {
     if (!person) person = {}
   }
   const personId = showFilter ? '' : person.id
+
+  const [editWeiterleiten, setEditWeiterleiten] = useState(false)
+  const onClickEditWeiterleiten = useCallback(
+    () => setEditWeiterleiten(!editWeiterleiten),
+    [editWeiterleiten],
+  )
+  const onSaveWeiterleiten = useCallback(({ value }) => {
+    setSettingsKey({ key: 'personMutationWeiterleiten', value })
+    setEditWeiterleiten(false)
+  })
 
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [person])
@@ -329,7 +364,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
               key={`${personId}name`}
               value={person.name}
               field="name"
-              label="Eintritt per"
+              label="Name"
               saveToDb={saveToDb}
               error={errors.name}
               row={true}
@@ -521,7 +556,31 @@ const PersonMutation = ({ activeId, dimensions }) => {
               row={true}
             />
           </AreaIt>
-          {!showFilter && <AreaWeiterleiten>TODO</AreaWeiterleiten>}
+          {!showFilter && (
+            <AreaWeiterleiten>
+              <WeiterleitenRow>
+                {editWeiterleiten ? (
+                  <InputWithoutLabel
+                    value={settings.personMutationWeiterleiten}
+                    saveToDb={onSaveWeiterleiten}
+                    type="textarea"
+                  />
+                ) : (
+                  <Linkify>
+                    <EditText>{settings.personMutationWeiterleiten}</EditText>
+                  </Linkify>
+                )}
+                <StyledButton
+                  outline={true}
+                  onClick={onClickEditWeiterleiten}
+                  className="no-print"
+                  title="Weiterleiten-Text ändern"
+                >
+                  <EditIcon />
+                </StyledButton>
+              </WeiterleitenRow>
+            </AreaWeiterleiten>
+          )}
         </Wrapper>
       </StyledForm>
     </Container>
