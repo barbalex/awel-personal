@@ -75,9 +75,9 @@ values
 insert into
   sektionen(id, name, kurzzeichen, abteilung, kostenstelle)
 values
-  (1, 'Abfallwirtschaft', '', 1, '851210'), -- Abfallwirtschaft und Betriebe
-  (2, 'Altlasten', '', 1, '851220'), -- Abfallwirtschaft und Betriebe
-  (3, 'Betrieblicher Umweltschutz und Störfallvorsorge', '', 1, '851230'), -- Abfallwirtschaft und Betriebe
+  (1, 'Abfallwirtschaft', 'aw', 1, '851210'), -- Abfallwirtschaft und Betriebe
+  (2, 'Altlasten', 'al', 1, '851220'), -- Abfallwirtschaft und Betriebe
+  (3, 'Betrieblicher Umweltschutz und Störfallvorsorge', 'bus', 1, '851230'), -- Abfallwirtschaft und Betriebe
   (4, 'Biosicherheit', '', 1, '851240'), -- Abfallwirtschaft und Betriebe
   (5, 'Energieberatung', '', 3, '853830'), -- Energie
   (6, 'Energietechnik', '', 3, '853810'), -- Energie
@@ -95,7 +95,7 @@ values
   (18, 'Planung', '', 7, '852730'), -- Wasserbau
   (19, 'Gewässernutzung', '', 7, '852740'), -- Wasserbau
   (20, 'Bau', '', 7, '852710'), -- Wasserbau
-  (21, 'Gewässerunterhalt', '', 7, '852760'); -- Wasserbau
+  (21, 'Gewässerunterhalt', 'gu', 7, '852760'); -- Wasserbau
 
   -- ('Tankanlagen und Transportgewerbe', '', 1, '851250'), -- Abfallwirtschaft und Betriebe
   -- ('Finanz und Rechnungswesen', '', 2, ''), -- Dienste
@@ -201,18 +201,18 @@ values
   ('test 2');
 
 insert into
-  bereiche(abteilung, amt, sektion, name, standort, leiter)
+  bereiche(id, abteilung, amt, sektion, name, standort, leiter)
 values
-(7, 1,	20,	'Betrieb Sihl',	'Werkhof Adliswil',	1),
-(7, 1,	20,	'Betrieb Reuss / Limmat', 'Werkhof Obfelden',	2),
-(7, 1,	20,	'Betrieb Töss',	'Werkhof Hettlingen',	3),
-(7, 1,	20,	'Betrieb Thur / Rhein',	'Werkhof Andelfingen',	4),
-(7, 1,	20,	'Betrieb Glatt',	'Werkhof Glattbrugg',	5),
-(7, 1,	20,	'Betrieb Oberland / Seen',	'Werkhof Hinwil',	6),
-(4, 1,	10,	'Wasserversorung',	'Stampfenbachstrasse 12/14',	7),
+(1, 7, 1,	20,	'Betrieb Sihl',	'Werkhof Adliswil',	1),
+(2, 7, 1,	20,	'Betrieb Reuss / Limmat', 'Werkhof Obfelden',	2),
+(3, 7, 1,	20,	'Betrieb Töss',	'Werkhof Hettlingen',	3),
+(4, 7, 1,	20,	'Betrieb Thur / Rhein',	'Werkhof Andelfingen',	4),
+(5, 7, 1,	20,	'Betrieb Glatt',	'Werkhof Glattbrugg',	5),
+(6, 7, 1,	20,	'Betrieb Oberland / Seen',	'Werkhof Hinwil',	6),
+(7, 4, 1,	10,	'Wasserversorung',	'Stampfenbachstrasse 12/14',	7),
 (4, 1,	8,	'Fachgruppe Analytik',	'Carbahaus',	8),
-(4, 1,	12,	'Liegenschaftenentwässerung',	'Stampfenbachstrasse 12/14',	9),
-(3, 1,	null,	'Kerntechnik',	'Stampfenbachstrasse 12/14',	10);
+(9, 4, 1,	12,	'Liegenschaftenentwässerung',	'Stampfenbachstrasse 12/14',	9),
+(10, 3, 1,	null,	'Kerntechnik',	'Stampfenbachstrasse 12/14',	10);
 
 --insert into
 --  bereiche(name)
