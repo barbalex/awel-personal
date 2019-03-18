@@ -29,3 +29,60 @@ export default ({ store }) =>
       delete p.bereich
       return p
     })
+    .map(p => {
+      const kaderFunktionen = store.kaderFunktionen
+        .filter(a => a.idPerson === p.id)
+        .map(f => f.funktion)
+        .join(', ')
+      p.kaderFunktionen = kaderFunktionen
+      return p
+    })
+    .map(p => {
+      const funktionen = store.funktionen
+        .filter(a => a.idPerson === p.id)
+        .map(f => f.funktion)
+        .join(', ')
+      p.funktionen = funktionen
+      return p
+    })
+    .map(p => {
+      const etiketten = store.etiketten
+        .filter(a => a.idPerson === p.id)
+        .map(f => f.etikett)
+        .join(', ')
+      p.etiketten = etiketten
+      return p
+    })
+    .map(p => {
+      const telefone = store.telefones
+        .filter(a => a.idPerson === p.id)
+        .map(f => `${f.nr || '(keine Nummer)'} (${f.typ || 'kein Typ'})`)
+        .join(' | ')
+      p.telefone = telefone
+      return p
+    })
+    .map(p => {
+      const schluessel = store.schluessel
+        .filter(a => a.idPerson === p.id)
+        .map(
+          f =>
+            `Typ: ${f.typ || '(kein)'}, Anlage: (${f.anlage ||
+              '(keine)'}), Nr. ${f.nr ||
+              '(keine)'}, Bezeichnung: ${f.bezeichnung || '(keine)'}`,
+        )
+        .join(' | ')
+      p.schluessel = schluessel
+      return p
+    })
+    .map(p => {
+      const mobileAbos = store.mobileAbos
+        .filter(a => a.idPerson === p.id)
+        .map(
+          f =>
+            `Typ: ${f.typ || '(kein)'}, Kostenstelle: ${f.kostenstelle ||
+              '(keine)'}`,
+        )
+        .join(' | ')
+      p.mobileAbos = mobileAbos
+      return p
+    })

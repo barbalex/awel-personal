@@ -124,7 +124,6 @@ const Person = ({ activeId, dimensions }) => {
     funktionWerte,
     kaderFunktionWerte,
     landWerte,
-    mutationartWerte,
     standortWerte,
     showFilter,
     filterPerson,
@@ -480,14 +479,6 @@ const Person = ({ activeId, dimensions }) => {
         value: w.value,
       })),
   )
-  const mutationartOptions = useMemo(() =>
-    sortBy(mutationartWerte, ['sort', 'value'])
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
-  )
   const standortOptions = useMemo(() =>
     sortBy(standortWerte, ['sort', 'value'])
       .filter(p => p.deleted === 0)
@@ -625,16 +616,6 @@ const Person = ({ activeId, dimensions }) => {
               options={landOptions}
               saveToDb={saveToDb}
               error={errors.land}
-              row={false}
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}mutationart`}
-              value={person.mutationart}
-              field="mutationart"
-              label="Mutations-Art"
-              options={mutationartOptions}
-              saveToDb={saveToDb}
-              error={errors.mutationart}
               row={false}
             />
             <Input
