@@ -14,7 +14,6 @@ import sortBy from 'lodash/sortBy'
 import Input from '../shared/Input'
 import Date from '../shared/Date'
 import Select from '../shared/Select'
-import SelectMulti from '../shared/SelectMulti'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import isDateField from '../../src/isDateField'
 import storeContext from '../../storeContext'
@@ -28,7 +27,7 @@ const WrapperNarrow = styled.div`
   display: grid;
   grid-template-columns: repeat(1, 100%);
   grid-template-rows: auto;
-  grid-template-areas: 'areaPerson', 'areaTel', 'areaIt', 'areaWeiterleiten';
+  grid-template-areas: 'areaPerson' 'areaTel' 'areaIt' 'areaWeiterleiten';
 `
 const WrapperNarrowShowFilter = styled.div`
   display: grid;
@@ -57,17 +56,20 @@ const Title = styled.div`
   font-weight: 900;
   font-size: 18px;
 `
-const AreaPerson = styled.div`
+const Area = styled.div`
+  padding: 8px;
+`
+const AreaPerson = styled(Area)`
   grid-area: areaPerson;
   padding-bottom: 4mm;
 `
-const AreaTel = styled.div`
+const AreaTel = styled(Area)`
   grid-area: areaTel;
 `
-const AreaIt = styled.div`
+const AreaIt = styled(Area)`
   grid-area: areaIt;
 `
-const AreaWeiterleiten = styled.div`
+const AreaWeiterleiten = styled(Area)`
   grid-area: areaWeiterleiten;
   display: flex;
 `
@@ -84,7 +86,6 @@ const PersonMutation = ({ activeId, dimensions }) => {
     mutationartWerte,
     showFilter,
     filterPerson,
-    filterFunktion,
     existsFilter,
     setFilter,
     updateField,
@@ -281,7 +282,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
   if (!showFilter && !activeId) return null
 
   const { width } = dimensions
-  const viewIsNarrow = width < 860
+  const viewIsNarrow = width < 1500
   let Wrapper = viewIsNarrow
     ? showFilter
       ? WrapperNarrowShowFilter
@@ -346,7 +347,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
               key={`${personId}kurzzeichen`}
               value={person.kurzzeichen}
               field="kurzzeichen"
-              label="Kurzzei&shy;chen"
+              label="Kurz&shy;zei&shy;chen"
               saveToDb={saveToDb}
               error={errors.kurzzeichen}
               row={true}
@@ -365,7 +366,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
               key={`${personId}${existsFilter ? 1 : 0}abteilung`}
               value={person.abteilung}
               field="abteilung"
-              label="Abteilung"
+              label="Abtei&shy;lung"
               options={abteilungOptions}
               saveToDb={saveToDb}
               error={errors.abteilung}
@@ -395,7 +396,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
               key={`${personId}${existsFilter ? 1 : 0}standort`}
               value={person.standort}
               field="standort"
-              label="Standort"
+              label="Stand&shy;ort"
               options={standortOptions}
               saveToDb={saveToDb}
               error={errors.standort}
@@ -415,7 +416,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
               key={`${personId}kostenstelle`}
               value={person.kostenstelle}
               field="kostenstelle"
-              label="Kostenstelle"
+              label="Kosten&shy;stelle"
               saveToDb={() =>
                 setErrors({
                   ...errors,
@@ -442,7 +443,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
               key={`${personId}rufnummer`}
               value={person.rufnummer}
               field="rufnummer"
-              label="Rufnummer."
+              label="Ruf&shy;num&shy;mer."
               saveToDb={saveToDb}
               error={errors.rufnummer}
               row={true}
@@ -461,7 +462,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
               key={`${personId}schluesselNoetig`}
               value={person.schluesselNoetig}
               field="schluesselNoetig"
-              label="Schlüssel nötig"
+              label="Schlüs&shy;sel nötig"
               saveToDb={saveToDb}
               error={errors.schluesselNoetig}
               row={true}
@@ -469,15 +470,6 @@ const PersonMutation = ({ activeId, dimensions }) => {
           </AreaTel>
           <AreaIt>
             <Title>IT</Title>
-            <Input
-              key={`${personId}schluesselNoetig`}
-              value={person.schluesselNoetig}
-              field="schluesselNoetig"
-              label="Schlüssel nötig"
-              saveToDb={saveToDb}
-              error={errors.schluesselNoetig}
-              row={true}
-            />
             <Date
               key={`${personId}${
                 existsFilter ? 1 : 0
