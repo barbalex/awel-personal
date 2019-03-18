@@ -167,7 +167,7 @@ values
   ('ZX-Organisator', 2);
 
 insert into
-  funktionWerte(value, sort)
+  kaderFunktionWerte(value, sort)
 values
   ('Amts-Leiter', 1),
   ('Abteilungs-Leiter', 2),
