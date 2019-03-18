@@ -114,12 +114,14 @@ const Person = ({ activeId, dimensions }) => {
     bereiche,
     etiketten,
     funktionen,
+    kaderFunktionen,
     showDeleted,
     showMutationNoetig,
     statusWerte,
     anredeWerte,
     etikettWerte,
     funktionWerte,
+    kaderFunktionWerte,
     landWerte,
     mutationartWerte,
     standortWerte,
@@ -127,6 +129,7 @@ const Person = ({ activeId, dimensions }) => {
     filterPerson,
     filterEtikett,
     filterFunktion,
+    filterKaderFunktion,
     existsFilter,
     setFilter,
     updateField,
@@ -322,6 +325,48 @@ const Person = ({ activeId, dimensions }) => {
     [filterFunktion],
   )
 
+  const addKaderFunktion = useCallback(
+    kaderFunktion => {
+      if (showFilter) {
+        setFilter({
+          model: 'filterKaderFunktion',
+          value: { ...filterKaderFunktion, ...{ kaderFunktion } },
+        })
+      } else {
+        store.addKaderFunktion(kaderFunktion)
+      }
+    },
+    [showFilter, filterKaderFunktion],
+  )
+  const deleteKaderFunktion = useCallback(
+    kaderFunktion => {
+      if (showFilter) {
+        setFilter({
+          model: 'filterKaderFunktion',
+          value: { ...filterKaderFunktion, ...{ kaderFunktion: null } },
+        })
+      } else {
+        store.deleteKaderFunktion(kaderFunktion)
+      }
+    },
+    [filterKaderFunktion, showFilter],
+  )
+  const saveToDbKaderFunktion = useCallback(
+    ({ value }) => {
+      if (value) {
+        return setFilter({
+          model: 'filterKaderFunktion',
+          value: { ...filterKaderFunktion, ...{ kaderFunktion: value } },
+        })
+      }
+      setFilter({
+        model: 'filterKaderFunktion',
+        value: { ...filterKaderFunktion, ...{ kaderFunktion: null } },
+      })
+    },
+    [filterKaderFunktion],
+  )
+
   // filter out options with empty values - makes no sense and errors
   const personOptions = useMemo(
     () =>
@@ -418,6 +463,14 @@ const Person = ({ activeId, dimensions }) => {
         value: w.value,
       })),
   )
+  const kaderFunktionenOptions = useMemo(() =>
+    sortBy(kaderFunktionWerte, ['sort', 'value'])
+      .filter(p => p.deleted === 0)
+      .map(w => ({
+        label: w.value,
+        value: w.value,
+      })),
+  )
   const landOptions = useMemo(() =>
     sortBy(landWerte, ['sort', 'value'])
       .filter(p => p.deleted === 0)
@@ -458,6 +511,18 @@ const Person = ({ activeId, dimensions }) => {
       .map(e => ({
         label: e.funktion,
         value: e.funktion,
+      })),
+  )
+  const myKaderFunktionen = useMemo(() =>
+    sortBy(
+      kaderFunktionen.filter(e => e.idPerson === activeId),
+      'kaderFunktion',
+    )
+      .filter(w => !!w.kaderFunktion)
+      .filter(p => p.deleted === 0)
+      .map(e => ({
+        label: e.kaderFunktion,
+        value: e.kaderFunktion,
       })),
   )
 
@@ -706,6 +771,30 @@ const Person = ({ activeId, dimensions }) => {
               error={errors.vorgesetztId}
               row={false}
             />
+            {showFilter ? (
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}kaderFunktion`}
+                value={filterKaderFunktion.kaderFunktion}
+                field="kaderFunktion"
+                label="Kader-&shy;Funktion"
+                options={kaderFunktionenOptions}
+                saveToDb={saveToDbKaderFunktion}
+                error={errors.kaderFunktion}
+                row={false}
+              />
+            ) : (
+              <SelectMulti
+                key={`${personId}${existsFilter ? 1 : 0}kaderFunktion`}
+                value={myKaderFunktionen}
+                field="kaderFunktion"
+                label="Kader-&shy;Funktio&shy;nen"
+                options={kaderFunktionenOptions}
+                add={addKaderFunktion}
+                remove={deleteKaderFunktion}
+                error={errors.kaderFunktion}
+                row={false}
+              />
+            )}
             {showFilter ? (
               <Select
                 key={`${personId}${existsFilter ? 1 : 0}funktion`}

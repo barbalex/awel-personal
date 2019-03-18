@@ -337,6 +337,26 @@ create index iFunktionFunktion on funktionen (funktion);
 
 -------------------------------------------
 
+drop table if exists kaderFunktionen;
+create table kaderFunktionen (
+  id integer primary key autoincrement,
+  deleted integer default 0,
+  idPerson integer references personen(id) on update cascade on delete cascade,
+  funktion text references kaderFunktionWerte(value) on update cascade on delete no action,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT,
+  unique(idPerson, funktion)
+);
+
+drop index if exists iKaderFunktionDeleted;
+create index iKaderFunktionDeleted on kaderFunktionen (deleted);
+drop index if exists iKaderFunktionIdPerson;
+create index iKaderFunktionIdPerson on kaderFunktionen (idPerson);
+drop index if exists iKaderFunktionFunktion;
+create index iKaderFunktionFunktion on kaderFunktionen (funktion);
+
+-------------------------------------------
+
 drop table if exists etiketten;
 create table etiketten (
   id integer primary key autoincrement,
@@ -513,6 +533,26 @@ drop index if exists iFunktionWerteHistorisch;
 create index iFunktionWerteHistorisch on funktionWerte (historic);
 drop index if exists iFunktionWerteSort;
 create index iFunktionWerteSort on funktionWerte (sort);
+
+-------------------------------------------
+
+drop table if exists kaderFunktionWerte;
+create table kaderFunktionWerte (
+  id integer primary key autoincrement,
+  value text unique,
+  deleted integer default 0,
+  historic integer default 0,
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iFunktionWerteFunktion;
+create index iFunktionWerteFunktion on kaderFunktionWerte (value);
+drop index if exists iFunktionWerteHistorisch;
+create index iFunktionWerteHistorisch on kaderFunktionWerte (historic);
+drop index if exists iFunktionWerteSort;
+create index iFunktionWerteSort on kaderFunktionWerte (sort);
 
 -------------------------------------------
 

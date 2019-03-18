@@ -163,8 +163,16 @@ values
 insert into
   funktionWerte(value, sort)
 values
-  ('Chef', 1),
-  ('Knecht', 2);
+  ('XY-Verantwortlich', 1),
+  ('ZX-Organisator', 2);
+
+insert into
+  funktionWerte(value, sort)
+values
+  ('Amts-Leiter', 1),
+  ('Abteilungs-Leiter', 2),
+  ('Sektions-Leiter', 3),
+  ('Bereichs-Leiter', 4);
 
 insert into
   mobileAboKostenstelleWerte(value, sort)

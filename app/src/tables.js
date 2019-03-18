@@ -30,6 +30,11 @@ export default [
     parentModel: 'funktionen',
   },
   {
+    table: 'kaderFunktionen',
+    model: 'KaderFunktion',
+    parentModel: 'kaderFunktionen',
+  },
+  {
     table: 'etiketten',
     model: 'Etikett',
     parentModel: 'etiketten',
@@ -68,6 +73,11 @@ export default [
     table: 'funktionWerte',
     model: 'FunktionWert',
     parentModel: 'funktionWerte',
+  },
+  {
+    table: 'kaderFunktionWerte',
+    model: 'KaderFunktionWert',
+    parentModel: 'kaderFunktionWerte',
   },
   {
     table: 'mobileAboKostenstelleWerte',

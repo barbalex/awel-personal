@@ -17,12 +17,14 @@ import Sektion from './Sektion'
 import Etikett from './Etikett'
 import AnredeWert from './AnredeWert'
 import FunktionWert from './FunktionWert'
+import KaderFunktionWert from './KaderFunktionWert'
 import KostenstelleWert from './KostenstelleWert'
 import Link from './Link'
 import Schluessel from './Schluessel'
 import MobileAbo from './MobileAbo'
 import Telefon from './Telefon'
 import Funktion from './Funktion'
+import KaderFunktion from './KaderFunktion'
 import MobileAboKostenstelleWert from './MobileAboKostenstelleWert'
 import MobileAboTypWert from './MobileAboTypWert'
 import TelefonTypWert from './TelefonTypWert'
@@ -46,12 +48,14 @@ export default db =>
       etiketten: types.array(Etikett),
       anredeWerte: types.array(AnredeWert),
       funktionWerte: types.array(FunktionWert),
+      kaderFunktionWerte: types.array(KaderFunktionWert),
       kostenstelleWerte: types.array(KostenstelleWert),
       links: types.array(Link),
       schluessel: types.array(Schluessel),
       mobileAbos: types.array(MobileAbo),
       telefones: types.array(Telefon),
       funktionen: types.array(Funktion),
+      kaderFunktionen: types.array(KaderFunktion),
       mobileAboKostenstelleWerte: types.array(MobileAboKostenstelleWert),
       mobileAboTypWerte: types.array(MobileAboTypWert),
       telefonTypWerte: types.array(TelefonTypWert),
@@ -64,7 +68,11 @@ export default db =>
       personen: types.array(Person),
       aemter: types.array(Amt),
       abteilungen: types.array(Abteilung),
-      settings: types.optional(Settings, { id: 1, schluesselFormPath: null, personMutationWeiterleiten: null }),
+      settings: types.optional(Settings, {
+        id: 1,
+        schluesselFormPath: null,
+        personMutationWeiterleiten: null,
+      }),
       bereiche: types.array(Bereich),
       sektionen: types.array(Sektion),
       mutations: types.array(Mutation),
@@ -88,6 +96,7 @@ export default db =>
       filterMobileAbo: types.optional(MobileAbo, {}),
       filterTelefon: types.optional(Telefon, {}),
       filterFunktion: types.optional(Funktion, {}),
+      filterKaderFunktion: types.optional(KaderFunktion, {}),
       showFilter: types.optional(types.boolean, false),
       filterFulltext: types.maybe(
         types.union(types.string, types.integer, types.null),
@@ -108,6 +117,7 @@ export default db =>
           filterMobileAbo,
           filterTelefon,
           filterFunktion,
+          filterKaderFunktion,
         } = self
         return (
           [
@@ -122,6 +132,7 @@ export default db =>
             ...Object.values(filterMobileAbo),
             ...Object.values(filterTelefon),
             ...Object.values(filterFunktion),
+            ...Object.values(filterKaderFunktion),
           ].filter(v => v).length > 0
         )
       },
@@ -131,6 +142,7 @@ export default db =>
           filterMobileAbo,
           filterTelefon,
           filterFunktion,
+          filterKaderFunktion,
           filterEtikett,
           filterPerson,
         } = self
@@ -219,6 +231,24 @@ export default db =>
             })
           }
         })
+        let kaderFunktionen = self.kaderFunktionen.filter(p => {
+          if (!self.showDeleted) return p.deleted === 0
+          return true
+        })
+        let kaderFunktionenIsFiltered = false
+        Object.keys(filterKaderFunktion).forEach(key => {
+          if (filterKaderFunktion[key]) {
+            kaderFunktionenIsFiltered = true
+            kaderFunktionen = kaderFunktionen.filter(p => {
+              if (!filterKaderFunktion[key]) return true
+              if (!p[key]) return false
+              return p[key]
+                .toString()
+                .toLowerCase()
+                .includes(filterKaderFunktion[key].toString().toLowerCase())
+            })
+          }
+        })
         let etiketten = self.etiketten.filter(p => {
           if (!self.showDeleted) return p.deleted === 0
           return true
@@ -257,6 +287,10 @@ export default db =>
           .filter(p => {
             if (!funktionenIsFiltered) return true
             return funktionen.filter(s => s.idPerson === p.id).length > 0
+          })
+          .filter(p => {
+            if (!kaderFunktionenIsFiltered) return true
+            return kaderFunktionen.filter(s => s.idPerson === p.id).length > 0
           })
           .filter(p => {
             if (!etikettenIsFiltered) return true
@@ -305,6 +339,15 @@ export default db =>
                     .map(e => e[1]),
                 ),
             )
+            const kaderFunktionValues = flatten(
+              self.kaderFunktionen
+                .filter(s => s.idPerson === p.id)
+                .map(s =>
+                  Object.entries(s)
+                    .filter(e => e[0] !== 'id')
+                    .map(e => e[1]),
+                ),
+            )
             const etikettValues = flatten(
               self.etiketten
                 .filter(s => s.idPerson === p.id)
@@ -321,6 +364,7 @@ export default db =>
                 mobileAboValues,
                 telefonValues,
                 funktionValues,
+                kaderFunktionValues,
                 etikettValues,
               ].filter(v => {
                 if (!v) return false
@@ -595,6 +639,7 @@ export default db =>
           self.filterMobileAbo = {}
           self.filterTelefon = {}
           self.filterFunktion = {}
+          self.filterKaderFunktion = {}
         },
         setShowFilter(value) {
           self.showFilter = value
@@ -676,6 +721,11 @@ export default db =>
         setFunktionen(funktionen) {
           self.watchMutations = false
           self.funktionen = funktionen
+          self.watchMutations = true
+        },
+        setKaderFunktionen(kaderFunktionen) {
+          self.watchMutations = false
+          self.kaderFunktionen = kaderFunktionen
           self.watchMutations = true
         },
         setWerte({ table, values }) {
@@ -1513,6 +1563,55 @@ export default db =>
           )
           self.updatePersonsMutation(idPerson)
         },
+        addKaderFunktion(kaderFunktion) {
+          // grab idPerson from location
+          const { location } = self
+          const idPerson = ifIsNumericAsNumber(location[1])
+          // 1. create new kaderFunktion in db, returning id
+          let info
+          try {
+            info = db
+              .prepare(
+                'insert into kaderFunktionen (idPerson, funktion, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
+              )
+              .run(idPerson, kaderFunktion, self.username, Date.now())
+          } catch (error) {
+            self.addError(error)
+            return console.log(error)
+          }
+          // 2. add to store
+          self.kaderFunktionen.push({
+            id: info.lastInsertRowid,
+            kaderFunktion,
+            idPerson,
+            letzteMutationUser: self.username,
+            letzteMutationZeit: Date.now(),
+          })
+          self.updatePersonsMutation(idPerson)
+        },
+        deleteKaderFunktion(kaderFunktion) {
+          // grab idPerson from location
+          const { location } = self
+          const idPerson = ifIsNumericAsNumber(location[1])
+          // write to db
+          try {
+            db.prepare(
+              'delete from kaderFunktionen where idPerson = ? and funktion = ?',
+            ).run(idPerson, kaderFunktion)
+          } catch (error) {
+            self.addError(error)
+            return console.log(error)
+          }
+          // write to store
+          self.kaderFunktionen.splice(
+            findIndex(
+              self.kaderFunktionen,
+              e => e.idPerson === idPerson && e.funktion === kaderFunktion,
+            ),
+            1,
+          )
+          self.updatePersonsMutation(idPerson)
+        },
         updateField({ table, parentModel, field, value, id, setErrors }) {
           // 1. update in db
           try {
@@ -1554,6 +1653,7 @@ export default db =>
               'mobileAbos',
               'telefones',
               'funktionen',
+              'kaderFunktionen',
               'etiketten',
             ].includes(parentModel)
           ) {

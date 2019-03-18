@@ -9,6 +9,7 @@ export default ({ store }) => {
     mobileAbos,
     telefones,
     funktionen,
+    kaderFunktionen,
     etiketten,
     statusWerte,
     anredeWerte,
@@ -18,6 +19,7 @@ export default ({ store }) => {
     schluesselTypWerte,
     schluesselAnlageWerte,
     funktionWerte,
+    kaderFunktionWerte,
     mobileAboKostenstelleWerte,
     etikettWerte,
     landWerte,
@@ -41,6 +43,9 @@ export default ({ store }) => {
   )
   onPatch(funktionen, (patch, inversePatch) =>
     addMutation({ tableName: 'funktionen', patch, inversePatch }),
+  )
+  onPatch(kaderFunktionen, (patch, inversePatch) =>
+    addMutation({ tableName: 'kaderFunktionen', patch, inversePatch }),
   )
   onPatch(etiketten, (patch, inversePatch) =>
     addMutation({ tableName: 'etiketten', patch, inversePatch }),
@@ -68,6 +73,9 @@ export default ({ store }) => {
   )
   onPatch(funktionWerte, (patch, inversePatch) =>
     addMutation({ tableName: 'funktionWerte', patch, inversePatch }),
+  )
+  onPatch(kaderFunktionWerte, (patch, inversePatch) =>
+    addMutation({ tableName: 'kaderFunktionWerte', patch, inversePatch }),
   )
   onPatch(mobileAboKostenstelleWerte, (patch, inversePatch) =>
     addMutation({
