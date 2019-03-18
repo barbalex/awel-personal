@@ -10,6 +10,7 @@ import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
+import { getSnapshot } from 'mobx-state-tree'
 
 import Input from '../../shared/Input'
 import Date from '../../shared/Date'
@@ -514,15 +515,12 @@ const Person = ({ activeId, dimensions }) => {
       })),
   )
   const myKaderFunktionen = useMemo(() =>
-    sortBy(
-      kaderFunktionen.filter(e => e.idPerson === activeId),
-      'kaderFunktion',
-    )
-      .filter(w => !!w.kaderFunktion)
+    sortBy(kaderFunktionen.filter(e => e.idPerson === activeId), 'funktion')
+      .filter(w => !!w.funktion)
       .filter(p => p.deleted === 0)
       .map(e => ({
-        label: e.kaderFunktion,
-        value: e.kaderFunktion,
+        label: e.funktion,
+        value: e.funktion,
       })),
   )
 
@@ -774,8 +772,8 @@ const Person = ({ activeId, dimensions }) => {
             {showFilter ? (
               <Select
                 key={`${personId}${existsFilter ? 1 : 0}kaderFunktion`}
-                value={filterKaderFunktion.kaderFunktion}
-                field="kaderFunktion"
+                value={filterKaderFunktion.funktion}
+                field="funktion"
                 label="Kader-&shy;Funktion"
                 options={kaderFunktionenOptions}
                 saveToDb={saveToDbKaderFunktion}
@@ -786,7 +784,7 @@ const Person = ({ activeId, dimensions }) => {
               <SelectMulti
                 key={`${personId}${existsFilter ? 1 : 0}kaderFunktion`}
                 value={myKaderFunktionen}
-                field="kaderFunktion"
+                field="funktion"
                 label="Kader-&shy;Funktio&shy;nen"
                 options={kaderFunktionenOptions}
                 add={addKaderFunktion}

@@ -22,6 +22,7 @@ import fetchSchluessel from '../../src/fetchSchluessel'
 import fetchMobileAbos from '../../src/fetchMobileAbos'
 import fetchTelefones from '../../src/fetchTelefones'
 import fetchFunktionen from '../../src/fetchFunktionen'
+import fetchKaderFunktionen from '../../src/fetchKaderFunktionen'
 import fetchWerte from '../../src/fetchWerte'
 import fetchSettings from '../../src/fetchSettings'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
@@ -81,6 +82,7 @@ const PersonContainer = () => {
     fetchWerte({ db, store, table: 'schluesselTypWerte' })
     fetchWerte({ db, store, table: 'schluesselAnlageWerte' })
     fetchFunktionen({ db, store })
+    fetchKaderFunktionen({ db, store })
     fetchSettings({ db, store })
   }, [])
 

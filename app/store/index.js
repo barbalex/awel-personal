@@ -1563,7 +1563,7 @@ export default db =>
           )
           self.updatePersonsMutation(idPerson)
         },
-        addKaderFunktion(kaderFunktion) {
+        addKaderFunktion(funktion) {
           // grab idPerson from location
           const { location } = self
           const idPerson = ifIsNumericAsNumber(location[1])
@@ -1574,7 +1574,7 @@ export default db =>
               .prepare(
                 'insert into kaderFunktionen (idPerson, funktion, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
               )
-              .run(idPerson, kaderFunktion, self.username, Date.now())
+              .run(idPerson, funktion, self.username, Date.now())
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1582,14 +1582,14 @@ export default db =>
           // 2. add to store
           self.kaderFunktionen.push({
             id: info.lastInsertRowid,
-            kaderFunktion,
+            funktion,
             idPerson,
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
           })
           self.updatePersonsMutation(idPerson)
         },
-        deleteKaderFunktion(kaderFunktion) {
+        deleteKaderFunktion(funktion) {
           // grab idPerson from location
           const { location } = self
           const idPerson = ifIsNumericAsNumber(location[1])
@@ -1597,7 +1597,7 @@ export default db =>
           try {
             db.prepare(
               'delete from kaderFunktionen where idPerson = ? and funktion = ?',
-            ).run(idPerson, kaderFunktion)
+            ).run(idPerson, funktion)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1606,7 +1606,7 @@ export default db =>
           self.kaderFunktionen.splice(
             findIndex(
               self.kaderFunktionen,
-              e => e.idPerson === idPerson && e.funktion === kaderFunktion,
+              e => e.idPerson === idPerson && e.funktion === funktion,
             ),
             1,
           )

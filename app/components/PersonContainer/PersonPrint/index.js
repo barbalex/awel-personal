@@ -206,6 +206,7 @@ const PersonPrint = ({ activeId }) => {
     bereiche,
     etiketten,
     funktionen,
+    kaderFunktionen,
   } = store
 
   const person = personen.find(p => p.id === activeId) || {}
@@ -219,6 +220,13 @@ const PersonPrint = ({ activeId }) => {
   )
   const myFunktionen = useMemo(() =>
     funktionen
+      .filter(e => e.idPerson === activeId)
+      .filter(w => !!w.funktion)
+      .filter(p => p.deleted === 0)
+      .map(e => e.funktion),
+  )
+  const myKaderFunktionen = useMemo(() =>
+    kaderFunktionen
       .filter(e => e.idPerson === activeId)
       .filter(w => !!w.funktion)
       .filter(p => p.deleted === 0)
@@ -329,6 +337,10 @@ const PersonPrint = ({ activeId }) => {
                 }
               />
               <InputValue label="Funktionen" value={myFunktionen.join(', ')} />
+              <InputValue
+                label="Kader-Funktionen"
+                value={myKaderFunktionen.join(', ')}
+              />
             </AreaFunktionen>
             <AreaVerzeichnis>
               <Title>Verzeichnis</Title>
