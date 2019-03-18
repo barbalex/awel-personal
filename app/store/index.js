@@ -1624,12 +1624,12 @@ export default db =>
               time: Date.now(),
             })
           } catch (error) {
-            self.addError(error)
             if (setErrors) {
               return setErrors({
                 [field]: error.message,
               })
             }
+            self.addError(error)
             return
           }
           // 2. update in store
