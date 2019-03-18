@@ -478,7 +478,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
               key={`${personId}rufnummer`}
               value={person.rufnummer}
               field="rufnummer"
-              label="Ruf&shy;num&shy;mer."
+              label="Ruf&shy;num&shy;mer"
               saveToDb={saveToDb}
               error={errors.rufnummer}
               row={true}
