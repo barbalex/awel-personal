@@ -195,7 +195,7 @@ values
   ('Österreich');
 
 insert into
-  mutationartWerte(value)
+  mutationArtWerte(value)
 values
   ('test 1'),
   ('test 2');

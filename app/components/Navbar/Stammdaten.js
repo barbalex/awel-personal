@@ -126,7 +126,7 @@ const Stammdaten = () => {
           <DropdownItem name="mobileAboTypWerte" onClick={onClickStatusTable}>
             Mobile Abo Typ
           </DropdownItem>
-          <DropdownItem name="mutationartWerte" onClick={onClickStatusTable}>
+          <DropdownItem name="mutationArtWerte" onClick={onClickStatusTable}>
             Mutations-Art
           </DropdownItem>
           <DropdownItem

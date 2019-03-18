@@ -42,7 +42,7 @@ export default types
       types.union(types.string, types.integer, types.null),
     ),
     beschaeftigungsgrad: types.maybe(types.union(types.integer, types.null)),
-    mutationart: types.maybe(
+    mutationArt: types.maybe(
       types.union(types.string, types.integer, types.null),
     ),
     telefonUebernommenVon: types.maybeNull(types.integer),

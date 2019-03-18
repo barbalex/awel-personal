@@ -10,7 +10,6 @@ import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
-import { getSnapshot } from 'mobx-state-tree'
 
 import Input from '../../shared/Input'
 import Date from '../../shared/Date'

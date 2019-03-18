@@ -1,3 +1,19 @@
+import omit from 'lodash/omit'
+
+const mutationFields = [
+  'mutationArt',
+  'telefonUebernommenVon',
+  'rufnummer',
+  'schluesselNoetig',
+  'arbeitsplatzeroeffnungPer',
+  'benoetigteSoftware',
+  'standardabweichendeHardware',
+  'abmeldungArbeitsplatzPer',
+  'bueroWechselPer',
+  'kostenstellenAenderungPer',
+  'itMutationBemerkungen',
+]
+
 export default ({ store }) =>
   store.personenFiltered
     .slice()
@@ -86,3 +102,4 @@ export default ({ store }) =>
       p.mobileAbos = mobileAbos
       return p
     })
+    .map(p => omit(p, mutationFields))

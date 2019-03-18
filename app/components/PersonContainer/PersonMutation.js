@@ -106,7 +106,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
     abteilungen,
     aemter,
     standortWerte,
-    mutationartWerte,
+    mutationArtWerte,
     showFilter,
     filterPerson,
     existsFilter,
@@ -245,8 +245,8 @@ const PersonMutation = ({ activeId, dimensions }) => {
         })),
     [personen.length],
   )
-  const mutationartOptions = useMemo(() =>
-    sortBy(mutationartWerte, ['sort', 'value'])
+  const mutationArtOptions = useMemo(() =>
+    sortBy(mutationArtWerte, ['sort', 'value'])
       .filter(p => p.deleted === 0)
       .map(w => ({
         label: w.value,
@@ -333,13 +333,13 @@ const PersonMutation = ({ activeId, dimensions }) => {
           <AreaPerson>
             <Title>Person</Title>
             <Select
-              key={`${personId}${existsFilter ? 1 : 0}mutationart`}
-              value={person.mutationart}
-              field="mutationart"
+              key={`${personId}${existsFilter ? 1 : 0}mutationArt`}
+              value={person.mutationArt}
+              field="mutationArt"
               label="Mutations-Art"
-              options={mutationartOptions}
+              options={mutationArtOptions}
               saveToDb={saveToDb}
-              error={errors.mutationart}
+              error={errors.mutationArt}
               row={true}
             />
             <Date
@@ -462,6 +462,17 @@ const PersonMutation = ({ activeId, dimensions }) => {
               error={errors.kostenstelle}
               row={true}
             />
+            <Date
+              key={`${personId}${
+                existsFilter ? 1 : 0
+              }kostenstellenAenderungPer`}
+              value={person.kostenstellenAenderungPer}
+              field="kostenstellenAenderungPer"
+              label="Kosten&shy;stel&shy;le Ände&shy;rung per"
+              saveToDb={saveToDb}
+              error={errors.kostenstellenAenderungPer}
+              row={true}
+            />
             <Input
               key={`${personId}bueroNr`}
               value={person.bueroNr}
@@ -469,6 +480,15 @@ const PersonMutation = ({ activeId, dimensions }) => {
               label="Büro Nr."
               saveToDb={saveToDb}
               error={errors.bueroNr}
+              row={true}
+            />
+            <Date
+              key={`${personId}${existsFilter ? 1 : 0}bueroWechselPer`}
+              value={person.bueroWechselPer}
+              field="bueroWechselPer"
+              label="Büro-Wechsel per"
+              saveToDb={saveToDb}
+              error={errors.bueroWechselPer}
               row={true}
             />
           </AreaPerson>

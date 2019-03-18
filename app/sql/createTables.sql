@@ -103,7 +103,7 @@ create table personen (
   bemerkungen text,
   beschaeftigungsgrad integer,
   mutationNoetig integer default 0,
-  mutationart text references mutationartWerte(value) on update cascade on delete no action,
+  mutationArt text references mutationArtWerte(value) on update cascade on delete no action,
   telefonUebernommenVon integer references personen(id) on update cascade on delete no action,
   rufnummer text,
   schluesselNoetig text,
@@ -111,6 +111,8 @@ create table personen (
   benoetigteSoftware text,
   standardabweichendeHardware text,
   abmeldungArbeitsplatzPer text,
+  bueroWechselPer text,
+  kostenstellenAenderungPer text,
   itMutationBemerkungen text,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT
@@ -616,8 +618,8 @@ create index iLandWerteSort on landWerte (sort);
 
 -------------------------------------------
 
-drop table if exists mutationartWerte;
-create table mutationartWerte (
+drop table if exists mutationArtWerte;
+create table mutationArtWerte (
   id integer primary key autoincrement,
   value text unique,
   deleted integer default 0,
@@ -628,11 +630,11 @@ create table mutationartWerte (
 );
 
 drop index if exists iMutationartWerteMutationart;
-create index iMutationartWerteMutationart on mutationartWerte (value);
+create index iMutationartWerteMutationart on mutationArtWerte (value);
 drop index if exists iMutationartWerteHistorisch;
-create index iMutationartWerteHistorisch on mutationartWerte (historic);
+create index iMutationartWerteHistorisch on mutationArtWerte (historic);
 drop index if exists iMutationartWerteSort;
-create index iMutationartWerteSort on mutationartWerte (sort);
+create index iMutationartWerteSort on mutationArtWerte (sort);
 
 -------------------------------------------
 

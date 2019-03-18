@@ -63,7 +63,7 @@ export default db =>
       schluesselAnlageWerte: types.array(SchluesselAnlageWert),
       etikettWerte: types.array(EtikettWert),
       landWerte: types.array(LandWert),
-      mutationartWerte: types.array(MutationartWert),
+      mutationArtWerte: types.array(MutationartWert),
       standortWerte: types.array(StandortWert),
       personen: types.array(Person),
       aemter: types.array(Amt),

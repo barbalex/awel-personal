@@ -95,9 +95,9 @@ export default [
     parentModel: 'landWerte',
   },
   {
-    table: 'mutationartWerte',
+    table: 'mutationArtWerte',
     model: 'MutationartWert',
-    parentModel: 'mutationartWerte',
+    parentModel: 'mutationArtWerte',
   },
   {
     table: 'standortWerte',
