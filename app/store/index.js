@@ -41,6 +41,7 @@ import Mutation from './Mutation'
 import StatusWert from './StatusWert'
 import TagWert from './TagWert'
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
+import fetchAnwesenheitstage from '../src/fetchAnwesenheitstage'
 
 export default db =>
   types
@@ -900,6 +901,8 @@ export default db =>
             land: 'Schweiz',
           })
           self.setLocation(['Personen', info.lastInsertRowid.toString()])
+          // 3 requery anwesenheitstage (are added in db by trigger)
+          fetchAnwesenheitstage({ db, store: self })
         },
         addAmt() {
           // 1. create new Amt in db, returning id
