@@ -75,8 +75,8 @@ insert into
   abteilungen(id, name, kurzzeichen, amt, kostenstelle)
 values
   (1, 'Abfallwirtschaft', 'aw', 1, '851200'),
-  (2, 'Dienste FRW', '', 1, '850090'),
-  (8, 'Dienste QMS', '', 1, '850100'),
+  (2, 'Dienste FRW', null, 1, '850090'),
+  (8, 'Dienste QMS', null, 1, '850100'),
   (3, 'Energie', 'en', 1, '853800'),
   (4, 'Gewässerschutz', 'gs', 1, '852800'),
   (5, 'Luft', 'lu', 1, '851400'),
@@ -89,38 +89,38 @@ values
   (1, 'Abfallwirtschaft', 'aw', 1, '851210'),
   (2, 'Altlasten', 'al', 1, '851220'),
   (3, 'Betrieblicher Umweltschutz und Störfallvorsorge', 'bus', 1, '851230'),
-  (4, 'Biosicherheit', '', 1, '851240'),
-  (5, 'Energieberatung', '', 3, '853830'),
-  (6, 'Energietechnik', '', 3, '853810'),
-  (7, 'Energiewirtschaft', '', 3, '853820'),
-  (8, 'Oberflächengewässerschutz', '', 4, '852810'),
-  (9, 'Abwasserreinigungsanlagen', '', 4, '852820'),
-  (10, 'Grundwasser und Wasserversorgung', '', 4, '852840'),
-  (11, 'Bevölkerungsschutz', '', 4, '852850'),
-  (12, 'Siedlungsentwässerung', '', 4, '852830'),
-  (13, 'Monitoring', '', 5, '851410'),
-  (14, 'Emissionskontrolle', '', 5, '851440'),
-  (15, 'Klima und Mobilität', '', 5, '851420'),
-  (16, 'Strahlung', '', 5, '851430'),
-  (17, 'Beratung und Bewilligungen', '', 7, '852770'),
-  (18, 'Planung', '', 7, '852730'),
-  (19, 'Gewässernutzung', '', 7, '852740'),
-  (20, 'Bau', '', 7, '852710'),
+  (4, 'Biosicherheit', null, 1, '851240'),
+  (5, 'Energieberatung', null, 3, '853830'),
+  (6, 'Energietechnik', null, 3, '853810'),
+  (7, 'Energiewirtschaft', null, 3, '853820'),
+  (8, 'Oberflächengewässerschutz', null, 4, '852810'),
+  (9, 'Abwasserreinigungsanlagen', null, 4, '852820'),
+  (10, 'Grundwasser und Wasserversorgung', null, 4, '852840'),
+  (11, 'Bevölkerungsschutz', null, 4, '852850'),
+  (12, 'Siedlungsentwässerung', null, 4, '852830'),
+  (13, 'Monitoring', null, 5, '851410'),
+  (14, 'Emissionskontrolle', null, 5, '851440'),
+  (15, 'Klima und Mobilität', null, 5, '851420'),
+  (16, 'Strahlung', null, 5, '851430'),
+  (17, 'Beratung und Bewilligungen', null, 7, '852770'),
+  (18, 'Planung', null, 7, '852730'),
+  (19, 'Gewässernutzung', null, 7, '852740'),
+  (20, 'Bau', null, 7, '852710'),
   (21, 'Gewässerunterhalt', 'gu', 7, '852760');
 
 insert into
-  bereiche(id, abteilung, amt, sektion, name, standort, leiter)
+  bereiche(id, abteilung, amt, sektion, name, standort, leiter, kurzzeichen)
 values
-  (1, 7, 1,	20,	'Betrieb Sihl',	'Werkhof Adliswil',	1),
-  (2, 7, 1,	20,	'Betrieb Reuss / Limmat', 'Werkhof Obfelden',	2),
-  (3, 7, 1,	20,	'Betrieb Töss',	'Werkhof Hettlingen',	3),
-  (4, 7, 1,	20,	'Betrieb Thur / Rhein',	'Werkhof Andelfingen',	4),
-  (5, 7, 1,	20,	'Betrieb Glatt',	'Werkhof Glattbrugg',	5),
-  (6, 7, 1,	20,	'Betrieb Oberland / Seen',	'Werkhof Hinwil',	6),
-  (7, 4, 1,	10,	'Wasserversorung',	'Stampfenbachstrasse 12/14',	7),
-  (8, 1,	8,null,	'Fachgruppe Analytik',	'Carbahaus',	8),
-  (9, 4, 1,	12,	'Liegenschaftenentwässerung',	'Stampfenbachstrasse 12/14',	9),
-  (10, 3, 1,	null,	'Kerntechnik',	'Stampfenbachstrasse 12/14',	10);
+  (1, 7, 1,	20,	'Betrieb Sihl',	'Werkhof Adliswil',	1, null),
+  (2, 7, 1,	20,	'Betrieb Reuss / Limmat', 'Werkhof Obfelden',	2, null),
+  (3, 7, 1,	20,	'Betrieb Töss',	'Werkhof Hettlingen',	3, null),
+  (4, 7, 1,	20,	'Betrieb Thur / Rhein',	'Werkhof Andelfingen',	4, null),
+  (5, 7, 1,	20,	'Betrieb Glatt',	'Werkhof Glattbrugg',	5, null),
+  (6, 7, 1,	20,	'Betrieb Oberland / Seen',	'Werkhof Hinwil',	6, null),
+  (7, 4, 1,	10,	'Wasserversorung',	'Stampfenbachstrasse 12/14',	7, null),
+  (8, 1,	8,null,	'Fachgruppe Analytik',	'Carbahaus',	8, null),
+  (9, 4, 1,	12,	'Liegenschaftenentwässerung',	'Stampfenbachstrasse 12/14',	9, null),
+  (10, 3, 1,	null,	'Kerntechnik',	'Stampfenbachstrasse 12/14',	10, null);
 
 -- insert into
   -- personen(id, vorname, name)
