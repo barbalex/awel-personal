@@ -103,6 +103,7 @@ create table personen (
   bemerkungen text,
   beschaeftigungsgrad integer,
   mutationNoetig integer default 0,
+  -- ab jetzt: Mutation
   mutationArt text references mutationArtWerte(value) on update cascade on delete no action,
   telefonUebernommenVon integer references personen(id) on update cascade on delete no action,
   rufnummer text,
@@ -114,6 +115,7 @@ create table personen (
   bueroWechselPer text,
   kostenstellenAenderungPer text,
   itMutationBemerkungen text,
+  -- Ende Mutation
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT
 );
