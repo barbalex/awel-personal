@@ -102,6 +102,12 @@ const Stammdaten = () => {
           <DropdownItem name="anredeWerte" onClick={onClickStatusTable}>
             Anrede
           </DropdownItem>
+          <DropdownItem
+            name="anwesenheitstagWerte"
+            onClick={onClickStatusTable}
+          >
+            Anwesenheits-Tage
+          </DropdownItem>
           <DropdownItem name="etikettWerte" onClick={onClickStatusTable}>
             Etikett
           </DropdownItem>

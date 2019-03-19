@@ -205,6 +205,7 @@ const PersonPrint = ({ activeId }) => {
     sektionen,
     bereiche,
     etiketten,
+    anwesenheitstage,
     funktionen,
     kaderFunktionen,
   } = store
@@ -217,6 +218,13 @@ const PersonPrint = ({ activeId }) => {
       .filter(w => !!w.etikett)
       .filter(p => p.deleted === 0)
       .map(e => e.etikett),
+  )
+  const myAnwesenheitstage = useMemo(() =>
+    anwesenheitstage
+      .filter(e => e.idPerson === activeId)
+      .filter(w => !!w.tag)
+      .filter(p => p.deleted === 0)
+      .map(e => e.tag),
   )
   const myFunktionen = useMemo(() =>
     funktionen
@@ -296,6 +304,10 @@ const PersonPrint = ({ activeId }) => {
               <InputValue
                 value={person.beschaeftigungsgrad}
                 label="Beschäftigungsgrad (%)"
+              />
+              <InputValue
+                label="Anwesenheitstage"
+                value={myAnwesenheitstage.join(', ')}
               />
               <InputValue value={person.standort} label="Standort" />
               <InputValue value={person.bueroNr} label="Büro Nr." />

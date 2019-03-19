@@ -40,6 +40,11 @@ export default [
     parentModel: 'etiketten',
   },
   {
+    table: 'anwesenheitstage',
+    model: 'Anwesenheitstag',
+    parentModel: 'anwesenheitstage',
+  },
+  {
     table: 'statusWerte',
     model: 'StatusWert',
     parentModel: 'statusWerte',
@@ -88,6 +93,11 @@ export default [
     table: 'etikettWerte',
     model: 'EtikettWert',
     parentModel: 'etikettWerte',
+  },
+  {
+    table: 'anwesenheitstagWerte',
+    model: 'AnwesenheitstagWert',
+    parentModel: 'anwesenheitstagWerte',
   },
   {
     table: 'landWerte',

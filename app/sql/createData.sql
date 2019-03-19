@@ -202,6 +202,15 @@ values
   ('Mountainbiker', 2);
 
 insert into
+  anwesenheitstagWerte(value, sort)
+values
+  ('Montag', 1),
+  ('Dienstag', 2),
+  ('Mittwoch', 3),
+  ('Donnerstag', 4),
+  ('Freitag', 5);
+
+insert into
   mutationArtWerte(value)
 values
   ('test 1'),

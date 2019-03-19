@@ -70,6 +70,14 @@ export default ({ store }) =>
       return p
     })
     .map(p => {
+      const anwesenheitstage = store.anwesenheitstage
+        .filter(a => a.idPerson === p.id)
+        .map(f => f.tag)
+        .join(', ')
+      p.anwesenheitstage = anwesenheitstage
+      return p
+    })
+    .map(p => {
       const telefone = store.telefones
         .filter(a => a.idPerson === p.id)
         .map(f => `${f.nr || '(keine Nummer)'} (${f.typ || 'kein Typ'})`)

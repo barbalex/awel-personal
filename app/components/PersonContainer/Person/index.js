@@ -113,6 +113,7 @@ const Person = ({ activeId, dimensions }) => {
     sektionen,
     bereiche,
     etiketten,
+    anwesenheitstage,
     funktionen,
     kaderFunktionen,
     showDeleted,
@@ -120,6 +121,7 @@ const Person = ({ activeId, dimensions }) => {
     statusWerte,
     anredeWerte,
     etikettWerte,
+    anwesenheitstagWerte,
     funktionWerte,
     kaderFunktionWerte,
     landWerte,
@@ -127,6 +129,7 @@ const Person = ({ activeId, dimensions }) => {
     showFilter,
     filterPerson,
     filterEtikett,
+    filterAnwesenheitstage,
     filterFunktion,
     filterKaderFunktion,
     existsFilter,
@@ -280,6 +283,48 @@ const Person = ({ activeId, dimensions }) => {
       })
     },
     [filterEtikett],
+  )
+
+  const addAnwesenheitstag = useCallback(
+    anwesenheitstag => {
+      if (showFilter) {
+        setFilter({
+          model: 'filterAnwesenheitstage',
+          value: { ...filterAnwesenheitstage, ...{ anwesenheitstag } },
+        })
+      } else {
+        store.addAnwesenheitstag(anwesenheitstag)
+      }
+    },
+    [showFilter, filterAnwesenheitstage],
+  )
+  const deleteAnwesenheitstag = useCallback(
+    anwesenheitstag => {
+      if (showFilter) {
+        setFilter({
+          model: 'filterAnwesenheitstage',
+          value: { ...filterAnwesenheitstage, ...{ anwesenheitstag: null } },
+        })
+      } else {
+        store.deleteAnwesenheitstag(anwesenheitstag)
+      }
+    },
+    [filterAnwesenheitstage, showFilter],
+  )
+  const saveToDbAnwesenheitstage = useCallback(
+    ({ value }) => {
+      if (value) {
+        return setFilter({
+          model: 'filterAnwesenheitstage',
+          value: { ...filterAnwesenheitstage, ...{ anwesenheitstag: value } },
+        })
+      }
+      setFilter({
+        model: 'filterAnwesenheitstage',
+        value: { ...filterAnwesenheitstage, ...{ anwesenheitstag: null } },
+      })
+    },
+    [filterAnwesenheitstage],
   )
 
   const addFunktion = useCallback(
@@ -454,6 +499,14 @@ const Person = ({ activeId, dimensions }) => {
         value: w.value,
       })),
   )
+  const anwesenheitstageOptions = useMemo(() =>
+    sortBy(anwesenheitstagWerte, ['sort', 'value'])
+      .filter(p => p.deleted === 0)
+      .map(w => ({
+        label: w.value,
+        value: w.value,
+      })),
+  )
   const funktionenOptions = useMemo(() =>
     sortBy(funktionWerte, ['sort', 'value'])
       .filter(p => p.deleted === 0)
@@ -493,6 +546,15 @@ const Person = ({ activeId, dimensions }) => {
       .map(e => ({
         label: e.etikett,
         value: e.etikett,
+      })),
+  )
+  const myAnwesenheitstage = useMemo(() =>
+    sortBy(anwesenheitstage.filter(e => e.idPerson === activeId), 'tag')
+      .filter(w => !!w.tag)
+      .filter(p => p.deleted === 0)
+      .map(e => ({
+        label: e.tag,
+        value: e.tag,
       })),
   )
   const myFunktionen = useMemo(() =>
@@ -677,6 +739,30 @@ const Person = ({ activeId, dimensions }) => {
               error={errors.beschaeftigungsgrad}
               row={false}
             />
+            {showFilter ? (
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}anwesenheitstag`}
+                value={filterAnwesenheitstage.anwesenheitstage}
+                field="anwesenheitstage"
+                label="Anwesenheitstage"
+                options={anwesenheitstageOptions}
+                saveToDb={saveToDbAnwesenheitstage}
+                error={errors.anwesenheitstage}
+                row={false}
+              />
+            ) : (
+              <SelectMulti
+                key={`${personId}${existsFilter ? 1 : 0}anwesenheitstage`}
+                value={myAnwesenheitstage}
+                field="anwesenheitstage"
+                label="Anwesenheitstage"
+                options={anwesenheitstageOptions}
+                add={addAnwesenheitstag}
+                remove={deleteAnwesenheitstag}
+                error={errors.anwesenheitstage}
+                row={false}
+              />
+            )}
             <Select
               key={`${personId}${existsFilter ? 1 : 0}standort`}
               value={person.standort}
@@ -751,30 +837,6 @@ const Person = ({ activeId, dimensions }) => {
             />
             {showFilter ? (
               <Select
-                key={`${personId}${existsFilter ? 1 : 0}kaderFunktion`}
-                value={filterKaderFunktion.funktion}
-                field="funktion"
-                label="Kader-&shy;Funktion"
-                options={kaderFunktionenOptions}
-                saveToDb={saveToDbKaderFunktion}
-                error={errors.kaderFunktion}
-                row={false}
-              />
-            ) : (
-              <SelectMulti
-                key={`${personId}${existsFilter ? 1 : 0}kaderFunktion`}
-                value={myKaderFunktionen}
-                field="funktion"
-                label="Kader-&shy;Funktio&shy;nen"
-                options={kaderFunktionenOptions}
-                add={addKaderFunktion}
-                remove={deleteKaderFunktion}
-                error={errors.kaderFunktion}
-                row={false}
-              />
-            )}
-            {showFilter ? (
-              <Select
                 key={`${personId}${existsFilter ? 1 : 0}funktion`}
                 value={filterFunktion.funktion}
                 field="funktion"
@@ -794,6 +856,30 @@ const Person = ({ activeId, dimensions }) => {
                 add={addFunktion}
                 remove={deleteFunktion}
                 error={errors.funktion}
+                row={false}
+              />
+            )}
+            {showFilter ? (
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}kaderFunktion`}
+                value={filterKaderFunktion.funktion}
+                field="funktion"
+                label="Kader-&shy;Funktion"
+                options={kaderFunktionenOptions}
+                saveToDb={saveToDbKaderFunktion}
+                error={errors.kaderFunktion}
+                row={false}
+              />
+            ) : (
+              <SelectMulti
+                key={`${personId}${existsFilter ? 1 : 0}kaderFunktion`}
+                value={myKaderFunktionen}
+                field="funktion"
+                label="Kader-&shy;Funktio&shy;nen"
+                options={kaderFunktionenOptions}
+                add={addKaderFunktion}
+                remove={deleteKaderFunktion}
+                error={errors.kaderFunktion}
                 row={false}
               />
             )}

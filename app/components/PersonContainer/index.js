@@ -17,6 +17,7 @@ import fetchAbteilungen from '../../src/fetchAbteilungen'
 import fetchBereiche from '../../src/fetchBereiche'
 import fetchSektionen from '../../src/fetchSektionen'
 import fetchEtiketten from '../../src/fetchEtiketten'
+import fetchAnwesenheitstage from '../../src/fetchAnwesenheitstage'
 import fetchLinks from '../../src/fetchLinks'
 import fetchSchluessel from '../../src/fetchSchluessel'
 import fetchMobileAbos from '../../src/fetchMobileAbos'
@@ -68,7 +69,9 @@ const PersonContainer = () => {
     fetchWerte({ db, store, table: 'funktionWerte' })
     fetchWerte({ db, store, table: 'kaderFunktionWerte' })
     fetchEtiketten({ db, store })
+    fetchAnwesenheitstage({ db, store })
     fetchWerte({ db, store, table: 'etikettWerte' })
+    fetchWerte({ db, store, table: 'anwesenheitstagWerte' })
     fetchWerte({ db, store, table: 'landWerte' })
     fetchWerte({ db, store, table: 'mutationArtWerte' })
     fetchWerte({ db, store, table: 'standortWerte' })

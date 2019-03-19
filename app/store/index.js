@@ -15,6 +15,7 @@ import Settings from './Settings'
 import Bereich from './Bereich'
 import Sektion from './Sektion'
 import Etikett from './Etikett'
+import Anwesenheitstag from './Anwesenheitstag'
 import AnredeWert from './AnredeWert'
 import FunktionWert from './FunktionWert'
 import KaderFunktionWert from './KaderFunktionWert'
@@ -31,6 +32,7 @@ import TelefonTypWert from './TelefonTypWert'
 import SchluesselTypWert from './SchluesselTypWert'
 import SchluesselAnlageWert from './SchluesselAnlageWert'
 import EtikettWert from './EtikettWert'
+import AnwesenheitstagWert from './AnwesenheitstagWert'
 import LandWert from './LandWert'
 import MutationartWert from './MutationartWert'
 import StandortWert from './StandortWert'
@@ -46,6 +48,7 @@ export default db =>
       deletionMessage: types.maybeNull(types.string),
       deletionTitle: types.maybeNull(types.string),
       etiketten: types.array(Etikett),
+      anwesenheitstage: types.array(Anwesenheitstag),
       anredeWerte: types.array(AnredeWert),
       funktionWerte: types.array(FunktionWert),
       kaderFunktionWerte: types.array(KaderFunktionWert),
@@ -62,6 +65,7 @@ export default db =>
       schluesselTypWerte: types.array(SchluesselTypWert),
       schluesselAnlageWerte: types.array(SchluesselAnlageWert),
       etikettWerte: types.array(EtikettWert),
+      anwesenheitstagWerte: types.array(AnwesenheitstagWert),
       landWerte: types.array(LandWert),
       mutationArtWerte: types.array(MutationartWert),
       standortWerte: types.array(StandortWert),
@@ -91,6 +95,7 @@ export default db =>
       filterBereich: types.optional(Bereich, {}),
       filterSektion: types.optional(Sektion, {}),
       filterEtikett: types.optional(Etikett, {}),
+      filterAnwesenheitstage: types.optional(Anwesenheitstag, {}),
       filterLink: types.optional(Link, {}),
       filterSchluessel: types.optional(Schluessel, {}),
       filterMobileAbo: types.optional(MobileAbo, {}),
@@ -112,6 +117,7 @@ export default db =>
           filterBereich,
           filterSektion,
           filterEtikett,
+          filterAnwesenheitstage,
           filterLink,
           filterSchluessel,
           filterMobileAbo,
@@ -127,6 +133,7 @@ export default db =>
             ...Object.values(filterBereich),
             ...Object.values(filterSektion),
             ...Object.values(filterEtikett),
+            ...Object.values(filterAnwesenheitstage),
             ...Object.values(filterLink),
             ...Object.values(filterSchluessel),
             ...Object.values(filterMobileAbo),
@@ -144,6 +151,7 @@ export default db =>
           filterFunktion,
           filterKaderFunktion,
           filterEtikett,
+          filterAnwesenheitstage,
           filterPerson,
         } = self
         let { personen } = self
@@ -267,6 +275,26 @@ export default db =>
             })
           }
         })
+
+        let anwesenheitstage = self.anwesenheitstage.filter(p => {
+          if (!self.showDeleted) return p.deleted === 0
+          return true
+        })
+        let anwesenheitstageIsFiltered = false
+        Object.keys(filterAnwesenheitstage).forEach(key => {
+          if (filterAnwesenheitstage[key]) {
+            anwesenheitstageIsFiltered = true
+            anwesenheitstage = anwesenheitstage.filter(p => {
+              if (!filterAnwesenheitstage[key]) return true
+              if (!p[key]) return false
+              return p[key]
+                .toString()
+                .toLowerCase()
+                .includes(filterAnwesenheitstage[key].toString().toLowerCase())
+            })
+          }
+        })
+
         personen = personen
           .filter(p => {
             if (!self.showDeleted) return p.deleted === 0
@@ -295,6 +323,10 @@ export default db =>
           .filter(p => {
             if (!etikettenIsFiltered) return true
             return etiketten.filter(s => s.idPerson === p.id).length > 0
+          })
+          .filter(p => {
+            if (!anwesenheitstageIsFiltered) return true
+            return anwesenheitstage.filter(s => s.idPerson === p.id).length > 0
           })
           .filter(p => {
             const { filterFulltext } = self
@@ -357,6 +389,15 @@ export default db =>
                     .map(e => e[1]),
                 ),
             )
+            const anwesenheitstagValues = flatten(
+              self.anwesenheitstage
+                .filter(s => s.idPerson === p.id)
+                .map(s =>
+                  Object.entries(s)
+                    .filter(e => e[0] !== 'id')
+                    .map(e => e[1]),
+                ),
+            )
             return (
               [
                 ...personValues,
@@ -366,6 +407,7 @@ export default db =>
                 funktionValues,
                 kaderFunktionValues,
                 etikettValues,
+                anwesenheitstagValues,
               ].filter(v => {
                 if (!v) return false
                 if (!v.toString()) return false
@@ -633,6 +675,7 @@ export default db =>
           self.filterBereich = {}
           self.filterSektion = {}
           self.filterEtikett = {}
+          self.filterAnwesenheitstage = {}
           self.filterLink = {}
           self.filterSchluessel = {}
           self.filterKostenstelle = {}
@@ -691,6 +734,11 @@ export default db =>
         setEtiketten(etiketten) {
           self.watchMutations = false
           self.etiketten = etiketten
+          self.watchMutations = true
+        },
+        setAnwesenheitstage(anwesenheitstag) {
+          self.watchMutations = false
+          self.anwesenheitstag = anwesenheitstag
           self.watchMutations = true
         },
         setLinks(links) {
@@ -1304,6 +1352,55 @@ export default db =>
           )
           self.updatePersonsMutation(idPerson)
         },
+        addAnwesenheitstag(tag) {
+          // grab idPerson from location
+          const { location } = self
+          const idPerson = ifIsNumericAsNumber(location[1])
+          // 1. create new anwesenheitstag in db, returning id
+          let info
+          try {
+            info = db
+              .prepare(
+                'insert into anwesenheitstage (idPerson, tag, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
+              )
+              .run(idPerson, tag, self.username, Date.now())
+          } catch (error) {
+            self.addError(error)
+            return console.log(error)
+          }
+          // 2. add to store
+          self.anwesenheitstage.push({
+            id: info.lastInsertRowid,
+            tag,
+            idPerson,
+            letzteMutationUser: self.username,
+            letzteMutationZeit: Date.now(),
+          })
+          self.updatePersonsMutation(idPerson)
+        },
+        deleteAnwesenheitstag(tag) {
+          // grab idPerson from location
+          const { location } = self
+          const idPerson = ifIsNumericAsNumber(location[1])
+          // write to db
+          try {
+            db.prepare(
+              'delete from anwesenheitstage where idPerson = ? and tag = ?',
+            ).run(idPerson, tag)
+          } catch (error) {
+            self.addError(error)
+            return console.log(error)
+          }
+          // write to store
+          self.anwesenheitstage.splice(
+            findIndex(
+              self.anwesenheitstage,
+              e => e.idPerson === idPerson && e.tag === tag,
+            ),
+            1,
+          )
+          self.updatePersonsMutation(idPerson)
+        },
         addLink(url) {
           // grab idPerson from location
           const { location } = self
@@ -1655,6 +1752,7 @@ export default db =>
               'funktionen',
               'kaderFunktionen',
               'etiketten',
+              'anwesenheitstage',
             ].includes(parentModel)
           ) {
             // set persons letzteMutation

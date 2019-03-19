@@ -11,6 +11,7 @@ export default ({ store }) => {
     funktionen,
     kaderFunktionen,
     etiketten,
+    anwesenheitstage,
     statusWerte,
     anredeWerte,
     kostenstelleWerte,
@@ -22,6 +23,7 @@ export default ({ store }) => {
     kaderFunktionWerte,
     mobileAboKostenstelleWerte,
     etikettWerte,
+    anwesenheitstagWerte,
     landWerte,
     mutationArtWerte,
     standortWerte,
@@ -49,6 +51,9 @@ export default ({ store }) => {
   )
   onPatch(etiketten, (patch, inversePatch) =>
     addMutation({ tableName: 'etiketten', patch, inversePatch }),
+  )
+  onPatch(anwesenheitstage, (patch, inversePatch) =>
+    addMutation({ tableName: 'anwesenheitstage', patch, inversePatch }),
   )
   onPatch(statusWerte, (patch, inversePatch) =>
     addMutation({ tableName: 'statusWerte', patch, inversePatch }),
@@ -86,6 +91,9 @@ export default ({ store }) => {
   )
   onPatch(etikettWerte, (patch, inversePatch) =>
     addMutation({ tableName: 'etikettWerte', patch, inversePatch }),
+  )
+  onPatch(anwesenheitstagWerte, (patch, inversePatch) =>
+    addMutation({ tableName: 'anwesenheitstagWerte', patch, inversePatch }),
   )
   onPatch(landWerte, (patch, inversePatch) =>
     addMutation({ tableName: 'landWerte', patch, inversePatch }),

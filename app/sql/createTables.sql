@@ -381,6 +381,26 @@ create index iEtikettEtikett on etiketten (etikett);
 
 -------------------------------------------
 
+drop table if exists anwesenheitstage;
+create table anwesenheitstage (
+  id integer primary key autoincrement,
+  deleted integer default 0,
+  idPerson integer references personen(id) on update cascade on delete cascade,
+  tag text references anwesenheitstagWerte(value) on update cascade on delete cascade,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT,
+  unique(idPerson, tag)
+);
+
+drop index if exists iAnwesenheitstagDeleted;
+create index iAnwesenheitstagDeleted on anwesenheitstage (deleted);
+drop index if exists iAnwesenheitstagIdPerson;
+create index iAnwesenheitstagIdPerson on anwesenheitstage (idPerson);
+drop index if exists iAnwesenheitstagTag;
+create index iAnwesenheitstagTag on anwesenheitstage (tag);
+
+-------------------------------------------
+
 drop table if exists mutations;
 create table mutations (
   id integer primary key autoincrement,
@@ -597,6 +617,26 @@ drop index if exists iEtikettWerteHistorisch;
 create index iEtikettWerteHistorisch on etikettWerte (historic);
 drop index if exists iEtikettWerteSort;
 create index iEtikettWerteSort on etikettWerte (sort);
+
+-------------------------------------------
+
+drop table if exists anwesenheitstagWerte;
+create table anwesenheitstagWerte (
+  id integer primary key autoincrement,
+  value text unique,
+  deleted integer default 0,
+  historic integer default 0,
+  sort integer,
+  letzteMutationZeit TEXT,
+  letzteMutationUser TEXT
+);
+
+drop index if exists iAnwesenheitstagWerteAnwesenheitstag;
+create index iAnwesenheitstagWerteAnwesenheitstag on anwesenheitstagWerte (value);
+drop index if exists iAnwesenheitstagWerteHistorisch;
+create index iAnwesenheitstagWerteHistorisch on anwesenheitstagWerte (historic);
+drop index if exists iAnwesenheitstagWerteSort;
+create index iAnwesenheitstagWerteSort on anwesenheitstagWerte (sort);
 
 -------------------------------------------
 
