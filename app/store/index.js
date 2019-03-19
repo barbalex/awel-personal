@@ -736,9 +736,9 @@ export default db =>
           self.etiketten = etiketten
           self.watchMutations = true
         },
-        setAnwesenheitstage(anwesenheitstag) {
+        setAnwesenheitstage(anwesenheitstage) {
           self.watchMutations = false
-          self.anwesenheitstag = anwesenheitstag
+          self.anwesenheitstage = anwesenheitstage
           self.watchMutations = true
         },
         setLinks(links) {
