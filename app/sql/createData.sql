@@ -1,3 +1,14 @@
+PRAGMA foreign_keys = OFF;
+
+insert into
+  landWerte(id, value)
+values
+  (1, 'Schweiz'),
+  (2, 'Deutschland'),
+  (3, 'Italien'),
+  (4, 'Frankreich'),
+  (5, 'Österreich');
+
 insert into
   kostenstelleWerte(value)
 values
@@ -75,55 +86,60 @@ values
 insert into
   sektionen(id, name, kurzzeichen, abteilung, kostenstelle)
 values
-  (1, 'Abfallwirtschaft', 'aw', 1, '851210'), -- Abfallwirtschaft und Betriebe
-  (2, 'Altlasten', 'al', 1, '851220'), -- Abfallwirtschaft und Betriebe
-  (3, 'Betrieblicher Umweltschutz und Störfallvorsorge', 'bus', 1, '851230'), -- Abfallwirtschaft und Betriebe
-  (4, 'Biosicherheit', '', 1, '851240'), -- Abfallwirtschaft und Betriebe
-  (5, 'Energieberatung', '', 3, '853830'), -- Energie
-  (6, 'Energietechnik', '', 3, '853810'), -- Energie
-  (7, 'Energiewirtschaft', '', 3, '853820'), -- Energie
-  (8, 'Oberflächengewässerschutz', '', 4, '852810'), -- Gewässerschutz
-  (9, 'Abwasserreinigungsanlagen', '', 4, '852820'), -- Gewässerschutz
-  (10, 'Grundwasser und Wasserversorgung', '', 4, '852840'), -- Gewässerschutz
-  (11, 'Bevölkerungsschutz', '', 4, '852850'), -- Gewässerschutz
-  (12, 'Siedlungsentwässerung', '', 4, '852830'), -- Gewässerschutz
-  (13, 'Monitoring', '', 5, '851410'), -- Luft
-  (14, 'Emissionskontrolle', '', 5, '851440'), -- Luft
-  (15, 'Klima und Mobilität', '', 5, '851420'), -- Luft
-  (16, 'Strahlung', '', 5, '851430'), -- Luft
-  (17, 'Beratung und Bewilligungen', '', 7, '852770'), -- Wasserbau
-  (18, 'Planung', '', 7, '852730'), -- Wasserbau
-  (19, 'Gewässernutzung', '', 7, '852740'), -- Wasserbau
-  (20, 'Bau', '', 7, '852710'), -- Wasserbau
-  (21, 'Gewässerunterhalt', 'gu', 7, '852760'); -- Wasserbau
-
-  -- ('Tankanlagen und Transportgewerbe', '', 1, '851250'), -- Abfallwirtschaft und Betriebe
-  -- ('Finanz und Rechnungswesen', '', 2, ''), -- Dienste
-  -- ('Controllerdienst', '', 2, ''), -- Dienste
-  -- ('Bearbeitung von Rechtsfragen', '', 6, ''), -- Recht
-  -- ('Rekurse und Beschwerden', '', 6, ''), -- Recht
-  -- ('Juristische Beratung', '', 6, ''), -- Recht
-  -- ('Rechtliche Vertretung des Amtes nach Aussen', '', 6, ''), -- Recht
-  -- ('Kernenergietechnik/Radioaktive Abfälle', '', 3, ''), -- Energie
-  -- ('Tiefenlager', '', 3, ''), -- Energie
-  -- ('Qualitäts- und Umweltmanagement', '', 2, ''), -- Dienste
-  -- ('Informatik', '', 2, ''), -- Dienste
-  -- ('Internet', '', 2, ''), -- Dienste
-  -- ('Kanzlei AWEL', '', 2, ''), -- Dienste
+  (1, 'Abfallwirtschaft', 'aw', 1, '851210'),
+  (2, 'Altlasten', 'al', 1, '851220'),
+  (3, 'Betrieblicher Umweltschutz und Störfallvorsorge', 'bus', 1, '851230'),
+  (4, 'Biosicherheit', '', 1, '851240'),
+  (5, 'Energieberatung', '', 3, '853830'),
+  (6, 'Energietechnik', '', 3, '853810'),
+  (7, 'Energiewirtschaft', '', 3, '853820'),
+  (8, 'Oberflächengewässerschutz', '', 4, '852810'),
+  (9, 'Abwasserreinigungsanlagen', '', 4, '852820'),
+  (10, 'Grundwasser und Wasserversorgung', '', 4, '852840'),
+  (11, 'Bevölkerungsschutz', '', 4, '852850'),
+  (12, 'Siedlungsentwässerung', '', 4, '852830'),
+  (13, 'Monitoring', '', 5, '851410'),
+  (14, 'Emissionskontrolle', '', 5, '851440'),
+  (15, 'Klima und Mobilität', '', 5, '851420'),
+  (16, 'Strahlung', '', 5, '851430'),
+  (17, 'Beratung und Bewilligungen', '', 7, '852770'),
+  (18, 'Planung', '', 7, '852730'),
+  (19, 'Gewässernutzung', '', 7, '852740'),
+  (20, 'Bau', '', 7, '852710'),
+  (21, 'Gewässerunterhalt', 'gu', 7, '852760');
 
 insert into
-  personen(id, vorname, name)
+  bereiche(id, abteilung, amt, sektion, name, standort, leiter)
 values
-(1, 'Werner',	'Haas'),
-(2, 'Erich',	'Hess'),
-(3, 'Thomas',	'Hofmann'),
-(4, 'Guido',	'Merletti'),
-(5, 'Peter',	'Wyler'),
-(6, 'Fritz',	'Studer'),
-(7, 'Paul',	'Ruckstuhl'),
-(8, 'Götz',	'Christian'),
-(9, 'Beat',	'Koller'),
-(10, 'Thomas',	'Flüeler');
+  (1, 7, 1,	20,	'Betrieb Sihl',	'Werkhof Adliswil',	1),
+  (2, 7, 1,	20,	'Betrieb Reuss / Limmat', 'Werkhof Obfelden',	2),
+  (3, 7, 1,	20,	'Betrieb Töss',	'Werkhof Hettlingen',	3),
+  (4, 7, 1,	20,	'Betrieb Thur / Rhein',	'Werkhof Andelfingen',	4),
+  (5, 7, 1,	20,	'Betrieb Glatt',	'Werkhof Glattbrugg',	5),
+  (6, 7, 1,	20,	'Betrieb Oberland / Seen',	'Werkhof Hinwil',	6),
+  (7, 4, 1,	10,	'Wasserversorung',	'Stampfenbachstrasse 12/14',	7),
+  (8, 1,	8,null,	'Fachgruppe Analytik',	'Carbahaus',	8),
+  (9, 4, 1,	12,	'Liegenschaftenentwässerung',	'Stampfenbachstrasse 12/14',	9),
+  (10, 3, 1,	null,	'Kerntechnik',	'Stampfenbachstrasse 12/14',	10);
+
+-- insert into
+  -- personen(id, vorname, name)
+-- values
+-- (1, 'Werner',	'Haas'),
+-- (2, 'Erich',	'Hess'),
+-- (3, 'Thomas',	'Hofmann'),
+-- (4, 'Guido',	'Merletti'),
+-- (5, 'Peter',	'Wyler'),
+-- (6, 'Fritz',	'Studer'),
+-- (7, 'Paul',	'Ruckstuhl'),
+-- (8, 'Götz',	'Christian'),
+-- (9, 'Beat',	'Koller'),
+-- (10, 'Thomas',	'Flüeler');
+insert into personen (id,amt,abteilung,sektion,bereich,anrede,name,vorname,adresse,plz,land,ort,eintrittDatum,austrittDatum,bemerkungen,status,bueroNr,kurzzeichen) select id,amt,abteilung,sektion,bereich,anrede,name,vorname,adresse,plz,land,ort,eintrittDatum,austrittDatum,bemerkungen,status,bueroNr,kurzzeichen from personen_import;
+drop table personen_import;
+
+insert into telefones (idPerson,nr,typ) select idPerson,nr,typ from telefones_import;
+drop table telefones_import;
 
 insert into
   settings(id,personMutationWeiterleiten)
@@ -186,33 +202,10 @@ values
   ('Mountainbiker', 2);
 
 insert into
-  landWerte(value)
-values
-  ('Schweiz'),
-  ('Deutschland'),
-  ('Italien'),
-  ('Frankreich'),
-  ('Österreich');
-
-insert into
   mutationArtWerte(value)
 values
   ('test 1'),
   ('test 2');
-
-insert into
-  bereiche(id, abteilung, amt, sektion, name, standort, leiter)
-values
-(1, 7, 1,	20,	'Betrieb Sihl',	'Werkhof Adliswil',	1),
-(2, 7, 1,	20,	'Betrieb Reuss / Limmat', 'Werkhof Obfelden',	2),
-(3, 7, 1,	20,	'Betrieb Töss',	'Werkhof Hettlingen',	3),
-(4, 7, 1,	20,	'Betrieb Thur / Rhein',	'Werkhof Andelfingen',	4),
-(5, 7, 1,	20,	'Betrieb Glatt',	'Werkhof Glattbrugg',	5),
-(6, 7, 1,	20,	'Betrieb Oberland / Seen',	'Werkhof Hinwil',	6),
-(7, 4, 1,	10,	'Wasserversorung',	'Stampfenbachstrasse 12/14',	7),
-(4, 1,	8,	'Fachgruppe Analytik',	'Carbahaus',	8),
-(9, 4, 1,	12,	'Liegenschaftenentwässerung',	'Stampfenbachstrasse 12/14',	9),
-(10, 3, 1,	null,	'Kerntechnik',	'Stampfenbachstrasse 12/14',	10);
 
 --insert into
 --  bereiche(name)
@@ -229,3 +222,5 @@ values
 --  ('Informatik'),
 --  ('Internet'),
 --  ('Kanzlei AWEL');
+
+PRAGMA foreign_keys = ON;
