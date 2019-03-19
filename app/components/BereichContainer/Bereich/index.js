@@ -180,15 +180,6 @@ const Bereich = ({ activeId }) => {
           error={errors.amt}
         />
         <Select
-          key={`${bereichId}${existsFilter ? 1 : 0}sektion`}
-          value={bereich.sektion}
-          field="sektion"
-          label="Sektion"
-          options={sektionOptions}
-          saveToDb={saveToDb}
-          error={errors.sektion}
-        />
-        <Select
           key={`${bereichId}${existsFilter ? 1 : 0}abteilung`}
           value={bereich.abteilung}
           field="abteilung"
@@ -196,6 +187,15 @@ const Bereich = ({ activeId }) => {
           options={abteilungOptions}
           saveToDb={saveToDb}
           error={errors.abteilung}
+        />
+        <Select
+          key={`${bereichId}${existsFilter ? 1 : 0}sektion`}
+          value={bereich.sektion}
+          field="sektion"
+          label="Sektion"
+          options={sektionOptions}
+          saveToDb={saveToDb}
+          error={errors.sektion}
         />
         <Input
           key={`${bereichId}kurzzeichen`}
