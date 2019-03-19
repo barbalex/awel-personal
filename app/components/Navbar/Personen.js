@@ -45,7 +45,6 @@ const Person = () => {
     },
     [location],
   )
-  // const addPerson = useCallback(() => addPerson())
   const deletePerson = useCallback(
     () => {
       const activePerson = personen.find(p => p.id === activeId)
