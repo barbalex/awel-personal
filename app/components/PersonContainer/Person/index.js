@@ -549,7 +549,11 @@ const Person = ({ activeId, dimensions }) => {
       })),
   )
   const myAnwesenheitstage = useMemo(() =>
-    sortBy(anwesenheitstage.filter(e => e.idPerson === activeId), 'tag')
+    sortBy(anwesenheitstage.filter(e => e.idPerson === activeId), e => {
+      const awWert = anwesenheitstagWerte.find(w => w.value === e.tag)
+      if (awWert && awWert.sort) return awWert.sort
+      return 1
+    })
       .filter(w => !!w.tag)
       .filter(p => p.deleted === 0)
       .map(e => ({
