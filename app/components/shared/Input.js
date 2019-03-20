@@ -36,8 +36,9 @@ const SharedInput = ({
       // save nulls if empty
       if (newValue === '') newValue = null
       // only save if value has changed
-      if (!newValue && !value && value !== 0 && newValue !== 0) return
-      if (newValue === value) return
+      if (!showFilter && (!newValue && !value && value !== 0 && newValue !== 0))
+        return
+      if (!showFilter && newValue === value) return
       saveToDb({ value: newValue, field })
     },
     [field],
