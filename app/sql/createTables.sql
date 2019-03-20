@@ -103,6 +103,7 @@ create table personen (
   bemerkungen text,
   beschaeftigungsgrad integer,
   mutationNoetig integer default 0,
+  mutationFrist text,
   -- ab jetzt: Mutation
   mutationArt text references mutationArtWerte(value) on update cascade on delete no action,
   telefonUebernommenVon integer references personen(id) on update cascade on delete no action,
@@ -126,6 +127,8 @@ drop index if exists iPersonName;
 create index iPersonName on personen (name);
 drop index if exists iPersonVorname;
 create index iPersonVorname on personen (vorname);
+drop index if exists iPersonMutationFrist;
+create index iPersonMutationFrist on personen (mutationFrist);
 
 -------------------------------------------
 
@@ -141,6 +144,7 @@ create table aemter (
   leiter integer REFERENCES personen(id) on update cascade on delete restrict,
   kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
   mutationNoetig integer default 0,
+  mutationFrist text,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT
 );
@@ -165,6 +169,7 @@ create table abteilungen (
   leiter integer REFERENCES personen(id) on update cascade on delete restrict,
   kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
   mutationNoetig integer default 0,
+  mutationFrist text,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT,
   unique(amt, name)
@@ -190,6 +195,7 @@ create table sektionen (
   leiter integer REFERENCES personen(id) on update cascade on delete restrict,
   kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
   mutationNoetig integer default 0,
+  mutationFrist text,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT,
   unique(abteilung, name)
@@ -217,6 +223,7 @@ create table bereiche (
   leiter integer REFERENCES personen(id) on update cascade on delete restrict,
   kostenstelle text references kostenstelleWerte(value) on update cascade on delete no action,
   mutationNoetig integer default 0,
+  mutationFrist text,
   letzteMutationZeit TEXT,
   letzteMutationUser TEXT
 );
