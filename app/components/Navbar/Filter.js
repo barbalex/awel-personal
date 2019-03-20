@@ -16,10 +16,18 @@ import { FaTimes, FaEdit, FaFilter } from 'react-icons/fa'
 
 import storeContext from '../../storeContext'
 
-const VolltextFilterRemoveAddon = styled(InputGroupText)`
-  background-color: white !important;
+const VolltextInput = styled(Input)`
+  background-color: ${props =>
+    props.existsfilter ? '#f7f791 !important' : '#e9ecef'};
 `
-const FilerIconContainer = styled.div`
+const VolltextFilterRemoveAddon = styled(InputGroupText)`
+  background-color: #f7f791 !important;
+`
+const StyledInputGroupText = styled(InputGroupText)`
+  background-color: ${props =>
+    props.existsfilter ? '#f7f791 !important' : '#e9ecef'};
+`
+const FilterIconContainer = styled.div`
   padding-right: 10px;
 `
 const StyledDropdown = styled(Dropdown)`
@@ -46,6 +54,7 @@ const Filter = () => {
     setFilterFulltext,
     setFilter,
     setShowMutationNoetig,
+    existsFilter,
   } = store
 
   const location = store.location.toJSON()
@@ -93,10 +102,11 @@ const Filter = () => {
   return (
     <div>
       <InputGroup>
-        <Input
+        <VolltextInput
           placeholder="Volltext filtern"
           onChange={onChangeFilterFulltext}
           value={filterFulltext || ''}
+          existsfilter={!!filterFulltext}
         />
         <InputGroupAddon addonType="append">
           {filterFulltext && (
@@ -107,10 +117,14 @@ const Filter = () => {
               <FaTimes />
             </VolltextFilterRemoveAddon>
           )}
-          <InputGroupText id="filterAddon" onClick={toggleShowFilter}>
-            <FilerIconContainer>
-              {store.showFilter ? <FaEdit /> : <FaFilter />}
-            </FilerIconContainer>
+          <StyledInputGroupText
+            id="filterAddon"
+            onClick={toggleShowFilter}
+            existsfilter={existsFilter}
+          >
+            <FilterIconContainer>
+              {showFilter ? <FaEdit /> : <FaFilter />}
+            </FilterIconContainer>
             {filterFulltext && (
               <UncontrolledTooltip
                 placement="left"
@@ -120,9 +134,9 @@ const Filter = () => {
               </UncontrolledTooltip>
             )}
             <UncontrolledTooltip placement="left" target="filterAddon">
-              {store.showFilter ? 'Daten bearbeiten' : 'Nach Felden filtern'}
+              {showFilter ? 'Daten bearbeiten' : 'Nach Feldern filtern'}
             </UncontrolledTooltip>
-            {store.existsFilter && (
+            {existsFilter && (
               <UncontrolledTooltip placement="left" target="emptyFilterAddon">
                 Filter leeren
               </UncontrolledTooltip>
@@ -141,11 +155,15 @@ const Filter = () => {
                 </DropdownItem>
               </DropdownMenu>
             </StyledDropdown>
-          </InputGroupText>
-          {store.existsFilter && (
-            <InputGroupText id="emptyFilterAddon" onClick={store.emptyFilter}>
+          </StyledInputGroupText>
+          {existsFilter && (
+            <StyledInputGroupText
+              id="emptyFilterAddon"
+              onClick={store.emptyFilter}
+              existsfilter={existsFilter}
+            >
               <FaTimes />
-            </InputGroupText>
+            </StyledInputGroupText>
           )}
         </InputGroupAddon>
       </InputGroup>
