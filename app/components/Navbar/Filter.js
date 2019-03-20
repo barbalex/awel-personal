@@ -39,7 +39,13 @@ const StyledDropdown = styled(Dropdown)`
 
 const Filter = () => {
   const store = useContext(storeContext)
-  const { showFilter, setShowFilter, filterFulltext, setFilterFulltext } = store
+  const {
+    showFilter,
+    setShowFilter,
+    filterFulltext,
+    setFilterFulltext,
+    setFilter,
+  } = store
 
   const [filterDropdownIsOpen, setFilterDropdownIsOpen] = useState(false)
 
@@ -57,7 +63,9 @@ const Filter = () => {
     },
     [filterDropdownIsOpen],
   )
-  const onClickAnstehendeMutationen = useCallback(() => console.log('TODO'))
+  const onClickAnstehendeMutationen = useCallback(() =>
+    setFilter({ model: 'filterPerson', value: { mutationNoetig: 1 } }),
+  )
 
   return (
     <div>
