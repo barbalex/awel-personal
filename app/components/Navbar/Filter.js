@@ -45,7 +45,11 @@ const Filter = () => {
     filterFulltext,
     setFilterFulltext,
     setFilter,
+    setShowMutationNoetig,
   } = store
+
+  const location = store.location.toJSON()
+  const activeLocation = location[0]
 
   const [filterDropdownIsOpen, setFilterDropdownIsOpen] = useState(false)
 
@@ -63,9 +67,28 @@ const Filter = () => {
     },
     [filterDropdownIsOpen],
   )
-  const onClickAnstehendeMutationen = useCallback(() =>
-    setFilter({ model: 'filterPerson', value: { mutationNoetig: 1 } }),
-  )
+  const onClickAnstehendeMutationen = useCallback(() => {
+    let model
+    switch (activeLocation) {
+      case 'Aemter':
+        model = 'filterAmt'
+        break
+      case 'Abteilungen':
+        model = 'filterAbteilung'
+        break
+      case 'Sektionen':
+        model = 'filterSektion'
+        break
+      case 'Bereiche':
+        model = 'filterBereich'
+        break
+      case 'Personen':
+      default:
+        model = 'filterPerson'
+    }
+    setFilter({ model, value: { mutationNoetig: 1 } })
+    setShowMutationNoetig(true)
+  }, [activeLocation])
 
   return (
     <div>
