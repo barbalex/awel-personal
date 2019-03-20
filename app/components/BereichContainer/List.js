@@ -12,6 +12,9 @@ const Container = styled.div`
   border-right: 1px solid rgb(46, 125, 50);
 `
 const Row = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   border-bottom: 1px solid rgba(46, 125, 50, 0.5);
   cursor: pointer;
   background-color: ${props => (props.active ? 'rgb(255, 250, 198)' : 'unset')};
@@ -26,20 +29,30 @@ const Row = styled.div`
     margin-top: -1px;
   }
 `
+const RowContainer = styled.div`
+  display: flex;
+`
 const Text = styled.div`
-  max-width: calc(100% - 30px - 36px);
-  max-width: ${props =>
-    `calc(100% ${props.nrOfSvgs ? ` - ${22 * props.nrOfSvgs}px` : ''})`};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  float: left;
+  flex-shrink: 1;
+  flex-grow: 1;
+`
+const Infos = styled.div`
+  display: flex;
+  flex-shrink: 0;
+  flex-grow: 1;
+  justify-content: flex-end;
 `
 const Svg = styled.div`
-  margin-top: -4px;
   margin-left: 4px;
-  float: right;
   font-size: large;
+  display: flex;
+`
+const MutationFrist = styled.div`
+  padding-right: 5px;
+  font-size: 1rem;
 `
 
 const BereichList = ({ dimensions, activeId }) => {
@@ -64,7 +77,6 @@ const BereichList = ({ dimensions, activeId }) => {
           const showDelSvg = row.deleted === 1
           const showMutationNoetigSvg =
             row.mutationNoetig === 1 && showMutationNoetig
-          const nrOfSvgs = row.deleted + (showMutationNoetigSvg ? 1 : 0)
 
           return (
             <Row
@@ -75,29 +87,45 @@ const BereichList = ({ dimensions, activeId }) => {
               }}
               active={!showFilter && activeId === row.id}
             >
-              <Text nrOfSvgs={nrOfSvgs}>{`${row.name || ''}`}</Text>
-              {showDelSvg && (
-                <Svg>
-                  <FaTrashAlt id={`deletedIcon${row.id}`} />
-                  <UncontrolledTooltip
-                    placement="bottom"
-                    target={`deletedIcon${row.id}`}
-                  >
-                    Dieser Bereich wurde gelöscht
-                  </UncontrolledTooltip>
-                </Svg>
-              )}
-              {showMutationNoetigSvg && (
-                <Svg>
-                  <FaRegEdit id={`mutationNoetig${row.id}`} />
-                  <UncontrolledTooltip
-                    placement="bottom"
-                    target={`mutationNoetig${row.id}`}
-                  >
-                    Handlungs-Bedarf
-                  </UncontrolledTooltip>
-                </Svg>
-              )}
+              <RowContainer>
+                <Text>{`${row.name || ''}`}</Text>
+                {showMutationNoetigSvg && (
+                  <Svg>
+                    {row.mutationFrist && (
+                      <>
+                        <MutationFrist id={`mutationFrist${row.id}`}>
+                          {row.mutationFrist}
+                        </MutationFrist>
+                        <UncontrolledTooltip
+                          placement="bottom"
+                          target={`mutationFrist${row.id}`}
+                        >
+                          Frist für Handlungs-Bedarf
+                        </UncontrolledTooltip>
+                      </>
+                    )}
+                    <FaRegEdit id={`mutationNoetig${row.id}`} />
+                    <UncontrolledTooltip
+                      placement="bottom"
+                      target={`mutationNoetig${row.id}`}
+                    >
+                      Handlungs-Bedarf vorhanden
+                    </UncontrolledTooltip>
+                  </Svg>
+                )}
+                {!showDelSvg && !showMutationNoetigSvg && ''}
+                {showDelSvg && (
+                  <Svg>
+                    <FaTrashAlt id={`deletedIcon${row.id}`} />
+                    <UncontrolledTooltip
+                      placement="bottom"
+                      target={`deletedIcon${row.id}`}
+                    >
+                      Dieser Bereich wurde gelöscht
+                    </UncontrolledTooltip>
+                  </Svg>
+                )}
+              </RowContainer>
             </Row>
           )
         }}

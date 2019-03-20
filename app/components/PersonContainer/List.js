@@ -47,7 +47,6 @@ const Infos = styled.div`
 `
 const Svg = styled.div`
   margin-left: 4px;
-  float: right;
   font-size: large;
   display: flex;
 `
