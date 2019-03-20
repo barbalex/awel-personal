@@ -447,21 +447,23 @@ const PersonMutation = ({ activeId, dimensions }) => {
               error={errors.vorgesetztId}
               row={true}
             />
-            <Input
-              key={`${personId}kostenstelle`}
-              value={person.kostenstelle}
-              field="kostenstelle"
-              label="Kosten&shy;stelle"
-              saveToDb={() =>
-                setErrors({
-                  ...errors,
-                  kostenstelle:
-                    'Diese Feld wird berechnet und kann nicht verändert werden',
-                })
-              }
-              error={errors.kostenstelle}
-              row={true}
-            />
+            {!showFilter && (
+              <Input
+                key={`${personId}kostenstelle`}
+                value={person.kostenstelle}
+                field="kostenstelle"
+                label="Kosten&shy;stelle"
+                saveToDb={() =>
+                  setErrors({
+                    ...errors,
+                    kostenstelle:
+                      'Diese Feld wird berechnet und kann nicht verändert werden',
+                  })
+                }
+                error={errors.kostenstelle}
+                row={true}
+              />
+            )}
             <Date
               key={`${personId}${
                 existsFilter ? 1 : 0
