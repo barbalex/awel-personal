@@ -14,6 +14,7 @@ import sortBy from 'lodash/sortBy'
 import Input from '../../shared/Input'
 import Select from '../../shared/Select'
 import SharedCheckbox from '../../shared/Checkbox_01'
+import Handlungsbedarf from '../../shared/Handlungsbedarf'
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
 import isDateField from '../../../src/isDateField'
 import Zuletzt from './Zuletzt'
@@ -83,6 +84,16 @@ const Bereich = ({ activeId }) => {
           id: bereich.id,
           setErrors,
         })
+        if (field === 'mutationFrist' && newValue && !bereich.mutationNoetig) {
+          // set mutationNoetig to true of not yet so
+          updateField({
+            table: 'bereiche',
+            parentModel: 'bereiche',
+            field: 'mutationNoetig',
+            value: 1,
+            id: bereich.id,
+          })
+        }
       }
     },
     [activeId, bereiche.length, filterBereich, showFilter],
@@ -249,13 +260,14 @@ const Bereich = ({ activeId }) => {
           error={errors.kostenstelle}
         />
         {showMutationNoetig && (
-          <SharedCheckbox
-            key={`${bereichId}mutationNoetig`}
-            value={bereich.mutationNoetig}
-            field="mutationNoetig"
-            label="Handlungsbedarf"
+          <Handlungsbedarf
+            key={`${bereichId}mutationHandlungsbedarf`}
+            mutationFristValue={bereich.mutationFrist}
+            mutationNoetigValue={bereich.mutationNoetig}
+            label="Handlungs&shy;bedarf"
             saveToDb={saveToDb}
-            error={errors.mutationNoetig}
+            errorMutationNoetig={errors.mutationNoetig}
+            errorMutationFrist={errors.mutationFrist}
           />
         )}
         {!showFilter && <Zuletzt />}

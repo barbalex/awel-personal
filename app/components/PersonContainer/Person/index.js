@@ -16,6 +16,7 @@ import Date from '../../shared/Date'
 import Select from '../../shared/Select'
 import SelectMulti from '../../shared/SelectMulti'
 import SharedCheckbox from '../../shared/Checkbox_01'
+import Handlungsbedarf from '../../shared/Handlungsbedarf'
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
 import isDateField from '../../../src/isDateField'
 import Links from './Links'
@@ -204,6 +205,16 @@ const Person = ({ activeId, dimensions }) => {
           id: person.id,
           setErrors,
         })
+        if (field === 'mutationFrist' && newValue && !person.mutationNoetig) {
+          // set mutationNoetig to true of not yet so
+          updateField({
+            table: 'personen',
+            parentModel: 'personen',
+            field: 'mutationNoetig',
+            value: 1,
+            id: person.id,
+          })
+        }
         if (field === 'amt') {
           if (person.abteilung) {
             // reset abteilung
@@ -951,14 +962,14 @@ const Person = ({ activeId, dimensions }) => {
                 />
               )}
               {showMutationNoetig && (
-                <SharedCheckbox
-                  key={`${personId}mutationNoetig`}
-                  value={person.mutationNoetig}
-                  field="mutationNoetig"
+                <Handlungsbedarf
+                  key={`${personId}mutationHandlungsbedarf`}
+                  mutationFristValue={person.mutationFrist}
+                  mutationNoetigValue={person.mutationNoetig}
                   label="Handlungs&shy;bedarf"
                   saveToDb={saveToDb}
-                  error={errors.mutationNoetig}
-                  row={false}
+                  errorMutationNoetig={errors.mutationNoetig}
+                  errorMutationFrist={errors.mutationFrist}
                 />
               )}
               <Zuletzt row={false} />

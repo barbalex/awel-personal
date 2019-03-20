@@ -13,7 +13,6 @@ import moment from 'moment'
 
 import Input from '../../shared/Input'
 import Select from '../../shared/Select'
-import Date from '../../shared/Date'
 import Handlungsbedarf from '../../shared/Handlungsbedarf'
 import SharedCheckbox from '../../shared/Checkbox_01'
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'

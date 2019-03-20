@@ -9,13 +9,16 @@ import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
+import moment from 'moment'
 
 import Input from '../../shared/Input'
 import Select from '../../shared/Select'
 import SharedCheckbox from '../../shared/Checkbox_01'
+import Handlungsbedarf from '../../shared/Handlungsbedarf'
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
 import Zuletzt from './Zuletzt'
 import storeContext from '../../../storeContext'
+import isDateField from '../../../src/isDateField'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
@@ -54,7 +57,18 @@ const Amt = ({ activeId }) => {
     ({ field, value }) => {
       if (!amt && !showFilter)
         throw new Error(`Amt with id ${activeId} not found`)
-      const newValue = ifIsNumericAsNumber(value)
+
+      let newValue
+      if (isDateField(field)) {
+        if (value) {
+          newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
+        }
+        if (newValue && newValue.includes('Invalid date')) {
+          newValue = newValue.replace('Invalid date', 'Format: DD.MM.YYYY')
+        }
+      } else {
+        newValue = ifIsNumericAsNumber(value)
+      }
 
       if (showFilter) {
         setFilter({
@@ -70,6 +84,16 @@ const Amt = ({ activeId }) => {
           id: amt.id,
           setErrors,
         })
+        if (field === 'mutationFrist' && newValue && !amt.mutationNoetig) {
+          // set mutationNoetig to true of not yet so
+          updateField({
+            table: 'aemter',
+            parentModel: 'aemter',
+            field: 'mutationNoetig',
+            value: 1,
+            id: amt.id,
+          })
+        }
       }
     },
     [activeId, aemter.length, filterAmt, showFilter],
@@ -179,13 +203,14 @@ const Amt = ({ activeId }) => {
           error={errors.kostenstelle}
         />
         {showMutationNoetig && (
-          <SharedCheckbox
-            key={`${amtId}mutationNoetig`}
-            value={amt.mutationNoetig}
-            field="mutationNoetig"
-            label="Handlungsbedarf"
+          <Handlungsbedarf
+            key={`${amtId}mutationHandlungsbedarf`}
+            mutationFristValue={amt.mutationFrist}
+            mutationNoetigValue={amt.mutationNoetig}
+            label="Handlungs&shy;bedarf"
             saveToDb={saveToDb}
-            error={errors.mutationNoetig}
+            errorMutationNoetig={errors.mutationNoetig}
+            errorMutationFrist={errors.mutationFrist}
           />
         )}
         {!showFilter && <Zuletzt />}
