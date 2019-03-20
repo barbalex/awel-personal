@@ -33,12 +33,6 @@ const WrapperNarrow = styled.div`
   grid-template-rows: auto;
   grid-template-areas: 'areaPerson' 'areaTel' 'areaIt' 'areaWeiterleiten';
 `
-const WrapperNarrowShowFilter = styled.div`
-  display: grid;
-  grid-template-columns: repeat(1, 100%);
-  grid-template-rows: auto;
-  grid-template-areas: 'areaPerson', 'areaTel', 'areaIt';
-`
 const WrapperWide = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 50%);
@@ -47,14 +41,6 @@ const WrapperWide = styled.div`
     'areaPerson areaTel'
     'areaPerson areaIt'
     'areaWeiterleiten areaWeiterleiten';
-`
-const WrapperWideShowFilter = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 50%);
-  grid-template-rows: auto;
-  grid-template-areas:
-    'areaPerson areaTel'
-    'areaPerson areaIt';
 `
 const Title = styled.div`
   font-weight: 900;
@@ -318,13 +304,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
 
   const { width } = dimensions
   const viewIsNarrow = width < 1500
-  let Wrapper = viewIsNarrow
-    ? showFilter
-      ? WrapperNarrowShowFilter
-      : WrapperNarrow
-    : showFilter
-    ? WrapperWideShowFilter
-    : WrapperWide
+  const Wrapper = viewIsNarrow ? WrapperNarrow : WrapperWide
 
   return (
     <Container showfilter={showFilter}>
