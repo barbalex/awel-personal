@@ -18,14 +18,14 @@ import storeContext from '../../storeContext'
 
 const VolltextInput = styled(Input)`
   background-color: ${props =>
-    props.existsfilter ? '#f7f791 !important' : '#e9ecef'};
+    props.existsfilter === 'true' ? '#f7f791 !important' : '#e9ecef'};
 `
 const VolltextFilterRemoveAddon = styled(InputGroupText)`
   background-color: #f7f791 !important;
 `
 const StyledInputGroupText = styled(InputGroupText)`
   background-color: ${props =>
-    props.existsfilter ? '#f7f791 !important' : '#e9ecef'};
+    props.existsfilter === 'true' ? '#f7f791 !important' : '#e9ecef'};
 `
 const FilterIconContainer = styled.div`
   padding-right: 10px;
@@ -106,7 +106,7 @@ const Filter = () => {
           placeholder="Volltext filtern"
           onChange={onChangeFilterFulltext}
           value={filterFulltext || ''}
-          existsfilter={!!filterFulltext}
+          existsfilter={!!filterFulltext ? 'true' : 'false'}
         />
         <InputGroupAddon addonType="append">
           {filterFulltext && (
@@ -120,7 +120,7 @@ const Filter = () => {
           <StyledInputGroupText
             id="filterAddon"
             onClick={toggleShowFilter}
-            existsfilter={existsFilter}
+            existsfilter={existsFilter.toString()}
           >
             <FilterIconContainer>
               {showFilter ? <FaEdit /> : <FaFilter />}
@@ -160,7 +160,7 @@ const Filter = () => {
             <StyledInputGroupText
               id="emptyFilterAddon"
               onClick={store.emptyFilter}
-              existsfilter={existsFilter}
+              existsfilter={existsFilter.toString()}
             >
               <FaTimes />
             </StyledInputGroupText>
