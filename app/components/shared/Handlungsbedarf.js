@@ -1,11 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import {
-  Col,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  FormFeedback,
-} from 'reactstrap'
+import { Input, InputGroup, InputGroupAddon, FormFeedback } from 'reactstrap'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
 import { observer } from 'mobx-react-lite'
@@ -17,6 +11,7 @@ moment.locale('de')
 const Container = styled.div`
   grid-column: 1;
   display: flex;
+  margin-bottom: 8px;
   .react-datepicker-popper {
     z-index: 10;
   }
@@ -56,7 +51,7 @@ const StyledInputGroupAddon = styled(InputGroupAddon)`
   cursor: pointer;
 `
 const Label = styled.div`
-  width: calc(16.667% + 10px);
+  width: calc(16.667% + 8px);
   display: flex;
   flex-direction: column;
   justify-content: center;

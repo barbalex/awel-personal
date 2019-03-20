@@ -950,17 +950,6 @@ const Person = ({ activeId, dimensions }) => {
           </AreaVerzeichnis>
           {!showFilter && (
             <AreaZuletzt>
-              {showDeleted && (
-                <SharedCheckbox
-                  key={`${personId}deleted`}
-                  value={person.deleted}
-                  field="deleted"
-                  label="Gelöscht"
-                  saveToDb={saveToDb}
-                  error={errors.deleted}
-                  row={false}
-                />
-              )}
               {showMutationNoetig && (
                 <Handlungsbedarf
                   key={`${personId}mutationHandlungsbedarf`}
@@ -972,7 +961,18 @@ const Person = ({ activeId, dimensions }) => {
                   errorMutationFrist={errors.mutationFrist}
                 />
               )}
-              <Zuletzt row={false} />
+              {showDeleted && (
+                <SharedCheckbox
+                  key={`${personId}deleted`}
+                  value={person.deleted}
+                  field="deleted"
+                  label="Gelöscht"
+                  saveToDb={saveToDb}
+                  error={errors.deleted}
+                  row={true}
+                />
+              )}
+              <Zuletzt row={true} />
             </AreaZuletzt>
           )}
         </Wrapper>

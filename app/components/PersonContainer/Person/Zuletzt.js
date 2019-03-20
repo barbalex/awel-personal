@@ -21,39 +21,28 @@ const Zuletzt = ({ row = true }) => {
   const activeId = ifIsNumericAsNumber(location[1])
   const person = personen.find(p => p.id === activeId)
 
-  const Content = () =>
-    person ? (
-      <div name="letzteAenderung">
-        {`${
-          moment.unix(person.letzteMutationZeit / 1000).isValid()
-            ? moment
-                .unix(person.letzteMutationZeit / 1000)
-                .format('DD.MM.YYYY H:mm:ss')
-            : ''
-        }, ${person.letzteMutationUser || ''}`}
-      </div>
-    ) : null
-  const NonRowContainer = styled.div`
-    display: flex;
+  const Value = styled.div`
+    padding-top: 7px;
   `
 
   return (
     <StyledFormGroup row={row}>
-      {row ? (
-        <>
-          <Label for="letzteAenderung" sm={2}>
-            Zuletzt geändert
-          </Label>
-          <Col sm={10}>
-            <Content />
-          </Col>
-        </>
-      ) : (
-        <NonRowContainer>
-          <div>Zuletzt geändert:&nbsp;</div>
-          <Content />
-        </NonRowContainer>
-      )}
+      <Label for="letzteAenderung" sm={2}>
+        Zuletzt geändert
+      </Label>
+      <Col sm={10}>
+        <Value name="letzteAenderung">
+          {`${
+            person
+              ? moment.unix(person.letzteMutationZeit / 1000).isValid()
+                ? moment
+                    .unix(person.letzteMutationZeit / 1000)
+                    .format('DD.MM.YYYY H:mm:ss')
+                : ''
+              : ''
+          }, ${person.letzteMutationUser || ''}`}
+        </Value>
+      </Col>
     </StyledFormGroup>
   )
 }

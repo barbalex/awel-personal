@@ -148,16 +148,6 @@ const Abteilung = ({ activeId }) => {
   return (
     <Container showfilter={showFilter}>
       <StyledForm>
-        {showDeleted && (
-          <SharedCheckbox
-            key={`${abteilungId}deleted`}
-            value={abteilung.deleted}
-            field="deleted"
-            label="Gelöscht"
-            saveToDb={saveToDb}
-            error={errors.deleted}
-          />
-        )}
         <Input
           key={`${abteilungId}name`}
           value={abteilung.name}
@@ -235,6 +225,16 @@ const Abteilung = ({ activeId }) => {
             saveToDb={saveToDb}
             errorMutationNoetig={errors.mutationNoetig}
             errorMutationFrist={errors.mutationFrist}
+          />
+        )}
+        {showDeleted && (
+          <SharedCheckbox
+            key={`${abteilungId}deleted`}
+            value={abteilung.deleted}
+            field="deleted"
+            label="Gelöscht"
+            saveToDb={saveToDb}
+            error={errors.deleted}
           />
         )}
         {!showFilter && <Zuletzt />}

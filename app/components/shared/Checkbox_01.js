@@ -12,7 +12,7 @@ const StyledInput = styled(Input)`
   margin-left: -1.1rem !important;
 `
 const StyledFormGroup = styled(FormGroup)`
-  margin-bottom: ${props => (props.row ? 'unset' : '8px !important')};
+  margin-bottom: 8px !important;
 `
 const LabelSpan = styled.span`
   padding-left: 5px;
@@ -37,8 +37,31 @@ const SharedCheckbox = ({
     setStateValue(!!value)
   })
 
-  const Content = () => (
-    <StyledFormGroup check>
+  if (row) {
+    return (
+      <StyledFormGroup row>
+        <Label for={field} sm={2}>
+          {label}
+        </Label>
+        <Col sm={10}>
+          <FormGroup check>
+            <StyledInput
+              id={field}
+              type="checkbox"
+              checked={value === 1}
+              onChange={onChange}
+              invalid={!!error}
+              data-row={row}
+            />
+            <FormFeedback>{error}</FormFeedback>
+          </FormGroup>
+        </Col>
+      </StyledFormGroup>
+    )
+  }
+
+  return (
+    <FormGroup check>
       <Label check>
         <StyledInput
           id={field}
@@ -51,24 +74,8 @@ const SharedCheckbox = ({
         {!row && <LabelSpan>{` ${label}`}</LabelSpan>}
       </Label>
       <FormFeedback>{error}</FormFeedback>
-    </StyledFormGroup>
+    </FormGroup>
   )
-
-  if (row) {
-    return (
-      <FormGroup row={row}>
-        <Label for={field} sm={2}>
-          {label}
-        </Label>
-        <Col sm={{ size: 10 }}>
-          <Content />
-        </Col>
-        <FormFeedback>{error}</FormFeedback>
-      </FormGroup>
-    )
-  }
-
-  return <Content />
 }
 
 export default observer(SharedCheckbox)
