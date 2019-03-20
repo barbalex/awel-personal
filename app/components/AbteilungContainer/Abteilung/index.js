@@ -9,13 +9,17 @@ import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
+import moment from 'moment'
 
 import Input from '../../shared/Input'
 import Select from '../../shared/Select'
+import Date from '../../shared/Date'
+import Handlungsbedarf from '../../shared/Handlungsbedarf'
 import SharedCheckbox from '../../shared/Checkbox_01'
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
 import Zuletzt from './Zuletzt'
 import storeContext from '../../../storeContext'
+import isDateField from '../../../src/isDateField'
 
 const Container = styled.div``
 const StyledForm = styled(Form)`
@@ -55,7 +59,18 @@ const Abteilung = ({ activeId }) => {
     ({ field, value }) => {
       if (!abteilung && !showFilter)
         throw new Error(`Abteilung with id ${activeId} not found`)
-      const newValue = ifIsNumericAsNumber(value)
+
+      let newValue
+      if (isDateField(field)) {
+        if (value) {
+          newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
+        }
+        if (newValue && newValue.includes('Invalid date')) {
+          newValue = newValue.replace('Invalid date', 'Format: DD.MM.YYYY')
+        }
+      } else {
+        newValue = ifIsNumericAsNumber(value)
+      }
 
       if (showFilter) {
         setFilter({
@@ -71,6 +86,20 @@ const Abteilung = ({ activeId }) => {
           id: abteilung.id,
           setErrors,
         })
+        if (
+          field === 'mutationFrist' &&
+          newValue &&
+          !abteilung.mutationNoetig
+        ) {
+          // set mutationNoetig to true of not yet so
+          updateField({
+            table: 'abteilungen',
+            parentModel: 'abteilungen',
+            field: 'mutationNoetig',
+            value: 1,
+            id: abteilung.id,
+          })
+        }
       }
     },
     [activeId, abteilungen.length, filterAbteilung, showFilter],
@@ -199,13 +228,14 @@ const Abteilung = ({ activeId }) => {
           error={errors.kostenstelle}
         />
         {showMutationNoetig && (
-          <SharedCheckbox
-            key={`${abteilungId}mutationNoetig`}
-            value={abteilung.mutationNoetig}
-            field="mutationNoetig"
-            label="Handlungsbedarf"
+          <Handlungsbedarf
+            key={`${abteilungId}mutationHandlungsbedarf`}
+            mutationFristValue={abteilung.mutationFrist}
+            mutationNoetigValue={abteilung.mutationNoetig}
+            label="Handlungs&shy;bedarf"
             saveToDb={saveToDb}
-            error={errors.mutationNoetig}
+            errorMutationNoetig={errors.mutationNoetig}
+            errorMutationFrist={errors.mutationFrist}
           />
         )}
         {!showFilter && <Zuletzt />}

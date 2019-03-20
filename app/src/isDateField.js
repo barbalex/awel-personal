@@ -7,6 +7,7 @@ export default fieldName => {
     'bueroWechselPer',
     'arbeitsplatzeroeffnungPer',
     'abmeldungArbeitsplatzPer',
+    'mutationFrist',
   ]
   return dateFieldNames.includes(fieldName)
 }

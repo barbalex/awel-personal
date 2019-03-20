@@ -5,6 +5,9 @@ export default types
     id: types.maybe(types.integer),
     deleted: types.optional(types.integer, 0),
     mutationNoetig: types.optional(types.integer, 0),
+    mutationFrist: types.maybe(
+      types.union(types.string, types.integer, types.null),
+    ),
     personalNr: types.maybe(types.union(types.integer, types.null)),
     name: types.maybe(types.union(types.string, types.integer, types.null)),
     vorname: types.maybe(types.union(types.string, types.integer, types.null)),

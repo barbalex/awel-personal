@@ -4,6 +4,9 @@ export default types.model('Abteilung', {
   id: types.maybe(types.integer),
   deleted: types.optional(types.integer, 0),
   mutationNoetig: types.optional(types.integer, 0),
+  mutationFrist: types.maybe(
+    types.union(types.string, types.integer, types.null),
+  ),
   name: types.maybe(types.union(types.string, types.integer, types.null)),
   amt: types.maybeNull(types.integer),
   kurzzeichen: types.maybe(

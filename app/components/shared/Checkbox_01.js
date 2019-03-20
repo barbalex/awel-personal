@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 const StyledInput = styled(Input)`
   position: relative;
-  top: ${props => (props['data-row'] ? '10px' : '1px')};
+  top: ${props => (props['data-row'] ? '8px' : '1px')};
   /* larger-sized Checkboxes */
   -webkit-transform: scale(1.5); /* Safari and Chrome */
   padding: 10px;
