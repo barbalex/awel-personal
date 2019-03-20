@@ -135,10 +135,10 @@ values
 -- (8, 'Götz',	'Christian'),
 -- (9, 'Beat',	'Koller'),
 -- (10, 'Thomas',	'Flüeler');
-insert into personen (id,amt,abteilung,sektion,bereich,anrede,name,vorname,adresse,plz,land,ort,eintrittDatum,austrittDatum,bemerkungen,status,bueroNr,kurzzeichen) select id,amt,abteilung,sektion,bereich,anrede,name,vorname,adresse,plz,land,ort,eintrittDatum,austrittDatum,bemerkungen,status,bueroNr,kurzzeichen from personen_import;
+insert into personen (id,amt,abteilung,sektion,bereich,anrede,name,vorname,adresse,plz,land,ort,eintrittDatum,austrittDatum,bemerkungen,status,bueroNr,kurzzeichen,letzteMutationZeit,letzteMutationUser) select id,amt,abteilung,sektion,bereich,anrede,name,vorname,adresse,plz,land,ort,eintrittDatum,austrittDatum,bemerkungen,status,bueroNr,kurzzeichen,letzteMutationZeit,letzteMutationUser from personen_import;
 drop table personen_import;
 
-insert into telefones (idPerson,nr,typ) select idPerson,nr,typ from telefones_import;
+insert into telefones (idPerson,nr,typ,letzteMutationZeit,letzteMutationUser) select idPerson,nr,typ,letzteMutationZeit,letzteMutationUser from telefones_import;
 drop table telefones_import;
 
 insert into
