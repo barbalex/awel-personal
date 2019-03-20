@@ -53,11 +53,11 @@ const Filter = () => {
   const toggleFilterDropdown = useCallback(
     e => {
       setFilterDropdownIsOpen(!filterDropdownIsOpen)
-      console.log({ e })
       e.stopPropagation()
     },
     [filterDropdownIsOpen],
   )
+  const onClickAnstehendeMutationen = useCallback(() => console.log('TODO'))
 
   return (
     <div>
@@ -80,6 +80,22 @@ const Filter = () => {
             <FilerIconContainer>
               {store.showFilter ? <FaEdit /> : <FaFilter />}
             </FilerIconContainer>
+            {filterFulltext && (
+              <UncontrolledTooltip
+                placement="left"
+                target="volltextFilterRemoveAddon"
+              >
+                Volltext-Filter leeren
+              </UncontrolledTooltip>
+            )}
+            <UncontrolledTooltip placement="left" target="filterAddon">
+              {store.showFilter ? 'Daten bearbeiten' : 'Nach Felden filtern'}
+            </UncontrolledTooltip>
+            {store.existsFilter && (
+              <UncontrolledTooltip placement="left" target="emptyFilterAddon">
+                Filter leeren
+              </UncontrolledTooltip>
+            )}
             <StyledDropdown
               isOpen={filterDropdownIsOpen}
               toggle={toggleFilterDropdown}
@@ -88,13 +104,10 @@ const Filter = () => {
                 {' '}
               </DropdownToggle>
               <DropdownMenu>
-                <DropdownItem header>Header</DropdownItem>
-                <DropdownItem>Some Action</DropdownItem>
-                <DropdownItem disabled>Action (disabled)</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>Foo Action</DropdownItem>
-                <DropdownItem>Bar Action</DropdownItem>
-                <DropdownItem>Quo Action</DropdownItem>
+                <DropdownItem header>vorbereitete Filter</DropdownItem>
+                <DropdownItem onClick={onClickAnstehendeMutationen}>
+                  Anstehende Mutationen
+                </DropdownItem>
               </DropdownMenu>
             </StyledDropdown>
           </InputGroupText>
@@ -104,22 +117,6 @@ const Filter = () => {
             </InputGroupText>
           )}
         </InputGroupAddon>
-        {filterFulltext && (
-          <UncontrolledTooltip
-            placement="bottom"
-            target="volltextFilterRemoveAddon"
-          >
-            Volltext-Filter leeren
-          </UncontrolledTooltip>
-        )}
-        <UncontrolledTooltip placement="bottom" target="filterAddon">
-          {store.showFilter ? 'Daten bearbeiten' : 'Nach Felden filtern'}
-        </UncontrolledTooltip>
-        {store.existsFilter && (
-          <UncontrolledTooltip placement="bottom" target="emptyFilterAddon">
-            Filter leeren
-          </UncontrolledTooltip>
-        )}
       </InputGroup>
     </div>
   )
