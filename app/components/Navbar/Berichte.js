@@ -52,9 +52,6 @@ const Berichte = () => {
   const onClickPD = useCallback(() => {
     setLocation([...location, 'pdf'])
   }, [location])
-  const onClickPM = useCallback(() => {
-    setLocation([...location, 'mutation', 'pdf'])
-  }, [location])
   const onClickPrint = useCallback(() => {
     setPrinting(true)
     setTimeout(() => {
@@ -92,7 +89,6 @@ const Berichte = () => {
         {showPD && (
           <>
             <DropdownItem onClick={onClickPD}>Personal-Blatt</DropdownItem>
-            <DropdownItem onClick={onClickPM}>Personal-Mutation</DropdownItem>
             <DropdownItem divider />
           </>
         )}
