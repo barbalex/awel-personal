@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from 'react'
+import React, { useContext, useCallback, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import {
@@ -7,6 +7,10 @@ import {
   InputGroupText,
   Input,
   UncontrolledTooltip,
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from 'reactstrap'
 import { FaTimes, FaEdit, FaFilter } from 'react-icons/fa'
 
@@ -20,6 +24,8 @@ const Filter = () => {
   const store = useContext(storeContext)
   const { showFilter, setShowFilter, filterFulltext, setFilterFulltext } = store
 
+  const [filterDropdownIsOpen, setFilterDropdownIsOpen] = useState(false)
+
   const toggleShowFilter = useCallback(() => setShowFilter(!showFilter), [
     showFilter,
   ])
@@ -27,6 +33,10 @@ const Filter = () => {
     setFilterFulltext(e.target.value),
   )
   const onEmptyFilterFulltext = useCallback(() => setFilterFulltext(null))
+  const toggleFilterDropdown = useCallback(
+    () => setFilterDropdownIsOpen(!filterDropdownIsOpen),
+    [filterDropdownIsOpen],
+  )
 
   return (
     <div>
@@ -45,9 +55,21 @@ const Filter = () => {
               <FaTimes />
             </VolltextFilterRemoveAddon>
           )}
-          <InputGroupText id="filterAddon" onClick={toggleShowFilter}>
-            {store.showFilter ? <FaEdit /> : <FaFilter />}
-          </InputGroupText>
+          <ButtonDropdown
+            direction="down"
+            id="filterAddon"
+            isOpen={filterDropdownIsOpen}
+            toggle={toggleFilterDropdown}
+            onClick={toggleShowFilter}
+          >
+            <DropdownToggle caret>
+              {store.showFilter ? <FaEdit /> : <FaFilter />}
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem>Another Action</DropdownItem>
+              <DropdownItem>Another Action</DropdownItem>
+            </DropdownMenu>
+          </ButtonDropdown>
           {store.existsFilter && (
             <InputGroupText id="emptyFilterAddon" onClick={store.emptyFilter}>
               <FaTimes />
