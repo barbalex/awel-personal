@@ -675,6 +675,7 @@ export default db =>
           self.filterAbteilung = {}
           self.filterBereich = {}
           self.filterSektion = {}
+          self.filterAmt = {}
           self.filterEtikett = {}
           self.filterAnwesenheitstage = {}
           self.filterLink = {}
