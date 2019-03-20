@@ -32,7 +32,7 @@ const StyledTabPane = styled(TabPane)`
 
 const PersonTab = ({ dimensions }) => {
   const store = useContext(storeContext)
-  const { printing } = store
+  const { printing, showFilter } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const isPrinting = useDetectPrint()
@@ -49,7 +49,7 @@ const PersonTab = ({ dimensions }) => {
     if (showPersonMutationPrint) return <PersonMutation activeId={activeId} />
   }
 
-  if (!activeId) return null
+  if (!showFilter && !activeId) return null
 
   return (
     <>
