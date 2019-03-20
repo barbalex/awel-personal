@@ -7,7 +7,7 @@ import {
   InputGroupText,
   Input,
   UncontrolledTooltip,
-  ButtonDropdown,
+  Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
@@ -18,6 +18,23 @@ import storeContext from '../../storeContext'
 
 const VolltextFilterRemoveAddon = styled(InputGroupText)`
   background-color: white !important;
+`
+const FilerIconContainer = styled.div`
+  padding-right: 10px;
+`
+const StyledDropdown = styled(Dropdown)`
+  margin-right: -12px;
+  margin-top: -8px;
+  margin-bottom: -8px;
+  min-width: 23px;
+  min-height: 38px;
+  .dropdown-toggle {
+    min-height: 38px;
+    padding-top: 5px;
+    padding-right: 4px;
+    min-width: 23px;
+    border-left: 1px solid #ced4da;
+  }
 `
 
 const Filter = () => {
@@ -34,7 +51,11 @@ const Filter = () => {
   )
   const onEmptyFilterFulltext = useCallback(() => setFilterFulltext(null))
   const toggleFilterDropdown = useCallback(
-    () => setFilterDropdownIsOpen(!filterDropdownIsOpen),
+    e => {
+      setFilterDropdownIsOpen(!filterDropdownIsOpen)
+      console.log({ e })
+      e.stopPropagation()
+    },
     [filterDropdownIsOpen],
   )
 
@@ -55,21 +76,28 @@ const Filter = () => {
               <FaTimes />
             </VolltextFilterRemoveAddon>
           )}
-          <ButtonDropdown
-            direction="down"
-            id="filterAddon"
-            isOpen={filterDropdownIsOpen}
-            toggle={toggleFilterDropdown}
-            onClick={toggleShowFilter}
-          >
-            <DropdownToggle caret>
+          <InputGroupText id="filterAddon" onClick={toggleShowFilter}>
+            <FilerIconContainer>
               {store.showFilter ? <FaEdit /> : <FaFilter />}
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem>Another Action</DropdownItem>
-              <DropdownItem>Another Action</DropdownItem>
-            </DropdownMenu>
-          </ButtonDropdown>
+            </FilerIconContainer>
+            <StyledDropdown
+              isOpen={filterDropdownIsOpen}
+              toggle={toggleFilterDropdown}
+            >
+              <DropdownToggle caret tag="div">
+                {' '}
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem header>Header</DropdownItem>
+                <DropdownItem>Some Action</DropdownItem>
+                <DropdownItem disabled>Action (disabled)</DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem>Foo Action</DropdownItem>
+                <DropdownItem>Bar Action</DropdownItem>
+                <DropdownItem>Quo Action</DropdownItem>
+              </DropdownMenu>
+            </StyledDropdown>
+          </InputGroupText>
           {store.existsFilter && (
             <InputGroupText id="emptyFilterAddon" onClick={store.emptyFilter}>
               <FaTimes />
