@@ -34,7 +34,7 @@ const NonRowLabel = styled(Label)`
   margin-bottom: 3px;
 `
 const StyledFormGroup = styled(FormGroup)`
-  margin-bottom: ${props => (props.row ? 'unset' : '8px !important')};
+  margin-bottom: ${props => (props.row ? '16px' : '8px !important')};
 `
 const PlusIcon = styled(FaPlus)`
   margin-top: -4px;

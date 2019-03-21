@@ -18,7 +18,7 @@ moment.locale('de')
 
 const StyledFormGroup = styled(FormGroup)`
   grid-column: 1;
-  margin-bottom: ${props => (props.row ? 'unset' : '8px !important')};
+  margin-bottom: ${props => (props.row ? '16px' : '8px !important')};
   .react-datepicker-popper {
     z-index: 10;
   }

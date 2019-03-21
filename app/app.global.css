@@ -15,16 +15,7 @@ body {
   margin: 0;
 }
 
-/* why is this set ?
- * 1rem is set by bootstrap
- * but is only appied in dev, NOT IN PRODUCTION!!!! 
- */
-.form-group {
-  margin-bottom: 16px;
-}
-
 @media print {
-
   /**
    * ensure html and body
    * have no margins, no padding,
