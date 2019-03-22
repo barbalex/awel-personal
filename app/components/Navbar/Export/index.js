@@ -109,8 +109,12 @@ const Export = () => {
       </DropdownToggle>
       <DropdownMenu>
         <DropdownItem header>Vorlagen: übernehmen Filter</DropdownItem>
-        <DropdownItem onClick={onClickExportPersonen}>Personen</DropdownItem>
-        <DropdownItem onClick={onClickExportAdressen}>Adressen</DropdownItem>
+        <DropdownItem onClick={onClickExportPersonen}>
+          Personen: alle Felder
+        </DropdownItem>
+        <DropdownItem onClick={onClickExportAdressen}>
+          Personen: Adress-Felder
+        </DropdownItem>
         <DropdownItem onClick={onClickExportBereiche}>Bereiche</DropdownItem>
         <DropdownItem onClick={onClickExportSektionen}>Sektionen</DropdownItem>
         <DropdownItem onClick={onClickExportAbteilungen}>
