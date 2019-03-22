@@ -23,16 +23,6 @@ import fetchBereiche from '../../../src/fetchBereiche'
 import fetchSektionen from '../../../src/fetchSektionen'
 import dbContext from '../../../dbContext'
 
-const Hint = styled.div`
-  padding: 4px 24px;
-  color: rgba(0, 0, 0, 0.87);
-  user-select: none;
-  font-style: italic;
-  font-size: small;
-  width: 200px;
-  padding-top: 0;
-`
-
 const Export = () => {
   const db = useContext(dbContext)
   const store = useContext(storeContext)
@@ -107,18 +97,28 @@ const Export = () => {
         Exporte
       </DropdownToggle>
       <DropdownMenu>
-        <Hint>Exporte übernehmen Filter</Hint>
+        <DropdownItem header>Vorlagen: übernehmen Filter</DropdownItem>
         <DropdownItem onClick={onClickExportPersonen}>Personen</DropdownItem>
-        <DropdownItem divider />
+        <DropdownItem disabled onClick={onClickExportPersonen}>
+          Adressen
+        </DropdownItem>
         <DropdownItem onClick={onClickExportBereiche}>Bereiche</DropdownItem>
-        <DropdownItem divider />
         <DropdownItem onClick={onClickExportSektionen}>Sektionen</DropdownItem>
-        <DropdownItem divider />
         <DropdownItem onClick={onClickExportAbteilungen}>
           Abteilungen
         </DropdownItem>
-        <DropdownItem divider />
         <DropdownItem onClick={onClickExportAemter}>Ämter</DropdownItem>
+        <DropdownItem divider />
+        <DropdownItem header>Vorbereitete: setzen eigenen Filter</DropdownItem>
+        <DropdownItem disabled onClick={onClickExportPersonen}>
+          Adressen Aktive
+        </DropdownItem>
+        <DropdownItem disabled onClick={onClickExportPersonen}>
+          Adressen Pensionierte
+        </DropdownItem>
+        <DropdownItem disabled onClick={onClickExportPersonen}>
+          Adressen Kader
+        </DropdownItem>
       </DropdownMenu>
       <Modal isOpen={modalOpen} toggle={toggleModal}>
         <ModalBody>{modalMessage}</ModalBody>

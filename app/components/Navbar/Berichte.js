@@ -86,13 +86,37 @@ const Berichte = () => {
         Berichte
       </DropdownToggle>
       <DropdownMenu>
+        <DropdownItem header>Vorlagen: übernehmen Filter</DropdownItem>
+        <DropdownItem disabled onClick={() => console.log('TODO')}>
+          Personen (mit allen Feldern)
+        </DropdownItem>
+        <DropdownItem disabled onClick={() => console.log('TODO')}>
+          Personen (mit reduzierten Feldern)
+        </DropdownItem>
+        <DropdownItem divider />
+        <DropdownItem header>Vorbereitete: setzen eigenen Filter</DropdownItem>
+        <DropdownItem disabled onClick={() => console.log('TODO')}>
+          Kurzzeichenverzeichnis
+        </DropdownItem>
+        <DropdownItem disabled onClick={() => console.log('TODO')}>
+          Telefone
+        </DropdownItem>
+        <DropdownItem disabled onClick={() => console.log('TODO')}>
+          Mobil-Telefone
+        </DropdownItem>
+        <DropdownItem disabled onClick={() => console.log('TODO')}>
+          Kader
+        </DropdownItem>
+        <DropdownItem disabled onClick={() => console.log('TODO')}>
+          Pensionierte
+        </DropdownItem>
         {showPD && (
           <>
-            <DropdownItem onClick={onClickPD}>Personal-Blatt</DropdownItem>
             <DropdownItem divider />
+            <DropdownItem header>Für den aktiven Datensatz</DropdownItem>
+            <DropdownItem onClick={onClickPD}>Personal-Blatt</DropdownItem>
           </>
         )}
-        <DropdownItem>mehr?</DropdownItem>
       </DropdownMenu>
       {location.includes('pdf') && (
         <>
