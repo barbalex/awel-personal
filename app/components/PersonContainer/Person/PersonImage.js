@@ -60,7 +60,7 @@ const Text = styled.div`
 `
 const RemoveIcon = styled(FaTimes)`
   display: block;
-  color: orange;
+  color: #ff8f00;
   font-size: 18px;
   cursor: pointer;
   position: absolute;

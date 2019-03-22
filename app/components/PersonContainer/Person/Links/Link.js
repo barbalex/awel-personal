@@ -28,11 +28,11 @@ const RemoveGlyphiconDiv = styled.div`
   grid-column: 2 / span 1;
   margin-top: -2px;
   display: block;
-  color: #cccccc;
+  color: #ff8f00;
   font-size: 18px;
   cursor: pointer;
   &:hover {
-    color: rgba(146, 146, 146, 1);
+    color: red;
   }
 `
 const StyledA = styled.a`

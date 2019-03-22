@@ -42,11 +42,11 @@ const Delete = styled.div`
   margin-top: auto;
   margin-bottom: auto;
   text-align: center;
-  color: #cccccc;
+  color: #ff8f00;
   font-size: 18px;
   cursor: pointer;
   &:hover {
-    color: rgba(146, 146, 146, 1);
+    color: red;
   }
 `
 
