@@ -64,11 +64,70 @@ const WrapperWideShowFilter = styled.div`
 
 const AreaPersonalien = styled.div`
   grid-area: personalien;
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  grid-template-areas:
+    'p_area_title p_area_title'
+    'p_name p_bild'
+    'p_vorname p_bild'
+    'p_anrede p_bild'
+    'p_titel p_bild'
+    'p_kurzzeichen p_bild'
+    'p_adresse p_adresse'
+    'p_plz p_plz'
+    'p_ort p_ort'
+    'p_land p_land'
+    'p_email p_email'
+    'p_geburtsdatum p_geburtsdatum'
+    'p_telefon p_telefon';
   background-color: ${props =>
     props.isPdf ? 'white' : 'rgba(249, 230, 0, .3)'};
   padding: 8px;
   border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
   border-bottom: none;
+`
+const AreaPAreaTitle = styled.div`
+  grid-area: p_area_title;
+`
+const AreaPName = styled.div`
+  grid-area: p_name;
+`
+const AreaPBild = styled.div`
+  grid-area: p_bild;
+  padding-left: 8px;
+`
+const AreaPVorname = styled.div`
+  grid-area: p_vorname;
+`
+const AreaPAnrede = styled.div`
+  grid-area: p_anrede;
+`
+const AreaPTitel = styled.div`
+  grid-area: p_titel;
+`
+const AreaPKurzzeichen = styled.div`
+  grid-area: p_kurzzeichen;
+`
+const AreaPAdresse = styled.div`
+  grid-area: p_adresse;
+`
+const AreaPPLZ = styled.div`
+  grid-area: p_plz;
+`
+const AreaPOrt = styled.div`
+  grid-area: p_ort;
+`
+const AreaPLand = styled.div`
+  grid-area: p_land;
+`
+const AreaPEmail = styled.div`
+  grid-area: p_email;
+`
+const AreaPGeburtsdatum = styled.div`
+  grid-area: p_geburtsdatum;
+`
+const AreaPTelefon = styled.div`
+  grid-area: p_telefon;
 `
 const AreaAnstellung = styled.div`
   grid-area: anstellung;
@@ -608,111 +667,139 @@ const Person = ({ activeId, dimensions }) => {
       <StyledForm>
         <Wrapper>
           <AreaPersonalien>
-            <Title>Personalien</Title>
-            <PersonImage person={person} />
-            <Input
-              key={`${personId}name`}
-              value={person.name}
-              field="name"
-              label="Name"
-              saveToDb={saveToDb}
-              error={errors.name}
-              row={false}
-            />
-            <Input
-              key={`${personId}vorname`}
-              value={person.vorname}
-              field="vorname"
-              label="Vorname"
-              saveToDb={saveToDb}
-              error={errors.vorname}
-              row={false}
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}anrede`}
-              value={person.anrede}
-              field="anrede"
-              label="Anrede"
-              options={anredeOptions}
-              saveToDb={saveToDb}
-              error={errors.anrede}
-              row={false}
-            />
-            <Input
-              key={`${personId}titel`}
-              value={person.titel}
-              field="titel"
-              label="Titel"
-              saveToDb={saveToDb}
-              error={errors.titel}
-              row={false}
-            />
-            <Input
-              key={`${personId}kurzzeichen`}
-              value={person.kurzzeichen}
-              field="kurzzeichen"
-              label="Kurzzei&shy;chen"
-              saveToDb={saveToDb}
-              error={errors.kurzzeichen}
-              row={false}
-            />
-            <Input
-              key={`${personId}adresse`}
-              value={person.adresse}
-              field="adresse"
-              label="Adresse"
-              saveToDb={saveToDb}
-              error={errors.adresse}
-              row={false}
-            />
-            <Input
-              key={`${personId}plz`}
-              value={person.plz}
-              field="plz"
-              label="PLZ"
-              saveToDb={saveToDb}
-              type="number"
-              error={errors.plz}
-              row={false}
-            />
-            <Input
-              key={`${personId}ort`}
-              value={person.ort}
-              field="ort"
-              label="Ort"
-              saveToDb={saveToDb}
-              error={errors.ort}
-              row={false}
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}land`}
-              value={person.land}
-              field="land"
-              label="Land"
-              options={landOptions}
-              saveToDb={saveToDb}
-              error={errors.land}
-              row={false}
-            />
-            <Input
-              key={`${personId}email`}
-              value={person.email}
-              field="email"
-              label="Email"
-              saveToDb={saveToDb}
-              error={errors.email}
-              row={false}
-            />
-            <Date
-              key={`${personId}geburtDatum`}
-              value={person.geburtDatum}
-              field="geburtDatum"
-              label="Geburts&shy;datum"
-              saveToDb={saveToDb}
-              error={errors.geburtDatum}
-              row={false}
-            />
-            <Telefones row={false} />
+            <AreaPAreaTitle>
+              <Title>Personalien</Title>
+            </AreaPAreaTitle>
+            <AreaPBild>
+              <PersonImage person={person} />
+            </AreaPBild>
+            <AreaPName>
+              <Input
+                key={`${personId}name`}
+                value={person.name}
+                field="name"
+                label="Name"
+                saveToDb={saveToDb}
+                error={errors.name}
+                row={false}
+              />
+            </AreaPName>
+            <AreaPVorname>
+              <Input
+                key={`${personId}vorname`}
+                value={person.vorname}
+                field="vorname"
+                label="Vorname"
+                saveToDb={saveToDb}
+                error={errors.vorname}
+                row={false}
+              />
+            </AreaPVorname>
+            <AreaPAnrede>
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}anrede`}
+                value={person.anrede}
+                field="anrede"
+                label="Anrede"
+                options={anredeOptions}
+                saveToDb={saveToDb}
+                error={errors.anrede}
+                row={false}
+              />
+            </AreaPAnrede>
+            <AreaPTitel>
+              <Input
+                key={`${personId}titel`}
+                value={person.titel}
+                field="titel"
+                label="Titel"
+                saveToDb={saveToDb}
+                error={errors.titel}
+                row={false}
+              />
+            </AreaPTitel>
+            <AreaPKurzzeichen>
+              <Input
+                key={`${personId}kurzzeichen`}
+                value={person.kurzzeichen}
+                field="kurzzeichen"
+                label="Kurzzei&shy;chen"
+                saveToDb={saveToDb}
+                error={errors.kurzzeichen}
+                row={false}
+              />
+            </AreaPKurzzeichen>
+            <AreaPAdresse>
+              <Input
+                key={`${personId}adresse`}
+                value={person.adresse}
+                field="adresse"
+                label="Adresse"
+                saveToDb={saveToDb}
+                error={errors.adresse}
+                row={false}
+              />
+            </AreaPAdresse>
+            <AreaPPLZ>
+              <Input
+                key={`${personId}plz`}
+                value={person.plz}
+                field="plz"
+                label="PLZ"
+                saveToDb={saveToDb}
+                type="number"
+                error={errors.plz}
+                row={false}
+              />
+            </AreaPPLZ>
+            <AreaPOrt>
+              <Input
+                key={`${personId}ort`}
+                value={person.ort}
+                field="ort"
+                label="Ort"
+                saveToDb={saveToDb}
+                error={errors.ort}
+                row={false}
+              />
+            </AreaPOrt>
+            <AreaPLand>
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}land`}
+                value={person.land}
+                field="land"
+                label="Land"
+                options={landOptions}
+                saveToDb={saveToDb}
+                error={errors.land}
+                row={false}
+              />
+            </AreaPLand>
+            <AreaPEmail>
+              <Input
+                key={`${personId}email`}
+                value={person.email}
+                field="email"
+                label="Email"
+                saveToDb={saveToDb}
+                error={errors.email}
+                row={false}
+              />
+            </AreaPEmail>
+            <AreaPGeburtsdatum>
+              <Date
+                key={`${personId}geburtDatum`}
+                value={person.geburtDatum}
+                field="geburtDatum"
+                label="Geburts&shy;datum"
+                saveToDb={saveToDb}
+                error={errors.geburtDatum}
+                row={false}
+              />
+            </AreaPGeburtsdatum>
+            <AreaPTelefon>
+              <Telefones row={false} />
+            </AreaPTelefon>
           </AreaPersonalien>
           <AreaAnstellung>
             <Title>Anstellung</Title>

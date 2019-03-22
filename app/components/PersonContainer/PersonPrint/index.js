@@ -114,10 +114,11 @@ const AreaPersonalien = styled(Area)`
   display: grid;
   grid-template-columns: repeat(2, 50%);
   grid-template-areas:
-    'p_title p_bild'
+    'p_area_title p_bild'
     'p_name p_bild'
     'p_vorname p_bild'
     'p_anrede p_bild'
+    'p_title p_bild'
     'p_kurzzeichen p_bild'
     'p_adresse p_adresse'
     'p_plz p_plz'
@@ -127,8 +128,8 @@ const AreaPersonalien = styled(Area)`
     'p_geburtsdatum p_geburtsdatum'
     'p_telefon p_telefon';
 `
-const AreaPTitle = styled.div`
-  grid-area: p_title;
+const AreaPAreaTitle = styled.div`
+  grid-area: p_area_title;
 `
 const AreaPName = styled.div`
   grid-area: p_name;
@@ -142,6 +143,9 @@ const AreaPVorname = styled.div`
 `
 const AreaPAnrede = styled.div`
   grid-area: p_anrede;
+`
+const AreaPTitel = styled.div`
+  grid-area: p_title;
 `
 const AreaPKurzzeichen = styled.div`
   grid-area: p_kurzzeichen;
@@ -251,9 +255,9 @@ const PersonPrint = ({ activeId }) => {
           <LogoImg src={LogoAwel} />
           <Wrapper>
             <AreaPersonalien>
-              <AreaPTitle>
+              <AreaPAreaTitle>
                 <Title>Personalien</Title>
-              </AreaPTitle>
+              </AreaPAreaTitle>
               <AreaPBild>
                 {person.bildUrl && (
                   <Img
@@ -271,6 +275,9 @@ const PersonPrint = ({ activeId }) => {
               <AreaPAnrede>
                 <InputValue value={person.anrede} label="Anrede" />
               </AreaPAnrede>
+              <AreaPTitel>
+                <InputValue value={person.titel} label="Titel" />
+              </AreaPTitel>
               <AreaPKurzzeichen>
                 <InputValue value={person.kurzzeichen} label="Kurzzeichen" />
               </AreaPKurzzeichen>

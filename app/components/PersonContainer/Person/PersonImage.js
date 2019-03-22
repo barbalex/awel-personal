@@ -9,7 +9,6 @@ import React, { useContext, useCallback, useEffect, useState } from 'react'
 import Dropzone from 'react-dropzone'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { Col, FormGroup } from 'reactstrap'
 
 import storeContext from '../../../storeContext'
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
@@ -24,6 +23,7 @@ const Container = styled.div`
   grid-row-gap: 8px;
   border: none;
   border-bottom: none;
+  margin-bottom: 8px !important;
 `
 const DropzoneContainer = styled.div`
   grid-area: dropzone;
@@ -45,9 +45,15 @@ const DropzoneInnerDiv = styled.div`
   border-style: dashed;
   border-radius: 5px;
   padding: 5px;
+  display: grid;
+  justify-content: center;
 `
-const StyledFormGroup = styled(FormGroup)`
-  margin-bottom: 8px !important;
+const Img = styled.img`
+  max-width: 100%;
+  max-height: 350px;
+`
+const Text = styled.div`
+  justify-self: start;
 `
 
 const PersonImage = () => {
@@ -82,59 +88,50 @@ const PersonImage = () => {
   if (showFilter) return null
 
   return (
-    <StyledFormGroup row>
-      <Col sm={12}>
-        <Container name="links">
-          <DropzoneContainer title="Bild wählen">
-            <StyledDropzone
-              onDrop={onDrop}
-              accept="image/jpeg, image/png, image/gif, image/bmp, image/webp, image/vnd.microsoft.icon"
-            >
-              {({
-                getRootProps,
-                getInputProps,
-                isDragActive,
-                isDragReject,
-              }) => {
-                if (isDragActive) {
-                  return (
-                    <DropzoneInnerDiv {...getRootProps()}>
-                      <div>jetzt fallen lassen...</div>
-                    </DropzoneInnerDiv>
-                  )
-                }
-                if (isDragReject) {
-                  return (
-                    <DropzoneInnerDiv {...getRootProps()}>
-                      <div>Hm. Da ging etwas schief :-(</div>
-                    </DropzoneInnerDiv>
-                  )
-                }
-                if (image) {
-                  return (
-                    <DropzoneInnerDiv {...getRootProps()}>
-                      <input {...getInputProps()} />
-                      <img
-                        src={image}
-                        alt={`${person.vorname} ${person.name}`}
-                        height="230"
-                      />
-                    </DropzoneInnerDiv>
-                  )
-                }
-                return (
-                  <DropzoneInnerDiv {...getRootProps()}>
-                    <input {...getInputProps()} />
-                    <div>Bild hierhin ziehen...</div>
-                    <div>...oder klicken, um es zu wählen.</div>
-                  </DropzoneInnerDiv>
-                )
-              }}
-            </StyledDropzone>
-          </DropzoneContainer>
-        </Container>
-      </Col>
-    </StyledFormGroup>
+    <Container name="links">
+      <DropzoneContainer title="Bild wählen">
+        <StyledDropzone
+          onDrop={onDrop}
+          accept="image/jpeg, image/png, image/gif, image/bmp, image/webp, image/vnd.microsoft.icon"
+        >
+          {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
+            if (isDragActive) {
+              return (
+                <DropzoneInnerDiv {...getRootProps()}>
+                  <Text>jetzt fallen lassen...</Text>
+                </DropzoneInnerDiv>
+              )
+            }
+            if (isDragReject) {
+              return (
+                <DropzoneInnerDiv {...getRootProps()}>
+                  <Text>Hm. Da ging etwas schief :-(</Text>
+                </DropzoneInnerDiv>
+              )
+            }
+            if (image) {
+              return (
+                <DropzoneInnerDiv {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <Img
+                    src={image}
+                    alt={`${person.vorname} ${person.name}`}
+                    //width="185"
+                  />
+                </DropzoneInnerDiv>
+              )
+            }
+            return (
+              <DropzoneInnerDiv {...getRootProps()}>
+                <input {...getInputProps()} />
+                <Text>Bild hierhin ziehen...</Text>
+                <Text>...oder klicken, um es zu wählen.</Text>
+              </DropzoneInnerDiv>
+            )
+          }}
+        </StyledDropzone>
+      </DropzoneContainer>
+    </Container>
   )
 }
 
