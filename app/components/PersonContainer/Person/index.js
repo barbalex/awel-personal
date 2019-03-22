@@ -538,12 +538,30 @@ const Person = ({ activeId, dimensions }) => {
   const bereichOptions = useMemo(
     () =>
       sortBy(bereiche, ['name'])
-        .filter(w => !!w.name && w.deleted === 0)
-        .map(w => ({
-          label: w.name,
-          value: w.id,
+        .filter(b => !!b.name && b.deleted === 0)
+        .filter(b => {
+          if (person.sektion) {
+            return !b.sektion || b.sektion === person.sektion
+          }
+          return true
+        })
+        .filter(b => {
+          if (person.abteilung) {
+            return !b.abteilung || b.abteilung === person.abteilung
+          }
+          return true
+        })
+        .filter(b => {
+          if (person.amt) {
+            return !b.amt || b.amt === person.amt
+          }
+          return true
+        })
+        .map(b => ({
+          label: b.name,
+          value: b.id,
         })),
-    [bereiche.length],
+    [bereiche.length, person.amt, person.abteilung, person.sektion],
   )
   const statusOptions = useMemo(() =>
     sortBy(statusWerte, ['sort', 'value'])
