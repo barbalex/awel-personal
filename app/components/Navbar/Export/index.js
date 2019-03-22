@@ -11,6 +11,7 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import personenPrepareData from './personenPrepareData'
+import adressenPrepareData from './adressenPrepareData'
 import bereichePrepareData from './bereichePrepareData'
 import sektionenPrepareData from './sektionenPrepareData'
 import abteilungenPrepareData from './abteilungenPrepareData'
@@ -51,6 +52,16 @@ const Export = () => {
       setModalOpen,
       setModalMessage,
       subject: 'Personen',
+    })
+  }, [personenFiltered])
+  const onClickExportAdressen = useCallback(() => {
+    const exportObjects = adressenPrepareData({ store })
+    doExport({
+      exportObjects,
+      setModalOpen,
+      setModalMessage,
+      subject: 'Adressen',
+      sorting: { name: 1, vorname: 2, adresse: 3, plz: 4, ort: 5, land: 6 },
     })
   }, [personenFiltered])
   const onClickExportBereiche = useCallback(() => {
@@ -99,9 +110,7 @@ const Export = () => {
       <DropdownMenu>
         <DropdownItem header>Vorlagen: übernehmen Filter</DropdownItem>
         <DropdownItem onClick={onClickExportPersonen}>Personen</DropdownItem>
-        <DropdownItem disabled onClick={onClickExportPersonen}>
-          Adressen
-        </DropdownItem>
+        <DropdownItem onClick={onClickExportAdressen}>Adressen</DropdownItem>
         <DropdownItem onClick={onClickExportBereiche}>Bereiche</DropdownItem>
         <DropdownItem onClick={onClickExportSektionen}>Sektionen</DropdownItem>
         <DropdownItem onClick={onClickExportAbteilungen}>

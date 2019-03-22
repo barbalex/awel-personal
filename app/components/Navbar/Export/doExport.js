@@ -9,7 +9,13 @@ import getDataArrayFromExportObjects from './getDataArrayFromExportObjects'
 
 const { dialog } = remote
 
-export default ({ exportObjects, setModalOpen, setModalMessage, subject }) => {
+export default ({
+  exportObjects,
+  setModalOpen,
+  setModalMessage,
+  subject,
+  sorting,
+}) => {
   const dialogOptions = {
     title: `exportierte ${subject} speichern`,
     filters: [
@@ -26,7 +32,10 @@ export default ({ exportObjects, setModalOpen, setModalMessage, subject }) => {
       // set timeout so message appears before exceljs starts working
       // and possibly blocks execution of message
       setTimeout(async () => {
-        const dataArray = getDataArrayFromExportObjects(exportObjects)
+        const dataArray = getDataArrayFromExportObjects({
+          exportObjects,
+          sorting,
+        })
         try {
           await writeExport(path, dataArray)
         } catch (error) {
