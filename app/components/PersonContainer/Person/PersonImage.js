@@ -9,6 +9,8 @@ import React, { useContext, useCallback, useEffect, useState } from 'react'
 import Dropzone from 'react-dropzone'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+import { FaTimes } from 'react-icons/fa'
+import { UncontrolledTooltip } from 'reactstrap'
 
 import storeContext from '../../../storeContext'
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
@@ -47,6 +49,7 @@ const DropzoneInnerDiv = styled.div`
   padding: 5px;
   display: grid;
   justify-content: center;
+  position: relative;
 `
 const Img = styled.img`
   max-width: 100%;
@@ -54,6 +57,18 @@ const Img = styled.img`
 `
 const Text = styled.div`
   justify-self: start;
+`
+const RemoveIcon = styled(FaTimes)`
+  display: block;
+  color: orange;
+  font-size: 18px;
+  cursor: pointer;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  &:hover {
+    color: red;
+  }
 `
 
 const PersonImage = () => {
@@ -83,6 +98,17 @@ const PersonImage = () => {
       id: person.id,
       setErrors,
     })
+  })
+  const onClickRemove = useCallback(e => {
+    updateField({
+      table: 'personen',
+      parentModel: 'personen',
+      field: 'bildUrl',
+      value: null,
+      id: person.id,
+      setErrors,
+    })
+    e.preventDefault()
   })
 
   if (showFilter) return null
@@ -118,6 +144,16 @@ const PersonImage = () => {
                     alt={`${person.vorname} ${person.name}`}
                     //width="185"
                   />
+                  <RemoveIcon
+                    id={`removeImage${person.Id}`}
+                    onClick={onClickRemove}
+                  />
+                  <UncontrolledTooltip
+                    placement="right"
+                    target={`removeImage${person.Id}`}
+                  >
+                    Bild entfernen
+                  </UncontrolledTooltip>
                 </DropzoneInnerDiv>
               )
             }
