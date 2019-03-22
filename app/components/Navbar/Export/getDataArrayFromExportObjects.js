@@ -2,6 +2,8 @@ import sortBy from 'lodash/sortBy'
 
 export default ({ exportObjects, sorting }) => {
   const dataArray = []
+  // catch if no data was passed
+  if (!exportObjects || exportObjects.length === 0) return dataArray
   // first the field names:
   dataArray.push(
     sortBy(Object.keys(exportObjects[0]), key => {

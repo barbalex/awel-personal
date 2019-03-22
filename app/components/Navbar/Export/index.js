@@ -11,6 +11,7 @@ import pick from 'lodash/pick'
 import { observer } from 'mobx-react-lite'
 
 import personenPrepareData from './personenPrepareData'
+import personenKaderPrepareData from './personenKaderPrepareData'
 import bereichePrepareData from './bereichePrepareData'
 import sektionenPrepareData from './sektionenPrepareData'
 import abteilungenPrepareData from './abteilungenPrepareData'
@@ -29,7 +30,6 @@ const Export = () => {
   const db = useContext(dbContext)
   const store = useContext(storeContext)
   const {
-    personen,
     personenSorted,
     personenFiltered,
     bereicheFiltered,
@@ -93,6 +93,25 @@ const Export = () => {
       setModalMessage,
       subject: 'Adressen',
       sorting: { name: 1, vorname: 2, adresse: 3, plz: 4, ort: 5, land: 6 },
+    })
+  }, [personenSorted])
+  const onClickExportPersonenKader = useCallback(() => {
+    const exportObjects = personenKaderPrepareData({ store })
+    doExport({
+      exportObjects,
+      setModalOpen,
+      setModalMessage,
+      subject: 'Kader',
+      sorting: {
+        name: 1,
+        vorname: 2,
+        amt: 3,
+        abteilung: 4,
+        sektion: 5,
+        bereich: 6,
+        kaderFunktionen: 7,
+        funktionen: 8,
+      },
     })
   }, [personenSorted])
 
@@ -161,9 +180,7 @@ const Export = () => {
         <DropdownItem onClick={onClickExportAdressenPensionierte}>
           Adressen Pensionierte
         </DropdownItem>
-        <DropdownItem disabled onClick={onClickExportPersonen}>
-          Adressen Kader
-        </DropdownItem>
+        <DropdownItem onClick={onClickExportPersonenKader}>Kader</DropdownItem>
       </DropdownMenu>
       <Modal isOpen={modalOpen} toggle={toggleModal}>
         <ModalBody>{modalMessage}</ModalBody>
