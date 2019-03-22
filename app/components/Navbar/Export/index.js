@@ -7,11 +7,10 @@ import {
   ModalBody,
   UncontrolledDropdown,
 } from 'reactstrap'
+import pick from 'lodash/pick'
 import { observer } from 'mobx-react-lite'
-import styled from 'styled-components'
 
 import personenPrepareData from './personenPrepareData'
-import adressenPrepareData from './adressenPrepareData'
 import bereichePrepareData from './bereichePrepareData'
 import sektionenPrepareData from './sektionenPrepareData'
 import abteilungenPrepareData from './abteilungenPrepareData'
@@ -24,10 +23,14 @@ import fetchBereiche from '../../../src/fetchBereiche'
 import fetchSektionen from '../../../src/fetchSektionen'
 import dbContext from '../../../dbContext'
 
+const adressenFields = ['name', 'vorname', 'adresse', 'plz', 'ort', 'land']
+
 const Export = () => {
   const db = useContext(dbContext)
   const store = useContext(storeContext)
   const {
+    personen,
+    personenSorted,
     personenFiltered,
     bereicheFiltered,
     sektionenFiltered,
@@ -55,7 +58,9 @@ const Export = () => {
     })
   }, [personenFiltered])
   const onClickExportAdressen = useCallback(() => {
-    const exportObjects = adressenPrepareData({ store })
+    const exportObjects = personenFiltered
+      .slice()
+      .map(p => pick(p, adressenFields))
     doExport({
       exportObjects,
       setModalOpen,
@@ -64,6 +69,33 @@ const Export = () => {
       sorting: { name: 1, vorname: 2, adresse: 3, plz: 4, ort: 5, land: 6 },
     })
   }, [personenFiltered])
+  const onClickExportAdressenAktive = useCallback(() => {
+    const exportObjects = personenSorted
+      .slice()
+      .filter(p => p.status === 'aktiv')
+      .map(p => pick(p, adressenFields))
+    doExport({
+      exportObjects,
+      setModalOpen,
+      setModalMessage,
+      subject: 'Adressen',
+      sorting: { name: 1, vorname: 2, adresse: 3, plz: 4, ort: 5, land: 6 },
+    })
+  }, [personenSorted])
+  const onClickExportAdressenPensionierte = useCallback(() => {
+    const exportObjects = personenSorted
+      .slice()
+      .filter(p => p.status === 'pensioniert')
+      .map(p => pick(p, adressenFields))
+    doExport({
+      exportObjects,
+      setModalOpen,
+      setModalMessage,
+      subject: 'Adressen',
+      sorting: { name: 1, vorname: 2, adresse: 3, plz: 4, ort: 5, land: 6 },
+    })
+  }, [personenSorted])
+
   const onClickExportBereiche = useCallback(() => {
     const exportObjects = bereichePrepareData({ store })
     doExport({
@@ -123,10 +155,10 @@ const Export = () => {
         <DropdownItem onClick={onClickExportAemter}>Ämter</DropdownItem>
         <DropdownItem divider />
         <DropdownItem header>Vorbereitete: setzen eigenen Filter</DropdownItem>
-        <DropdownItem disabled onClick={onClickExportPersonen}>
+        <DropdownItem onClick={onClickExportAdressenAktive}>
           Adressen Aktive
         </DropdownItem>
-        <DropdownItem disabled onClick={onClickExportPersonen}>
+        <DropdownItem onClick={onClickExportAdressenPensionierte}>
           Adressen Pensionierte
         </DropdownItem>
         <DropdownItem disabled onClick={onClickExportPersonen}>

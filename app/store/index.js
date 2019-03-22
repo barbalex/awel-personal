@@ -144,6 +144,21 @@ export default db =>
           ].filter(v => v).length > 0
         )
       },
+      get personenSorted() {
+        return self.personen.slice().sort((a, b) => {
+          if (!a.name && !a.vorname) return -1
+          if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
+            return -1
+          if (
+            a.name === b.name &&
+            a.vorname &&
+            b.vorname &&
+            a.vorname.toLowerCase() < b.vorname.toLowerCase()
+          )
+            return -1
+          return 1
+        })
+      },
       get personenFiltered() {
         const {
           filterSchluessel,
