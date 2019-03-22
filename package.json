@@ -1,7 +1,7 @@
 {
   "name": "AWEL-Personal",
   "productName": "Personal",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "description": "Damit verwaltet das AWEL Kt. ZH Personal-Daten",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
@@ -44,8 +44,7 @@
       "package.json"
     ],
     "dmg": {
-      "contents": [
-        {
+      "contents": [{
           "x": 130,
           "y": 220
         },
