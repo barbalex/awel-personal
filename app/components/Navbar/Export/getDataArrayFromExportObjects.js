@@ -12,7 +12,6 @@ export default ({ exportObjects, sorting }) => {
     }),
   )
   // then the field values
-  console.log('getDataArrayFromExportObjects, sorting', sorting)
   exportObjects.forEach(object => {
     return dataArray.push(
       sortBy(Object.keys(object), key => {
