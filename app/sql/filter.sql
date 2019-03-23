@@ -1,4 +1,5 @@
 select
+  personen.id,
   coalesce(personen.personalNr, '') || ' ' ||
   coalesce(lower(personen.name), '') || ' ' ||
   coalesce(lower(personen.vorname), '') || ' ' ||
@@ -30,10 +31,17 @@ select
   coalesce(personen.bueroWechselPer, '') || ' ' ||
   coalesce(personen.kostenstellenAenderungPer, '') || ' ' ||
   coalesce(lower(personen.itMutationBemerkungen), '') || ' ' ||
-  coalesce(aemter.name, '') || ' ' ||
-  coalesce(abteilungen.name, '') || ' ' ||
-  coalesce(sektionen.name, '') || ' ' ||
-  coalesce(bereiche.name, '') as result
+  coalesce(lower(aemter.name), '') || ' ' ||
+  coalesce(lower(abteilungen.name), '') || ' ' ||
+  coalesce(lower(sektionen.name), '') || ' ' ||
+  coalesce(lower(bereiche.name), '') || ' ' ||
+  group_concat(lower(coalesce(kaderFunktionen.funktion, ''))) || ' ' ||
+  group_concat(lower(coalesce(funktionen.funktion, ''))) || ' ' ||
+  group_concat(lower(coalesce(telefones.nr, '') || ' ' || coalesce(telefones.typ, '') || ' ' || coalesce(telefones.bemerkungen, ''))) || ' ' ||
+  group_concat(lower(coalesce(mobileAbos.kostenstelle, '') || ' ' || coalesce(mobileAbos.typ, '') || ' ' || coalesce(mobileAbos.bemerkungen, ''))) || ' ' ||
+  group_concat(lower(coalesce(schluessel.typ, '') || ' ' || coalesce(schluessel.anlage, '') || ' ' || coalesce(schluessel.nr, '') || ' ' || coalesce(schluessel.bezeichnung, ''))) || ' ' ||
+  group_concat(lower(coalesce(links.url, '')))
+  as data
 from personen
 left join aemter
 on personen.amt = aemter.id
@@ -43,13 +51,21 @@ left join sektionen
 on personen.sektion = sektionen.id
 left join bereiche
 on personen.bereich = bereiche.id
+left join kaderFunktionen
+on kaderFunktionen.idPerson = personen.id
+left join funktionen
+on funktionen.idPerson = personen.id
+left join telefones
+on telefones.idPerson = personen.id
+left join mobileAbos
+on mobileAbos.idPerson = personen.id
+left join schluessel
+on schluessel.idPerson = personen.id
+left join links
+on links.idPerson = personen.id
+group by personen.id
 
 
 -- group-concat from:
-funktionen
-kaderfunktionen
-schluessel
-links
-telefones
-mobileAbos
 etiketten
+anwesenheitstage
