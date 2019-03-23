@@ -40,7 +40,9 @@ select
   group_concat(lower(coalesce(telefones.nr, '') || ' ' || coalesce(telefones.typ, '') || ' ' || coalesce(telefones.bemerkungen, ''))) || ' ' ||
   group_concat(lower(coalesce(mobileAbos.kostenstelle, '') || ' ' || coalesce(mobileAbos.typ, '') || ' ' || coalesce(mobileAbos.bemerkungen, ''))) || ' ' ||
   group_concat(lower(coalesce(schluessel.typ, '') || ' ' || coalesce(schluessel.anlage, '') || ' ' || coalesce(schluessel.nr, '') || ' ' || coalesce(schluessel.bezeichnung, ''))) || ' ' ||
-  group_concat(lower(coalesce(links.url, '')))
+  group_concat(lower(coalesce(links.url, ''))) || ' ' ||
+  group_concat(lower(coalesce(etiketten.etikett, ''))) || ' ' ||
+  group_concat(lower(coalesce(anwesenheitstage.tag, '')))
   as data
 from personen
 left join aemter
@@ -63,9 +65,9 @@ left join schluessel
 on schluessel.idPerson = personen.id
 left join links
 on links.idPerson = personen.id
-group by personen.id
+left join etiketten
+on etiketten.idPerson = personen.id
+left join anwesenheitstage
+on anwesenheitstage.idPerson = personen.id
+group by personen.id;
 
-
--- group-concat from:
-etiketten
-anwesenheitstage
