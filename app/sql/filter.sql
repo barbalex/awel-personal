@@ -1,3 +1,4 @@
+create view personenFts as
 select
   personen.id,
   coalesce(personen.personalNr, '') || ' ' ||
