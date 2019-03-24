@@ -311,6 +311,18 @@ export default db =>
           }
         })
 
+        let personenIdsFulltextFiltered = []
+        if (self.filterFulltext) {
+          personenIdsFulltextFiltered = db
+            .prepare(
+              `SELECT id from personenFts where data like '%${
+                self.filterFulltext
+              }%'`,
+            )
+            .all()
+            .map(p => p.id)
+        }
+
         personen = personen
           .filter(p => {
             if (!self.showDeleted) return p.deleted === 0
@@ -347,92 +359,7 @@ export default db =>
           .filter(p => {
             const { filterFulltext } = self
             if (!filterFulltext) return true
-            // now check for any value if includes
-            const personValues = Object.entries(p)
-              .filter(e => e[0] !== 'id')
-              .map(e => e[1])
-            const schluesselValues = flatten(
-              self.schluessel
-                .filter(s => s.idPerson === p.id)
-                .map(s =>
-                  Object.entries(s)
-                    .filter(e => e[0] !== 'id')
-                    .map(e => e[1]),
-                ),
-            )
-            const mobileAboValues = flatten(
-              self.mobileAbos
-                .filter(s => s.idPerson === p.id)
-                .map(s =>
-                  Object.entries(s)
-                    .filter(e => e[0] !== 'id')
-                    .map(e => e[1]),
-                ),
-            )
-            const telefonValues = flatten(
-              self.telefones
-                .filter(s => s.idPerson === p.id)
-                .map(s =>
-                  Object.entries(s)
-                    .filter(e => e[0] !== 'id')
-                    .map(e => e[1]),
-                ),
-            )
-            const funktionValues = flatten(
-              self.funktionen
-                .filter(s => s.idPerson === p.id)
-                .map(s =>
-                  Object.entries(s)
-                    .filter(e => e[0] !== 'id')
-                    .map(e => e[1]),
-                ),
-            )
-            const kaderFunktionValues = flatten(
-              self.kaderFunktionen
-                .filter(s => s.idPerson === p.id)
-                .map(s =>
-                  Object.entries(s)
-                    .filter(e => e[0] !== 'id')
-                    .map(e => e[1]),
-                ),
-            )
-            const etikettValues = flatten(
-              self.etiketten
-                .filter(s => s.idPerson === p.id)
-                .map(s =>
-                  Object.entries(s)
-                    .filter(e => e[0] !== 'id')
-                    .map(e => e[1]),
-                ),
-            )
-            const anwesenheitstagValues = flatten(
-              self.anwesenheitstage
-                .filter(s => s.idPerson === p.id)
-                .map(s =>
-                  Object.entries(s)
-                    .filter(e => e[0] !== 'id')
-                    .map(e => e[1]),
-                ),
-            )
-            return (
-              [
-                ...personValues,
-                schluesselValues,
-                mobileAboValues,
-                telefonValues,
-                funktionValues,
-                kaderFunktionValues,
-                etikettValues,
-                anwesenheitstagValues,
-              ].filter(v => {
-                if (!v) return false
-                if (!v.toString()) return false
-                return v
-                  .toString()
-                  .toLowerCase()
-                  .includes(filterFulltext.toString().toLowerCase())
-              }).length > 0
-            )
+            return personenIdsFulltextFiltered.includes(p.id)
           })
           .sort((a, b) => {
             if (self.showMutationNoetig) {
