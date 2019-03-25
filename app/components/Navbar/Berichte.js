@@ -32,7 +32,7 @@ const printToPDFOptions = {
   marginsType: 0,
   pageSize: 'A4',
   landscape: false,
-  printBackground: false,
+  printBackground: true,
 }
 const dialogOptions = {
   title: 'pdf speichern',
@@ -55,7 +55,13 @@ const Berichte = () => {
   const onClickPrint = useCallback(() => {
     setPrinting(true)
     setTimeout(() => {
-      window.print()
+      //window.print()
+      const win = remote.getCurrentWindow()
+      win.webContents.print({
+        silent: false,
+        printBackground: true,
+        deviceName: '',
+      })
       setTimeout(() => setPrinting(false))
     })
   })

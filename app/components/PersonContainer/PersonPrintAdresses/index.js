@@ -41,10 +41,18 @@ const Container = styled.div`
 const GlobalStyle = createGlobalStyle`
   @page .querformat {
     size: A4 landscape;
+    @bottom  {
+       content: Page counter(page) of counter(pages);
+    }
   }
 `
 const Footer = styled.div`
-  padding-top: 5px;
+  margin-bottom: -5px;
+  position: fixed;
+  bottom: 0;
+  .seite:before {
+    content: counter(page);
+  }
   @media print {
     page-break-inside: avoid !important;
     page-break-before: avoid !important;
@@ -160,7 +168,11 @@ const PersonPrintAdresses = () => {
           </StyledFunktionen>
         </Row>
       ))}
-      <Footer>{moment().format('DD.MM.YYYY')}</Footer>
+      <Footer>
+        {moment().format('DD.MM.YYYY')}
+        <span>{` Seite `}</span>
+        <span className="seite" />
+      </Footer>
     </Container>
   )
 }
