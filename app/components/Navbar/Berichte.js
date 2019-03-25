@@ -46,11 +46,11 @@ const dialogOptions = {
 
 const Berichte = () => {
   const store = useContext(storeContext)
-  const { setLocation, setPrinting } = store
+  const { setPrinting, activePrintForm, setActivePrintForm } = store
   const location = store.location.toJSON()
   const showPD = location[0] === 'Personen' && location[1]
   const onClickPD = useCallback(() => {
-    setLocation([...location, 'pdf'])
+    setActivePrintForm('personalblatt')
   }, [location])
   const onClickPrint = useCallback(() => {
     setPrinting(true)
@@ -81,7 +81,7 @@ const Berichte = () => {
   })
 
   return (
-    <StyledUncontrolledDropdown nav inNavbar active={location.includes('pdf')}>
+    <StyledUncontrolledDropdown nav inNavbar active={!!activePrintForm}>
       <DropdownToggle nav caret>
         Berichte
       </DropdownToggle>
@@ -118,7 +118,7 @@ const Berichte = () => {
           </>
         )}
       </DropdownMenu>
-      {location.includes('pdf') && (
+      {!!activePrintForm && (
         <>
           <StyledButton title="drucken" onClick={onClickPrint}>
             <FaPrint />

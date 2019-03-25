@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
-//import useDetectPrint from 'use-detect-print'
 import last from 'lodash/last'
 import useDetectPrint from 'use-detect-print'
 
@@ -47,10 +46,9 @@ const StyledReflexElement = styled(ReflexElement)`
 `
 
 const PersonContainer = () => {
-  //const isPrinting = useDetectPrint()
   const store = useContext(storeContext)
   const db = useContext(dbContext)
-  const { showFilter, personen, printing } = store
+  const { showFilter, personen, printing, activePrintForm } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const person = personen.find(p => p.id === activeId)
@@ -89,13 +87,11 @@ const PersonContainer = () => {
     fetchSettings({ db, store })
   }, [])
 
-  const showPersonPrint = location.length === 3 && last(location) === 'pdf'
-  const showPersonMutationPrint =
-    location.length === 4 && last(location) === 'pdf'
+  const showPersonPrint =
+    location.length === 3 && activePrintForm === 'personalblatt'
 
   if (printing || isPrinting) {
     if (showPersonPrint) return <PersonPrint activeId={activeId} />
-    if (showPersonMutationPrint) return <PersonMutation activeId={activeId} />
   }
 
   return (

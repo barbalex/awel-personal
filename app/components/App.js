@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { registerLocale, setDefaultLocale } from 'react-datepicker'
 import { de } from 'date-fns/locale'
+import useDetectPrint from 'use-detect-print'
 
 import Navbar from './Navbar'
 import PersonContainer from './PersonContainer'
@@ -15,6 +16,8 @@ import DeletionModal from './DeletionModal'
 import Mutations from './Mutations'
 import storeContext from '../storeContext'
 import Errors from './Errors'
+import PersonPrint from './PersonContainer/PersonPrint'
+import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 
 registerLocale('de', de)
 setDefaultLocale('de')
@@ -31,7 +34,18 @@ const Container = styled.div`
 
 const App = () => {
   const store = useContext(storeContext)
-  const activeLocation = store.location.toJSON()[0]
+  const isPrinting = useDetectPrint()
+  const location = store.location.toJSON()
+  const activeLocation = location[0]
+  const { printing, activePrintForm } = store
+
+  if (printing || isPrinting) {
+    if (activePrintForm === 'personalblatt') {
+      const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
+      console.log('App showing PersonPrint')
+      return <PersonPrint activeId={activeId} />
+    }
+  }
 
   return (
     <Container>

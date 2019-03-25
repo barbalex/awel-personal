@@ -107,6 +107,7 @@ export default db =>
       filterFulltext: types.maybe(
         types.union(types.string, types.integer, types.null),
       ),
+      activePrintForm: types.maybe(types.string),
       printing: types.optional(types.boolean, false),
     })
     .views(self => ({
@@ -808,6 +809,9 @@ export default db =>
         },
         setPrinting(val) {
           self.printing = val
+        },
+        setActivePrintForm(val) {
+          self.activePrintForm = val
         },
         revertMutation(mutationId) {
           const { mutations } = self

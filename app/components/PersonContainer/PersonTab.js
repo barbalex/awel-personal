@@ -32,21 +32,14 @@ const StyledTabPane = styled(TabPane)`
 
 const PersonTab = ({ dimensions }) => {
   const store = useContext(storeContext)
-  const { printing, showFilter } = store
+  const { showFilter, activePrintForm } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-  const isPrinting = useDetectPrint()
 
   const [tab, setTab] = useState('datenblatt')
 
-  const showPersonPrint = location.length === 3 && last(location) === 'pdf'
-  const showPersonMutationPrint =
-    location.length === 4 && last(location) === 'pdf'
-
-  if (showPersonPrint) return <PersonPrint activeId={activeId} />
-  if (printing || isPrinting) {
-    if (showPersonPrint) return <PersonPrint activeId={activeId} />
-    if (showPersonMutationPrint) return <PersonMutation activeId={activeId} />
+  if (activePrintForm === 'personalblatt') {
+    return <PersonPrint activeId={activeId} />
   }
 
   if (!showFilter && !activeId) return null
