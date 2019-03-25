@@ -394,12 +394,6 @@ export default db =>
           })
         return personen
       },
-      get personenForPersonPrintAdresses() {
-        if (self.activePrintForm !== 'personPrintAdresses') {
-          return []
-        }
-        return self.personenFiltered
-      },
       get aemterFiltered() {
         const { filterAmt, filterFulltext } = self
         let aemter = getSnapshot(self.aemter)

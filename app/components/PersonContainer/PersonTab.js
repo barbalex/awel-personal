@@ -1,13 +1,12 @@
 import React, { useContext, useState } from 'react'
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 import { observer } from 'mobx-react-lite'
-import last from 'lodash/last'
-import useDetectPrint from 'use-detect-print'
 import classnames from 'classnames'
 import styled from 'styled-components'
 
 import Person from './Person'
 import PersonPrint from './PersonPrint'
+import PersonPrintAdresses from './PersonPrintAdresses'
 import PersonMutation from './PersonMutation'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
@@ -40,6 +39,9 @@ const PersonTab = ({ dimensions }) => {
 
   if (activePrintForm === 'personalblatt') {
     return <PersonPrint activeId={activeId} />
+  }
+  if (activePrintForm === 'personAdresses') {
+    return <PersonPrintAdresses />
   }
 
   if (!showFilter && !activeId) return null

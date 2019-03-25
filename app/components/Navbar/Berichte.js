@@ -87,8 +87,8 @@ const Berichte = () => {
       </DropdownToggle>
       <DropdownMenu>
         <DropdownItem header>Vorlagen: übernehmen Filter</DropdownItem>
-        <DropdownItem disabled onClick={() => console.log('TODO')}>
-          Personen: Adressen
+        <DropdownItem onClick={() => setActivePrintForm('personAdresses')}>
+          Personen: Funktionen
         </DropdownItem>
         <DropdownItem divider />
         <DropdownItem header>Vorbereitete: setzen eigenen Filter</DropdownItem>
