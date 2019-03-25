@@ -42,8 +42,7 @@ const App = () => {
   if (printing || isPrinting) {
     if (activePrintForm === 'personalblatt') {
       const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-      console.log('App showing PersonPrint')
-      return <PersonPrint activeId={activeId} />
+      if (activeId) return <PersonPrint activeId={activeId} />
     }
   }
 
