@@ -42,6 +42,7 @@ import StatusWert from './StatusWert'
 import TagWert from './TagWert'
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 import fetchAnwesenheitstage from '../src/fetchAnwesenheitstage'
+import PersonPages from './PersonPages'
 
 export default db =>
   types
@@ -109,6 +110,7 @@ export default db =>
       ),
       activePrintForm: types.maybe(types.union(types.string, types.null)),
       printing: types.optional(types.boolean, false),
+      PersonPages: types.array(PersonPages),
     })
     .views(self => ({
       get existsFilter() {
@@ -391,6 +393,12 @@ export default db =>
             return 1
           })
         return personen
+      },
+      get personenForPersonPrintAdresses() {
+        if (self.activePrintForm !== 'personPrintAdresses') {
+          return []
+        }
+        return self.personenFiltered
       },
       get aemterFiltered() {
         const { filterAmt, filterFulltext } = self

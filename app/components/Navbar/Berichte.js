@@ -88,10 +88,7 @@ const Berichte = () => {
       <DropdownMenu>
         <DropdownItem header>Vorlagen: übernehmen Filter</DropdownItem>
         <DropdownItem disabled onClick={() => console.log('TODO')}>
-          Personen (mit allen Feldern)
-        </DropdownItem>
-        <DropdownItem disabled onClick={() => console.log('TODO')}>
-          Personen (mit reduzierten Feldern)
+          Personen: Adressen
         </DropdownItem>
         <DropdownItem divider />
         <DropdownItem header>Vorbereitete: setzen eigenen Filter</DropdownItem>
