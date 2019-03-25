@@ -2,12 +2,8 @@ import React, { useContext, useEffect } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
-import last from 'lodash/last'
-import useDetectPrint from 'use-detect-print'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
-import PersonPrint from './PersonPrint'
-import PersonMutation from './PersonMutation'
 import List from './List'
 import PersonTab from './PersonTab'
 import fetchPersonen from '../../src/fetchPersonen'
@@ -48,13 +44,12 @@ const StyledReflexElement = styled(ReflexElement)`
 const PersonContainer = () => {
   const store = useContext(storeContext)
   const db = useContext(dbContext)
-  const { showFilter, personen, printing, activePrintForm } = store
+  const { showFilter, personen } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const person = personen.find(p => p.id === activeId)
   // pass list the active person's props to enable instant updates
   const personJson = person ? person.toJSON() : {}
-  const isPrinting = useDetectPrint()
 
   useEffect(() => {
     fetchPersonen({ db, store })
@@ -86,13 +81,6 @@ const PersonContainer = () => {
     fetchKaderFunktionen({ db, store })
     fetchSettings({ db, store })
   }, [])
-
-  const showPersonPrint =
-    location.length === 3 && activePrintForm === 'personalblatt'
-
-  if (printing || isPrinting) {
-    if (showPersonPrint) return <PersonPrint activeId={activeId} />
-  }
 
   return (
     <Container>

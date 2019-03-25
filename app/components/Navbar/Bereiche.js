@@ -33,6 +33,7 @@ const Bereich = () => {
     setDeletionMessage,
     setDeletionTitle,
     setDeletionCallback,
+    activePrintForm,
   } = store
   const location = store.location.toJSON()
   const activeLocation = location[0]
@@ -82,7 +83,6 @@ const Bereich = () => {
     }
   }, [bereiche.length, location])
 
-  const existsActiveBereich = activeLocation === 'Bereiche' && location[1]
   const mayAddNewBereich =
     bereicheFiltered.filter(p => !p.name && !p.vorname).length === 0
   const bereicheSum = showDeleted
@@ -92,19 +92,21 @@ const Bereich = () => {
     bereicheFiltered.length !== bereicheSum
       ? `${bereicheFiltered.length}/${bereicheSum}`
       : bereicheFiltered.length
+  const active = activeLocation === 'Bereiche' && !activePrintForm
+  const existsActiveBereich = active && location[1]
 
   return (
-    <StyledNavItem active={activeLocation === 'Bereiche'}>
+    <StyledNavItem active={active}>
       <NavLink href="/" id="Bereiche" onClick={showTab}>
         Bereiche
-        {activeLocation === 'Bereiche' && <Sup>{bereicheSumSup}</Sup>}
+        {active && <Sup>{bereicheSumSup}</Sup>}
       </NavLink>
       {activeLocation !== 'Bereiche' && (
         <UncontrolledTooltip placement="bottom" target="Bereiche">
           Bereiche anzeigen
         </UncontrolledTooltip>
       )}
-      {activeLocation === 'Bereiche' && (
+      {active && (
         <>
           <StyledButton
             id="newBereichButton"

@@ -33,6 +33,7 @@ const Sektion = () => {
     setDeletionMessage,
     setDeletionTitle,
     setDeletionCallback,
+    activePrintForm,
   } = store
   const location = store.location.toJSON()
   const activeLocation = location[0]
@@ -46,46 +47,42 @@ const Sektion = () => {
     [location],
   )
   // const addSektion = useCallback(() => addSektion())
-  const deleteSektion = useCallback(
-    () => {
-      const activeSektion = sektionen.find(p => p.id === activeId)
-      if (activeSektion.deleted === 1) {
-        // sektion.deleted is already = 1
-        // prepare true deletion
-        setDeletionCallback(() => {
-          store.deleteSektion(activeId)
-          setDeletionMessage(null)
-          setDeletionTitle(null)
-        })
-        const name = activeSektion.name
-          ? `"${activeSektion.name}"`
-          : 'Dieser Datensatz'
-        const namer1 = activeSektion.name ? 'sie' : 'ihn'
-        const namer2 = activeSektion.name ? 'sie' : 'er'
-        setDeletionMessage(
-          `${name} war schon gelöscht. Wenn Sie ${namer1} nochmals löschen, wird ${namer2} endgültig und unwiederbringlich gelöscht. Möchten Sie das?`,
-        )
-        setDeletionTitle('Sektion unwiederbringlich löschen')
-      } else {
-        // do not true delete yet
-        // only set sektion.deleted = 1
-        setDeletionCallback(() => {
-          store.setSektionDeleted(activeId)
-          setDeletionMessage(null)
-          setDeletionTitle(null)
-        })
-        setDeletionMessage(
-          `${
-            activeSektion.name ? `"${activeSektion.name}"` : 'Diesen Datensatz'
-          } wirklich löschen?`,
-        )
-        setDeletionTitle('Sektion löschen')
-      }
-    },
-    [sektionen.length, location],
-  )
+  const deleteSektion = useCallback(() => {
+    const activeSektion = sektionen.find(p => p.id === activeId)
+    if (activeSektion.deleted === 1) {
+      // sektion.deleted is already = 1
+      // prepare true deletion
+      setDeletionCallback(() => {
+        store.deleteSektion(activeId)
+        setDeletionMessage(null)
+        setDeletionTitle(null)
+      })
+      const name = activeSektion.name
+        ? `"${activeSektion.name}"`
+        : 'Dieser Datensatz'
+      const namer1 = activeSektion.name ? 'sie' : 'ihn'
+      const namer2 = activeSektion.name ? 'sie' : 'er'
+      setDeletionMessage(
+        `${name} war schon gelöscht. Wenn Sie ${namer1} nochmals löschen, wird ${namer2} endgültig und unwiederbringlich gelöscht. Möchten Sie das?`,
+      )
+      setDeletionTitle('Sektion unwiederbringlich löschen')
+    } else {
+      // do not true delete yet
+      // only set sektion.deleted = 1
+      setDeletionCallback(() => {
+        store.setSektionDeleted(activeId)
+        setDeletionMessage(null)
+        setDeletionTitle(null)
+      })
+      setDeletionMessage(
+        `${
+          activeSektion.name ? `"${activeSektion.name}"` : 'Diesen Datensatz'
+        } wirklich löschen?`,
+      )
+      setDeletionTitle('Sektion löschen')
+    }
+  }, [sektionen.length, location])
 
-  const existsActiveSektion = activeLocation === 'Sektionen' && location[1]
   const mayAddNewSektion =
     sektionenFiltered.filter(p => !p.name && !p.vorname).length === 0
   const sektionenSum = showDeleted
@@ -95,19 +92,21 @@ const Sektion = () => {
     sektionenFiltered.length !== sektionenSum
       ? `${sektionenFiltered.length}/${sektionenSum}`
       : sektionenFiltered.length
+  const active = activeLocation === 'Sektionen' && !activePrintForm
+  const existsActiveSektion = active && location[1]
 
   return (
-    <StyledNavItem active={activeLocation === 'Sektionen'}>
+    <StyledNavItem active={active}>
       <NavLink href="/" id="Sektionen" onClick={showTab}>
         Sektionen
-        {activeLocation === 'Sektionen' && <Sup>{sektionenSumSup}</Sup>}
+        {active && <Sup>{sektionenSumSup}</Sup>}
       </NavLink>
       {activeLocation !== 'Sektionen' && (
         <UncontrolledTooltip placement="bottom" target="Sektionen">
           Sektionen anzeigen
         </UncontrolledTooltip>
       )}
-      {activeLocation === 'Sektionen' && (
+      {active && (
         <>
           <StyledButton
             id="newSektionButton"

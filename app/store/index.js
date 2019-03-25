@@ -107,7 +107,7 @@ export default db =>
       filterFulltext: types.maybe(
         types.union(types.string, types.integer, types.null),
       ),
-      activePrintForm: types.maybe(types.string),
+      activePrintForm: types.maybe(types.union(types.string, types.null)),
       printing: types.optional(types.boolean, false),
     })
     .views(self => ({

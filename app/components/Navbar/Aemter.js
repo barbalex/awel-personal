@@ -33,6 +33,7 @@ const Amt = () => {
     setDeletionMessage,
     setDeletionTitle,
     setDeletionCallback,
+    activePrintForm,
   } = store
   const location = store.location.toJSON()
   const activeLocation = location[0]
@@ -46,44 +47,40 @@ const Amt = () => {
     [location],
   )
   // const addAmt = useCallback(() => addAmt())
-  const deleteAmt = useCallback(
-    () => {
-      const activeAmt = aemter.find(p => p.id === activeId)
-      if (activeAmt.deleted === 1) {
-        // amt.deleted is already = 1
-        // prepare true deletion
-        setDeletionCallback(() => {
-          store.deleteAmt(activeId)
-          setDeletionMessage(null)
-          setDeletionTitle(null)
-        })
-        const name = activeAmt.name ? `"${activeAmt.name}"` : 'Dieser Datensatz'
-        const namer1 = activeAmt.name ? 'sie' : 'ihn'
-        const namer2 = activeAmt.name ? 'sie' : 'er'
-        setDeletionMessage(
-          `${name} war schon gelöscht. Wenn Sie ${namer1} nochmals löschen, wird ${namer2} endgültig und unwiederbringlich gelöscht. Möchten Sie das?`,
-        )
-        setDeletionTitle('Amt unwiederbringlich löschen')
-      } else {
-        // do not true delete yet
-        // only set amt.deleted = 1
-        setDeletionCallback(() => {
-          store.setAmtDeleted(activeId)
-          setDeletionMessage(null)
-          setDeletionTitle(null)
-        })
-        setDeletionMessage(
-          `${
-            activeAmt.name ? `"${activeAmt.name}"` : 'Diesen Datensatz'
-          } wirklich löschen?`,
-        )
-        setDeletionTitle('Amt löschen')
-      }
-    },
-    [aemter.length, location],
-  )
+  const deleteAmt = useCallback(() => {
+    const activeAmt = aemter.find(p => p.id === activeId)
+    if (activeAmt.deleted === 1) {
+      // amt.deleted is already = 1
+      // prepare true deletion
+      setDeletionCallback(() => {
+        store.deleteAmt(activeId)
+        setDeletionMessage(null)
+        setDeletionTitle(null)
+      })
+      const name = activeAmt.name ? `"${activeAmt.name}"` : 'Dieser Datensatz'
+      const namer1 = activeAmt.name ? 'sie' : 'ihn'
+      const namer2 = activeAmt.name ? 'sie' : 'er'
+      setDeletionMessage(
+        `${name} war schon gelöscht. Wenn Sie ${namer1} nochmals löschen, wird ${namer2} endgültig und unwiederbringlich gelöscht. Möchten Sie das?`,
+      )
+      setDeletionTitle('Amt unwiederbringlich löschen')
+    } else {
+      // do not true delete yet
+      // only set amt.deleted = 1
+      setDeletionCallback(() => {
+        store.setAmtDeleted(activeId)
+        setDeletionMessage(null)
+        setDeletionTitle(null)
+      })
+      setDeletionMessage(
+        `${
+          activeAmt.name ? `"${activeAmt.name}"` : 'Diesen Datensatz'
+        } wirklich löschen?`,
+      )
+      setDeletionTitle('Amt löschen')
+    }
+  }, [aemter.length, location])
 
-  const existsActiveAmt = activeLocation === 'Aemter' && location[1]
   const mayAddNewAmt =
     aemterFiltered.filter(p => !p.name && !p.vorname).length === 0
   const aemterSum = showDeleted
@@ -93,19 +90,21 @@ const Amt = () => {
     aemterFiltered.length !== aemterSum
       ? `${aemterFiltered.length}/${aemterSum}`
       : aemterFiltered.length
+  const active = activeLocation === 'Aemter' && !activePrintForm
+  const existsActiveAmt = active && location[1]
 
   return (
-    <StyledNavItem active={activeLocation === 'Aemter'}>
+    <StyledNavItem active={active}>
       <NavLink href="/" id="Aemter" onClick={showTab}>
         Ämter
-        {activeLocation === 'Aemter' && <Sup>{aemterSumSup}</Sup>}
+        {active && <Sup>{aemterSumSup}</Sup>}
       </NavLink>
       {activeLocation !== 'Aemter' && (
         <UncontrolledTooltip placement="bottom" target="Aemter">
           Ämter anzeigen
         </UncontrolledTooltip>
       )}
-      {activeLocation === 'Aemter' && (
+      {active && (
         <>
           <StyledButton
             id="newAmtButton"

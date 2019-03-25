@@ -33,6 +33,8 @@ const Person = () => {
     setDeletionMessage,
     setDeletionTitle,
     setDeletionCallback,
+    setActivePrintForm,
+    activePrintForm,
   } = store
   const location = store.location.toJSON()
   const activeLocation = location[0]
@@ -41,50 +43,48 @@ const Person = () => {
   const showTab = useCallback(
     e => {
       e.preventDefault()
+      setActivePrintForm(null)
       setLocation([e.target.id])
     },
     [location],
   )
-  const deletePerson = useCallback(
-    () => {
-      const activePerson = personen.find(p => p.id === activeId)
-      if (activePerson.deleted === 1) {
-        // person.deleted is already = 1
-        // prepare true deletion
-        setDeletionCallback(() => {
-          store.deletePerson(activeId)
-          setDeletionMessage(null)
-          setDeletionTitle(null)
-        })
-        const name = activePerson.name
-          ? `"${activePerson.name} ${activePerson.vorname}"`
-          : 'Dieser Datensatz'
-        const namer1 = activePerson.anrede === 'Frau' ? 'sie' : 'ihn'
-        const namer2 = activePerson.anrede === 'Frau' ? 'sie' : 'er'
-        setDeletionMessage(
-          `${name} war schon gelöscht. Wenn Sie ${namer1} nochmals löschen, wird ${namer2} endgültig und unwiederbringlich gelöscht. Möchten Sie das?`,
-        )
-        setDeletionTitle('Person unwiederbringlich löschen')
-      } else {
-        // do not true delete yet
-        // only set person.deleted = 1
-        setDeletionCallback(() => {
-          store.setPersonDeleted(activeId)
-          setDeletionMessage(null)
-          setDeletionTitle(null)
-        })
-        setDeletionMessage(
-          `${
-            activePerson.name
-              ? `"${activePerson.name} ${activePerson.vorname}"`
-              : 'Diesen Datensatz'
-          } wirklich löschen?`,
-        )
-        setDeletionTitle('Person löschen')
-      }
-    },
-    [personen.length, location],
-  )
+  const deletePerson = useCallback(() => {
+    const activePerson = personen.find(p => p.id === activeId)
+    if (activePerson.deleted === 1) {
+      // person.deleted is already = 1
+      // prepare true deletion
+      setDeletionCallback(() => {
+        store.deletePerson(activeId)
+        setDeletionMessage(null)
+        setDeletionTitle(null)
+      })
+      const name = activePerson.name
+        ? `"${activePerson.name} ${activePerson.vorname}"`
+        : 'Dieser Datensatz'
+      const namer1 = activePerson.anrede === 'Frau' ? 'sie' : 'ihn'
+      const namer2 = activePerson.anrede === 'Frau' ? 'sie' : 'er'
+      setDeletionMessage(
+        `${name} war schon gelöscht. Wenn Sie ${namer1} nochmals löschen, wird ${namer2} endgültig und unwiederbringlich gelöscht. Möchten Sie das?`,
+      )
+      setDeletionTitle('Person unwiederbringlich löschen')
+    } else {
+      // do not true delete yet
+      // only set person.deleted = 1
+      setDeletionCallback(() => {
+        store.setPersonDeleted(activeId)
+        setDeletionMessage(null)
+        setDeletionTitle(null)
+      })
+      setDeletionMessage(
+        `${
+          activePerson.name
+            ? `"${activePerson.name} ${activePerson.vorname}"`
+            : 'Diesen Datensatz'
+        } wirklich löschen?`,
+      )
+      setDeletionTitle('Person löschen')
+    }
+  }, [personen.length, location])
 
   const existsActivePerson = activeLocation === 'Personen' && location[1]
   const mayAddNewPerson =
@@ -96,19 +96,20 @@ const Person = () => {
     personenFiltered.length !== personenSum
       ? `${personenFiltered.length}/${personenSum}`
       : personenFiltered.length
+  const active = activeLocation === 'Personen' && !activePrintForm
 
   return (
-    <StyledNavItem active={activeLocation === 'Personen'}>
+    <StyledNavItem active={active}>
       <NavLink href="/" id="Personen" onClick={showTab}>
         Personen
-        {activeLocation === 'Personen' && <Sup>{personenSumSup}</Sup>}
+        {active && <Sup>{personenSumSup}</Sup>}
       </NavLink>
       {activeLocation !== 'Personen' && (
         <UncontrolledTooltip placement="bottom" target="Personen">
           Personen anzeigen
         </UncontrolledTooltip>
       )}
-      {activeLocation === 'Personen' && (
+      {active && (
         <>
           <StyledButton
             id="newPersonButton"
