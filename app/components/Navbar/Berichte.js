@@ -44,8 +44,6 @@ const Berichte = () => {
   const location = store.location.toJSON()
   const showPD = location[0] === 'Personen' && location[1]
 
-  console.log('location0', location[0])
-
   const onClickPD = useCallback(() => {
     setActivePrintForm('personalblatt')
   }, [location])
