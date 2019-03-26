@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 
 import storeContext from '../../../storeContext'
 import LogoAwel from '../../../etc/LogoAwel.jpg'
+import PageTitle from './PageTitle'
 
 /*
  * need defined height and overflow
@@ -265,7 +266,12 @@ const PersonPrintAdressesPage = ({ pageIndex }) => {
     <Container className="querformat">
       <GlobalStyle />
       <InnerPageContainer>
-        {pageIndex === 0 && <LogoImg src={LogoAwel} />}
+        {pageIndex === 0 && (
+          <>
+            <LogoImg src={LogoAwel} />
+            <PageTitle page={page} />
+          </>
+        )}
         <StyledHeader>
           <HeaderRow>
             <StyledName>Name</StyledName>
