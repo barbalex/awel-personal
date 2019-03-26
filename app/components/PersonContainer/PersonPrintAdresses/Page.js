@@ -57,10 +57,6 @@ const Container = styled.div`
     page-break-inside: avoid !important;
     page-break-before: always !important;
     page-break-after: always !important;
-
-    @page {
-      size: A4 landscape;
-    }
   }
 `
 /**
@@ -101,7 +97,7 @@ const StyledRowsContainer = styled.div`
 `
 // eslint-disable-next-line no-unused-expressions
 const GlobalStyle = createGlobalStyle`
-  @page .querformat {
+  @page {
     size: A4 landscape;
   }
 `

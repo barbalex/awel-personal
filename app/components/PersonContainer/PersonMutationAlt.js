@@ -35,9 +35,8 @@ const Container = styled.div`
 `
 // eslint-disable-next-line no-unused-expressions
 const GlobalStyle = createGlobalStyle`
-  @page .hochformat {
+  @page {
     size: A4 portrait;
-    /*margin: 1cm;*/
   }
 `
 const Wrapper = styled.div`

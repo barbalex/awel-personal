@@ -82,7 +82,7 @@ const PageContainer = styled.div`
 const Content = styled.div``
 // eslint-disable-next-line no-unused-expressions
 const GlobalStyle = createGlobalStyle`
-  @page .hochformat {
+  @page {
     size: A4 portrait;
   }
 `

@@ -16,6 +16,7 @@ body {
 }
 
 @media print {
+
   /**
    * ensure html and body
    * have no margins, no padding,

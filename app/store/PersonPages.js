@@ -57,13 +57,12 @@ export default types
   }))
   .views(self => ({
     get modal() {
-      if (!self.building) return null
-
       const store = getParent(self, 1)
-      const msgLine2Txt = `Bisher ${self.pages.length} Seiten, ${
+      const msgLine2Txt = `Bisher ${self.pages.length} Seiten, noch ${
         self.remainingRows.length
-      } Geschäfte noch zu verarbeiten`
+      } Personen zu verarbeiten`
       const textLine2 = store.personenFiltered.length > 50 ? msgLine2Txt : ''
+
       return {
         textLine1: 'Der Bericht wird aufgebaut...',
         textLine2,
