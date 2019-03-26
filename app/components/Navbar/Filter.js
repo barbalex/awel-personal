@@ -71,7 +71,25 @@ const Filter = () => {
   const onChangeFilterFulltext = useCallback(e => {
     setFilterFulltext(e.target.value)
   })
-  const onBlurFilterFulltext = useCallback(e => {
+  const onBlurFilterFulltext = useCallback(
+    e => {
+      if (
+        ['personFunktionen', 'personPensionierte', 'personKader'].includes(
+          activePrintForm,
+        )
+      ) {
+        personPages.initiate()
+      }
+    },
+    [activePrintForm],
+  )
+  const onKeyPressFilterFulltext = useCallback(e => {
+    if (e.key === 'Enter') {
+      onBlurFilterFulltext(e)
+    }
+  })
+  const onEmptyFilterFulltext = useCallback(() => {
+    setFilterFulltext(null)
     if (
       ['personFunktionen', 'personPensionierte', 'personKader'].includes(
         activePrintForm,
@@ -79,13 +97,7 @@ const Filter = () => {
     ) {
       personPages.initiate()
     }
-  })
-  const onKeyPressFilterFulltext = useCallback(e => {
-    if (e.key === 'Enter') {
-      onBlurFilterFulltext(e)
-    }
-  })
-  const onEmptyFilterFulltext = useCallback(() => setFilterFulltext(null))
+  }, [activePrintForm])
   const toggleFilterDropdown = useCallback(
     e => {
       setFilterDropdownIsOpen(!filterDropdownIsOpen)

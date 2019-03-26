@@ -33,13 +33,13 @@ const Container = styled.div`
 
 const PersonPrintFunktionenPages = () => {
   const store = useContext(storeContext)
-  const { personPages } = store
+  const { personPages, activePrintForm } = store
   const { initiate, pages, modal, reset, building } = personPages
 
   useEffect(() => {
     // only initiate if pages exist
     // otherwise re-initiates on printing
-    if (!pages.length) initiate()
+    if (!(pages.length && activePrintForm === 'personFunktionen')) initiate()
   }, [])
 
   return (

@@ -138,46 +138,24 @@ const StyledHeader = styled.div`
 `
 const HeaderRow = styled.div`
   display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
   padding: 3px;
 `
-const StyledName = styled.div`
+const Field = styled.div`
   flex: 1;
   padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
 `
-const StyledVorname = styled.div`
-  flex: 1;
-  padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
-`
-const StyledAbteilung = styled.div`
-  flex: 1;
-  padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
-`
-const StyledSektion = styled.div`
-  flex: 1;
-  padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
-`
-const StyledBereich = styled.div`
-  flex: 1;
-  padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
-`
-const StyledFunktionen = styled.div`
-  flex: 1;
-  padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
-`
+const StyledName = styled(Field)``
+const StyledVorname = styled(Field)``
+const StyledAbteilung = styled(Field)``
+const StyledSektion = styled(Field)``
+const StyledBereich = styled(Field)``
+const StyledFunktionen = styled(Field)``
 const Row = styled.div`
   display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
   padding: 3px;
   background-color: ${props =>
     props.shaded ? 'rgba(0, 0, 0, 0.05)' : 'inherit'};

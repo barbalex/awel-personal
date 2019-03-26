@@ -47,6 +47,7 @@ const Berichte = () => {
     setFilter,
     setLocation,
     setFilterPersonKader,
+    personPages,
   } = store
   const location = store.location.toJSON()
   const showPD = location[0] === 'Personen' && location[1]
