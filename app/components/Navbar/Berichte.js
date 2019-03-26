@@ -93,7 +93,7 @@ const Berichte = () => {
       </DropdownToggle>
       <DropdownMenu>
         <DropdownItem header>Vorlagen: übernehmen Filter</DropdownItem>
-        <DropdownItem disabled onClick={() => setActivePrintForm('personAdresses')}>
+        <DropdownItem onClick={() => setActivePrintForm('personAdresses')}>
           Personen: Funktionen
         </DropdownItem>
         <DropdownItem divider />

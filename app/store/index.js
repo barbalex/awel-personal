@@ -110,7 +110,13 @@ export default db =>
       ),
       activePrintForm: types.maybe(types.union(types.string, types.null)),
       printing: types.optional(types.boolean, false),
-      PersonPages: types.array(PersonPages),
+      personPages: types.optional(PersonPages, {
+        pages: [],
+        activePageIndex: 0,
+        remainingRows: [],
+        building: false,
+        title: '',
+      }),
     })
     .views(self => ({
       get existsFilter() {

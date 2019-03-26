@@ -51,8 +51,6 @@ const PersonContainer = () => {
   // pass list the active person's props to enable instant updates
   const personJson = person ? person.toJSON() : {}
 
-  console.log('PersonContainer', { personenForPersonPrintAdresses })
-
   useEffect(() => {
     fetchPersonen({ db, store })
     fetchAemter({ db, store })
