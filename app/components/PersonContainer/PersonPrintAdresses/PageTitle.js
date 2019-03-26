@@ -11,7 +11,7 @@ const StyledTitle = styled.h4`
   margin-top: -5px;
   margin-bottom: 5px;
   font-weight: 700;
-  font-size: 32px;
+  font-size: 26px;
 `
 
 const PageTitle = ({ page }) => {
