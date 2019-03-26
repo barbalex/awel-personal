@@ -97,7 +97,9 @@ const Berichte = () => {
         {location[0] === 'Personen' && (
           <>
             <DropdownItem header>Vorlagen: übernehmen Filter</DropdownItem>
-            <DropdownItem onClick={() => setActivePrintForm('personAdresses')}>
+            <DropdownItem
+              onClick={() => setActivePrintForm('personFunktionen')}
+            >
               Personen: Funktionen
             </DropdownItem>
             <DropdownItem divider />

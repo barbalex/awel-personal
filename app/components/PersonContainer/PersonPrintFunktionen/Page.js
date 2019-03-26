@@ -188,7 +188,7 @@ function isOdd(num) {
   return num % 2
 }
 
-const PersonPrintAdressesPage = ({ pageIndex }) => {
+const PersonPrintFunktionenPage = ({ pageIndex }) => {
   const store = useContext(storeContext)
   const {
     abteilungen,
@@ -319,4 +319,4 @@ const PersonPrintAdressesPage = ({ pageIndex }) => {
   )
 }
 
-export default observer(PersonPrintAdressesPage)
+export default observer(PersonPrintFunktionenPage)

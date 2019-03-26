@@ -17,7 +17,7 @@ import Mutations from './Mutations'
 import storeContext from '../storeContext'
 import Errors from './Errors'
 import PersonPrint from './PersonContainer/PersonPrint'
-import PersonPrintAdresses from './PersonContainer/PersonPrintAdresses'
+import PersonPrintFunktionen from './PersonContainer/PersonPrintFunktionen'
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 
 registerLocale('de', de)
@@ -45,8 +45,8 @@ const App = () => {
       const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
       if (activeId) return <PersonPrint activeId={activeId} />
     }
-    if (activePrintForm === 'personAdresses') {
-      return <PersonPrintAdresses />
+    if (activePrintForm === 'personFunktionen') {
+      return <PersonPrintFunktionen />
     }
   }
 

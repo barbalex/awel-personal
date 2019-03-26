@@ -71,7 +71,7 @@ const Filter = () => {
     setFilterFulltext(e.target.value)
   })
   const onBlurFilterFulltext = useCallback(e => {
-    if (activePrintForm === 'personAdresses') {
+    if (activePrintForm === 'personFunktionen') {
       personPages.initiate()
     }
   })

@@ -31,7 +31,7 @@ const Container = styled.div`
   }
 `
 
-const PersonPrintAdressesPages = () => {
+const PersonPrintFunktionenPages = () => {
   const store = useContext(storeContext)
   const { personPages } = store
   const { initiate, pages, modal, reset, building } = personPages
@@ -62,4 +62,4 @@ const PersonPrintAdressesPages = () => {
   )
 }
 
-export default observer(PersonPrintAdressesPages)
+export default observer(PersonPrintFunktionenPages)

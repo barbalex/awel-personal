@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 import Person from './Person'
 import PersonPrint from './PersonPrint'
-import PersonPrintAdresses from './PersonPrintAdresses'
+import PersonPrintFunktionen from './PersonPrintFunktionen'
 import PersonMutation from './PersonMutation'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
@@ -40,8 +40,8 @@ const PersonTab = ({ dimensions }) => {
   if (activePrintForm === 'personalblatt') {
     return <PersonPrint activeId={activeId} />
   }
-  if (activePrintForm === 'personAdresses') {
-    return <PersonPrintAdresses />
+  if (activePrintForm === 'personFunktionen') {
+    return <PersonPrintFunktionen />
   }
 
   if (!showFilter && !activeId) return null
