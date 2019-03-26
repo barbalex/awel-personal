@@ -143,38 +143,44 @@ const HeaderRow = styled.div`
 const StyledName = styled.div`
   flex: 1;
   padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
+  min-width: 41mm;
+  max-width: 41mm;
 `
 const StyledVorname = styled.div`
   flex: 1;
   padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
+  min-width: 41mm;
+  max-width: 41mm;
 `
 const StyledAbteilung = styled.div`
   flex: 1;
   padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
+  min-width: 41mm;
+  max-width: 41mm;
 `
 const StyledSektion = styled.div`
   flex: 1;
   padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
+  min-width: 41mm;
+  max-width: 41mm;
 `
 const StyledBereich = styled.div`
   flex: 1;
   padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
+  min-width: 41mm;
+  max-width: 41mm;
 `
 const StyledFunktionen = styled.div`
   flex: 1;
   padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
+  min-width: 41mm;
+  max-width: 41mm;
+`
+const StyledKaderfunktionen = styled.div`
+  flex: 1;
+  padding: 2px;
+  min-width: 41mm;
+  max-width: 41mm;
 `
 const Row = styled.div`
   display: flex;
@@ -188,13 +194,14 @@ function isOdd(num) {
   return num % 2
 }
 
-const PersonPrintFunktionenPage = ({ pageIndex }) => {
+const PersonPrintKaderPage = ({ pageIndex }) => {
   const store = useContext(storeContext)
   const {
     abteilungen,
     sektionen,
     bereiche,
     funktionen,
+    kaderFunktionen,
     personPages,
     personenFiltered,
   } = store
@@ -280,6 +287,7 @@ const PersonPrintFunktionenPage = ({ pageIndex }) => {
             <StyledSektion>Sektion</StyledSektion>
             <StyledBereich>Bereich</StyledBereich>
             <StyledFunktionen>Funktionen</StyledFunktionen>
+            <StyledKaderfunktionen>Kader-Funktionen</StyledKaderfunktionen>
           </HeaderRow>
         </StyledHeader>
         <StyledRowsContainer building={building} ref={rowsContainer}>
@@ -305,6 +313,13 @@ const PersonPrintFunktionenPage = ({ pageIndex }) => {
                   .map(f => f.funktion)
                   .join(', ')}
               </StyledFunktionen>
+              <StyledKaderfunktionen>
+                {kaderFunktionen
+                  .filter(f => f.idPerson === p.id)
+                  .filter(f => f.deleted === 0)
+                  .map(f => f.funktion)
+                  .join(', ')}
+              </StyledKaderfunktionen>
             </Row>
           ))}
         </StyledRowsContainer>
@@ -319,4 +334,4 @@ const PersonPrintFunktionenPage = ({ pageIndex }) => {
   )
 }
 
-export default observer(PersonPrintFunktionenPage)
+export default observer(PersonPrintKaderPage)

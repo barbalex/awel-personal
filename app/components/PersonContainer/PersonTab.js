@@ -7,6 +7,8 @@ import styled from 'styled-components'
 import Person from './Person'
 import PersonPrint from './PersonPrint'
 import PersonPrintFunktionen from './PersonPrintFunktionen'
+import PersonPrintPensionierte from './PersonPrintPensionierte'
+import PersonPrintKader from './PersonPrintKader'
 import PersonMutation from './PersonMutation'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
@@ -42,6 +44,12 @@ const PersonTab = ({ dimensions }) => {
   }
   if (activePrintForm === 'personFunktionen') {
     return <PersonPrintFunktionen />
+  }
+  if (activePrintForm === 'personPensionierte') {
+    return <PersonPrintPensionierte />
+  }
+  if (activePrintForm === 'personKader') {
+    return <PersonPrintKader />
   }
 
   if (!showFilter && !activeId) return null

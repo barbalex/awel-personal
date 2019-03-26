@@ -198,8 +198,8 @@ values
 insert into
   etikettWerte(value, sort)
 values
-  ('Fussballfan', 1),
-  ('Mountainbiker', 2);
+  ('Kader-Treffen', 1),
+  ('Sektionsleiter-Treffen', 2);
 
 insert into
   anwesenheitstagWerte(value, sort)

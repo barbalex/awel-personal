@@ -18,6 +18,8 @@ import storeContext from '../storeContext'
 import Errors from './Errors'
 import PersonPrint from './PersonContainer/PersonPrint'
 import PersonPrintFunktionen from './PersonContainer/PersonPrintFunktionen'
+import PersonPrintPensionierte from './PersonContainer/PersonPrintPensionierte'
+import PersonPrintKader from './PersonContainer/PersonPrintKader'
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 
 registerLocale('de', de)
@@ -47,6 +49,12 @@ const App = () => {
     }
     if (activePrintForm === 'personFunktionen') {
       return <PersonPrintFunktionen />
+    }
+    if (activePrintForm === 'personPensionierte') {
+      return <PersonPrintPensionierte />
+    }
+    if (activePrintForm === 'personKader') {
+      return <PersonPrintKader />
     }
   }
 

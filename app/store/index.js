@@ -92,6 +92,7 @@ export default db =>
       revertingMutationId: types.maybe(types.union(types.integer, types.null)),
       history: types.optional(UndoManager, {}),
       filterPerson: types.optional(Person, {}),
+      filterPersonKader: types.optional(types.boolean, false),
       filterAmt: types.optional(Amt, {}),
       filterAbteilung: types.optional(Abteilung, {}),
       filterBereich: types.optional(Bereich, {}),
@@ -122,6 +123,7 @@ export default db =>
       get existsFilter() {
         const {
           filterPerson,
+          filterPersonKader,
           filterAmt,
           filterAbteilung,
           filterBereich,
@@ -150,7 +152,7 @@ export default db =>
             ...Object.values(filterTelefon),
             ...Object.values(filterFunktion),
             ...Object.values(filterKaderFunktion),
-          ].filter(v => v).length > 0
+          ].filter(v => v).length > 0 || filterPersonKader
         )
       },
       get personenSorted() {
@@ -178,8 +180,23 @@ export default db =>
           filterEtikett,
           filterAnwesenheitstage,
           filterPerson,
+          filterPersonKader,
         } = self
         let { personen } = self
+        if (filterPersonKader) {
+          personen = personen.filter(p => {
+            const kaderfunktionen = self.kaderFunktionen
+              .filter(f => f.idPerson === p.id)
+              .filter(f => f.deleted === 0)
+            const etiketten = self.etiketten
+              .filter(f => f.idPerson === p.id)
+              .filter(f =>
+                ['Kader-Treffen', 'Sektionsleiter-Treffen'].includes(f.etikett),
+              )
+
+            return [...kaderfunktionen, ...etiketten].length > 0
+          })
+        }
         Object.keys(filterPerson).forEach(key => {
           if (filterPerson[key] || filterPerson[key] === 0) {
             personen = personen.filter(p => {
@@ -698,6 +715,7 @@ export default db =>
         },
         emptyFilter() {
           self.filterPerson = {}
+          self.filterPersonKader = false
           self.filterAbteilung = {}
           self.filterBereich = {}
           self.filterSektion = {}
@@ -1928,6 +1946,9 @@ export default db =>
           // eslint-disable-next-line no-unused-vars
           const [first, ...last] = self.errors
           self.errors = [...last]
+        },
+        setFilterPersonKader(val) {
+          self.filterPersonKader = val
         },
       }
     })

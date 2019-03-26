@@ -57,6 +57,7 @@ const Filter = () => {
     existsFilter,
     personPages,
     activePrintForm,
+    setFilterPersonKader,
   } = store
 
   const location = store.location.toJSON()
@@ -71,7 +72,11 @@ const Filter = () => {
     setFilterFulltext(e.target.value)
   })
   const onBlurFilterFulltext = useCallback(e => {
-    if (activePrintForm === 'personFunktionen') {
+    if (
+      ['personFunktionen', 'personPensionierte', 'personKader'].includes(
+        activePrintForm,
+      )
+    ) {
       personPages.initiate()
     }
   })
@@ -109,6 +114,9 @@ const Filter = () => {
     }
     setFilter({ model, value: { mutationNoetig: 1 } })
     setShowMutationNoetig(true)
+  }, [activeLocation])
+  const onClickKader = useCallback(() => {
+    setFilterPersonKader(true)
   }, [activeLocation])
 
   return (
@@ -167,6 +175,7 @@ const Filter = () => {
                 <DropdownItem onClick={onClickAnstehendeMutationen}>
                   Anstehende Mutationen
                 </DropdownItem>
+                <DropdownItem onClick={onClickKader}>Kader</DropdownItem>
               </DropdownMenu>
             </StyledDropdown>
           </StyledInputGroupText>

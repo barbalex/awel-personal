@@ -40,7 +40,14 @@ const dialogOptions = {
 
 const Berichte = () => {
   const store = useContext(storeContext)
-  const { setPrinting, activePrintForm, setActivePrintForm } = store
+  const {
+    setPrinting,
+    activePrintForm,
+    setActivePrintForm,
+    setFilter,
+    setLocation,
+    setFilterPersonKader,
+  } = store
   const location = store.location.toJSON()
   const showPD = location[0] === 'Personen' && location[1]
 
@@ -94,17 +101,16 @@ const Berichte = () => {
         Berichte
       </DropdownToggle>
       <DropdownMenu>
-        {location[0] === 'Personen' && (
-          <>
-            <DropdownItem header>Vorlagen: übernehmen Filter</DropdownItem>
-            <DropdownItem
-              onClick={() => setActivePrintForm('personFunktionen')}
-            >
-              Personen: Funktionen
-            </DropdownItem>
-            <DropdownItem divider />
-          </>
-        )}
+        <DropdownItem header>Vorlagen: übernehmen Filter</DropdownItem>
+        <DropdownItem
+          onClick={() => {
+            setLocation(['Personen'])
+            setActivePrintForm('personFunktionen')
+          }}
+        >
+          Personen: Funktionen
+        </DropdownItem>
+        <DropdownItem divider />
         <DropdownItem header>Vorbereitete: setzen eigenen Filter</DropdownItem>
         <DropdownItem disabled onClick={() => console.log('TODO')}>
           Kurzzeichenverzeichnis
@@ -115,10 +121,25 @@ const Berichte = () => {
         <DropdownItem disabled onClick={() => console.log('TODO')}>
           Mobil-Telefone
         </DropdownItem>
-        <DropdownItem disabled onClick={() => console.log('TODO')}>
+        <DropdownItem
+          onClick={() => {
+            setLocation(['Personen'])
+            setFilterPersonKader(true)
+            setTimeout(() => setActivePrintForm('personKader'), 1000)
+          }}
+        >
           Kader
         </DropdownItem>
-        <DropdownItem disabled onClick={() => console.log('TODO')}>
+        <DropdownItem
+          onClick={() => {
+            setLocation(['Personen'])
+            setFilter({
+              model: 'filterPerson',
+              value: { status: 'pensioniert' },
+            })
+            setTimeout(() => setActivePrintForm('personPensionierte'), 1000)
+          }}
+        >
           Pensionierte
         </DropdownItem>
         {showPD && (

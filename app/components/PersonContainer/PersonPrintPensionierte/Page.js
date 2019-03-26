@@ -143,38 +143,44 @@ const HeaderRow = styled.div`
 const StyledName = styled.div`
   flex: 1;
   padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
+  min-width: 41mm;
+  max-width: 41mm;
 `
 const StyledVorname = styled.div`
   flex: 1;
   padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
+  min-width: 41mm;
+  max-width: 41mm;
 `
 const StyledAbteilung = styled.div`
   flex: 1;
   padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
+  min-width: 41mm;
+  max-width: 41mm;
 `
 const StyledSektion = styled.div`
   flex: 1;
   padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
+  min-width: 41mm;
+  max-width: 41mm;
 `
 const StyledBereich = styled.div`
   flex: 1;
   padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
+  min-width: 41mm;
+  max-width: 41mm;
 `
 const StyledFunktionen = styled.div`
   flex: 1;
   padding: 2px;
-  min-width: 47.8mm;
-  max-width: 47.8mm;
+  min-width: 41mm;
+  max-width: 41mm;
+`
+const StyledAustrittsdatum = styled.div`
+  flex: 1;
+  padding: 2px;
+  min-width: 41mm;
+  max-width: 41mm;
 `
 const Row = styled.div`
   display: flex;
@@ -188,7 +194,7 @@ function isOdd(num) {
   return num % 2
 }
 
-const PersonPrintFunktionenPage = ({ pageIndex }) => {
+const PersonPrintPensioniertePage = ({ pageIndex }) => {
   const store = useContext(storeContext)
   const {
     abteilungen,
@@ -280,6 +286,7 @@ const PersonPrintFunktionenPage = ({ pageIndex }) => {
             <StyledSektion>Sektion</StyledSektion>
             <StyledBereich>Bereich</StyledBereich>
             <StyledFunktionen>Funktionen</StyledFunktionen>
+            <StyledAustrittsdatum>Austrittsdatum</StyledAustrittsdatum>
           </HeaderRow>
         </StyledHeader>
         <StyledRowsContainer building={building} ref={rowsContainer}>
@@ -305,6 +312,9 @@ const PersonPrintFunktionenPage = ({ pageIndex }) => {
                   .map(f => f.funktion)
                   .join(', ')}
               </StyledFunktionen>
+              <StyledAustrittsdatum>
+                {p.austrittDatum || ''}
+              </StyledAustrittsdatum>
             </Row>
           ))}
         </StyledRowsContainer>
@@ -319,4 +329,4 @@ const PersonPrintFunktionenPage = ({ pageIndex }) => {
   )
 }
 
-export default observer(PersonPrintFunktionenPage)
+export default observer(PersonPrintPensioniertePage)
