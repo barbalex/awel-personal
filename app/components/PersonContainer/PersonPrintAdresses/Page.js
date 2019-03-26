@@ -224,6 +224,12 @@ const PersonPrintAdressesPage = ({ pageIndex }) => {
         ? rowsContainer.current.scrollHeight
         : null
       const activePageIsFull = pages[pageIndex].full
+      console.log('Page, next', {
+        pageIndex,
+        activePageIndex,
+        offsetHeight,
+        scrollHeight,
+      })
 
       if (!activePageIsFull && remainingRows.length > 0) {
         if (offsetHeight < scrollHeight) {
@@ -247,9 +253,11 @@ const PersonPrintAdressesPage = ({ pageIndex }) => {
     }
   }
 
-  useRef(() => {
+  useEffect(() => {
+    console.log('Page, will run next')
     setTimeout(() => next())
-  }, [pageIndex, remainingRows])
+  }, [remainingRows, pageIndex])
+  console.log('Page rendering')
 
   return (
     <Container className="querformat">

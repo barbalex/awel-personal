@@ -1,8 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 
 import storeContext from '../../../storeContext'
 import Page from './Page'
+import { getSnapshot } from 'mobx-state-tree'
 
 const Container = styled.div`
   background-color: #eee;
@@ -32,7 +33,16 @@ const Container = styled.div`
 const PersonPrintAdressesPages = () => {
   const store = useContext(storeContext)
   const { personPages } = store
-  console.log('PersonPrintAdressesPages', { personPages })
+  const { initiate } = personPages
+  console.log('PersonPrintAdressesPages', {
+    personPages,
+    pages: getSnapshot(personPages.pages),
+  })
+
+  useEffect(() => {
+    console.log('PersonPrintAdressesPages, will initiate')
+    initiate()
+  }, [])
 
   return (
     <Container>

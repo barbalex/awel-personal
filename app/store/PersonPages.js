@@ -1,4 +1,4 @@
-import { types, getParent } from 'mobx-state-tree'
+import { types, getParent, getSnapshot } from 'mobx-state-tree'
 
 import PersonPage from './PersonPage'
 import Person from './Person'
@@ -21,8 +21,15 @@ export default types
     },
     initiate() {
       const store = getParent(self, 1)
+      const { personenFiltered } = store
+      //const remainingRows = getSnapshot(personenFiltered) // throws
+      const remainingRows = personenFiltered.map(p => getSnapshot(p))
+      console.log(
+        'store, PersonPages, initiating remainingRows:',
+        remainingRows,
+      )
       self.reset()
-      self.remainingRows = [...store.personenFiltered]
+      self.remainingRows = remainingRows
       self.building = true
     },
     setTitle(val) {
