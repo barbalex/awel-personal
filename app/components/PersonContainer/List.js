@@ -59,7 +59,14 @@ const MutationFrist = styled.div`
 
 const PersonList = ({ dimensions, activeId }) => {
   const store = useContext(storeContext)
-  const { setLocation, showFilter, setShowFilter, showMutationNoetig } = store
+  const {
+    setLocation,
+    showFilter,
+    setShowFilter,
+    showMutationNoetig,
+    setActivePrintForm,
+    activePrintForm,
+  } = store
   // eslint-disable-next-line no-restricted-globals
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
   // eslint-disable-next-line no-restricted-globals
@@ -86,6 +93,7 @@ const PersonList = ({ dimensions, activeId }) => {
               onClick={() => {
                 setLocation(['Personen', row.id.toString()])
                 if (showFilter) setShowFilter(false)
+                if (activePrintForm) setActivePrintForm(null)
               }}
               active={!showFilter && activeId === row.id}
             >
