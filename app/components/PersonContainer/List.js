@@ -31,6 +31,7 @@ const Row = styled.div`
 `
 const RowContainer = styled.div`
   display: flex;
+  align-items: center;
 `
 const Text = styled.div`
   white-space: nowrap;
@@ -38,6 +39,7 @@ const Text = styled.div`
   text-overflow: ellipsis;
   flex-shrink: 1;
   flex-grow: 1;
+  line-height: 1.5em;
 `
 const Infos = styled.div`
   display: flex;

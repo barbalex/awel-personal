@@ -31,6 +31,7 @@ const Row = styled.div`
 `
 const RowContainer = styled.div`
   display: flex;
+  align-items: center;
 `
 const Text = styled.div`
   white-space: nowrap;
@@ -38,6 +39,7 @@ const Text = styled.div`
   text-overflow: ellipsis;
   flex-shrink: 1;
   flex-grow: 1;
+  line-height: 1.5em;
 `
 const Infos = styled.div`
   display: flex;
@@ -89,42 +91,44 @@ const SektionList = ({ dimensions, activeId }) => {
             >
               <RowContainer>
                 <Text>{`${row.name || ''}`}</Text>
-                {showMutationNoetigSvg && (
-                  <Svg>
-                    {row.mutationFrist && (
-                      <>
-                        <MutationFrist id={`mutationFrist${row.id}`}>
-                          {row.mutationFrist}
-                        </MutationFrist>
-                        <UncontrolledTooltip
-                          placement="bottom"
-                          target={`mutationFrist${row.id}`}
-                        >
-                          Frist für Handlungs-Bedarf
-                        </UncontrolledTooltip>
-                      </>
-                    )}
-                    <FaRegEdit id={`mutationNoetig${row.id}`} />
-                    <UncontrolledTooltip
-                      placement="bottom"
-                      target={`mutationNoetig${row.id}`}
-                    >
-                      Handlungs-Bedarf vorhanden
-                    </UncontrolledTooltip>
-                  </Svg>
-                )}
-                {!showDelSvg && !showMutationNoetigSvg && ''}
-                {showDelSvg && (
-                  <Svg>
-                    <FaTrashAlt id={`deletedIcon${row.id}`} />
-                    <UncontrolledTooltip
-                      placement="bottom"
-                      target={`deletedIcon${row.id}`}
-                    >
-                      Diese Sektion wurde gelöscht
-                    </UncontrolledTooltip>
-                  </Svg>
-                )}
+                <Infos>
+                  {showMutationNoetigSvg && (
+                    <Svg>
+                      {row.mutationFrist && (
+                        <>
+                          <MutationFrist id={`mutationFrist${row.id}`}>
+                            {row.mutationFrist}
+                          </MutationFrist>
+                          <UncontrolledTooltip
+                            placement="bottom"
+                            target={`mutationFrist${row.id}`}
+                          >
+                            Frist für Handlungs-Bedarf
+                          </UncontrolledTooltip>
+                        </>
+                      )}
+                      <FaRegEdit id={`mutationNoetig${row.id}`} />
+                      <UncontrolledTooltip
+                        placement="bottom"
+                        target={`mutationNoetig${row.id}`}
+                      >
+                        Handlungs-Bedarf vorhanden
+                      </UncontrolledTooltip>
+                    </Svg>
+                  )}
+                  {!showDelSvg && !showMutationNoetigSvg && ''}
+                  {showDelSvg && (
+                    <Svg>
+                      <FaTrashAlt id={`deletedIcon${row.id}`} />
+                      <UncontrolledTooltip
+                        placement="bottom"
+                        target={`deletedIcon${row.id}`}
+                      >
+                        Diese Sektion wurde gelöscht
+                      </UncontrolledTooltip>
+                    </Svg>
+                  )}
+                </Infos>
               </RowContainer>
             </Row>
           )
