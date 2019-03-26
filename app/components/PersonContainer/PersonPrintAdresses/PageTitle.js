@@ -19,7 +19,6 @@ const PageTitle = ({ page }) => {
   const { title, setTitle } = store.personPages
 
   const [edit, setEdit] = useState(title ? false : true)
-  //const [title, setTitle] = useState('')
 
   const onClickTitle = useCallback(() => setEdit(true))
   const onChange = useCallback(e => setTitle(e.target.value || ''))
