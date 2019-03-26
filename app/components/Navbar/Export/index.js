@@ -36,6 +36,7 @@ const Export = () => {
     sektionenFiltered,
     abteilungenFiltered,
     aemterFiltered,
+    addError,
   } = store
 
   const [modalOpen, setModalOpen] = useState(false)
@@ -50,6 +51,9 @@ const Export = () => {
 
   const onClickExportPersonen = useCallback(() => {
     const exportObjects = personenPrepareData({ store })
+    if (!exportObjects.length) {
+      return addError(new Error('Es gibt keine Daten zu exportieren'))
+    }
     doExport({
       exportObjects,
       setModalOpen,
@@ -61,6 +65,9 @@ const Export = () => {
     const exportObjects = personenFiltered
       .slice()
       .map(p => pick(p, adressenFields))
+    if (!exportObjects.length) {
+      return addError(new Error('Es gibt keine Daten zu exportieren'))
+    }
     doExport({
       exportObjects,
       setModalOpen,
@@ -74,6 +81,9 @@ const Export = () => {
       .slice()
       .filter(p => p.status === 'aktiv')
       .map(p => pick(p, adressenFields))
+    if (!exportObjects.length) {
+      return addError(new Error('Es gibt keine Daten zu exportieren'))
+    }
     doExport({
       exportObjects,
       setModalOpen,
@@ -87,6 +97,9 @@ const Export = () => {
       .slice()
       .filter(p => p.status === 'pensioniert')
       .map(p => pick(p, adressenFields))
+    if (!exportObjects.length) {
+      return addError(new Error('Es gibt keine Daten zu exportieren'))
+    }
     doExport({
       exportObjects,
       setModalOpen,
@@ -97,6 +110,9 @@ const Export = () => {
   }, [personenSorted])
   const onClickExportPersonenKader = useCallback(() => {
     const exportObjects = personenKaderPrepareData({ store })
+    if (!exportObjects.length) {
+      return addError(new Error('Es gibt keine Daten zu exportieren'))
+    }
     doExport({
       exportObjects,
       setModalOpen,
@@ -117,6 +133,9 @@ const Export = () => {
 
   const onClickExportBereiche = useCallback(() => {
     const exportObjects = bereichePrepareData({ store })
+    if (!exportObjects.length) {
+      return addError(new Error('Es gibt keine Daten zu exportieren'))
+    }
     doExport({
       exportObjects,
       setModalOpen,
@@ -126,6 +145,9 @@ const Export = () => {
   }, [bereicheFiltered])
   const onClickExportSektionen = useCallback(() => {
     const exportObjects = sektionenPrepareData({ store })
+    if (!exportObjects.length) {
+      return addError(new Error('Es gibt keine Daten zu exportieren'))
+    }
     doExport({
       exportObjects,
       setModalOpen,
@@ -135,6 +157,9 @@ const Export = () => {
   }, [sektionenFiltered])
   const onClickExportAbteilungen = useCallback(() => {
     const exportObjects = abteilungenPrepareData({ store })
+    if (!exportObjects.length) {
+      return addError(new Error('Es gibt keine Daten zu exportieren'))
+    }
     doExport({
       exportObjects,
       setModalOpen,
@@ -144,6 +169,9 @@ const Export = () => {
   }, [abteilungenFiltered])
   const onClickExportAemter = useCallback(() => {
     const exportObjects = aemterPrepareData({ store })
+    if (!exportObjects.length) {
+      return addError(new Error('Es gibt keine Daten zu exportieren'))
+    }
     doExport({
       exportObjects,
       setModalOpen,
