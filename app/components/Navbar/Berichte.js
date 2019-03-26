@@ -31,8 +31,8 @@ const StyledButton = styled(Button)`
 const printToPDFOptions = {
   marginsType: 0,
   pageSize: 'A4',
-  landscape: false,
-  printBackground: true,
+  landscape: true,
+  printBackground: false,
 }
 const dialogOptions = {
   title: 'pdf speichern',

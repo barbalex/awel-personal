@@ -1,6 +1,7 @@
 import React, { useContext, useRef, useEffect } from 'react'
 import moment from 'moment'
 import styled, { createGlobalStyle } from 'styled-components'
+import { observer } from 'mobx-react-lite'
 
 import storeContext from '../../../storeContext'
 import LogoAwel from '../../../etc/LogoAwel.jpg'
@@ -187,12 +188,12 @@ function isOdd(num) {
 const PersonPrintAdressesPage = ({ pageIndex }) => {
   const store = useContext(storeContext)
   const {
-    personenFiltered,
     abteilungen,
     sektionen,
     bereiche,
     funktionen,
     personPages,
+    personenFiltered,
   } = store
   const {
     pages,
@@ -204,6 +205,9 @@ const PersonPrintAdressesPage = ({ pageIndex }) => {
     stop,
   } = personPages
   const rowsContainer = useRef(null)
+
+  const page = pages[pageIndex]
+  const { rows } = page
 
   const next = () => {
     /**
@@ -223,26 +227,20 @@ const PersonPrintAdressesPage = ({ pageIndex }) => {
       const scrollHeight = rowsContainer
         ? rowsContainer.current.scrollHeight
         : null
-      const activePageIsFull = pages[pageIndex].full
-      console.log('Page, next', {
-        pageIndex,
-        activePageIndex,
-        offsetHeight,
-        scrollHeight,
-      })
+      const activePageIsFull = page.full
 
       if (!activePageIsFull && remainingRows.length > 0) {
         if (offsetHeight < scrollHeight) {
           moveRowToNewPage(activePageIndex)
-          this.showPagesModal()
+          //this.showPagesModal()
         } else {
-          addRow()
+          addRow(page)
         }
       }
       if (remainingRows.length === 0) {
         if (offsetHeight < scrollHeight) {
           moveRowToNewPage(activePageIndex)
-          this.showPagesModal()
+          //this.showPagesModal()
         } else {
           // for unknown reason setTimeout is needed
           setTimeout(() => {
@@ -254,10 +252,12 @@ const PersonPrintAdressesPage = ({ pageIndex }) => {
   }
 
   useEffect(() => {
-    console.log('Page, will run next')
-    setTimeout(() => next())
-  }, [remainingRows, pageIndex])
-  console.log('Page rendering')
+    next()
+  })
+
+  if (!rows) return null
+
+  const personen = personenFiltered.filter(p => rows.includes(p.id))
 
   return (
     <Container className="querformat">
@@ -275,7 +275,7 @@ const PersonPrintAdressesPage = ({ pageIndex }) => {
           </HeaderRow>
         </StyledHeader>
         <StyledRowsContainer building={building} ref={rowsContainer}>
-          {personenFiltered.map((p, i) => (
+          {personen.map((p, i) => (
             <Row key={p.id} shaded={!isOdd(i)}>
               <StyledName>{p.name}</StyledName>
               <StyledVorname>{p.vorname}</StyledVorname>
@@ -303,7 +303,7 @@ const PersonPrintAdressesPage = ({ pageIndex }) => {
         <Footer>
           <div>{moment().format('DD.MM.YYYY')}</div>
           <div>
-            Seite {i + 1}/{pages.length}
+            Seite {pageIndex + 1}/{pages.length}
           </div>
         </Footer>
       </InnerPageContainer>
@@ -311,4 +311,4 @@ const PersonPrintAdressesPage = ({ pageIndex }) => {
   )
 }
 
-export default PersonPrintAdressesPage
+export default observer(PersonPrintAdressesPage)

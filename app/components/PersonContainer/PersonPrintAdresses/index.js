@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components'
+import { observer } from 'mobx-react-lite'
+import useDetectPrint from 'use-detect-print'
 
 import storeContext from '../../../storeContext'
 import Page from './Page'
-import { getSnapshot } from 'mobx-state-tree'
 
 const Container = styled.div`
   background-color: #eee;
@@ -32,16 +33,13 @@ const Container = styled.div`
 
 const PersonPrintAdressesPages = () => {
   const store = useContext(storeContext)
-  const { personPages } = store
+  const { personPages, personenFiltered } = store
   const { initiate } = personPages
-  console.log('PersonPrintAdressesPages', {
-    personPages,
-    pages: getSnapshot(personPages.pages),
-  })
+  const isPrinting = useDetectPrint()
 
   useEffect(() => {
-    console.log('PersonPrintAdressesPages, will initiate')
-    initiate()
+    console.log('PersonPrintAdresses, useEffect')
+    if (!isPrinting) initiate()
   }, [])
 
   return (
@@ -53,4 +51,4 @@ const PersonPrintAdressesPages = () => {
   )
 }
 
-export default PersonPrintAdressesPages
+export default observer(PersonPrintAdressesPages)

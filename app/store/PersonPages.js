@@ -1,13 +1,12 @@
-import { types, getParent, getSnapshot } from 'mobx-state-tree'
+import { types, getParent } from 'mobx-state-tree'
 
 import PersonPage from './PersonPage'
-import Person from './Person'
 
 export default types
   .model('PersonPage', {
     pages: types.array(PersonPage),
     activePageIndex: types.optional(types.integer, 0),
-    remainingRows: types.array(Person),
+    remainingRows: types.array(types.integer),
     building: types.optional(types.boolean, false),
     title: types.optional(types.union(types.string, types.integer), ''),
   })
@@ -22,15 +21,10 @@ export default types
     initiate() {
       const store = getParent(self, 1)
       const { personenFiltered } = store
-      //const remainingRows = getSnapshot(personenFiltered) // throws
-      const remainingRows = personenFiltered.map(p => getSnapshot(p))
-      console.log(
-        'store, PersonPages, initiating remainingRows:',
-        remainingRows,
-      )
       self.reset()
-      self.remainingRows = remainingRows
+      self.remainingRows = personenFiltered.map(p => p.id)
       self.building = true
+      self.pages.push({ rows: [], full: false })
     },
     setTitle(val) {
       self.title = val
