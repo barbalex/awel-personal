@@ -42,8 +42,6 @@ const PersonPrintAdressesPages = () => {
     if (!pages.length) initiate()
   }, [])
 
-  console.log('PersonPrintAdressesPages, modal', modal)
-
   return (
     <Container>
       {personPages.pages.map((page, pageIndex) => (
