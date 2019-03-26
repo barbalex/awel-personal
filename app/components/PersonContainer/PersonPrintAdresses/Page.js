@@ -57,6 +57,10 @@ const Container = styled.div`
     page-break-inside: avoid !important;
     page-break-before: always !important;
     page-break-after: always !important;
+
+    @page {
+      size: A4 landscape;
+    }
   }
 `
 /**
@@ -86,6 +90,8 @@ const StyledRowsContainer = styled.div`
    */
   overflow-y: ${props => (props.building ? 'auto' : 'hidden')};
   overflow-x: hidden;
+  /* grow to fill page and thus move single rows to top */
+  flex-grow: 2;
 
   @media print {
     page-break-before: avoid !important;
@@ -263,7 +269,7 @@ const PersonPrintAdressesPage = ({ pageIndex }) => {
     <Container className="querformat">
       <GlobalStyle />
       <InnerPageContainer>
-        <LogoImg src={LogoAwel} />
+        {pageIndex === 0 && <LogoImg src={LogoAwel} />}
         <StyledHeader>
           <HeaderRow>
             <StyledName>Name</StyledName>

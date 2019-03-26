@@ -44,7 +44,7 @@ const StyledReflexElement = styled(ReflexElement)`
 const PersonContainer = () => {
   const store = useContext(storeContext)
   const db = useContext(dbContext)
-  const { showFilter, personen, personenForPersonPrintAdresses } = store
+  const { showFilter, personen } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const person = personen.find(p => p.id === activeId)

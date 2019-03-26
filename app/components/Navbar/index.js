@@ -16,6 +16,11 @@ import Berichte from './Berichte'
 import More from './More'
 import storeContext from '../../storeContext'
 
+const StyledNavbar = styled(Navbar)`
+  @media print {
+    display: none;
+  }
+`
 const UndoButton = styled(Button)`
   margin-right: 5px;
   background-color: transparent !important;
@@ -46,7 +51,7 @@ const MyNavbar = () => {
   const activeLocation = location[0]
 
   return (
-    <Navbar color="dark" dark expand="lg">
+    <StyledNavbar color="dark" dark expand="lg">
       <NavbarToggler onClick={toggleNavbar} />
       <Collapse isOpen={open} navbar>
         <Nav className="mr-auto" navbar>
@@ -81,7 +86,7 @@ const MyNavbar = () => {
           <More />
         </Nav>
       </Collapse>
-    </Navbar>
+    </StyledNavbar>
   )
 }
 

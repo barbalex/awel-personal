@@ -820,6 +820,9 @@ export default db =>
         },
         setActivePrintForm(val) {
           self.activePrintForm = val
+          if (!val) {
+            self.personPages.reset()
+          }
         },
         revertMutation(mutationId) {
           const { mutations } = self

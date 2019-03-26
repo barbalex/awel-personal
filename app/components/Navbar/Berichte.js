@@ -28,12 +28,6 @@ const StyledButton = styled(Button)`
   border: unset !important;
 `
 
-const printToPDFOptions = {
-  marginsType: 0,
-  pageSize: 'A4',
-  landscape: true,
-  printBackground: false,
-}
 const dialogOptions = {
   title: 'pdf speichern',
   filters: [
@@ -66,6 +60,13 @@ const Berichte = () => {
     })
   })
   const onClickCreatePdf = useCallback(() => {
+    const landscape = !['personalblatt'].includes(activePrintForm)
+    const printToPDFOptions = {
+      marginsType: 0,
+      pageSize: 'A4',
+      landscape,
+      printBackground: true,
+    }
     const win = remote.getCurrentWindow()
     // https://github.com/electron/electron/blob/master/docs/api/web-contents.md#contentsprinttopdfoptions-callback
 

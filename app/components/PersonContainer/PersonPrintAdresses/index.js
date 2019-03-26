@@ -33,13 +33,11 @@ const Container = styled.div`
 
 const PersonPrintAdressesPages = () => {
   const store = useContext(storeContext)
-  const { personPages, personenFiltered } = store
-  const { initiate } = personPages
-  const isPrinting = useDetectPrint()
+  const { personPages } = store
+  const { initiate, pages } = personPages
 
   useEffect(() => {
-    console.log('PersonPrintAdresses, useEffect')
-    if (!isPrinting) initiate()
+    if (!pages.length) initiate()
   }, [])
 
   return (
