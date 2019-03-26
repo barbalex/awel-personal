@@ -55,6 +55,8 @@ const Filter = () => {
     setFilter,
     setShowMutationNoetig,
     existsFilter,
+    personPages,
+    activePrintForm,
   } = store
 
   const location = store.location.toJSON()
@@ -65,9 +67,19 @@ const Filter = () => {
   const toggleShowFilter = useCallback(() => setShowFilter(!showFilter), [
     showFilter,
   ])
-  const onChangeFilterFulltext = useCallback(e =>
-    setFilterFulltext(e.target.value),
-  )
+  const onChangeFilterFulltext = useCallback(e => {
+    setFilterFulltext(e.target.value)
+  })
+  const onBlurFilterFulltext = useCallback(e => {
+    if (activePrintForm === 'personAdresses') {
+      personPages.initiate()
+    }
+  })
+  const onKeyPressFilterFulltext = useCallback(e => {
+    if (e.key === 'Enter') {
+      onBlurFilterFulltext(e)
+    }
+  })
   const onEmptyFilterFulltext = useCallback(() => setFilterFulltext(null))
   const toggleFilterDropdown = useCallback(
     e => {
@@ -105,7 +117,9 @@ const Filter = () => {
         <VolltextInput
           placeholder="Volltext filtern"
           onChange={onChangeFilterFulltext}
+          onBlur={onBlurFilterFulltext}
           value={filterFulltext || ''}
+          onKeyPress={onKeyPressFilterFulltext}
           existsfilter={!!filterFulltext ? 'true' : 'false'}
         />
         <InputGroupAddon addonType="append">
