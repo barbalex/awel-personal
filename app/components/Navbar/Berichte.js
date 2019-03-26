@@ -43,6 +43,9 @@ const Berichte = () => {
   const { setPrinting, activePrintForm, setActivePrintForm } = store
   const location = store.location.toJSON()
   const showPD = location[0] === 'Personen' && location[1]
+
+  console.log('location0', location[0])
+
   const onClickPD = useCallback(() => {
     setActivePrintForm('personalblatt')
   }, [location])
@@ -93,11 +96,15 @@ const Berichte = () => {
         Berichte
       </DropdownToggle>
       <DropdownMenu>
-        <DropdownItem header>Vorlagen: übernehmen Filter</DropdownItem>
-        <DropdownItem onClick={() => setActivePrintForm('personAdresses')}>
-          Personen: Funktionen
-        </DropdownItem>
-        <DropdownItem divider />
+        {location[0] === 'Personen' && (
+          <>
+            <DropdownItem header>Vorlagen: übernehmen Filter</DropdownItem>
+            <DropdownItem onClick={() => setActivePrintForm('personAdresses')}>
+              Personen: Funktionen
+            </DropdownItem>
+            <DropdownItem divider />
+          </>
+        )}
         <DropdownItem header>Vorbereitete: setzen eigenen Filter</DropdownItem>
         <DropdownItem disabled onClick={() => console.log('TODO')}>
           Kurzzeichenverzeichnis
