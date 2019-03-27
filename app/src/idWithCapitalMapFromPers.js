@@ -31,6 +31,11 @@ const alphabet = [
 
 export default ({ personen, field = 'name' }) => {
   const res = []
+  /**
+   * normally keep sorting by name
+   * but for kurzzeichen need to sort by that
+   * and needs to be lowercase
+   */
   let personenToUse =
     field === 'kurzzeichen'
       ? sortBy(personen, p => p.kurzzeichen.toLowerCase())
