@@ -13,3 +13,5 @@ export default types
       self.full = true
     },
   }))
+
+export const standard = { rows: [], full: false }

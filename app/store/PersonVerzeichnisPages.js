@@ -1,6 +1,8 @@
 import { types, getParent } from 'mobx-state-tree'
 
-import PersonVerzeichnisPage from './PersonVerzeichnisPage'
+import PersonVerzeichnisPage, {
+  standard as standardPage,
+} from './PersonVerzeichnisPage'
 
 export default types
   .model('PersonVerzeichnisPages', {
@@ -22,14 +24,14 @@ export default types
       self.reset()
       self.remainingRows = personenFiltered.map(p => p.id)
       self.building = true
-      self.pages.push({ rows: [], full: false })
+      self.pages.push(standardPage)
     },
     setRemainingRows(rows) {
       self.remainingRows = rows
     },
     newPage() {
       self.activePageIndex += 1
-      self.pages.push({ rows: [], full: false })
+      self.pages.push(standardPage)
     },
     addRow() {
       const activePage = self.pages.find((p, i) => i === self.activePageIndex)

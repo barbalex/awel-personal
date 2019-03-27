@@ -1,12 +1,14 @@
-import { types, getParent } from 'mobx-state-tree'
+import { types, getParent, getSnapshot } from 'mobx-state-tree'
 
-import PersonVerzeichnisColumn from './PersonVerzeichnisColumn'
+import PersonVerzeichnisColumn, {
+  standard as standardColumn,
+} from './PersonVerzeichnisColumn'
 
 export default types
   .model('PersonVerzeichnisPage', {
-    column0: types.array(PersonVerzeichnisColumn),
-    column1: types.array(PersonVerzeichnisColumn),
-    column2: types.array(PersonVerzeichnisColumn),
+    column0: PersonVerzeichnisColumn,
+    column1: PersonVerzeichnisColumn,
+    column2: PersonVerzeichnisColumn,
     activeColumnIndex: types.optional(types.integer, 0),
     full: types.optional(types.boolean, false),
   })
@@ -17,6 +19,12 @@ export default types
     moveRowToNewColumn() {
       const pages = getParent(self, 1)
       const activeColumn = self[`column${self.activeColumnIndex}`]
+      console.log('store, PersonVerzeichnisPage', {
+        column0: getSnapshot(self.column0),
+        activeColumn: getSnapshot(activeColumn),
+        pages: getSnapshot(pages),
+        activeColumnIndex: self.activeColumnIndex,
+      })
       activeColumn.setFull()
       pages.remainingRows.unshift(activeColumn.rows.pop())
       if (activeColumn < 2) {
@@ -31,3 +39,11 @@ export default types
       self.full = true
     },
   }))
+
+export const standard = {
+  column0: standardColumn,
+  column1: standardColumn,
+  column2: standardColumn,
+  activeColumnIndex: 0,
+  full: false,
+}
