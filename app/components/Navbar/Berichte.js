@@ -45,6 +45,7 @@ const Berichte = () => {
     activePrintForm,
     setActivePrintForm,
     setFilter,
+    emptyFilter,
     setLocation,
     setFilterPersonKader,
     setFilterPersonAktivJetztMitTel,
@@ -109,6 +110,7 @@ const Berichte = () => {
           onClick={() => {
             setLocation(['Personen'])
             setActivePrintForm('personFunktionen')
+            store.personPages.initiate()
           }}
         >
           Personen: Funktionen
@@ -119,7 +121,10 @@ const Berichte = () => {
           onClick={() => {
             setLocation(['Personen'])
             setFilterPersonAktivJetztMitKurzzeichen(true)
-            setTimeout(() => setActivePrintForm('personVerzKurzzeichen'), 1000)
+            setTimeout(() => {
+              setActivePrintForm('personVerzKurzzeichen')
+              store.personVerzeichnis.initiate('personVerzKurzzeichen')
+            }, 1000)
           }}
         >
           Kurzzeichen
@@ -128,7 +133,10 @@ const Berichte = () => {
           onClick={() => {
             setLocation(['Personen'])
             setFilterPersonAktivJetztMitTel(true)
-            setTimeout(() => setActivePrintForm('personVerzTel'), 1000)
+            setTimeout(() => {
+              setActivePrintForm('personVerzTel')
+              store.personVerzeichnis.initiate()
+            }, 1000)
           }}
         >
           Telefone
@@ -137,7 +145,10 @@ const Berichte = () => {
           onClick={() => {
             setLocation(['Personen'])
             setFilterPersonAktivJetztMitMobiltel(true)
-            setTimeout(() => setActivePrintForm('personVerzMobiltel'), 1000)
+            setTimeout(() => {
+              setActivePrintForm('personVerzMobiltel')
+              store.personVerzeichnis.initiate()
+            }, 1000)
           }}
         >
           Mobil-Telefone
@@ -145,8 +156,12 @@ const Berichte = () => {
         <DropdownItem
           onClick={() => {
             setLocation(['Personen'])
+            emptyFilter()
             setFilterPersonKader(true)
-            setTimeout(() => setActivePrintForm('personKader'), 1000)
+            setTimeout(() => {
+              setActivePrintForm('personKader')
+              store.personPages.initiate()
+            }, 1000)
           }}
         >
           Kader
@@ -154,11 +169,15 @@ const Berichte = () => {
         <DropdownItem
           onClick={() => {
             setLocation(['Personen'])
+            emptyFilter()
             setFilter({
               model: 'filterPerson',
               value: { status: 'pensioniert' },
             })
-            setTimeout(() => setActivePrintForm('personPensionierte'), 1000)
+            setTimeout(() => {
+              setActivePrintForm('personPensionierte')
+              store.personPages.initiate()
+            }, 1000)
           }}
         >
           Pensionierte

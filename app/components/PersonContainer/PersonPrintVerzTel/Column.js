@@ -123,12 +123,15 @@ const PersonPrintVerzTelColumn = ({ pageIndex, columnIndex }) => {
 
   if (!rows) return null
 
-  const data = rows.map(r => {
-    if (isNaN(r)) {
-      return { type: 'title', name: r }
-    }
-    return personenFiltered.find(p => p.id === r)
-  })
+  const data = rows
+    .map(r => {
+      if (isNaN(r)) {
+        return { type: 'title', name: r }
+      }
+      return personenFiltered.find(p => p.id === r)
+    })
+    // while new filter is applied, undefined rows exist
+    .filter(r => !!r)
 
   console.log('PersonPrintVerzTel, Column', { data, rows })
 

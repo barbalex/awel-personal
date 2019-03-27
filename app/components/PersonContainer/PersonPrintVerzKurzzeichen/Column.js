@@ -123,12 +123,15 @@ const PersonPrintVerzKurzzeichenColumn = ({ pageIndex, columnIndex }) => {
 
   if (!rows) return null
 
-  const data = rows.map(r => {
-    if (isNaN(r)) {
-      return { type: 'title', kurzzeichen: r }
-    }
-    return personenFiltered.find(p => p.id === r)
-  })
+  const data = rows
+    .map(r => {
+      if (isNaN(r)) {
+        return { type: 'title', kurzzeichen: r }
+      }
+      return personenFiltered.find(p => p.id === r)
+    })
+    // while new filter is applied, undefined rows exist
+    .filter(r => !!r)
 
   return (
     <Container building={!columnIsFull} ref={containerEl}>

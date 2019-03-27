@@ -1,35 +1,34 @@
 import sortBy from 'lodash/sortBy'
 
-const alphabet = [
-  'A',
-  'B',
-  'C',
-  'D',
-  'E',
-  'F',
-  'G',
-  'H',
-  'I',
-  'J',
-  'K',
-  'L',
-  'M',
-  'N',
-  'O',
-  'P',
-  'Q',
-  'R',
-  'S',
-  'T',
-  'U',
-  'V',
-  'W',
-  'X',
-  'Y',
-  'Z',
-]
-
 export default ({ personen, field = 'name' }) => {
+  const alphabet = [
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'I',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'O',
+    'P',
+    'Q',
+    'R',
+    'S',
+    'T',
+    'U',
+    'V',
+    'W',
+    'X',
+    'Y',
+    'Z',
+  ]
   const res = []
   /**
    * normally keep sorting by name
@@ -48,5 +47,5 @@ export default ({ personen, field = 'name' }) => {
     res.push(p.id)
   })
   // add unused from alphabet
-  return [...res, ...alphabet]
+  return [...res, ...alphabet].filter(r => r !== undefined)
 }

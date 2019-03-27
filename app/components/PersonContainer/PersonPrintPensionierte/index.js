@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap'
@@ -33,14 +33,8 @@ const Container = styled.div`
 
 const PersonPrintPensioniertePages = () => {
   const store = useContext(storeContext)
-  const { personPages, activePrintForm } = store
-  const { initiate, pages, modal, reset, building } = personPages
-
-  useEffect(() => {
-    // only initiate if pages exist
-    // otherwise re-initiates on printing
-    if (!(pages.length && activePrintForm === 'personPensionierte')) initiate()
-  }, [])
+  const { personPages } = store
+  const { modal, reset, building } = personPages
 
   return (
     <Container>
