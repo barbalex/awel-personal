@@ -9,6 +9,7 @@ import PersonPrint from './PersonPrint'
 import PersonPrintFunktionen from './PersonPrintFunktionen'
 import PersonPrintPensionierte from './PersonPrintPensionierte'
 import PersonPrintKader from './PersonPrintKader'
+import PersonPrintVerzTel from './PersonPrintVerzTel'
 import PersonMutation from './PersonMutation'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
@@ -50,6 +51,9 @@ const PersonTab = ({ dimensions }) => {
   }
   if (activePrintForm === 'personKader') {
     return <PersonPrintKader />
+  }
+  if (activePrintForm === 'personVerzTel') {
+    return <PersonPrintVerzTel />
   }
 
   if (!showFilter && !activeId) return null

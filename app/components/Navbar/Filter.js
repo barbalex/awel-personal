@@ -75,9 +75,12 @@ const Filter = () => {
   const onBlurFilterFulltext = useCallback(
     e => {
       if (
-        ['personFunktionen', 'personPensionierte', 'personKader'].includes(
-          activePrintForm,
-        )
+        [
+          'personFunktionen',
+          'personPensionierte',
+          'personKader',
+          'personVerzTel',
+        ].includes(activePrintForm)
       ) {
         personPages.initiate()
       }
@@ -92,9 +95,12 @@ const Filter = () => {
   const onEmptyFilterFulltext = useCallback(() => {
     setFilterFulltext(null)
     if (
-      ['personFunktionen', 'personPensionierte', 'personKader'].includes(
-        activePrintForm,
-      )
+      [
+        'personFunktionen',
+        'personPensionierte',
+        'personKader',
+        'personVerzTel',
+      ].includes(activePrintForm)
     ) {
       personPages.initiate()
     }

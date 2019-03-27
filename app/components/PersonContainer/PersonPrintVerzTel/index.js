@@ -31,7 +31,7 @@ const Container = styled.div`
   }
 `
 
-const PersonPrintKaderPages = () => {
+const PersonPrintVerzTelPages = () => {
   const store = useContext(storeContext)
   const { personPages, activePrintForm } = store
   const { initiate, pages, modal, reset, building } = personPages
@@ -39,7 +39,7 @@ const PersonPrintKaderPages = () => {
   useEffect(() => {
     // only initiate if pages exist
     // otherwise re-initiates on printing
-    if (!(pages.length && activePrintForm === 'personKader')) initiate()
+    if (!(pages.length && activePrintForm === 'personVerzTel')) initiate()
   }, [])
 
   return (
@@ -62,4 +62,4 @@ const PersonPrintKaderPages = () => {
   )
 }
 
-export default observer(PersonPrintKaderPages)
+export default observer(PersonPrintVerzTelPages)

@@ -20,6 +20,7 @@ import PersonPrint from './PersonContainer/PersonPrint'
 import PersonPrintFunktionen from './PersonContainer/PersonPrintFunktionen'
 import PersonPrintPensionierte from './PersonContainer/PersonPrintPensionierte'
 import PersonPrintKader from './PersonContainer/PersonPrintKader'
+import PersonPrintVerzTel from './PersonContainer/PersonPrintVerzTel'
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 
 registerLocale('de', de)
@@ -55,6 +56,9 @@ const App = () => {
     }
     if (activePrintForm === 'personKader') {
       return <PersonPrintKader />
+    }
+    if (activePrintForm === 'personVerzTel') {
+      return <PersonPrintVerzTel />
     }
   }
 
