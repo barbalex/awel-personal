@@ -4,7 +4,6 @@ import styled, { createGlobalStyle } from 'styled-components'
 import get from 'lodash/get'
 
 import storeContext from '../../../storeContext'
-import Zuletzt from '../Person/Zuletzt'
 import InputValue from './InputValue'
 import Telefones from './Telefones'
 import Links from './Links'
@@ -371,7 +370,13 @@ const PersonPrint = ({ activeId }) => {
               <MobileAbos activeId={activeId} />
             </AreaVerzeichnis>
             <AreaZuletzt>
-              <Zuletzt row={false} />
+              {`Zuletzt geändert: ${
+                moment.unix(person.letzteMutationZeit / 1000).isValid()
+                  ? moment
+                      .unix(person.letzteMutationZeit / 1000)
+                      .format('DD.MM.YYYY H:mm:ss')
+                  : ''
+              }, ${person.letzteMutationUser || ''}`}
             </AreaZuletzt>
           </Wrapper>
         </Content>
