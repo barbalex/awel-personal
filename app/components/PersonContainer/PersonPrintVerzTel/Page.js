@@ -70,7 +70,7 @@ const Container = styled.div`
  */
 const InnerPageContainer = styled.div`
   display: grid;
-  grid-template-rows: 7mm 16.75cm 5mm;
+  grid-template-rows: 5mm 16.75cm 5mm;
   grid-template-areas:
     'title title title'
     'column0 column1 column2'

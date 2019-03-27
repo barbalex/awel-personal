@@ -24,13 +24,13 @@ const Container = styled.div`
 `
 const Field = styled.div`
   flex: 1;
-  padding: 2px;
+  padding: 1px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `
 const StyledName = styled(Field)`
-  min-width: 16mm;
+  min-width: 17mm;
 `
 const StyledVorname = styled(Field)``
 const StyledKurzzeichen = styled(Field)`
