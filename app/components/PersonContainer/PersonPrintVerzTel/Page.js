@@ -94,6 +94,13 @@ const StyledRowsContainer = styled.div`
     page-break-inside: avoid !important;
   }
 `
+const ContentContainer = styled.div`
+  display: grid;
+  grid-template-areas:
+    'title title title'
+    'column1 column2 column3'
+    'footer footer footer';
+`
 // eslint-disable-next-line no-unused-expressions
 const GlobalStyle = createGlobalStyle`
   @page {
