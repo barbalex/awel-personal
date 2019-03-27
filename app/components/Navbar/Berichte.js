@@ -61,13 +61,15 @@ const Berichte = () => {
   const onClickPrint = useCallback(() => {
     setPrinting(true)
     setTimeout(() => {
-      //window.print()
-      const win = remote.getCurrentWindow()
+      window.print()
+      // turned off because printBackground = true did not work
+      /*const win = remote.getCurrentWindow()
       win.webContents.print({
         silent: false,
-        printBackground: true,
+        // true did not work!!!???
+        printBackground: false,
         deviceName: '',
-      })
+      })*/
       setTimeout(() => setPrinting(false))
     })
   })
@@ -128,7 +130,7 @@ const Berichte = () => {
             }, 1000)
           }}
         >
-          Kader
+          Personen: Kader
         </DropdownItem>
         <DropdownItem
           onClick={() => {
@@ -144,7 +146,7 @@ const Berichte = () => {
             }, 1000)
           }}
         >
-          Pensionierte
+          Personen: Pensionierte
         </DropdownItem>
         <DropdownItem
           onClick={() => {
@@ -157,7 +159,7 @@ const Berichte = () => {
             }, 1000)
           }}
         >
-          Kurzzeichen
+          Personen: Kurzzeichen
         </DropdownItem>
         <DropdownItem
           onClick={() => {
@@ -170,7 +172,7 @@ const Berichte = () => {
             }, 1000)
           }}
         >
-          Telefone
+          Personen: Telefone
         </DropdownItem>
         <DropdownItem
           onClick={() => {
@@ -183,7 +185,7 @@ const Berichte = () => {
             }, 1000)
           }}
         >
-          Mobil-Telefone
+          Personen: Mobil-Telefone
         </DropdownItem>
         {showPD && (
           <>
