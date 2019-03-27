@@ -47,6 +47,7 @@ const Berichte = () => {
     setFilter,
     setLocation,
     setFilterPersonKader,
+    setFilterPersonAktivJetzt,
     personPages,
   } = store
   const location = store.location.toJSON()

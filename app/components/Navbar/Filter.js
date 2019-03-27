@@ -58,6 +58,7 @@ const Filter = () => {
     personPages,
     activePrintForm,
     setFilterPersonKader,
+    setFilterPersonAktivJetzt,
   } = store
 
   const location = store.location.toJSON()
@@ -130,6 +131,9 @@ const Filter = () => {
   const onClickKader = useCallback(() => {
     setFilterPersonKader(true)
   }, [activeLocation])
+  const onClickAktivJetzt = useCallback(() => {
+    setFilterPersonAktivJetzt(true)
+  }, [activeLocation])
 
   return (
     <div>
@@ -187,7 +191,16 @@ const Filter = () => {
                 <DropdownItem onClick={onClickAnstehendeMutationen}>
                   Anstehende Mutationen
                 </DropdownItem>
-                <DropdownItem onClick={onClickKader}>Kader</DropdownItem>
+                {
+                  (location[0] = 'Personen' && (
+                    <>
+                      <DropdownItem onClick={onClickAktivJetzt}>
+                        aktuell aktiv (bereits eingetreten)
+                      </DropdownItem>
+                      <DropdownItem onClick={onClickKader}>Kader</DropdownItem>
+                    </>
+                  ))
+                }
               </DropdownMenu>
             </StyledDropdown>
           </StyledInputGroupText>

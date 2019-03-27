@@ -8,6 +8,7 @@ import sortBy from 'lodash/sortBy'
 import last from 'lodash/last'
 import keys from 'lodash/keys'
 import lValues from 'lodash/values'
+import moment from 'moment'
 
 import Amt from './Amt'
 import Abteilung from './Abteilung'
@@ -93,6 +94,7 @@ export default db =>
       history: types.optional(UndoManager, {}),
       filterPerson: types.optional(Person, {}),
       filterPersonKader: types.optional(types.boolean, false),
+      filterPersonAktivJetzt: types.optional(types.boolean, false),
       filterAmt: types.optional(Amt, {}),
       filterAbteilung: types.optional(Abteilung, {}),
       filterBereich: types.optional(Bereich, {}),
@@ -130,6 +132,7 @@ export default db =>
         const {
           filterPerson,
           filterPersonKader,
+          filterPersonAktivJetzt,
           filterAmt,
           filterAbteilung,
           filterBereich,
@@ -158,7 +161,9 @@ export default db =>
             ...Object.values(filterTelefon),
             ...Object.values(filterFunktion),
             ...Object.values(filterKaderFunktion),
-          ].filter(v => v).length > 0 || filterPersonKader
+          ].filter(v => v).length > 0 ||
+          filterPersonKader ||
+          filterPersonAktivJetzt
         )
       },
       get personenSorted() {
@@ -187,6 +192,7 @@ export default db =>
           filterAnwesenheitstage,
           filterPerson,
           filterPersonKader,
+          filterPersonAktivJetzt,
         } = self
         let { personen } = self
         if (filterPersonKader) {
@@ -202,6 +208,13 @@ export default db =>
 
             return [...kaderfunktionen, ...etiketten].length > 0
           })
+        }
+        if (filterPersonAktivJetzt) {
+          personen = personen
+            .filter(p => p.status === 'aktiv')
+            .filter(p =>
+              moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
+            )
         }
         Object.keys(filterPerson).forEach(key => {
           if (filterPerson[key] || filterPerson[key] === 0) {
@@ -722,6 +735,7 @@ export default db =>
         emptyFilter() {
           self.filterPerson = {}
           self.filterPersonKader = false
+          self.filterPersonAktivJetzt = false
           self.filterAbteilung = {}
           self.filterBereich = {}
           self.filterSektion = {}
@@ -1953,6 +1967,9 @@ export default db =>
         },
         setFilterPersonKader(val) {
           self.filterPersonKader = val
+        },
+        setFilterPersonAktivJetzt(val) {
+          self.filterPersonAktivJetzt = val
         },
       }
     })
