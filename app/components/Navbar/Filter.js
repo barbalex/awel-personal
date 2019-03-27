@@ -191,16 +191,14 @@ const Filter = () => {
                 <DropdownItem onClick={onClickAnstehendeMutationen}>
                   Anstehende Mutationen
                 </DropdownItem>
-                {
-                  (location[0] = 'Personen' && (
-                    <>
-                      <DropdownItem onClick={onClickAktivJetzt}>
-                        aktuell aktiv (bereits eingetreten)
-                      </DropdownItem>
-                      <DropdownItem onClick={onClickKader}>Kader</DropdownItem>
-                    </>
-                  ))
-                }
+                {activeLocation === 'Personen' && (
+                  <>
+                    <DropdownItem onClick={onClickAktivJetzt}>
+                      aktuell aktiv (bereits eingetreten)
+                    </DropdownItem>
+                    <DropdownItem onClick={onClickKader}>Kader</DropdownItem>
+                  </>
+                )}
               </DropdownMenu>
             </StyledDropdown>
           </StyledInputGroupText>

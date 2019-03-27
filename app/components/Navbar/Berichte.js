@@ -114,13 +114,34 @@ const Berichte = () => {
         </DropdownItem>
         <DropdownItem divider />
         <DropdownItem header>Vorbereitete: setzen eigenen Filter</DropdownItem>
-        <DropdownItem disabled onClick={() => console.log('TODO')}>
+        <DropdownItem
+          disabled
+          onClick={() => {
+            setLocation(['Personen'])
+            setFilterPersonAktivJetzt(true)
+            setTimeout(() => setActivePrintForm('personVerzKurzzeichen'), 1000)
+          }}
+        >
           Kurzzeichenverzeichnis
         </DropdownItem>
-        <DropdownItem disabled onClick={() => console.log('TODO')}>
+        <DropdownItem
+          disabled
+          onClick={() => {
+            setLocation(['Personen'])
+            setFilterPersonAktivJetzt(true)
+            setTimeout(() => setActivePrintForm('personVerzTel'), 1000)
+          }}
+        >
           Telefone
         </DropdownItem>
-        <DropdownItem disabled onClick={() => console.log('TODO')}>
+        <DropdownItem
+          disabled
+          onClick={() => {
+            setLocation(['Personen'])
+            setFilterPersonAktivJetzt(true)
+            setTimeout(() => setActivePrintForm('personVerzMobiltel'), 1000)
+          }}
+        >
           Mobil-Telefone
         </DropdownItem>
         <DropdownItem
