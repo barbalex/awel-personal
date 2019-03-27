@@ -62,22 +62,19 @@ const Container = styled.div`
  * width of PageContainer is set in print by @page
  * somehow this makes positioning of its children not react as usual
  * flex and relative/absolute positioning behave as if the page were not full size
- * but would grow with the rowsContainer
+ * but would grow with the containerEl
  * Solution:
  * set a InnerPageContainer inside PageContainer
  * and give it full page size
  */
 const InnerPageContainer = styled.div`
-  width: 26.7cm;
-  height: 17.95cm;
-
-  /* place rowsContainer top and footer bottom */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`
-const StyledRowsContainer = styled.div`
-  max-height: 17.2cm;
+  display: grid;
+  grid-template-rows: 20mm auto 4mm;
+  grid-template-areas:
+    'title title title'
+    'column1 column2 column3'
+    'footer footer footer';
+  max-height: 17.95cm;
   max-width: 26.7cm;
   /*
    * need overflow while building list
@@ -85,72 +82,28 @@ const StyledRowsContainer = styled.div`
    */
   overflow-y: ${props => (props.building ? 'auto' : 'hidden')};
   overflow-x: hidden;
-  /* grow to fill page and thus move single rows to top */
-  flex-grow: 2;
-
-  @media print {
-    page-break-before: avoid !important;
-    page-break-after: avoid !important;
-    page-break-inside: avoid !important;
-  }
 `
-const ContentContainer = styled.div`
-  display: grid;
-  grid-template-areas:
-    'title title title'
-    'column1 column2 column3'
-    'footer footer footer';
+const Title = styled.div`
+  grid-area: title;
+  font-weight: 700;
+`
+const Column1 = styled.div`
+  grid-area: column1;
+`
+const Column2 = styled.div`
+  grid-area: column2;
+`
+const Column3 = styled.div`
+  grid-area: column3;
+`
+const Footer = styled.div`
+  grid-area: footer;
 `
 // eslint-disable-next-line no-unused-expressions
 const GlobalStyle = createGlobalStyle`
   @page {
     size: A4 landscape;
   }
-`
-const Footer = styled.div`
-  height: 0.4cm !important;
-  max-height: 0.4cm !important;
-  width: 26.7cm;
-  max-width: 26.7cm;
-
-  display: flex;
-  justify-content: space-between;
-
-  div {
-    /* push down as far as possible */
-    margin-bottom: 0;
-    text-align: right;
-  }
-
-  div:first-of-type {
-    text-align: left;
-  }
-
-  @media print {
-    page-break-before: avoid !important;
-    page-break-after: avoid !important;
-    page-break-inside: avoid !important;
-  }
-`
-const StyledTitle = styled.h4`
-  margin-top: -5px;
-  margin-bottom: 5px;
-  font-weight: 700;
-`
-const LogoImg = styled.img`
-  max-width: 260px;
-  margin-top: -20px;
-  margin-left: -10px;
-`
-const StyledHeader = styled.div`
-  border-bottom: 2px solid #717171;
-  font-weight: 700;
-`
-const HeaderRow = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: stretch;
-  padding: 3px;
 `
 const Field = styled.div`
   flex: 1;
@@ -185,8 +138,8 @@ const PersonPrintVerzTelPage = ({ pageIndex }) => {
     bereiche,
     funktionen,
     kaderFunktionen,
-    personPages,
     personenFiltered,
+    personVerzeichnis,
   } = store
   const {
     pages,
@@ -196,11 +149,11 @@ const PersonPrintVerzTelPage = ({ pageIndex }) => {
     moveRowToNewPage,
     addRow,
     stop,
-  } = personPages
-  const rowsContainer = useRef(null)
+  } = personVerzeichnis
+  const containerEl = useRef(null)
 
   const page = pages[pageIndex]
-  const { rows } = page
+  const { column0, column1, column2 } = page
 
   const next = () => {
     /**
@@ -214,12 +167,8 @@ const PersonPrintVerzTelPage = ({ pageIndex }) => {
      */
     // don't do anything on not active pages
     if (pageIndex === activePageIndex) {
-      const offsetHeight = rowsContainer
-        ? rowsContainer.current.offsetHeight
-        : null
-      const scrollHeight = rowsContainer
-        ? rowsContainer.current.scrollHeight
-        : null
+      const offsetHeight = containerEl ? containerEl.current.offsetHeight : null
+      const scrollHeight = containerEl ? containerEl.current.scrollHeight : null
       const activePageIsFull = page.full
 
       if (!activePageIsFull && remainingRows.length > 0) {
@@ -255,20 +204,9 @@ const PersonPrintVerzTelPage = ({ pageIndex }) => {
   return (
     <Container className="querformat">
       <GlobalStyle />
-      <InnerPageContainer>
-        <StyledTitle>AWEL Telefon-Verzeichnis</StyledTitle>
-        <StyledHeader>
-          <HeaderRow>
-            <StyledName>Name</StyledName>
-            <StyledVorname>Vorname</StyledVorname>
-            <StyledAbteilung>Abteilung</StyledAbteilung>
-            <StyledSektion>Sektion</StyledSektion>
-            <StyledBereich>Bereich</StyledBereich>
-            <StyledFunktionen>Funktionen</StyledFunktionen>
-            <StyledKaderfunktionen>Kader-Funktionen</StyledKaderfunktionen>
-          </HeaderRow>
-        </StyledHeader>
-        <StyledRowsContainer building={building} ref={rowsContainer}>
+      <InnerPageContainer building={building} ref={containerEl}>
+        <Title>AWEL Telefon-Verzeichnis</Title>
+        <Column1>
           {personen.map((p, i) => (
             <Row key={p.id} shaded={!isOdd(i)}>
               <StyledName>{p.name || ''}</StyledName>
@@ -300,7 +238,7 @@ const PersonPrintVerzTelPage = ({ pageIndex }) => {
               </StyledKaderfunktionen>
             </Row>
           ))}
-        </StyledRowsContainer>
+        </Column1>
         <Footer>
           <div>{moment().format('DD.MM.YYYY')}</div>
           <div>

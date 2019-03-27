@@ -33,8 +33,8 @@ const Container = styled.div`
 
 const PersonPrintVerzTelPages = () => {
   const store = useContext(storeContext)
-  const { personPages, activePrintForm } = store
-  const { initiate, pages, modal, reset, building } = personPages
+  const { personVerzeichnis, activePrintForm } = store
+  const { initiate, pages, modal, reset, building } = personVerzeichnis
 
   useEffect(() => {
     // only initiate if pages exist
@@ -44,7 +44,7 @@ const PersonPrintVerzTelPages = () => {
 
   return (
     <Container>
-      {personPages.pages.map((page, pageIndex) => (
+      {personVerzeichnis.pages.map((page, pageIndex) => (
         <Page key={pageIndex} pageIndex={pageIndex} />
       ))}
       <Modal isOpen={building}>
