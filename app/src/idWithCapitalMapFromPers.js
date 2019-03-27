@@ -47,5 +47,6 @@ export default ({ personen, field = 'name' }) => {
     }
     res.push(p.id)
   })
-  return res
+  // add unused from alphabet
+  return [...res, ...alphabet]
 }

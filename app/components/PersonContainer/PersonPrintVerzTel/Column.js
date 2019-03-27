@@ -130,6 +130,8 @@ const PersonPrintVerzTelColumn = ({ pageIndex, columnIndex }) => {
     return personenFiltered.find(p => p.id === r)
   })
 
+  console.log('PersonPrintVerzTel, Column', { data, rows })
+
   return (
     <Container building={!columnIsFull} ref={containerEl}>
       {data.map((r, i) => (

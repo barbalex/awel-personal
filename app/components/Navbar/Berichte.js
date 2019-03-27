@@ -123,7 +123,7 @@ const Berichte = () => {
             setTimeout(() => setActivePrintForm('personVerzKurzzeichen'), 1000)
           }}
         >
-          Kurzzeichenverzeichnis
+          Kurzzeichen
         </DropdownItem>
         <DropdownItem
           onClick={() => {
