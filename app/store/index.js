@@ -118,6 +118,12 @@ export default db =>
         building: false,
         title: '',
       }),
+      personVerzeichnis: types.optional(PersonPages, {
+        pages: [],
+        activePageIndex: 0,
+        remainingRows: [],
+        building: false,
+      }),
     })
     .views(self => ({
       get existsFilter() {
