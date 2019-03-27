@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react'
+import React, { useContext } from 'react'
 import moment from 'moment'
 import styled, { createGlobalStyle } from 'styled-components'
 import { observer } from 'mobx-react-lite'
@@ -70,7 +70,7 @@ const Container = styled.div`
  */
 const InnerPageContainer = styled.div`
   display: grid;
-  grid-template-rows: 20mm auto 4mm;
+  grid-template-rows: 7mm 16.75cm 5mm;
   grid-template-areas:
     'title title title'
     'column0 column1 column2'
@@ -87,6 +87,8 @@ const InnerPageContainer = styled.div`
 const Title = styled.div`
   grid-area: title;
   font-weight: 700;
+  font-size: 1.2em;
+  justify-self: center;
 `
 const Column0 = styled.div`
   grid-area: column0;
@@ -99,6 +101,8 @@ const Column2 = styled.div`
 `
 const Footer = styled.div`
   grid-area: footer;
+  display: flex;
+  justify-content: space-between;
 `
 // eslint-disable-next-line no-unused-expressions
 const GlobalStyle = createGlobalStyle`
@@ -111,36 +115,23 @@ const PersonPrintVerzTelPage = ({ pageIndex }) => {
   const store = useContext(storeContext)
   const { personVerzeichnis } = store
   const { pages, building } = personVerzeichnis
-  const containerEl = useRef(null)
 
   return (
     <Container className="querformat">
       <GlobalStyle />
-      <InnerPageContainer building={building} ref={containerEl}>
+      <InnerPageContainer building={building}>
         <Title>AWEL Telefon-Verzeichnis</Title>
         <Column0>
-          <Column
-            containerEl={containerEl}
-            pageIndex={pageIndex}
-            columnIndex={0}
-          />
+          <Column pageIndex={pageIndex} columnIndex={0} />
         </Column0>
         <Column1>
-          <Column
-            containerEl={containerEl}
-            pageIndex={pageIndex}
-            columnIndex={1}
-          />
+          <Column pageIndex={pageIndex} columnIndex={1} />
         </Column1>
         <Column2>
-          <Column
-            containerEl={containerEl}
-            pageIndex={pageIndex}
-            columnIndex={2}
-          />
+          <Column pageIndex={pageIndex} columnIndex={2} />
         </Column2>
         <Footer>
-          <div>{moment().format('DD.MM.YYYY')}</div>
+          <div>{`Stand: ${moment().format('DD.MM.YYYY')}`}</div>
           <div>
             Seite {pageIndex + 1}/{pages.length}
           </div>

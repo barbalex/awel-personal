@@ -1,5 +1,7 @@
 import { types, getParent } from 'mobx-state-tree'
 
+import idWithCapitalMapFromPers from '../src/idWithCapitalMapFromPers'
+
 import PersonVerzeichnisPage, {
   standard as standardPage,
 } from './PersonVerzeichnisPage'
@@ -8,7 +10,7 @@ export default types
   .model('PersonVerzeichnisPages', {
     pages: types.array(PersonVerzeichnisPage),
     activePageIndex: types.optional(types.integer, 0),
-    remainingRows: types.array(types.integer),
+    remainingRows: types.array(types.union(types.integer, types.string)),
     building: types.optional(types.boolean, false),
   })
   .actions(self => ({
@@ -22,12 +24,15 @@ export default types
       const store = getParent(self, 1)
       const { personenFiltered } = store
       self.reset()
-      self.remainingRows = personenFiltered.map(p => p.id)
+      self.remainingRows = idWithCapitalMapFromPers(personenFiltered)
       self.building = true
       self.pages.push(standardPage)
     },
     setRemainingRows(rows) {
       self.remainingRows = rows
+    },
+    unshiftRemainingRows(row) {
+      self.remainingRows.unshift(row)
     },
     newPage() {
       self.activePageIndex += 1

@@ -1,4 +1,4 @@
-import { types, getParent, getSnapshot } from 'mobx-state-tree'
+import { types, getParent } from 'mobx-state-tree'
 
 import PersonVerzeichnisColumn, {
   standard as standardColumn,
@@ -17,23 +17,17 @@ export default types
       self[`column${self.activeColumnIndex}`].addRow(row)
     },
     moveRowToNewColumn() {
-      const pages = getParent(self, 1)
+      const personVerzeichnis = getParent(self, 2)
       const activeColumn = self[`column${self.activeColumnIndex}`]
-      console.log('store, PersonVerzeichnisPage', {
-        column0: getSnapshot(self.column0),
-        activeColumn: getSnapshot(activeColumn),
-        pages: getSnapshot(pages),
-        activeColumnIndex: self.activeColumnIndex,
-      })
       activeColumn.setFull()
-      pages.remainingRows.unshift(activeColumn.rows.pop())
-      if (activeColumn < 2) {
+      personVerzeichnis.unshiftRemainingRows(activeColumn.rows.pop())
+      if (self.activeColumnIndex < 2) {
         self.activeColumnIndex += 1
       } else {
         self.setFull()
-        pages.newPage()
+        personVerzeichnis.newPage()
       }
-      pages.addRow()
+      personVerzeichnis.addRow()
     },
     setFull() {
       self.full = true
