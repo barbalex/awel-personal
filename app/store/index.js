@@ -44,6 +44,7 @@ import TagWert from './TagWert'
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 import fetchAnwesenheitstage from '../src/fetchAnwesenheitstage'
 import PersonPages from './PersonPages'
+import PersonVerzeichnisPages from './PersonVerzeichnisPages'
 
 export default db =>
   types
@@ -120,7 +121,7 @@ export default db =>
         building: false,
         title: '',
       }),
-      personVerzeichnis: types.optional(PersonPages, {
+      personVerzeichnis: types.optional(PersonVerzeichnisPages, {
         pages: [],
         activePageIndex: 0,
         remainingRows: [],

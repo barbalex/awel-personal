@@ -1,10 +1,10 @@
 import { types, getParent } from 'mobx-state-tree'
 
-import PersonPage from './PersonPage'
+import PersonVerzeichnisPage from './PersonVerzeichnisPage'
 
 export default types
   .model('PersonVerzeichnisPages', {
-    pages: types.array(PersonPage),
+    pages: types.array(PersonVerzeichnisPage),
     activePageIndex: types.optional(types.integer, 0),
     remainingRows: types.array(types.integer),
     building: types.optional(types.boolean, false),
