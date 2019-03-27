@@ -228,8 +228,10 @@ export default db =>
         if (filterPersonAktivJetzt) {
           personen = personen
             .filter(p => p.status === 'aktiv')
-            .filter(p =>
-              moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
+            .filter(
+              p =>
+              !p.eintrittDatum ||
+              moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date())
             )
         }
         if (filterPersonAktivJetztMitTel) {
@@ -241,8 +243,10 @@ export default db =>
                   .filter(t => t.idPerson === p.id)
                   .filter(t => t.typ === 'Festnetz').length > 0,
             )
-            .filter(p =>
-              moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
+            .filter(
+              p =>
+                !p.eintrittDatum ||
+                moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
             )
         }
         if (filterPersonAktivJetztMitMobiltel) {
@@ -254,16 +258,20 @@ export default db =>
                   .filter(t => t.idPerson === p.id)
                   .filter(t => t.typ === 'mobile').length > 0,
             )
-            .filter(p =>
-              moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
+            .filter(
+              p =>
+              !p.eintrittDatum ||
+              moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()) 
             )
         }
         if (filterPersonAktivJetztMitKurzzeichen) {
           personen = personen
             .filter(p => p.status === 'aktiv')
             .filter(p => !!p.kurzzeichen)
-            .filter(p =>
-              moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
+            .filter(
+              p =>
+              !p.eintrittDatum ||
+              moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date())
             )
         }
         Object.keys(filterPerson).forEach(key => {

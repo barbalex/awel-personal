@@ -149,6 +149,7 @@ const Berichte = () => {
         <DropdownItem
           onClick={() => {
             setLocation(['Personen'])
+            emptyFilter()
             setFilterPersonAktivJetztMitKurzzeichen(true)
             setTimeout(() => {
               setActivePrintForm('personVerzKurzzeichen')
@@ -161,6 +162,7 @@ const Berichte = () => {
         <DropdownItem
           onClick={() => {
             setLocation(['Personen'])
+            emptyFilter()
             setFilterPersonAktivJetztMitTel(true)
             setTimeout(() => {
               setActivePrintForm('personVerzTel')
@@ -173,6 +175,7 @@ const Berichte = () => {
         <DropdownItem
           onClick={() => {
             setLocation(['Personen'])
+            emptyFilter()
             setFilterPersonAktivJetztMitMobiltel(true)
             setTimeout(() => {
               setActivePrintForm('personVerzMobiltel')

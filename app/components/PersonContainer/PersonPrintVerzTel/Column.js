@@ -133,8 +133,6 @@ const PersonPrintVerzTelColumn = ({ pageIndex, columnIndex }) => {
     // while new filter is applied, undefined rows exist
     .filter(r => !!r)
 
-  console.log('PersonPrintVerzTel, Column', { data, rows })
-
   return (
     <Container building={!columnIsFull} ref={containerEl}>
       {data.map((r, i) => (
