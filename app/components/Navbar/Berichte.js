@@ -120,6 +120,35 @@ const Berichte = () => {
         <DropdownItem
           onClick={() => {
             setLocation(['Personen'])
+            emptyFilter()
+            setFilterPersonKader(true)
+            setTimeout(() => {
+              setActivePrintForm('personKader')
+              store.personPages.initiate()
+            }, 1000)
+          }}
+        >
+          Kader
+        </DropdownItem>
+        <DropdownItem
+          onClick={() => {
+            setLocation(['Personen'])
+            emptyFilter()
+            setFilter({
+              model: 'filterPerson',
+              value: { status: 'pensioniert' },
+            })
+            setTimeout(() => {
+              setActivePrintForm('personPensionierte')
+              store.personPages.initiate()
+            }, 1000)
+          }}
+        >
+          Pensionierte
+        </DropdownItem>
+        <DropdownItem
+          onClick={() => {
+            setLocation(['Personen'])
             setFilterPersonAktivJetztMitKurzzeichen(true)
             setTimeout(() => {
               setActivePrintForm('personVerzKurzzeichen')
@@ -152,35 +181,6 @@ const Berichte = () => {
           }}
         >
           Mobil-Telefone
-        </DropdownItem>
-        <DropdownItem
-          onClick={() => {
-            setLocation(['Personen'])
-            emptyFilter()
-            setFilterPersonKader(true)
-            setTimeout(() => {
-              setActivePrintForm('personKader')
-              store.personPages.initiate()
-            }, 1000)
-          }}
-        >
-          Kader
-        </DropdownItem>
-        <DropdownItem
-          onClick={() => {
-            setLocation(['Personen'])
-            emptyFilter()
-            setFilter({
-              model: 'filterPerson',
-              value: { status: 'pensioniert' },
-            })
-            setTimeout(() => {
-              setActivePrintForm('personPensionierte')
-              store.personPages.initiate()
-            }, 1000)
-          }}
-        >
-          Pensionierte
         </DropdownItem>
         {showPD && (
           <>
