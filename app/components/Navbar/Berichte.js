@@ -48,7 +48,9 @@ const Berichte = () => {
     setLocation,
     setFilterPersonKader,
     setFilterPersonAktivJetzt,
-    personPages,
+    setFilterPersonAktivJetztMitTel,
+    setFilterPersonAktivJetztMitMobiltel,
+    setFilterPersonAktivJetztMitKurzzeichen,
   } = store
   const location = store.location.toJSON()
   const showPD = location[0] === 'Personen' && location[1]
@@ -115,10 +117,9 @@ const Berichte = () => {
         <DropdownItem divider />
         <DropdownItem header>Vorbereitete: setzen eigenen Filter</DropdownItem>
         <DropdownItem
-          disabled
           onClick={() => {
             setLocation(['Personen'])
-            setFilterPersonAktivJetzt(true)
+            setFilterPersonAktivJetztMitKurzzeichen(true)
             setTimeout(() => setActivePrintForm('personVerzKurzzeichen'), 1000)
           }}
         >
@@ -127,17 +128,16 @@ const Berichte = () => {
         <DropdownItem
           onClick={() => {
             setLocation(['Personen'])
-            setFilterPersonAktivJetzt(true)
+            setFilterPersonAktivJetztMitTel(true)
             setTimeout(() => setActivePrintForm('personVerzTel'), 1000)
           }}
         >
           Telefone
         </DropdownItem>
         <DropdownItem
-          disabled
           onClick={() => {
             setLocation(['Personen'])
-            setFilterPersonAktivJetzt(true)
+            setFilterPersonAktivJetztMitMobiltel(true)
             setTimeout(() => setActivePrintForm('personVerzMobiltel'), 1000)
           }}
         >

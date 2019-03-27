@@ -59,6 +59,9 @@ const Filter = () => {
     activePrintForm,
     setFilterPersonKader,
     setFilterPersonAktivJetzt,
+    setFilterPersonAktivJetztMitTel,
+    setFilterPersonAktivJetztMitMobiltel,
+    setFilterPersonAktivJetztMitKurzzeichen,
   } = store
 
   const location = store.location.toJSON()
@@ -80,6 +83,8 @@ const Filter = () => {
           'personPensionierte',
           'personKader',
           'personVerzTel',
+          'personVerzMobiltel',
+          'personVerzKurzzeichen',
         ].includes(activePrintForm)
       ) {
         personPages.initiate()
@@ -100,6 +105,8 @@ const Filter = () => {
         'personPensionierte',
         'personKader',
         'personVerzTel',
+        'personVerzMobiltel',
+        'personVerzKurzzeichen',
       ].includes(activePrintForm)
     ) {
       personPages.initiate()
@@ -139,6 +146,15 @@ const Filter = () => {
   }, [activeLocation])
   const onClickAktivJetzt = useCallback(() => {
     setFilterPersonAktivJetzt(true)
+  }, [activeLocation])
+  const onClickAktivJetztMitTel = useCallback(() => {
+    setFilterPersonAktivJetztMitTel(true)
+  }, [activeLocation])
+  const onClickAktivJetztMitMobiltel = useCallback(() => {
+    setFilterPersonAktivJetztMitMobiltel(true)
+  }, [activeLocation])
+  const onClickAktivJetztMitKurzzeichen = useCallback(() => {
+    setFilterPersonAktivJetztMitKurzzeichen(true)
   }, [activeLocation])
 
   return (
@@ -201,6 +217,15 @@ const Filter = () => {
                   <>
                     <DropdownItem onClick={onClickAktivJetzt}>
                       aktuell aktiv (bereits eingetreten)
+                    </DropdownItem>
+                    <DropdownItem onClick={onClickAktivJetztMitTel}>
+                      aktuell aktiv, mit Telefon
+                    </DropdownItem>
+                    <DropdownItem onClick={onClickAktivJetztMitMobiltel}>
+                      aktuell aktiv, mit Mobil-Telefon
+                    </DropdownItem>
+                    <DropdownItem onClick={onClickAktivJetztMitKurzzeichen}>
+                      aktuell aktiv, mit Kurzzeichen
                     </DropdownItem>
                     <DropdownItem onClick={onClickKader}>Kader</DropdownItem>
                   </>

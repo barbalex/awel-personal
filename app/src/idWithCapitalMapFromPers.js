@@ -1,3 +1,5 @@
+import sortBy from 'lodash/sortBy'
+
 const alphabet = [
   'A',
   'B',
@@ -27,10 +29,14 @@ const alphabet = [
   'Z',
 ]
 
-export default personen => {
+export default ({ personen, field = 'name' }) => {
   const res = []
-  personen.forEach(p => {
-    const firstChar = p.name.charAt(0).toUpperCase()
+  let personenToUse =
+    field === 'kurzzeichen'
+      ? sortBy(personen, p => p.kurzzeichen.toLowerCase())
+      : personen
+  personenToUse.forEach(p => {
+    const firstChar = p[field].charAt(0).toUpperCase()
     while (firstChar >= alphabet[0]) {
       res.push(alphabet.shift())
     }

@@ -57,7 +57,7 @@ const Row = styled.div`
   font-weight: ${props => (props.type === 'title' ? '800' : 'unset')};
 `
 
-const PersonPrintVerzTelColumn = ({ pageIndex, columnIndex }) => {
+const PersonPrintVerzKurzzeichenColumn = ({ pageIndex, columnIndex }) => {
   const containerEl = useRef(null)
   const store = useContext(storeContext)
   const {
@@ -125,7 +125,7 @@ const PersonPrintVerzTelColumn = ({ pageIndex, columnIndex }) => {
 
   const data = rows.map(r => {
     if (isNaN(r)) {
-      return { type: 'title', name: r }
+      return { type: 'title', kurzzeichen: r }
     }
     return personenFiltered.find(p => p.id === r)
   })
@@ -134,7 +134,7 @@ const PersonPrintVerzTelColumn = ({ pageIndex, columnIndex }) => {
     <Container building={!columnIsFull} ref={containerEl}>
       {data.map((r, i) => (
         <Row
-          key={r.id || r.name}
+          key={r.id || r.kurzzeichen}
           type={r.type || 'row'}
           topborder={(i === 0).toString()}
         >
@@ -168,4 +168,4 @@ const PersonPrintVerzTelColumn = ({ pageIndex, columnIndex }) => {
   )
 }
 
-export default observer(PersonPrintVerzTelColumn)
+export default observer(PersonPrintVerzKurzzeichenColumn)

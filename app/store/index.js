@@ -96,6 +96,12 @@ export default db =>
       filterPerson: types.optional(Person, {}),
       filterPersonKader: types.optional(types.boolean, false),
       filterPersonAktivJetzt: types.optional(types.boolean, false),
+      filterPersonAktivJetztMitTel: types.optional(types.boolean, false),
+      filterPersonAktivJetztMitMobiltel: types.optional(types.boolean, false),
+      filterPersonAktivJetztMitKurzzeichen: types.optional(
+        types.boolean,
+        false,
+      ),
       filterAmt: types.optional(Amt, {}),
       filterAbteilung: types.optional(Abteilung, {}),
       filterBereich: types.optional(Bereich, {}),
@@ -134,6 +140,9 @@ export default db =>
           filterPerson,
           filterPersonKader,
           filterPersonAktivJetzt,
+          filterPersonAktivJetztMitTel,
+          filterPersonAktivJetztMitMobiltel,
+          filterPersonAktivJetztMitKurzzeichen,
           filterAmt,
           filterAbteilung,
           filterBereich,
@@ -164,7 +173,10 @@ export default db =>
             ...Object.values(filterKaderFunktion),
           ].filter(v => v).length > 0 ||
           filterPersonKader ||
-          filterPersonAktivJetzt
+          filterPersonAktivJetzt ||
+          filterPersonAktivJetztMitTel ||
+          filterPersonAktivJetztMitMobiltel ||
+          filterPersonAktivJetztMitKurzzeichen
         )
       },
       get personenSorted() {
@@ -194,6 +206,9 @@ export default db =>
           filterPerson,
           filterPersonKader,
           filterPersonAktivJetzt,
+          filterPersonAktivJetztMitTel,
+          filterPersonAktivJetztMitMobiltel,
+          filterPersonAktivJetztMitKurzzeichen,
         } = self
         let { personen } = self
         if (filterPersonKader) {
@@ -213,6 +228,40 @@ export default db =>
         if (filterPersonAktivJetzt) {
           personen = personen
             .filter(p => p.status === 'aktiv')
+            .filter(p =>
+              moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
+            )
+        }
+        if (filterPersonAktivJetztMitTel) {
+          personen = personen
+            .filter(p => p.status === 'aktiv')
+            .filter(
+              p =>
+                self.telefones
+                  .filter(t => t.idPerson === p.id)
+                  .filter(t => t.typ === 'Festnetz').length > 0,
+            )
+            .filter(p =>
+              moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
+            )
+        }
+        if (filterPersonAktivJetztMitMobiltel) {
+          personen = personen
+            .filter(p => p.status === 'aktiv')
+            .filter(
+              p =>
+                self.telefones
+                  .filter(t => t.idPerson === p.id)
+                  .filter(t => t.typ === 'mobile').length > 0,
+            )
+            .filter(p =>
+              moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
+            )
+        }
+        if (filterPersonAktivJetztMitKurzzeichen) {
+          personen = personen
+            .filter(p => p.status === 'aktiv')
+            .filter(p => !!p.kurzzeichen)
             .filter(p =>
               moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
             )
@@ -737,6 +786,9 @@ export default db =>
           self.filterPerson = {}
           self.filterPersonKader = false
           self.filterPersonAktivJetzt = false
+          self.filterPersonAktivJetztMitTel = false
+          self.filterPersonAktivJetztMitMobiltel = false
+          self.filterPersonAktivJetztMitKurzzeichen = false
           self.filterAbteilung = {}
           self.filterBereich = {}
           self.filterSektion = {}
@@ -1973,6 +2025,18 @@ export default db =>
         setFilterPersonAktivJetzt(val) {
           self.emptyFilter()
           self.filterPersonAktivJetzt = val
+        },
+        setFilterPersonAktivJetztMitTel(val) {
+          self.emptyFilter()
+          self.filterPersonAktivJetztMitTel = val
+        },
+        setFilterPersonAktivJetztMitMobiltel(val) {
+          self.emptyFilter()
+          self.filterPersonAktivJetztMitMobiltel = val
+        },
+        setFilterPersonAktivJetztMitKurzzeichen(val) {
+          self.emptyFilter()
+          self.filterPersonAktivJetztMitKurzzeichen = val
         },
       }
     })

@@ -10,6 +10,8 @@ import PersonPrintFunktionen from './PersonPrintFunktionen'
 import PersonPrintPensionierte from './PersonPrintPensionierte'
 import PersonPrintKader from './PersonPrintKader'
 import PersonPrintVerzTel from './PersonPrintVerzTel'
+import PersonPrintVerzMobiltel from './PersonPrintVerzMobiltel'
+import PersonPrintVerzKurzzeichen from './PersonPrintVerzKurzzeichen'
 import PersonMutation from './PersonMutation'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
@@ -54,6 +56,12 @@ const PersonTab = ({ dimensions }) => {
   }
   if (activePrintForm === 'personVerzTel') {
     return <PersonPrintVerzTel />
+  }
+  if (activePrintForm === 'personVerzMobiltel') {
+    return <PersonPrintVerzMobiltel />
+  }
+  if (activePrintForm === 'personVerzKurzzeichen') {
+    return <PersonPrintVerzKurzzeichen />
   }
 
   if (!showFilter && !activeId) return null

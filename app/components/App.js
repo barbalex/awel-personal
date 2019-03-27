@@ -21,6 +21,8 @@ import PersonPrintFunktionen from './PersonContainer/PersonPrintFunktionen'
 import PersonPrintPensionierte from './PersonContainer/PersonPrintPensionierte'
 import PersonPrintKader from './PersonContainer/PersonPrintKader'
 import PersonPrintVerzTel from './PersonContainer/PersonPrintVerzTel'
+import PersonPrintVerzMobiltel from './PersonContainer/PersonPrintVerzMobiltel'
+import PersonPrintVerzKurzzeichen from './PersonContainer/PersonPrintVerzKurzzeichen'
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 
 registerLocale('de', de)
@@ -59,6 +61,12 @@ const App = () => {
     }
     if (activePrintForm === 'personVerzTel') {
       return <PersonPrintVerzTel />
+    }
+    if (activePrintForm === 'personVerzMobiltel') {
+      return <PersonPrintVerzMobiltel />
+    }
+    if (activePrintForm === 'personVerzKurzzeichen') {
+      return <PersonPrintVerzKurzzeichen />
     }
   }
 

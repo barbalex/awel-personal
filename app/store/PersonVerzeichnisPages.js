@@ -20,11 +20,17 @@ export default types
       self.remainingRows = []
       self.building = false
     },
-    initiate() {
+    initiate(type) {
       const store = getParent(self, 1)
       const { personenFiltered } = store
       self.reset()
-      self.remainingRows = idWithCapitalMapFromPers(personenFiltered)
+      self.remainingRows =
+        type === 'personVerzKurzzeichen'
+          ? idWithCapitalMapFromPers({
+              personen: personenFiltered,
+              field: 'kurzzeichen',
+            })
+          : idWithCapitalMapFromPers({ personen: personenFiltered })
       self.building = true
       self.pages.push(standardPage)
     },

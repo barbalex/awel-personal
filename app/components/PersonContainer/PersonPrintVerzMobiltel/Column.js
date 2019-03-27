@@ -57,7 +57,7 @@ const Row = styled.div`
   font-weight: ${props => (props.type === 'title' ? '800' : 'unset')};
 `
 
-const PersonPrintVerzTelColumn = ({ pageIndex, columnIndex }) => {
+const PersonPrintVerzMobiltelColumn = ({ pageIndex, columnIndex }) => {
   const containerEl = useRef(null)
   const store = useContext(storeContext)
   const {
@@ -145,7 +145,7 @@ const PersonPrintVerzTelColumn = ({ pageIndex, columnIndex }) => {
             {
               telefones
                 .filter(f => f.idPerson === r.id)
-                .filter(f => f.typ === 'Festnetz')
+                .filter(f => f.typ === 'mobile')
                 .filter(f => f.deleted === 0)
                 .map(f => f.nr)[0]
             }
@@ -168,4 +168,4 @@ const PersonPrintVerzTelColumn = ({ pageIndex, columnIndex }) => {
   )
 }
 
-export default observer(PersonPrintVerzTelColumn)
+export default observer(PersonPrintVerzMobiltelColumn)
