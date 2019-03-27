@@ -47,7 +47,6 @@ const Berichte = () => {
     setFilter,
     setLocation,
     setFilterPersonKader,
-    setFilterPersonAktivJetzt,
     setFilterPersonAktivJetztMitTel,
     setFilterPersonAktivJetztMitMobiltel,
     setFilterPersonAktivJetztMitKurzzeichen,
