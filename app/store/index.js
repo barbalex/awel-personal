@@ -1966,9 +1966,11 @@ export default db =>
           self.errors = [...last]
         },
         setFilterPersonKader(val) {
+          self.emptyFilter()
           self.filterPersonKader = val
         },
         setFilterPersonAktivJetzt(val) {
+          self.emptyFilter()
           self.filterPersonAktivJetzt = val
         },
       }

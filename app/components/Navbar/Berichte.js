@@ -125,7 +125,6 @@ const Berichte = () => {
           Kurzzeichenverzeichnis
         </DropdownItem>
         <DropdownItem
-          disabled
           onClick={() => {
             setLocation(['Personen'])
             setFilterPersonAktivJetzt(true)
