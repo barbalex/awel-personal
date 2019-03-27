@@ -9,4 +9,7 @@ export default types
     addRow(row) {
       self.rows.push(row)
     },
+    setFull() {
+      self.full = true
+    },
   }))

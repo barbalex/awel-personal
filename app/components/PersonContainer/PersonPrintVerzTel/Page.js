@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from 'styled-components'
 import { observer } from 'mobx-react-lite'
 
 import storeContext from '../../../storeContext'
+import Column from './Column'
 
 /*
  * need defined height and overflow
@@ -72,7 +73,7 @@ const InnerPageContainer = styled.div`
   grid-template-rows: 20mm auto 4mm;
   grid-template-areas:
     'title title title'
-    'column1 column2 column3'
+    'column0 column1 column2'
     'footer footer footer';
   max-height: 17.95cm;
   max-width: 26.7cm;
@@ -87,14 +88,14 @@ const Title = styled.div`
   grid-area: title;
   font-weight: 700;
 `
+const Column0 = styled.div`
+  grid-area: column0;
+`
 const Column1 = styled.div`
   grid-area: column1;
 `
 const Column2 = styled.div`
   grid-area: column2;
-`
-const Column3 = styled.div`
-  grid-area: column3;
 `
 const Footer = styled.div`
   grid-area: footer;
@@ -105,140 +106,39 @@ const GlobalStyle = createGlobalStyle`
     size: A4 landscape;
   }
 `
-const Field = styled.div`
-  flex: 1;
-  padding: 2px;
-`
-const StyledName = styled(Field)``
-const StyledVorname = styled(Field)``
-const StyledAbteilung = styled(Field)``
-const StyledSektion = styled(Field)``
-const StyledBereich = styled(Field)``
-const StyledFunktionen = styled(Field)``
-const StyledKaderfunktionen = styled(Field)``
-const Row = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: stretch;
-  padding: 3px;
-  background-color: ${props =>
-    props.shaded ? 'rgba(0, 0, 0, 0.05)' : 'inherit'};
-  page-break-inside: avoid !important;
-`
-
-function isOdd(num) {
-  return num % 2
-}
 
 const PersonPrintVerzTelPage = ({ pageIndex }) => {
   const store = useContext(storeContext)
-  const {
-    abteilungen,
-    sektionen,
-    bereiche,
-    funktionen,
-    kaderFunktionen,
-    personenFiltered,
-    personVerzeichnis,
-  } = store
-  const {
-    pages,
-    building,
-    activePageIndex,
-    remainingRows,
-    moveRowToNewPage,
-    addRow,
-    stop,
-  } = personVerzeichnis
+  const { personVerzeichnis } = store
+  const { pages, building } = personVerzeichnis
   const containerEl = useRef(null)
-
-  const page = pages[pageIndex]
-  const { column0, column1, column2 } = page
-
-  const next = () => {
-    /**
-     * - measure height of pageSize-component
-     * - if > desired page height:
-     *  - move last row to next page
-     *  - render
-     * - else:
-     *  - insert next row
-     *  - render
-     */
-    // don't do anything on not active pages
-    if (pageIndex === activePageIndex) {
-      const offsetHeight = containerEl ? containerEl.current.offsetHeight : null
-      const scrollHeight = containerEl ? containerEl.current.scrollHeight : null
-      const activePageIsFull = page.full
-
-      if (!activePageIsFull && remainingRows.length > 0) {
-        if (offsetHeight < scrollHeight) {
-          moveRowToNewPage(activePageIndex)
-          //this.showPagesModal()
-        } else {
-          addRow(page)
-        }
-      }
-      if (remainingRows.length === 0) {
-        if (offsetHeight < scrollHeight) {
-          moveRowToNewPage(activePageIndex)
-          //this.showPagesModal()
-        } else {
-          // for unknown reason setTimeout is needed
-          setTimeout(() => {
-            stop()
-          })
-        }
-      }
-    }
-  }
-
-  useEffect(() => {
-    next()
-  })
-
-  if (!rows) return null
-
-  const personen = personenFiltered.filter(p => rows.includes(p.id))
 
   return (
     <Container className="querformat">
       <GlobalStyle />
       <InnerPageContainer building={building} ref={containerEl}>
         <Title>AWEL Telefon-Verzeichnis</Title>
+        <Column0>
+          <Column
+            containerEl={containerEl}
+            pageIndex={pageIndex}
+            columnIndex={0}
+          />
+        </Column0>
         <Column1>
-          {personen.map((p, i) => (
-            <Row key={p.id} shaded={!isOdd(i)}>
-              <StyledName>{p.name || ''}</StyledName>
-              <StyledVorname>{p.vorname || ''}</StyledVorname>
-              <StyledAbteilung>
-                {p.abteilung
-                  ? abteilungen.find(a => a.id === p.abteilung).name
-                  : ''}
-              </StyledAbteilung>
-              <StyledSektion>
-                {p.sektion ? sektionen.find(a => a.id === p.sektion).name : ''}
-              </StyledSektion>
-              <StyledBereich>
-                {p.bereich ? bereiche.find(a => a.id === p.bereich).name : ''}
-              </StyledBereich>
-              <StyledFunktionen>
-                {funktionen
-                  .filter(f => f.idPerson === p.id)
-                  .filter(f => f.deleted === 0)
-                  .map(f => f.funktion)
-                  .join(', ')}
-              </StyledFunktionen>
-              <StyledKaderfunktionen>
-                {kaderFunktionen
-                  .filter(f => f.idPerson === p.id)
-                  .filter(f => f.deleted === 0)
-                  .map(f => f.funktion)
-                  .join(', ')}
-              </StyledKaderfunktionen>
-            </Row>
-          ))}
+          <Column
+            containerEl={containerEl}
+            pageIndex={pageIndex}
+            columnIndex={1}
+          />
         </Column1>
+        <Column2>
+          <Column
+            containerEl={containerEl}
+            pageIndex={pageIndex}
+            columnIndex={2}
+          />
+        </Column2>
         <Footer>
           <div>{moment().format('DD.MM.YYYY')}</div>
           <div>

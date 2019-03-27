@@ -17,14 +17,17 @@ export default types
     moveRowToNewColumn() {
       const pages = getParent(self, 1)
       const activeColumn = self[`column${self.activeColumnIndex}`]
-      activeColumn.full = true
+      activeColumn.setFull()
       pages.remainingRows.unshift(activeColumn.rows.pop())
       if (activeColumn < 2) {
         self.activeColumnIndex += 1
-        self.addRow()
       } else {
+        self.setFull()
         pages.newPage()
-        pages.addRow()
       }
+      pages.addRow()
+    },
+    setFull() {
+      self.full = true
     },
   }))
