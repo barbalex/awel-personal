@@ -16,11 +16,14 @@ export default types
     addRow(row) {
       self[`column${self.activeColumnIndex}`].addRow(row)
     },
-    moveRowToNewColumn() {
+    moveRowToNewColumn(two) {
       const personVerzeichnis = getParent(self, 2)
       const activeColumn = self[`column${self.activeColumnIndex}`]
       activeColumn.setFull()
       personVerzeichnis.unshiftRemainingRows(activeColumn.rows.pop())
+      if (two) {
+        personVerzeichnis.unshiftRemainingRows(activeColumn.rows.pop())
+      }
       if (self.activeColumnIndex < 2) {
         self.activeColumnIndex += 1
       } else {

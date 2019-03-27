@@ -230,8 +230,8 @@ export default db =>
             .filter(p => p.status === 'aktiv')
             .filter(
               p =>
-              !p.eintrittDatum ||
-              moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date())
+                !p.eintrittDatum ||
+                moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
             )
         }
         if (filterPersonAktivJetztMitTel) {
@@ -260,8 +260,8 @@ export default db =>
             )
             .filter(
               p =>
-              !p.eintrittDatum ||
-              moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()) 
+                !p.eintrittDatum ||
+                moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
             )
         }
         if (filterPersonAktivJetztMitKurzzeichen) {
@@ -270,8 +270,8 @@ export default db =>
             .filter(p => !!p.kurzzeichen)
             .filter(
               p =>
-              !p.eintrittDatum ||
-              moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date())
+                !p.eintrittDatum ||
+                moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
             )
         }
         Object.keys(filterPerson).forEach(key => {
@@ -810,6 +810,7 @@ export default db =>
           self.filterTelefon = {}
           self.filterFunktion = {}
           self.filterKaderFunktion = {}
+          self.filterFulltext = null
         },
         setShowFilter(value) {
           self.showFilter = value

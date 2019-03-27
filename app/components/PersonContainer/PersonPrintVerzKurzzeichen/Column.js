@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
+import last from 'lodash/last'
 
 import storeContext from '../../../storeContext'
 
@@ -99,7 +100,12 @@ const PersonPrintVerzKurzzeichenColumn = ({ pageIndex, columnIndex }) => {
 
       if (!pageIsFull && remainingRows.length > 0) {
         if (offsetHeight < scrollHeight) {
-          moveRowToNewColumn()
+          // if second last row is title, move two to next column
+          if (isNaN(rows[rows.length - 2])) {
+            moveRowToNewColumn('two')
+          } else {
+            moveRowToNewColumn()
+          }
         } else {
           addRow()
         }

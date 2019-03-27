@@ -99,7 +99,12 @@ const PersonPrintVerzMobiltelColumn = ({ pageIndex, columnIndex }) => {
 
       if (!pageIsFull && remainingRows.length > 0) {
         if (offsetHeight < scrollHeight) {
-          moveRowToNewColumn()
+          // if second last row is title, move two to next column
+          if (isNaN(rows[rows.length - 2])) {
+            moveRowToNewColumn('two')
+          } else {
+            moveRowToNewColumn()
+          }
         } else {
           addRow()
         }
