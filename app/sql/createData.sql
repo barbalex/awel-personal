@@ -122,19 +122,6 @@ values
   (9, 4, 1,	12,	'Liegenschaftenentwässerung',	'Stampfenbachstrasse 12/14',	9, null),
   (10, 3, 1,	null,	'Kerntechnik',	'Stampfenbachstrasse 12/14',	10, null);
 
--- insert into
-  -- personen(id, vorname, name)
--- values
--- (1, 'Werner',	'Haas'),
--- (2, 'Erich',	'Hess'),
--- (3, 'Thomas',	'Hofmann'),
--- (4, 'Guido',	'Merletti'),
--- (5, 'Peter',	'Wyler'),
--- (6, 'Fritz',	'Studer'),
--- (7, 'Paul',	'Ruckstuhl'),
--- (8, 'Götz',	'Christian'),
--- (9, 'Beat',	'Koller'),
--- (10, 'Thomas',	'Flüeler');
 insert into personen (id,amt,abteilung,sektion,bereich,anrede,name,vorname,adresse,plz,land,ort,eintrittDatum,austrittDatum,bemerkungen,status,bueroNr,kurzzeichen,letzteMutationZeit,letzteMutationUser) select id,amt,abteilung,sektion,bereich,anrede,name,vorname,adresse,plz,land,ort,eintrittDatum,austrittDatum,bemerkungen,status,bueroNr,kurzzeichen,letzteMutationZeit,letzteMutationUser from personen_import;
 drop table personen_import;
 
@@ -142,9 +129,9 @@ insert into telefones (idPerson,nr,typ,letzteMutationZeit,letzteMutationUser) se
 drop table telefones_import;
 
 insert into
-  settings(id,personMutationWeiterleiten)
+  settings(id,personMutationWeiterleiten,verzeichnisZeilenhoeheMm)
 values
-  (1,'ausgefülltes Formular bitte an awel@bd.zh.ch, silvio.cerutti@bd.zh.ch sowie IKO der Abteilung weiterleiten');
+  (1,'ausgefülltes Formular bitte an awel@bd.zh.ch, silvio.cerutti@bd.zh.ch sowie IKO der Abteilung weiterleiten',4);
 
 insert into
   anredeWerte(value, sort)

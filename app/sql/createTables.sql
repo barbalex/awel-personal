@@ -239,7 +239,8 @@ drop table if exists settings;
 create table settings (
   id integer primary key,
   schluesselFormPath text,
-  personMutationWeiterleiten text
+  personMutationWeiterleiten text,
+  verzeichnisZeilenhoeheMm real
 );
 
 -------------------------------------------
