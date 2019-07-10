@@ -69,6 +69,9 @@ app.on('ready', async () => {
     show: false,
     width: 1024,
     height: 728,
+    webPreferences: {
+      nodeIntegration: true
+    }
   })
 
   mainWindow.maximize()
