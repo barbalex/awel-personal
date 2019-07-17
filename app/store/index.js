@@ -181,17 +181,12 @@ export default db =>
       },
       get personenSorted() {
         return self.personen.slice().sort((a, b) => {
-          if (!a.name && !a.vorname) return -1
-          if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
-            return -1
-          if (
-            a.name === b.name &&
-            a.vorname &&
-            b.vorname &&
-            a.vorname.toLowerCase() < b.vorname.toLowerCase()
+          const nameCompared = (a.name || '').localeCompare(
+            b.name || '',
+            'de-Ch',
           )
-            return -1
-          return 1
+          if (nameCompared !== 0) return nameCompared
+          return (a.vorname || '').localeCompare(b.vorname || '', 'de-Ch')
         })
       },
       get personenFiltered() {
@@ -478,17 +473,12 @@ export default db =>
                 return 1
               }
             }
-            if (!a.name && !a.vorname) return -1
-            if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
-              return -1
-            if (
-              a.name === b.name &&
-              a.vorname &&
-              b.vorname &&
-              a.vorname.toLowerCase() < b.vorname.toLowerCase()
+            const nameCompared = (a.name || '').localeCompare(
+              b.name || '',
+              'de-Ch',
             )
-              return -1
-            return 1
+            if (nameCompared !== 0) return nameCompared
+            return (a.vorname || '').localeCompare(b.vorname || '', 'de-Ch')
           })
         return personen
       },
@@ -545,10 +535,7 @@ export default db =>
                 return 1
               }
             }
-            if (!a.name && b.name) return -1
-            if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
-              return -1
-            return 1
+            return (a.name || '').localeCompare(b.name || '', 'de-Ch')
           })
         return aemter
       },
@@ -605,10 +592,7 @@ export default db =>
                 return 1
               }
             }
-            if (!a.name && b.name) return -1
-            if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
-              return -1
-            return 1
+            return (a.name || '').localeCompare(b.name || '', 'de-Ch')
           })
         return abteilungen
       },
@@ -666,10 +650,7 @@ export default db =>
                 return 1
               }
             }
-            if (!a.name && b.name) return -1
-            if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
-              return -1
-            return 1
+            return (a.name || '').localeCompare(b.name || '', 'de-Ch')
           })
         return bereiche
       },
@@ -727,10 +708,7 @@ export default db =>
                 return 1
               }
             }
-            if (!a.name && b.name) return -1
-            if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase())
-              return -1
-            return 1
+            return (a.name || '').localeCompare(b.name || '', 'de-Ch')
           })
         return sektionen
       },
