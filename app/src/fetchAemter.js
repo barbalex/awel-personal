@@ -1,4 +1,4 @@
-export default ({ db, store }) => {
+export default ({ db, setAemter }) => {
   const aemter = db.prepare('SELECT * from aemter').all()
-  store.setAemter(aemter)
+  setAemter(aemter)
 }

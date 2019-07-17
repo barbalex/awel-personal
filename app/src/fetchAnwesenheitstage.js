@@ -1,4 +1,4 @@
-export default ({ db, store }) => {
+export default ({ db, setAnwesenheitstage }) => {
   const anwesenheitstage = db.prepare('SELECT * from anwesenheitstage').all()
-  store.setAnwesenheitstage(anwesenheitstage)
+  setAnwesenheitstage(anwesenheitstage)
 }

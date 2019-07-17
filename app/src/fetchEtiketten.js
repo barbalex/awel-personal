@@ -1,4 +1,4 @@
-export default ({ db, store }) => {
+export default ({ db, setEtiketten }) => {
   const etiketten = db.prepare('SELECT * from etiketten').all()
-  store.setEtiketten(etiketten)
+  setEtiketten(etiketten)
 }

@@ -418,9 +418,7 @@ export default db =>
         if (self.filterFulltext) {
           personenIdsFulltextFiltered = db
             .prepare(
-              `SELECT id from personenFts where data like '%${
-                self.filterFulltext
-              }%'`,
+              `SELECT id from personenFts where data like '%${self.filterFulltext}%'`,
             )
             .all()
             .map(p => p.id)
@@ -1033,7 +1031,10 @@ export default db =>
           })
           self.setLocation(['Personen', info.lastInsertRowid.toString()])
           // 3 requery anwesenheitstage (are added in db by trigger)
-          fetchAnwesenheitstage({ db, store: self })
+          fetchAnwesenheitstage({
+            db,
+            setAnwesenheitstage: self.setAnwesenheitstage,
+          })
         },
         addAmt() {
           // 1. create new Amt in db, returning id
