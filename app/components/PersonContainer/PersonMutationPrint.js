@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
-import moment from 'moment'
 import Linkify from 'react-linkify'
 import styled, { createGlobalStyle } from 'styled-components'
 
