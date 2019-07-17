@@ -23,7 +23,7 @@ const StyledSelect = styled(Select)`
 const SharedSelect = ({ value, field, options, saveToDb }) => {
   const onChange = useCallback(
     option => saveToDb({ value: option ? option.value : null, field }),
-    [field],
+    [field, saveToDb],
   )
 
   return (

@@ -73,10 +73,10 @@ const MutationsRow = ({ style, listIndex, mutations, activeId }) => {
     previousValue,
   } = row
 
-  const revert = useCallback(() => revertMutation(row.id), [row.id])
+  const revert = useCallback(() => revertMutation(row.id), [revertMutation, row.id])
   const onClickRow = useCallback(() => {
     setLocation(['mutations', row.id.toString()])
-  }, [row.id])
+  }, [row.id, setLocation])
 
   return (
     <Row style={style} onClick={onClickRow} active={activeId === id}>

@@ -44,7 +44,7 @@ const Abteilung = () => {
       e.preventDefault()
       setLocation([e.target.id])
     },
-    [location],
+    [setLocation],
   )
   // const addAbteilung = useCallback(() => addAbteilung())
   const deleteAbteilung = useCallback(() => {
@@ -83,7 +83,7 @@ const Abteilung = () => {
       )
       setDeletionTitle('Abteilung löschen')
     }
-  }, [abteilungen.length, location])
+  }, [abteilungen, activeId, setDeletionCallback, setDeletionMessage, setDeletionTitle, store])
 
   const mayAddNewAbteilung =
     abteilungenFiltered.filter(p => !p.name && !p.vorname).length === 0

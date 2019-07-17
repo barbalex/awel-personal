@@ -44,7 +44,7 @@ const Bereich = () => {
       e.preventDefault()
       setLocation([e.target.id])
     },
-    [location],
+    [setLocation],
   )
   // const addBereich = useCallback(() => addBereich())
   const deleteBereich = useCallback(() => {
@@ -81,7 +81,7 @@ const Bereich = () => {
       )
       setDeletionTitle('Bereich löschen')
     }
-  }, [bereiche.length, location])
+  }, [activeId, bereiche, setDeletionCallback, setDeletionMessage, setDeletionTitle, store])
 
   const mayAddNewBereich =
     bereicheFiltered.filter(p => !p.name && !p.vorname).length === 0

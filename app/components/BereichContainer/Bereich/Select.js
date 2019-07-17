@@ -29,7 +29,10 @@ const SharedSelect = ({ value, field, options, saveToDb }) => {
   )
   // need to return null instead of undefined if no option is found
   // otherwise field does not update
-  const option = useMemo(() => options.find(o => o.value === value) || null, [options, value])
+  const option = useMemo(() => options.find(o => o.value === value) || null, [
+    options,
+    value,
+  ])
 
   return (
     <StyledSelect

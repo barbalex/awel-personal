@@ -44,7 +44,7 @@ const Amt = () => {
       e.preventDefault()
       setLocation([e.target.id])
     },
-    [location],
+    [setLocation],
   )
   // const addAmt = useCallback(() => addAmt())
   const deleteAmt = useCallback(() => {
@@ -79,7 +79,7 @@ const Amt = () => {
       )
       setDeletionTitle('Amt löschen')
     }
-  }, [aemter.length, location])
+  }, [activeId, aemter, setDeletionCallback, setDeletionMessage, setDeletionTitle, store])
 
   const mayAddNewAmt =
     aemterFiltered.filter(p => !p.name && !p.vorname).length === 0

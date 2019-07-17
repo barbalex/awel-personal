@@ -18,12 +18,12 @@ const DeletionModal = () => {
     setDeletionCallback(null)
     setDeletionTitle(null)
     setDeletionMessage(null)
-  })
+  }, [deletionCallback, setDeletionCallback, setDeletionMessage, setDeletionTitle])
   const close = useCallback(() => {
     setDeletionCallback(null)
     setDeletionTitle(null)
     setDeletionMessage(null)
-  })
+  }, [setDeletionCallback, setDeletionMessage, setDeletionTitle])
 
   return (
     <Modal isOpen={!!store.deletionMessage} toggle={close}>

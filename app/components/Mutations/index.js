@@ -110,30 +110,41 @@ const Mutations = () => {
   const [valueFilter, setValueFilter] = useState(null)
   const [previousValueFilter, setPreviousValueFilter] = useState(null)
 
-  const onChangeZeitFilter = useCallback(e => setZeitFilter(e.target.value))
-  const emptyZeitFilter = useCallback(() => setZeitFilter(null))
-  const onChangeUserFilter = useCallback(e => setUserFilter(e.target.value))
-  const emptyUserFilter = useCallback(() => setUserFilter(null))
-  const onChangeOpFilter = useCallback(e => setOpFilter(e.target.value))
-  const emptyOpFilter = useCallback(() => setOpFilter(null))
-  const onChangeTableFilter = useCallback(e => setTableFilter(e.target.value))
-  const emptyTableFilter = useCallback(() => setTableFilter(null))
-  const onChangeIdFilter = useCallback(e => setIdFilter(e.target.value))
-  const emptyIdFilter = useCallback(() => setIdFilter(null))
-  const onChangeFieldFilter = useCallback(e => setFieldFilter(e.target.value))
-  const emptyFieldFilter = useCallback(() => setFieldFilter(null))
-  const onChangeValueFilter = useCallback(e => setValueFilter(e.target.value))
-  const emptyValueFilter = useCallback(() => setValueFilter(null))
-  const onChangePreviousValueFilter = useCallback(e =>
-    setPreviousValueFilter(e.target.value),
+  const onChangeZeitFilter = useCallback(e => setZeitFilter(e.target.value), [])
+  const emptyZeitFilter = useCallback(() => setZeitFilter(null), [])
+  const onChangeUserFilter = useCallback(e => setUserFilter(e.target.value), [])
+  const emptyUserFilter = useCallback(() => setUserFilter(null), [])
+  const onChangeOpFilter = useCallback(e => setOpFilter(e.target.value), [])
+  const emptyOpFilter = useCallback(() => setOpFilter(null), [])
+  const onChangeTableFilter = useCallback(
+    e => setTableFilter(e.target.value),
+    [],
   )
-  const emptyPreviousValueFilter = useCallback(() =>
-    setPreviousValueFilter(null),
+  const emptyTableFilter = useCallback(() => setTableFilter(null), [])
+  const onChangeIdFilter = useCallback(e => setIdFilter(e.target.value), [])
+  const emptyIdFilter = useCallback(() => setIdFilter(null), [])
+  const onChangeFieldFilter = useCallback(
+    e => setFieldFilter(e.target.value),
+    [],
+  )
+  const emptyFieldFilter = useCallback(() => setFieldFilter(null), [])
+  const onChangeValueFilter = useCallback(
+    e => setValueFilter(e.target.value),
+    [],
+  )
+  const emptyValueFilter = useCallback(() => setValueFilter(null), [])
+  const onChangePreviousValueFilter = useCallback(
+    e => setPreviousValueFilter(e.target.value),
+    [],
+  )
+  const emptyPreviousValueFilter = useCallback(
+    () => setPreviousValueFilter(null),
+    [],
   )
 
   useEffect(() => {
     fetchMutations({ db, store })
-  }, [])
+  }, [db, store])
 
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const mutations = sortBy(rawMutations.slice(), 'id')
