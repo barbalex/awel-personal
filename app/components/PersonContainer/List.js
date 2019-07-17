@@ -10,6 +10,9 @@ import storeContext from '../../storeContext'
 
 const Container = styled.div`
   border-right: 1px solid rgb(46, 125, 50);
+  @media print {
+    display: none;
+  }
 `
 const Row = styled.div`
   display: flex;

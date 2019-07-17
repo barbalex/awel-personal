@@ -1,0 +1,305 @@
+import React, { useContext, useMemo } from 'react'
+import { observer } from 'mobx-react-lite'
+import { Form } from 'reactstrap'
+import moment from 'moment'
+import Linkify from 'react-linkify'
+import styled, { createGlobalStyle } from 'styled-components'
+
+import storeContext from '../../storeContext'
+
+/*
+ * need defined height and overflow
+ * to make the pages scrollable in UI
+ * is removed in print
+ */
+const Container = styled.div`
+  background-color: #eee;
+  font-size: 10.5px;
+  cursor: default;
+  overflow-y: auto;
+  height: 100vh;
+
+  & div {
+    background-color: white !important;
+  }
+  & * {
+    background-color: transparent !important;
+  }
+
+  @media print {
+    /* remove grey backgrond set for nice UI */
+    background-color: #fff;
+    /* with overflow auto an empty page is inserted between each page */
+    overflow-y: visible;
+    /* make sure body grows as needed */
+    height: auto !important;
+
+    page-break-inside: avoid;
+    page-break-before: avoid;
+    page-break-after: avoid;
+  }
+`
+const PageContainer = styled.div`
+  /* this part is for when page preview is shown */
+  /* Divide single pages with some space and center all pages horizontally */
+  /* will be removed in @media print */
+  margin: 1cm auto;
+  /* Define a white paper background that sticks out from the darker overall background */
+  background: #fff;
+  /* Show a drop shadow beneath each page */
+  box-shadow: 0 4px 5px rgba(75, 75, 75, 0.2);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  /* set dimensions */
+  height: 29.7cm;
+  width: 21cm;
+  padding: 1.5cm;
+
+  overflow-y: visible;
+
+  @media print {
+    /* this is when it is actually printed */
+    height: inherit;
+    width: inherit;
+
+    margin: 0 !important;
+    padding: 0.5cm !important;
+    overflow-y: hidden !important;
+    /* try this */
+    page-break-inside: avoid !important;
+    page-break-before: avoid !important;
+    page-break-after: avoid !important;
+  }
+`
+const Content = styled.div``
+// eslint-disable-next-line no-unused-expressions
+const GlobalStyle = createGlobalStyle`
+  @page {
+    size: A4 portrait;
+  }
+`
+const WrapperNarrow = styled.div`
+  display: grid;
+  grid-template-columns: repeat(1, 100%);
+  grid-template-rows: auto;
+  grid-template-areas: 'areaPerson' 'areaTel' 'areaIt' 'areaWeiterleiten';
+`
+const WrapperWide = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  grid-template-rows: auto;
+  grid-template-areas:
+    'areaPerson areaTel'
+    'areaPerson areaIt'
+    'areaWeiterleiten areaWeiterleiten';
+`
+const Title = styled.div`
+  font-weight: 900;
+  font-size: 18px;
+`
+const Area = styled.div`
+  padding: 8px;
+`
+const AreaPerson = styled(Area)`
+  grid-area: areaPerson;
+  padding-bottom: 4mm;
+`
+const AreaTel = styled(Area)`
+  grid-area: areaTel;
+`
+const AreaIt = styled(Area)`
+  grid-area: areaIt;
+`
+const AreaWeiterleiten = styled(Area)`
+  grid-area: areaWeiterleiten;
+  display: flex;
+`
+const WeiterleitenRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`
+const WRLeft = styled.div`
+  display: flex;
+`
+const EditText = styled.div`
+  margin-top: 6px;
+`
+const Row = styled.div`
+  display: flex;
+`
+const Label = styled.div``
+const Value = styled.div``
+const Field = ({ label, value }) => (
+  <Row>
+    <Label>{label}</Label>
+    <Value>{value}</Value>
+  </Row>
+)
+
+const PersonMutationPrint = ({ activeId }) => {
+  const store = useContext(storeContext)
+  const { personen, showFilter, existsFilter, settings } = store
+
+  const person = personen.find(p => p.id === activeId)
+  const personId = person.id
+
+  if (!showFilter && !activeId) return null
+
+  const viewIsNarrow = true
+  const Wrapper = viewIsNarrow ? WrapperNarrow : WrapperWide
+
+  return (
+    <Container>
+      <PageContainer className="hochformat">
+        <GlobalStyle />
+        <Content>
+          <Wrapper>
+            <AreaPerson>
+              <Title>Person</Title>
+              <Field
+                key={`${personId}mutationArt`}
+                value={person.mutationArt}
+                label="Mutations-Art"
+              />
+              <Field
+                key={`${personId}eintrittDatum`}
+                value={person.eintrittDatum}
+                label="Eintritt"
+              />
+              <Field
+                key={`${personId}austrittDatum`}
+                value={person.austrittDatum}
+                label="Austritt"
+              />
+              <Field key={`${personId}name`} value={person.name} label="Name" />
+              <Field
+                key={`${personId}vorname`}
+                value={person.vorname}
+                label="Vorname"
+              />
+              <Field
+                key={`${personId}kurzzeichen`}
+                value={person.kurzzeichen}
+                label="Kurz&shy;zei&shy;chen"
+              />
+              <Field key={`${personId}amt`} value={person.amt} label="Amt" />
+              <Field
+                key={`${personId}abteilung`}
+                value={person.abteilung}
+                label="Abtei&shy;lung"
+              />
+              <Field
+                key={`${personId}sektion`}
+                value={person.sektion}
+                label="Sektion"
+              />
+              <Field
+                key={`${personId}bereich`}
+                value={person.bereich}
+                label="Bereich"
+              />
+              <Field
+                key={`${personId}standort`}
+                value={person.standort}
+                label="Stand&shy;ort"
+              />
+              <Field
+                key={`${personId}vorgesetztId`}
+                value={() => {
+                  const p = personen.find(p => p.id === person.vorgesetztId)
+                  return `${p.name} ${p.vorname}`
+                }}
+                label="Vorge&shy;setz&shy;te(r)"
+              />
+              <Field
+                key={`${personId}kostenstelle`}
+                value={person.kostenstelle}
+                label="Kosten&shy;stelle"
+              />
+              <Field
+                key={`${personId}${
+                  existsFilter ? 1 : 0
+                }kostenstellenAenderungPer`}
+                value={person.kostenstellenAenderungPer}
+                label="Kosten&shy;stel&shy;le Ände&shy;rung per"
+              />
+              <Field
+                key={`${personId}bueroNr`}
+                value={person.bueroNr}
+                label="Büro Nr."
+              />
+              <Field
+                key={`${personId}bueroWechselPer`}
+                value={person.bueroWechselPer}
+                label="Büro-Wechsel per"
+              />
+            </AreaPerson>
+            <AreaTel>
+              <Title>Telefon / Schlüssel / Badge</Title>
+              <Field
+                key={`${personId}rufnummer`}
+                value={person.rufnummer}
+                label="Ruf&shy;num&shy;mer"
+              />
+              <Field
+                key={`${personId}telefonUebernommenVon`}
+                value={person.telefonUebernommenVon}
+                label="Tele&shy;fon über&shy;nom&shy;men von"
+              />
+              <Field
+                key={`${personId}schluesselNoetig`}
+                value={person.schluesselNoetig}
+                label="Schlüs&shy;sel nötig"
+              />
+            </AreaTel>
+            <AreaIt>
+              <Title>IT</Title>
+              <Field
+                key={`${personId}${
+                  existsFilter ? 1 : 0
+                }arbeitsplatzeroeffnungPer`}
+                value={person.arbeitsplatzeroeffnungPer}
+                label="Arbeitsplatz eröffnen per"
+              />
+              <Field
+                key={`${personId}benoetigteSoftware`}
+                value={person.benoetigteSoftware}
+                label="Benötigte Software"
+              />
+              <Field
+                key={`${personId}standardabweichendeHardware`}
+                value={person.standardabweichendeHardware}
+                label="Vom Standard abweichende Hardware"
+              />
+              <Field
+                key={`${personId}abmeldungArbeitsplatzPer`}
+                value={person.abmeldungArbeitsplatzPer}
+                label="Arbeitsplatz abmelden per"
+              />
+              <Field
+                key={`${personId}itMutationBemerkungen`}
+                value={person.itMutationBemerkungen}
+                label="Bemerkungen zur IT"
+              />
+            </AreaIt>
+            <AreaWeiterleiten>
+              <WeiterleitenRow>
+                <WRLeft>
+                  <Linkify>
+                    <EditText>{settings.personMutationWeiterleiten}</EditText>
+                  </Linkify>
+                </WRLeft>
+              </WeiterleitenRow>
+            </AreaWeiterleiten>
+          </Wrapper>
+        </Content>
+      </PageContainer>
+    </Container>
+  )
+}
+
+export default observer(PersonMutationPrint)

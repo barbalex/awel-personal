@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 import Person from './Person'
 import PersonPrint from './PersonPrint'
+import PersonMutationPrint from './PersonMutationPrint'
 import PersonPrintFunktionen from './PersonPrintFunktionen'
 import PersonPrintPensionierte from './PersonPrintPensionierte'
 import PersonPrintKader from './PersonPrintKader'
@@ -44,6 +45,9 @@ const PersonTab = ({ dimensions }) => {
 
   if (activePrintForm === 'personalblatt') {
     return <PersonPrint activeId={activeId} />
+  }
+  if (activePrintForm === 'personMutation') {
+    return <PersonMutationPrint activeId={activeId} />
   }
   if (activePrintForm === 'personFunktionen') {
     return <PersonPrintFunktionen />

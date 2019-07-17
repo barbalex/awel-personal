@@ -17,6 +17,7 @@ import Mutations from './Mutations'
 import storeContext from '../storeContext'
 import Errors from './Errors'
 import PersonPrint from './PersonContainer/PersonPrint'
+import PersonMutationPrint from './PersonContainer/PersonMutationPrint'
 import PersonPrintFunktionen from './PersonContainer/PersonPrintFunktionen'
 import PersonPrintPensionierte from './PersonContainer/PersonPrintPensionierte'
 import PersonPrintKader from './PersonContainer/PersonPrintKader'
@@ -45,10 +46,16 @@ const App = () => {
   const activeLocation = location[0]
   const { printing, activePrintForm } = store
 
+  console.log('App, activePrintForm:', activePrintForm)
+
   if (printing || isPrinting) {
     if (activePrintForm === 'personalblatt') {
       const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
       if (activeId) return <PersonPrint activeId={activeId} />
+    }
+    if (activePrintForm === 'personMutation') {
+      const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
+      if (activeId) return <PersonMutationPrint activeId={activeId} />
     }
     if (activePrintForm === 'personFunktionen') {
       return <PersonPrintFunktionen />

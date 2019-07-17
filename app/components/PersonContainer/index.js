@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
+import useDetectPrint from 'use-detect-print'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import List from './List'
@@ -68,6 +69,7 @@ const PersonContainer = () => {
   const person = personen.find(p => p.id === activeId)
   // pass list the active person's props to enable instant updates
   const personJson = person ? person.toJSON() : {}
+  const isPrinting = useDetectPrint()
 
   useEffect(() => {
     fetchPersonen({ db, setPersonen })
@@ -122,7 +124,7 @@ const PersonContainer = () => {
       <ErrorBoundary>
         <ReflexContainer orientation="vertical">
           <ReflexElement
-            flex={0.25}
+            flex={isPrinting ? 0 : 0.25}
             propagateDimensions
             propagateDimensionsRate={100}
           >
