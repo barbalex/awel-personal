@@ -48,9 +48,9 @@ const LinksComponent = ({ row = true }) => {
   const myLinks = links.filter(l => l.idPerson === activePersonenId)
 
   const onDrop = useCallback(files => {
-    //console.log('file:', files[0])
+    console.log('file:', files[0])
     addLink(files[0].path)
-  })
+  }, [addLink])
 
   const Drop = () => (
     <Container name="links">
