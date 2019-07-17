@@ -46,8 +46,6 @@ const App = () => {
   const activeLocation = location[0]
   const { printing, activePrintForm } = store
 
-  console.log('App, activePrintForm:', activePrintForm)
-
   if (printing || isPrinting) {
     if (activePrintForm === 'personalblatt') {
       const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
