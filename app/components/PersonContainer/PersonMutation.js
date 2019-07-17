@@ -65,7 +65,11 @@ const AreaWeiterleiten = styled(Area)`
 `
 const WeiterleitenRow = styled.div`
   display: flex;
+  justify-content: space-between;
   width: 100%;
+`
+const WRLeft = styled.div`
+  display: flex;
 `
 const StyledButton = styled(Button)`
   background-color: rgba(0, 0, 0, 0) !important;
@@ -100,6 +104,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
     updateField,
     settings,
     setSettingsKey,
+    setActivePrintForm,
   } = store
 
   let person
@@ -568,24 +573,34 @@ const PersonMutation = ({ activeId, dimensions }) => {
           {!showFilter && (
             <AreaWeiterleiten>
               <WeiterleitenRow>
-                {editWeiterleiten ? (
-                  <InputWithoutLabel
-                    value={settings.personMutationWeiterleiten}
-                    saveToDb={onSaveWeiterleiten}
-                    type="textarea"
-                  />
-                ) : (
-                  <Linkify>
-                    <EditText>{settings.personMutationWeiterleiten}</EditText>
-                  </Linkify>
-                )}
+                <WRLeft>
+                  {editWeiterleiten ? (
+                    <InputWithoutLabel
+                      value={settings.personMutationWeiterleiten}
+                      saveToDb={onSaveWeiterleiten}
+                      type="textarea"
+                    />
+                  ) : (
+                    <Linkify>
+                      <EditText>{settings.personMutationWeiterleiten}</EditText>
+                    </Linkify>
+                  )}
+                  <StyledButton
+                    outline={true}
+                    onClick={onClickEditWeiterleiten}
+                    className="no-print"
+                    title="Weiterleiten-Text ändern"
+                  >
+                    <EditIcon />
+                  </StyledButton>
+                </WRLeft>
                 <StyledButton
                   outline={true}
-                  onClick={onClickEditWeiterleiten}
+                  onClick={() => setActivePrintForm('personMutation')}
                   className="no-print"
-                  title="Weiterleiten-Text ändern"
+                  title="drucken"
                 >
-                  <EditIcon />
+                  Drucken
                 </StyledButton>
               </WeiterleitenRow>
             </AreaWeiterleiten>

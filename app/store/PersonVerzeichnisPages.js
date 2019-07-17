@@ -64,9 +64,7 @@ export default types
   .views(self => ({
     get modal() {
       const store = getParent(self, 1)
-      const msgLine2Txt = `Bisher ${self.pages.length} Seiten, noch ${
-        self.remainingRows.length
-      } Personen zu verarbeiten`
+      const msgLine2Txt = `Bisher ${self.pages.length} Seiten, noch ${self.remainingRows.length} Personen zu verarbeiten`
       const textLine2 = store.personenFiltered.length > 50 ? msgLine2Txt : ''
 
       return {
