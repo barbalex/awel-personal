@@ -101,7 +101,7 @@ const Abteilung = ({ activeId }) => {
         }
       }
     },
-    [activeId, abteilungen.length, filterAbteilung, showFilter],
+    [abteilung, showFilter, activeId, setFilter, filterAbteilung, updateField],
   )
 
   // filter out options with empty values - makes no sense and errors
@@ -114,7 +114,7 @@ const Abteilung = ({ activeId }) => {
           label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
-    [personen.length],
+    [abteilung.leiter, personen, showFilter],
   )
   const amtOptions = useMemo(
     () =>
@@ -124,23 +124,27 @@ const Abteilung = ({ activeId }) => {
           label: w.name,
           value: w.id,
         })),
-    [aemter.length],
+    [aemter],
   )
-  const kostenstelleOptions = useMemo(() =>
-    sortBy(kostenstelleWerte, ['sort', 'value'])
-      .filter(w => !!w.value)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const kostenstelleOptions = useMemo(
+    () =>
+      sortBy(kostenstelleWerte, ['sort', 'value'])
+        .filter(w => !!w.value)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [kostenstelleWerte],
   )
-  const standortOptions = useMemo(() =>
-    sortBy(standortWerte, ['sort', 'value'])
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const standortOptions = useMemo(
+    () =>
+      sortBy(standortWerte, ['sort', 'value'])
+        .filter(p => p.deleted === 0)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [standortWerte],
   )
 
   if (!showFilter && !activeId) return null

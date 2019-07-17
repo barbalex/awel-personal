@@ -94,7 +94,7 @@ const Sektion = ({ activeId }) => {
         }
       }
     },
-    [activeId, sektionen.length, filterSektion, showFilter],
+    [sektion, showFilter, activeId, setFilter, filterSektion, updateField],
   )
 
   // filter out options with empty values - makes no sense and errors
@@ -107,23 +107,27 @@ const Sektion = ({ activeId }) => {
           label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
-    [personen.length],
+    [personen, sektion.leiter, showFilter],
   )
-  const kostenstelleOptions = useMemo(() =>
-    sortBy(kostenstelleWerte, ['sort', 'value'])
-      .filter(w => !!w.value)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const kostenstelleOptions = useMemo(
+    () =>
+      sortBy(kostenstelleWerte, ['sort', 'value'])
+        .filter(w => !!w.value)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [kostenstelleWerte],
   )
-  const standortOptions = useMemo(() =>
-    sortBy(standortWerte, ['sort', 'value'])
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const standortOptions = useMemo(
+    () =>
+      sortBy(standortWerte, ['sort', 'value'])
+        .filter(p => p.deleted === 0)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [standortWerte],
   )
   const abteilungOptions = useMemo(
     () =>
@@ -133,7 +137,7 @@ const Sektion = ({ activeId }) => {
           label: w.name,
           value: w.id,
         })),
-    [abteilungen.length],
+    [abteilungen],
   )
 
   if (!showFilter && !activeId) return null

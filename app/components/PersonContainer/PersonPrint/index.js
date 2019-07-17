@@ -215,33 +215,41 @@ const PersonPrint = ({ activeId }) => {
 
   const person = personen.find(p => p.id === activeId) || {}
 
-  const myEtiketten = useMemo(() =>
-    etiketten
-      .filter(e => e.idPerson === activeId)
-      .filter(w => !!w.etikett)
-      .filter(p => p.deleted === 0)
-      .map(e => e.etikett),
+  const myEtiketten = useMemo(
+    () =>
+      etiketten
+        .filter(e => e.idPerson === activeId)
+        .filter(w => !!w.etikett)
+        .filter(p => p.deleted === 0)
+        .map(e => e.etikett),
+    [activeId, etiketten],
   )
-  const myAnwesenheitstage = useMemo(() =>
-    anwesenheitstage
-      .filter(e => e.idPerson === activeId)
-      .filter(w => !!w.tag)
-      .filter(p => p.deleted === 0)
-      .map(e => e.tag),
+  const myAnwesenheitstage = useMemo(
+    () =>
+      anwesenheitstage
+        .filter(e => e.idPerson === activeId)
+        .filter(w => !!w.tag)
+        .filter(p => p.deleted === 0)
+        .map(e => e.tag),
+    [activeId, anwesenheitstage],
   )
-  const myFunktionen = useMemo(() =>
-    funktionen
-      .filter(e => e.idPerson === activeId)
-      .filter(w => !!w.funktion)
-      .filter(p => p.deleted === 0)
-      .map(e => e.funktion),
+  const myFunktionen = useMemo(
+    () =>
+      funktionen
+        .filter(e => e.idPerson === activeId)
+        .filter(w => !!w.funktion)
+        .filter(p => p.deleted === 0)
+        .map(e => e.funktion),
+    [activeId, funktionen],
   )
-  const myKaderFunktionen = useMemo(() =>
-    kaderFunktionen
-      .filter(e => e.idPerson === activeId)
-      .filter(w => !!w.funktion)
-      .filter(p => p.deleted === 0)
-      .map(e => e.funktion),
+  const myKaderFunktionen = useMemo(
+    () =>
+      kaderFunktionen
+        .filter(e => e.idPerson === activeId)
+        .filter(w => !!w.funktion)
+        .filter(p => p.deleted === 0)
+        .map(e => e.funktion),
+    [activeId, kaderFunktionen],
   )
 
   const personVorgesetzt = personen.find(a => a.id === person.vorgesetztId)

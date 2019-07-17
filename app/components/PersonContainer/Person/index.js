@@ -311,7 +311,7 @@ const Person = ({ activeId, dimensions }) => {
         }
       }
     },
-    [activeId, personen.length, filterPerson, showFilter],
+    [person, showFilter, activeId, setFilter, filterPerson, updateField],
   )
   const addEtikett = useCallback(
     etikett => {
@@ -324,7 +324,7 @@ const Person = ({ activeId, dimensions }) => {
         store.addEtikett(etikett)
       }
     },
-    [showFilter, filterEtikett],
+    [showFilter, setFilter, filterEtikett, store],
   )
   const deleteEtikett = useCallback(
     etikett => {
@@ -337,7 +337,7 @@ const Person = ({ activeId, dimensions }) => {
         store.deleteEtikett(etikett)
       }
     },
-    [filterEtikett, showFilter],
+    [filterEtikett, setFilter, showFilter, store],
   )
   const saveToDbEtikett = useCallback(
     ({ value }) => {
@@ -352,7 +352,7 @@ const Person = ({ activeId, dimensions }) => {
         value: { ...filterEtikett, ...{ etikett: null } },
       })
     },
-    [filterEtikett],
+    [filterEtikett, setFilter],
   )
 
   const addAnwesenheitstag = useCallback(
@@ -366,7 +366,7 @@ const Person = ({ activeId, dimensions }) => {
         store.addAnwesenheitstag(anwesenheitstag)
       }
     },
-    [showFilter, filterAnwesenheitstage],
+    [showFilter, setFilter, filterAnwesenheitstage, store],
   )
   const deleteAnwesenheitstag = useCallback(
     anwesenheitstag => {
@@ -379,7 +379,7 @@ const Person = ({ activeId, dimensions }) => {
         store.deleteAnwesenheitstag(anwesenheitstag)
       }
     },
-    [filterAnwesenheitstage, showFilter],
+    [filterAnwesenheitstage, setFilter, showFilter, store],
   )
   const saveToDbAnwesenheitstage = useCallback(
     ({ value }) => {
@@ -394,7 +394,7 @@ const Person = ({ activeId, dimensions }) => {
         value: { ...filterAnwesenheitstage, ...{ anwesenheitstag: null } },
       })
     },
-    [filterAnwesenheitstage],
+    [filterAnwesenheitstage, setFilter],
   )
 
   const addFunktion = useCallback(
@@ -408,7 +408,7 @@ const Person = ({ activeId, dimensions }) => {
         store.addFunktion(funktion)
       }
     },
-    [showFilter, filterFunktion],
+    [showFilter, setFilter, filterFunktion, store],
   )
   const deleteFunktion = useCallback(
     funktion => {
@@ -421,7 +421,7 @@ const Person = ({ activeId, dimensions }) => {
         store.deleteFunktion(funktion)
       }
     },
-    [filterFunktion, showFilter],
+    [filterFunktion, setFilter, showFilter, store],
   )
   const saveToDbFunktion = useCallback(
     ({ value }) => {
@@ -436,7 +436,7 @@ const Person = ({ activeId, dimensions }) => {
         value: { ...filterFunktion, ...{ funktion: null } },
       })
     },
-    [filterFunktion],
+    [filterFunktion, setFilter],
   )
 
   const addKaderFunktion = useCallback(
@@ -450,7 +450,7 @@ const Person = ({ activeId, dimensions }) => {
         store.addKaderFunktion(kaderFunktion)
       }
     },
-    [showFilter, filterKaderFunktion],
+    [showFilter, setFilter, filterKaderFunktion, store],
   )
   const deleteKaderFunktion = useCallback(
     kaderFunktion => {
@@ -463,7 +463,7 @@ const Person = ({ activeId, dimensions }) => {
         store.deleteKaderFunktion(kaderFunktion)
       }
     },
-    [filterKaderFunktion, showFilter],
+    [filterKaderFunktion, setFilter, showFilter, store],
   )
   const saveToDbKaderFunktion = useCallback(
     ({ value }) => {
@@ -478,7 +478,7 @@ const Person = ({ activeId, dimensions }) => {
         value: { ...filterKaderFunktion, ...{ kaderFunktion: null } },
       })
     },
-    [filterKaderFunktion],
+    [filterKaderFunktion, setFilter],
   )
 
   // filter out options with empty values - makes no sense and errors
@@ -491,7 +491,7 @@ const Person = ({ activeId, dimensions }) => {
           label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
-    [personen.length],
+    [person.id, personen, showFilter],
   )
   const amtOptions = useMemo(
     () =>
@@ -501,7 +501,7 @@ const Person = ({ activeId, dimensions }) => {
           label: w.name,
           value: w.id,
         })),
-    [aemter.length],
+    [aemter],
   )
   const abteilungOptions = useMemo(
     () =>
@@ -517,7 +517,7 @@ const Person = ({ activeId, dimensions }) => {
           label: w.name,
           value: w.id,
         })),
-    [abteilungen.length],
+    [abteilungen, person.amt],
   )
   const sektionOptions = useMemo(
     () =>
@@ -533,7 +533,7 @@ const Person = ({ activeId, dimensions }) => {
           label: w.name,
           value: w.id,
         })),
-    [sektionen.length, person.abteilung, person.amt],
+    [sektionen, person.abteilung],
   )
   const bereichOptions = useMemo(
     () =>
@@ -561,111 +561,135 @@ const Person = ({ activeId, dimensions }) => {
           label: b.name,
           value: b.id,
         })),
-    [bereiche.length, person.amt, person.abteilung, person.sektion],
+    [bereiche, person.sektion, person.abteilung, person.amt],
   )
-  const statusOptions = useMemo(() =>
-    sortBy(statusWerte, ['sort', 'value'])
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const statusOptions = useMemo(
+    () =>
+      sortBy(statusWerte, ['sort', 'value'])
+        .filter(p => p.deleted === 0)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [statusWerte],
   )
-  const anredeOptions = useMemo(() =>
-    sortBy(anredeWerte, ['sort', 'value'])
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const anredeOptions = useMemo(
+    () =>
+      sortBy(anredeWerte, ['sort', 'value'])
+        .filter(p => p.deleted === 0)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [anredeWerte],
   )
-  const etikettenOptions = useMemo(() =>
-    sortBy(etikettWerte, ['sort', 'value'])
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const etikettenOptions = useMemo(
+    () =>
+      sortBy(etikettWerte, ['sort', 'value'])
+        .filter(p => p.deleted === 0)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [etikettWerte],
   )
-  const anwesenheitstageOptions = useMemo(() =>
-    sortBy(anwesenheitstagWerte, ['sort', 'value'])
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const anwesenheitstageOptions = useMemo(
+    () =>
+      sortBy(anwesenheitstagWerte, ['sort', 'value'])
+        .filter(p => p.deleted === 0)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [anwesenheitstagWerte],
   )
-  const funktionenOptions = useMemo(() =>
-    sortBy(funktionWerte, ['sort', 'value'])
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const funktionenOptions = useMemo(
+    () =>
+      sortBy(funktionWerte, ['sort', 'value'])
+        .filter(p => p.deleted === 0)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [funktionWerte],
   )
-  const kaderFunktionenOptions = useMemo(() =>
-    sortBy(kaderFunktionWerte, ['sort', 'value'])
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const kaderFunktionenOptions = useMemo(
+    () =>
+      sortBy(kaderFunktionWerte, ['sort', 'value'])
+        .filter(p => p.deleted === 0)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [kaderFunktionWerte],
   )
-  const landOptions = useMemo(() =>
-    sortBy(landWerte, ['sort', 'value'])
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const landOptions = useMemo(
+    () =>
+      sortBy(landWerte, ['sort', 'value'])
+        .filter(p => p.deleted === 0)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [landWerte],
   )
-  const standortOptions = useMemo(() =>
-    sortBy(standortWerte, ['sort', 'value'])
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const standortOptions = useMemo(
+    () =>
+      sortBy(standortWerte, ['sort', 'value'])
+        .filter(p => p.deleted === 0)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [standortWerte],
   )
-  const myEtiketten = useMemo(() =>
-    sortBy(etiketten.filter(e => e.idPerson === activeId), 'etikett')
-      .filter(w => !!w.etikett)
-      .filter(p => p.deleted === 0)
-      .map(e => ({
-        label: e.etikett,
-        value: e.etikett,
-      })),
+  const myEtiketten = useMemo(
+    () =>
+      sortBy(etiketten.filter(e => e.idPerson === activeId), 'etikett')
+        .filter(w => !!w.etikett)
+        .filter(p => p.deleted === 0)
+        .map(e => ({
+          label: e.etikett,
+          value: e.etikett,
+        })),
+    [activeId, etiketten],
   )
-  const myAnwesenheitstage = useMemo(() =>
-    sortBy(anwesenheitstage.filter(e => e.idPerson === activeId), e => {
-      const awWert = anwesenheitstagWerte.find(w => w.value === e.tag)
-      if (awWert && awWert.sort) return awWert.sort
-      return 1
-    })
-      .filter(w => !!w.tag)
-      .filter(p => p.deleted === 0)
-      .map(e => ({
-        label: e.tag,
-        value: e.tag,
-      })),
+  const myAnwesenheitstage = useMemo(
+    () =>
+      sortBy(anwesenheitstage.filter(e => e.idPerson === activeId), e => {
+        const awWert = anwesenheitstagWerte.find(w => w.value === e.tag)
+        if (awWert && awWert.sort) return awWert.sort
+        return 1
+      })
+        .filter(w => !!w.tag)
+        .filter(p => p.deleted === 0)
+        .map(e => ({
+          label: e.tag,
+          value: e.tag,
+        })),
+    [activeId, anwesenheitstagWerte, anwesenheitstage],
   )
-  const myFunktionen = useMemo(() =>
-    sortBy(funktionen.filter(e => e.idPerson === activeId), 'funktion')
-      .filter(w => !!w.funktion)
-      .filter(p => p.deleted === 0)
-      .map(e => ({
-        label: e.funktion,
-        value: e.funktion,
-      })),
+  const myFunktionen = useMemo(
+    () =>
+      sortBy(funktionen.filter(e => e.idPerson === activeId), 'funktion')
+        .filter(w => !!w.funktion)
+        .filter(p => p.deleted === 0)
+        .map(e => ({
+          label: e.funktion,
+          value: e.funktion,
+        })),
+    [activeId, funktionen],
   )
-  const myKaderFunktionen = useMemo(() =>
-    sortBy(kaderFunktionen.filter(e => e.idPerson === activeId), 'funktion')
-      .filter(w => !!w.funktion)
-      .filter(p => p.deleted === 0)
-      .map(e => ({
-        label: e.funktion,
-        value: e.funktion,
-      })),
+  const myKaderFunktionen = useMemo(
+    () =>
+      sortBy(kaderFunktionen.filter(e => e.idPerson === activeId), 'funktion')
+        .filter(w => !!w.funktion)
+        .filter(p => p.deleted === 0)
+        .map(e => ({
+          label: e.funktion,
+          value: e.funktion,
+        })),
+    [activeId, kaderFunktionen],
   )
 
   if (!showFilter && !activeId) return null

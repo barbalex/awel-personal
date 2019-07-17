@@ -33,12 +33,11 @@ const Container = styled.div`
 
 const PersonPrintVerzMobiltelPages = () => {
   const store = useContext(storeContext)
-  const { personVerzeichnis } = store
-  const { modal, reset, building } = personVerzeichnis
+  const { pages, modal, reset, building } = store.personVerzeichnis
 
   return (
     <Container>
-      {personVerzeichnis.pages.map((page, pageIndex) => (
+      {pages.map((page, pageIndex) => (
         <Page key={pageIndex} pageIndex={pageIndex} />
       ))}
       <Modal isOpen={building}>
@@ -47,7 +46,7 @@ const PersonPrintVerzMobiltelPages = () => {
           <p>{modal.textLine2}</p>
         </ModalBody>
         <ModalFooter>
-          <Button color="secondary" onClick={() => reset()} outline>
+          <Button color="secondary" onClick={reset} outline>
             abbrechen
           </Button>
         </ModalFooter>

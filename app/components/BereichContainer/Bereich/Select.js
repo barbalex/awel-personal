@@ -25,13 +25,11 @@ const noOptionsMessage = () => '(keine)'
 const SharedSelect = ({ value, field, options, saveToDb }) => {
   const onChange = useCallback(
     option => saveToDb({ value: option ? option.value : null, field }),
-    [field],
+    [field, saveToDb],
   )
   // need to return null instead of undefined if no option is found
   // otherwise field does not update
-  const option = useMemo(() => options.find(o => o.value === value) || null, [
-    value,
-  ])
+  const option = useMemo(() => options.find(o => o.value === value) || null, [options, value])
 
   return (
     <StyledSelect

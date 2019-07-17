@@ -119,7 +119,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
   const onSaveWeiterleiten = useCallback(({ value }) => {
     setSettingsKey({ key: 'personMutationWeiterleiten', value })
     setEditWeiterleiten(false)
-  })
+  }, [setSettingsKey])
 
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [person])
@@ -216,7 +216,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
         }
       }
     },
-    [activeId, personen.length, filterPerson, showFilter],
+    [person, showFilter, activeId, setFilter, filterPerson, updateField],
   )
 
   // filter out options with empty values - makes no sense and errors
@@ -229,15 +229,17 @@ const PersonMutation = ({ activeId, dimensions }) => {
           label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
-    [personen.length],
+    [person.id, personen, showFilter],
   )
-  const mutationArtOptions = useMemo(() =>
-    sortBy(mutationArtWerte, ['sort', 'value'])
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const mutationArtOptions = useMemo(
+    () =>
+      sortBy(mutationArtWerte, ['sort', 'value'])
+        .filter(p => p.deleted === 0)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [mutationArtWerte],
   )
   const amtOptions = useMemo(
     () =>
@@ -247,7 +249,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
           label: w.name,
           value: w.id,
         })),
-    [aemter.length],
+    [aemter],
   )
   const abteilungOptions = useMemo(
     () =>
@@ -263,7 +265,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
           label: w.name,
           value: w.id,
         })),
-    [abteilungen.length],
+    [abteilungen, person.amt],
   )
   const sektionOptions = useMemo(
     () =>
@@ -279,7 +281,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
           label: w.name,
           value: w.id,
         })),
-    [sektionen.length, person.abteilung, person.amt],
+    [sektionen, person.abteilung],
   )
   const bereichOptions = useMemo(
     () =>
@@ -289,15 +291,17 @@ const PersonMutation = ({ activeId, dimensions }) => {
           label: w.name,
           value: w.id,
         })),
-    [bereiche.length],
+    [bereiche],
   )
-  const standortOptions = useMemo(() =>
-    sortBy(standortWerte, ['sort', 'value'])
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const standortOptions = useMemo(
+    () =>
+      sortBy(standortWerte, ['sort', 'value'])
+        .filter(p => p.deleted === 0)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [standortWerte],
   )
 
   if (!showFilter && !activeId) return null

@@ -96,7 +96,7 @@ const Bereich = ({ activeId }) => {
         }
       }
     },
-    [activeId, bereiche.length, filterBereich, showFilter],
+    [activeId, bereich, filterBereich, setFilter, showFilter, updateField],
   )
 
   // filter out options with empty values - makes no sense and errors
@@ -109,23 +109,27 @@ const Bereich = ({ activeId }) => {
           label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
-    [personen.length],
+    [bereich.leiter, personen, showFilter],
   )
-  const kostenstelleOptions = useMemo(() =>
-    sortBy(kostenstelleWerte, ['sort', 'value'])
-      .filter(w => !!w.value)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const kostenstelleOptions = useMemo(
+    () =>
+      sortBy(kostenstelleWerte, ['sort', 'value'])
+        .filter(w => !!w.value)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [kostenstelleWerte],
   )
-  const standortOptions = useMemo(() =>
-    sortBy(standortWerte, ['sort', 'value'])
-      .filter(p => p.deleted === 0)
-      .map(w => ({
-        label: w.value,
-        value: w.value,
-      })),
+  const standortOptions = useMemo(
+    () =>
+      sortBy(standortWerte, ['sort', 'value'])
+        .filter(p => p.deleted === 0)
+        .map(w => ({
+          label: w.value,
+          value: w.value,
+        })),
+    [standortWerte],
   )
   const abteilungOptions = useMemo(
     () =>
@@ -135,7 +139,7 @@ const Bereich = ({ activeId }) => {
           label: w.name,
           value: w.id,
         })),
-    [abteilungen.length],
+    [abteilungen],
   )
   const sektionOptions = useMemo(
     () =>
@@ -145,7 +149,7 @@ const Bereich = ({ activeId }) => {
           label: w.name,
           value: w.id,
         })),
-    [sektionen.length],
+    [sektionen],
   )
   const amtOptions = useMemo(
     () =>
@@ -155,7 +159,7 @@ const Bereich = ({ activeId }) => {
           label: w.name,
           value: w.id,
         })),
-    [aemter.length],
+    [aemter],
   )
 
   if (!showFilter && !activeId) return null
