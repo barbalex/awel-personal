@@ -43,7 +43,7 @@ const LinkComponent = ({ link }) => {
   const store = useContext(storeContext)
   const { deleteLink } = store
 
-  const onClickRemove = useCallback(() => deleteLink(link.id), [link])
+  const onClickRemove = useCallback(() => deleteLink(link.id), [deleteLink, link.id])
 
   return (
     <Field>

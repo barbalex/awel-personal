@@ -46,7 +46,7 @@ const Person = () => {
       setActivePrintForm(null)
       setLocation([e.target.id])
     },
-    [location],
+    [setActivePrintForm, setLocation],
   )
   const deletePerson = useCallback(() => {
     const activePerson = personen.find(p => p.id === activeId)
@@ -84,7 +84,7 @@ const Person = () => {
       )
       setDeletionTitle('Person löschen')
     }
-  }, [personen.length, location])
+  }, [personen, activeId, setDeletionCallback, setDeletionMessage, setDeletionTitle, store])
 
   const existsActivePerson = activeLocation === 'Personen' && location[1]
   const mayAddNewPerson =

@@ -47,7 +47,7 @@ const Stammdaten = () => {
 
   const addWert = useCallback(() => {
     store.addWert(activeTable)
-  }, [activeTable])
+  }, [activeTable, store])
   const deleteWert = useCallback(() => {
     const activeWert = store[activeTable].find(p => p.id === activeId)
     if (activeWert.deleted === 1) {
@@ -80,10 +80,18 @@ const Stammdaten = () => {
       )
       setDeletionTitle(`${activeTable} löschen`)
     }
-  }, [activeTable, activeId])
-  const onClickStatusTable = useCallback(e => {
-    store.setLocation([e.target.name])
-  })
+  }, [
+    store,
+    activeTable,
+    activeId,
+    setDeletionCallback,
+    setDeletionMessage,
+    setDeletionTitle,
+  ])
+  const onClickStatusTable = useCallback(
+    e => store.setLocation([e.target.name]),
+    [store],
+  )
 
   return (
     <StamdatenContainer active={activeTable.includes('Werte')}>

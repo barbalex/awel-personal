@@ -44,7 +44,7 @@ const Sektion = () => {
       e.preventDefault()
       setLocation([e.target.id])
     },
-    [location],
+    [setLocation],
   )
   // const addSektion = useCallback(() => addSektion())
   const deleteSektion = useCallback(() => {
@@ -81,7 +81,7 @@ const Sektion = () => {
       )
       setDeletionTitle('Sektion löschen')
     }
-  }, [sektionen.length, location])
+  }, [sektionen, activeId, setDeletionCallback, setDeletionMessage, setDeletionTitle, store])
 
   const mayAddNewSektion =
     sektionenFiltered.filter(p => !p.name && !p.vorname).length === 0

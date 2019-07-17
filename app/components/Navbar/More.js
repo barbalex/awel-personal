@@ -58,14 +58,12 @@ const More = () => {
   } = store
   const activeLocation = location.toJSON()[0]
 
-  const toggleShowDeleted = useCallback(() => setShowDeleted(!showDeleted), [
-    showDeleted,
-  ])
+  const toggleShowDeleted = useCallback(() => setShowDeleted(!showDeleted), [setShowDeleted, showDeleted])
   const toggleShowMutationNoetig = useCallback(
     () => setShowMutationNoetig(!showMutationNoetig),
-    [showMutationNoetig],
+    [setShowMutationNoetig, showMutationNoetig],
   )
-  const showMutations = useCallback(() => setLocation(['mutations']))
+  const showMutations = useCallback(() => setLocation(['mutations']), [setLocation])
 
   return (
     <MoreMenu nav inNavbar>
