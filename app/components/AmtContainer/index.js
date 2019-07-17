@@ -41,7 +41,7 @@ const AmtContainer = () => {
   useEffect(() => {
     fetchAemter({ db, setAemter })
     fetchWerte({ db, setWerte, table: 'kostenstelleWerte' })
-  }, [db, setAemter, setWerte, store])
+  }, [db, setAemter, setWerte])
 
   return (
     <Container>

@@ -98,7 +98,24 @@ const PersonContainer = () => {
     fetchFunktionen({ db, setFunktionen })
     fetchKaderFunktionen({ db, setKaderFunktionen })
     fetchSettings({ db, setSettings })
-  }, [db, setAbteilungen, setAemter, setAnwesenheitstage, setBereiche, setEtiketten, setFunktionen, setKaderFunktionen, setLinks, setMobileAbos, setPersonen, setSchluessel, setSektionen, setSettings, setTelefones, setWerte, store])
+  }, [
+    db,
+    setAbteilungen,
+    setAemter,
+    setAnwesenheitstage,
+    setBereiche,
+    setEtiketten,
+    setFunktionen,
+    setKaderFunktionen,
+    setLinks,
+    setMobileAbos,
+    setPersonen,
+    setSchluessel,
+    setSektionen,
+    setSettings,
+    setTelefones,
+    setWerte,
+  ])
 
   return (
     <Container>

@@ -43,7 +43,7 @@ const AbteilungContainer = () => {
     fetchAbteilungen({ db, setAbteilungen })
     fetchAemter({ db, setAemter })
     fetchWerte({ db, setWerte, table: 'kostenstelleWerte' })
-  }, [db, setAbteilungen, setAemter, setWerte, store])
+  }, [db, setAbteilungen, setAemter, setWerte])
 
   return (
     <Container>

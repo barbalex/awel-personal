@@ -89,43 +89,52 @@ const MobileAbo = ({ id }) => {
       value: w.value,
     }))
 
-  const onBlur = useCallback(({ field, value }) => {
-    const newValue = ifIsNumericAsNumber(value)
-    if (showFilter) {
-      setFilter({
-        model: 'filterMobileAbo',
-        value: { ...filterMobileAbo, ...{ [field]: newValue } },
-      })
-    } else {
-      updateField({
-        table: 'mobileAbos',
-        parentModel: 'mobileAbos',
-        field,
-        value: newValue,
-        id,
-        setErrors,
-      })
-    }
-  }, ([filterMobileAbo, id, setFilter, showFilter, updateField]))
-  const onChangeSelect = useCallback(({ field, value }) => {
-    const newValue = ifIsNumericAsNumber(value)
-    if (showFilter) {
-      setFilter({
-        model: 'filterMobileAbo',
-        value: { ...filterMobileAbo, ...{ [field]: newValue } },
-      })
-    } else {
-      updateField({
-        table: 'mobileAbos',
-        parentModel: 'mobileAbos',
-        field,
-        value: newValue,
-        id,
-        setErrors,
-      })
-    }
-  }, ([filterMobileAbo, id, setFilter, showFilter, updateField]))
-  const onClickDelete = useCallback(() => deleteMobileAbo(id), [deleteMobileAbo, id])
+  const onBlur = useCallback(
+    ({ field, value }) => {
+      const newValue = ifIsNumericAsNumber(value)
+      if (showFilter) {
+        setFilter({
+          model: 'filterMobileAbo',
+          value: { ...filterMobileAbo, ...{ [field]: newValue } },
+        })
+      } else {
+        updateField({
+          table: 'mobileAbos',
+          parentModel: 'mobileAbos',
+          field,
+          value: newValue,
+          id,
+          setErrors,
+        })
+      }
+    },
+    [filterMobileAbo, id, setFilter, showFilter, updateField],
+  )
+  const onChangeSelect = useCallback(
+    ({ field, value }) => {
+      const newValue = ifIsNumericAsNumber(value)
+      if (showFilter) {
+        setFilter({
+          model: 'filterMobileAbo',
+          value: { ...filterMobileAbo, ...{ [field]: newValue } },
+        })
+      } else {
+        updateField({
+          table: 'mobileAbos',
+          parentModel: 'mobileAbos',
+          field,
+          value: newValue,
+          id,
+          setErrors,
+        })
+      }
+    },
+    [filterMobileAbo, id, setFilter, showFilter, updateField],
+  )
+  const onClickDelete = useCallback(() => deleteMobileAbo(id), [
+    deleteMobileAbo,
+    id,
+  ])
 
   return (
     <Row key={`${id}`} nosymbol={showFilter}>
