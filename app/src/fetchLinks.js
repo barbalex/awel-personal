@@ -1,4 +1,4 @@
-export default ({ db, store }) => {
+export default ({ db, setLinks }) => {
   const links = db.prepare('SELECT * from links').all()
-  store.setLinks(links)
+  setLinks(links)
 }
