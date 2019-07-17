@@ -122,6 +122,8 @@ const PersonPrintVerzTelColumn = ({ pageIndex, columnIndex }) => {
     }
   }
 
+  // DO NOT add next function in here
+  // reason: cant cancel build and renders wrong !!??
   useEffect(() => {
     next()
   })

@@ -116,16 +116,19 @@ const DateField = ({
   )
   const openPicker = useCallback(() => setOpenDatePicker(true), [])
   const closePicker = useCallback(() => setOpenDatePicker(false), [])
-  const onChangeDatePicker = useCallback(date => {
-    const myEvent = {
-      target: {
-        value: moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY'),
-      },
-    }
-    onChangeMutationFrist(myEvent)
-    onBlurMutationFrist(myEvent)
-    setTimeout(() => setOpenDatePicker(false))
-  }, [onBlurMutationFrist, onChangeMutationFrist])
+  const onChangeDatePicker = useCallback(
+    date => {
+      const myEvent = {
+        target: {
+          value: moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY'),
+        },
+      }
+      onChangeMutationFrist(myEvent)
+      onBlurMutationFrist(myEvent)
+      setTimeout(() => setOpenDatePicker(false))
+    },
+    [onBlurMutationFrist, onChangeMutationFrist],
+  )
 
   // without lifecycle state value does not immediately update
   // after user enters new date
