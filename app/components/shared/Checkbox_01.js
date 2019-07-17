@@ -31,11 +31,11 @@ const SharedCheckbox = ({
     const newValue = !stateValue
     saveToDb({ value: newValue ? 1 : 0, field })
     return setStateValue(newValue)
-  }, [stateValue, field])
+  }, [stateValue, saveToDb, field])
 
   useEffect(() => {
     setStateValue(!!value)
-  })
+  }, [value])
 
   if (row) {
     return (

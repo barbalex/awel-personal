@@ -85,17 +85,17 @@ const DateField = ({
     const newValue = !mutationNoetigStateValue
     saveToDb({ value: newValue ? 1 : 0, field: 'mutationNoetig' })
     return setMutationNoetigStateValue(newValue)
-  }, [mutationNoetigStateValue])
+  }, [mutationNoetigStateValue, saveToDb])
 
   const [openDatePicker, setOpenDatePicker] = useState(false)
   const [stateValue, setStateValue] = useState(
     mutationFristValue || mutationFristValue === 0 ? mutationFristValue : '',
   )
 
-  const onChangeMutationFrist = useCallback(event => {
-    setStateValue(event.target.value)
-    return null
-  })
+  const onChangeMutationFrist = useCallback(
+    event => setStateValue(event.target.value),
+    [],
+  )
   const onBlurMutationFrist = useCallback(
     event => {
       let newValue = event.target.value
@@ -112,10 +112,10 @@ const DateField = ({
       if (newValue === mutationFristValue) return
       saveToDb({ value: newValue, field: 'mutationFrist' })
     },
-    [mutationFristValue],
+    [mutationFristValue, saveToDb],
   )
-  const openPicker = useCallback(() => setOpenDatePicker(true))
-  const closePicker = useCallback(() => setOpenDatePicker(false))
+  const openPicker = useCallback(() => setOpenDatePicker(true), [])
+  const closePicker = useCallback(() => setOpenDatePicker(false), [])
   const onChangeDatePicker = useCallback(date => {
     const myEvent = {
       target: {
@@ -125,7 +125,7 @@ const DateField = ({
     onChangeMutationFrist(myEvent)
     onBlurMutationFrist(myEvent)
     setTimeout(() => setOpenDatePicker(false))
-  })
+  }, [onBlurMutationFrist, onChangeMutationFrist])
 
   // without lifecycle state value does not immediately update
   // after user enters new date

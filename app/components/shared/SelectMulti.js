@@ -48,6 +48,7 @@ const SharedSelectMulti = ({
         remove(removedValue.value)
       }
     },
+    [add, remove],
   )
 
   return (

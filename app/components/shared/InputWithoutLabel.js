@@ -32,7 +32,7 @@ const SharedInputWithoutLabel = ({
       if (!showFilter && newValue === value) return
       saveToDb({ value: newValue, field })
     },
-    [field, value],
+    [field, saveToDb, showFilter, value],
   )
   const onChange = useCallback(
     event => {
@@ -42,7 +42,7 @@ const SharedInputWithoutLabel = ({
         onBlur(event)
       }
     },
-    [showFilter],
+    [onBlur, showFilter],
   )
 
   // need this check because of filtering:

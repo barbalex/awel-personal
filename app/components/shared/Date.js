@@ -67,10 +67,7 @@ const DateField = ({ value, field, label, saveToDb, error, row = true }) => {
     value || value === 0 ? value : '',
   )
 
-  const onChange = useCallback(event => {
-    setStateValue(event.target.value)
-    return null
-  })
+  const onChange = useCallback(event => setStateValue(event.target.value), [])
   const onBlur = useCallback(
     event => {
       let newValue = event.target.value
@@ -81,20 +78,23 @@ const DateField = ({ value, field, label, saveToDb, error, row = true }) => {
       if (newValue === value) return
       saveToDb({ value: newValue, field })
     },
-    [value, field],
+    [value, saveToDb, field],
   )
-  const openPicker = useCallback(() => setOpen(true))
-  const closePicker = useCallback(() => setOpen(false))
-  const onChangeDatePicker = useCallback(date => {
-    const myEvent = {
-      target: {
-        value: moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY'),
-      },
-    }
-    onChange(myEvent)
-    onBlur(myEvent)
-    setTimeout(() => setOpen(false))
-  })
+  const openPicker = useCallback(() => setOpen(true), [])
+  const closePicker = useCallback(() => setOpen(false), [])
+  const onChangeDatePicker = useCallback(
+    date => {
+      const myEvent = {
+        target: {
+          value: moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY'),
+        },
+      }
+      onChange(myEvent)
+      onBlur(myEvent)
+      setTimeout(() => setOpen(false))
+    },
+    [onBlur, onChange],
+  )
 
   // without lifecycle state value does not immediately update
   // after user enters new date

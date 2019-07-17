@@ -36,7 +36,7 @@ const Data = ({ activeId, activeTable }) => {
         setErrors,
       })
     },
-    [activeTable, activeId],
+    [updateField, activeTable, dat.id],
   )
 
   if (!activeId) return null

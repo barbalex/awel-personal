@@ -43,7 +43,7 @@ const StammdatenRow = ({ index, style, activeId, activeTable }) => {
 
   const onClickRow = useCallback(
     () => setLocation([activeTable, row.id.toString()]),
-    [activeTable, row.id],
+    [activeTable, row.id, setLocation],
   )
 
   return (
