@@ -190,7 +190,7 @@ const PersonPrintFunktionenPage = ({ pageIndex }) => {
   const page = pages[pageIndex]
   const { rows } = page
 
-  const next = () => {
+  useEffect(() => {
     /**
      * - measure height of pageSize-component
      * - if > desired page height:
@@ -230,11 +230,7 @@ const PersonPrintFunktionenPage = ({ pageIndex }) => {
         }
       }
     }
-  }
-
-  useEffect(() => {
-    next()
-  })
+  }, [activePageIndex, addRow, moveRowToNewPage, page, pageIndex, remainingRows.length, stop])
 
   if (!rows) return null
 

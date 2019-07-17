@@ -78,43 +78,52 @@ const Telefon = ({ id }) => {
       value: w.value,
     }))
 
-  const onBlur = useCallback(({ field, value }) => {
-    const newValue = value
-    if (showFilter) {
-      setFilter({
-        model: 'filterTelefon',
-        value: { ...filterTelefon, ...{ [field]: newValue } },
-      })
-    } else {
-      updateField({
-        table: 'telefones',
-        parentModel: 'telefones',
-        field,
-        value: newValue,
-        id,
-        setErrors,
-      })
-    }
-  }, ([filterTelefon, id, setFilter, showFilter, updateField]))
-  const onChangeSelect = useCallback(({ field, value }) => {
-    const newValue = ifIsNumericAsNumber(value)
-    if (showFilter) {
-      setFilter({
-        model: 'filterTelefon',
-        value: { ...filterTelefon, ...{ [field]: newValue } },
-      })
-    } else {
-      updateField({
-        table: 'telefones',
-        parentModel: 'telefones',
-        field,
-        value: newValue,
-        id,
-        setErrors,
-      })
-    }
-  }, ([filterTelefon, id, setFilter, showFilter, updateField]))
-  const onClickDelete = useCallback(() => deleteTelefon(id), [deleteTelefon, id])
+  const onBlur = useCallback(
+    ({ field, value }) => {
+      const newValue = value
+      if (showFilter) {
+        setFilter({
+          model: 'filterTelefon',
+          value: { ...filterTelefon, ...{ [field]: newValue } },
+        })
+      } else {
+        updateField({
+          table: 'telefones',
+          parentModel: 'telefones',
+          field,
+          value: newValue,
+          id,
+          setErrors,
+        })
+      }
+    },
+    [filterTelefon, id, setFilter, showFilter, updateField],
+  )
+  const onChangeSelect = useCallback(
+    ({ field, value }) => {
+      const newValue = ifIsNumericAsNumber(value)
+      if (showFilter) {
+        setFilter({
+          model: 'filterTelefon',
+          value: { ...filterTelefon, ...{ [field]: newValue } },
+        })
+      } else {
+        updateField({
+          table: 'telefones',
+          parentModel: 'telefones',
+          field,
+          value: newValue,
+          id,
+          setErrors,
+        })
+      }
+    },
+    [filterTelefon, id, setFilter, showFilter, updateField],
+  )
+  const onClickDelete = useCallback(() => deleteTelefon(id), [
+    deleteTelefon,
+    id,
+  ])
 
   return (
     <Row key={`${id}`} nosymbol={showFilter}>

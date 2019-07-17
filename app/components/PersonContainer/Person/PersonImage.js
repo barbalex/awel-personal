@@ -88,28 +88,34 @@ const PersonImage = () => {
     setImage(person.bildUrl)
   }, [person.bildUrl])
 
-  const onDrop = useCallback(files => {
-    //console.log({ files })
-    updateField({
-      table: 'personen',
-      parentModel: 'personen',
-      field: 'bildUrl',
-      value: files[0].path,
-      id: person.id,
-      setErrors,
-    })
-  }, [person.id, updateField])
-  const onClickRemove = useCallback(e => {
-    updateField({
-      table: 'personen',
-      parentModel: 'personen',
-      field: 'bildUrl',
-      value: null,
-      id: person.id,
-      setErrors,
-    })
-    e.preventDefault()
-  }, [person.id, updateField])
+  const onDrop = useCallback(
+    files => {
+      //console.log({ files })
+      updateField({
+        table: 'personen',
+        parentModel: 'personen',
+        field: 'bildUrl',
+        value: files[0].path,
+        id: person.id,
+        setErrors,
+      })
+    },
+    [person.id, updateField],
+  )
+  const onClickRemove = useCallback(
+    e => {
+      updateField({
+        table: 'personen',
+        parentModel: 'personen',
+        field: 'bildUrl',
+        value: null,
+        id: person.id,
+        setErrors,
+      })
+      e.preventDefault()
+    },
+    [person.id, updateField],
+  )
 
   if (showFilter) return null
 

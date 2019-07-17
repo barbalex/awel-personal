@@ -110,43 +110,52 @@ const SchluesselComponent = ({ id }) => {
     },
     [showFilter, setFilter, filterSchluessel, updateField, schluessel.id],
   )
-  const onChangeSelectSchluesselTyp = useCallback(({ field, value }) => {
-    const newValue = ifIsNumericAsNumber(value)
-    if (showFilter) {
-      setFilter({
-        model: 'filterSchluesselTyp',
-        value: { ...filterSchluesselTyp, ...{ [field]: newValue } },
-      })
-    } else {
-      updateField({
-        table: 'schluessel',
-        parentModel: 'schluessel',
-        field,
-        value: newValue,
-        id,
-        setErrors,
-      })
-    }
-  }, ([filterSchluesselTyp, id, setFilter, showFilter, updateField]))
-  const onChangeSelectSchluesselAnlage = useCallback(({ field, value }) => {
-    const newValue = ifIsNumericAsNumber(value)
-    if (showFilter) {
-      setFilter({
-        model: 'filterSchluesselAnlage',
-        value: { ...filterSchluesselAnlage, ...{ [field]: newValue } },
-      })
-    } else {
-      updateField({
-        table: 'schluessel',
-        parentModel: 'schluessel',
-        field,
-        value: newValue,
-        id,
-        setErrors,
-      })
-    }
-  }, ([filterSchluesselAnlage, id, setFilter, showFilter, updateField]))
-  const onClickDelete = useCallback(() => deleteSchluessel(id), [deleteSchluessel, id])
+  const onChangeSelectSchluesselTyp = useCallback(
+    ({ field, value }) => {
+      const newValue = ifIsNumericAsNumber(value)
+      if (showFilter) {
+        setFilter({
+          model: 'filterSchluesselTyp',
+          value: { ...filterSchluesselTyp, ...{ [field]: newValue } },
+        })
+      } else {
+        updateField({
+          table: 'schluessel',
+          parentModel: 'schluessel',
+          field,
+          value: newValue,
+          id,
+          setErrors,
+        })
+      }
+    },
+    [filterSchluesselTyp, id, setFilter, showFilter, updateField],
+  )
+  const onChangeSelectSchluesselAnlage = useCallback(
+    ({ field, value }) => {
+      const newValue = ifIsNumericAsNumber(value)
+      if (showFilter) {
+        setFilter({
+          model: 'filterSchluesselAnlage',
+          value: { ...filterSchluesselAnlage, ...{ [field]: newValue } },
+        })
+      } else {
+        updateField({
+          table: 'schluessel',
+          parentModel: 'schluessel',
+          field,
+          value: newValue,
+          id,
+          setErrors,
+        })
+      }
+    },
+    [filterSchluesselAnlage, id, setFilter, showFilter, updateField],
+  )
+  const onClickDelete = useCallback(() => deleteSchluessel(id), [
+    deleteSchluessel,
+    id,
+  ])
 
   return (
     <Row key={`${id}`} nosymbol={showFilter}>
