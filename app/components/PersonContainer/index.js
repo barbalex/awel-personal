@@ -57,6 +57,7 @@ const PersonContainer = () => {
     setLinks,
     setMobileAbos,
     setPersonen,
+    setSchluessel,setSektionen
   } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
@@ -69,7 +70,7 @@ const PersonContainer = () => {
     fetchAemter({ db, setAemter })
     fetchAbteilungen({ db, setAbteilungen })
     fetchBereiche({ db, setBereiche })
-    fetchSektionen({ db, store })
+    fetchSektionen({ db, setSektionen })
     fetchWerte({ db, store, table: 'statusWerte' })
     fetchWerte({ db, store, table: 'anredeWerte' })
     fetchWerte({ db, store, table: 'funktionWerte' })
@@ -82,7 +83,7 @@ const PersonContainer = () => {
     fetchWerte({ db, store, table: 'mutationArtWerte' })
     fetchWerte({ db, store, table: 'standortWerte' })
     fetchLinks({ db, setLinks })
-    fetchSchluessel({ db, store })
+    fetchSchluessel({ db, setSchluessel })
     fetchMobileAbos({ db, setMobileAbos })
     fetchTelefones({ db, store })
     fetchWerte({ db, store, table: 'mobileAboKostenstelleWerte' })
@@ -93,7 +94,7 @@ const PersonContainer = () => {
     fetchFunktionen({ db, setFunktionen })
     fetchKaderFunktionen({ db, setKaderFunktionen })
     fetchSettings({ db, store })
-  }, [db, setAbteilungen, setAemter, setAnwesenheitstage, setBereiche, setEtiketten, setFunktionen, setKaderFunktionen, setLinks, setMobileAbos, setPersonen, store])
+  }, [db, setAbteilungen, setAemter, setAnwesenheitstage, setBereiche, setEtiketten, setFunktionen, setKaderFunktionen, setLinks, setMobileAbos, setPersonen, setSchluessel, store])
 
   return (
     <Container>

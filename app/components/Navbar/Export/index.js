@@ -35,7 +35,7 @@ const Export = () => {
     addError,
     setAbteilungen,
     setAemter,
-    setBereiche,
+    setBereiche,setSektionen
   } = store
 
   const [modalOpen, setModalOpen] = useState(false)
@@ -45,7 +45,7 @@ const Export = () => {
     fetchAemter({ db, setAemter })
     fetchAbteilungen({ db, setAbteilungen })
     fetchBereiche({ db, setBereiche })
-    fetchSektionen({ db, store })
+    fetchSektionen({ db, setSektionen })
   }, [db, setAbteilungen, setAemter, setBereiche, store])
 
   const onClickExportPersonen = useCallback(() => {

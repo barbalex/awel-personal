@@ -1,4 +1,4 @@
-export default ({ db, store }) => {
+export default ({ db, setSektionen }) => {
   const sektionen = db.prepare('SELECT * from sektionen').all()
-  store.setSektionen(sektionen)
+  setSektionen(sektionen)
 }

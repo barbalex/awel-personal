@@ -1,4 +1,4 @@
-export default ({ db, store }) => {
+export default ({ db, setSchluessel }) => {
   const schluessel = db.prepare('SELECT * from schluessel').all()
-  store.setSchluessel(schluessel)
+  setSchluessel(schluessel)
 }
