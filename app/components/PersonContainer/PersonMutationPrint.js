@@ -1,11 +1,11 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
-import { Form } from 'reactstrap'
 import moment from 'moment'
 import Linkify from 'react-linkify'
 import styled, { createGlobalStyle } from 'styled-components'
 
 import storeContext from '../../storeContext'
+import LogoAwel from '../../etc/LogoAwel.jpg'
 
 /*
  * need defined height and overflow
@@ -96,9 +96,9 @@ const WrapperWide = styled.div`
     'areaPerson areaIt'
     'areaWeiterleiten areaWeiterleiten';
 `
-const Title = styled.div`
-  font-weight: 900;
-  font-size: 18px;
+const Title = styled.h5`
+  font-weight: 800;
+  font-size: 1.2em;
 `
 const Area = styled.div`
   padding: 8px;
@@ -128,14 +128,33 @@ const WRLeft = styled.div`
 const EditText = styled.div`
   margin-top: 6px;
 `
+const LogoImg = styled.img`
+  max-width: 260px;
+  margin-top: -20px;
+  margin-left: -10px;
+`
 const Row = styled.div`
   display: flex;
+  flex-wrap: nowrap;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  line-height: 1.5em;
+  border-bottom: 1px solid #e2e2e2;
+  &:first-of-type {
+    border-top: 1px solid #e2e2e2;
+  }
 `
-const Label = styled.div``
+const Label = styled.div`
+  flex-basis: 190px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  white-space: nowrap;
+`
 const Value = styled.div``
 const Field = ({ label, value }) => (
   <Row>
-    <Label>{label}</Label>
+    <Label>{`${label}:`}</Label>
     <Value>{value}</Value>
   </Row>
 )
@@ -152,11 +171,18 @@ const PersonMutationPrint = ({ activeId }) => {
   const viewIsNarrow = true
   const Wrapper = viewIsNarrow ? WrapperNarrow : WrapperWide
 
+  const v = personen.find(p => p.id === person.vorgesetztId)
+  const vorgesetzt = `${v.name} ${v.vorname}`
+
+  const tv = personen.find(p => p.id === person.telefonUebernommenVon)
+  const telefonUebernommenVon = `${tv.name} ${tv.vorname}`
+
   return (
     <Container>
       <PageContainer className="hochformat">
         <GlobalStyle />
         <Content>
+          <LogoImg src={LogoAwel} />
           <Wrapper>
             <AreaPerson>
               <Title>Person</Title>
@@ -209,10 +235,7 @@ const PersonMutationPrint = ({ activeId }) => {
               />
               <Field
                 key={`${personId}vorgesetztId`}
-                value={() => {
-                  const p = personen.find(p => p.id === person.vorgesetztId)
-                  return `${p.name} ${p.vorname}`
-                }}
+                value={vorgesetzt}
                 label="Vorge&shy;setz&shy;te(r)"
               />
               <Field
@@ -247,7 +270,7 @@ const PersonMutationPrint = ({ activeId }) => {
               />
               <Field
                 key={`${personId}telefonUebernommenVon`}
-                value={person.telefonUebernommenVon}
+                value={telefonUebernommenVon}
                 label="Tele&shy;fon über&shy;nom&shy;men von"
               />
               <Field
