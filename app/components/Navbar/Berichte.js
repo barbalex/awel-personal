@@ -57,7 +57,7 @@ const Berichte = () => {
 
   const onClickPD = useCallback(() => {
     setActivePrintForm('personalblatt')
-  }, [location])
+  }, [setActivePrintForm])
   const onClickPrint = useCallback(() => {
     setPrinting(true)
     setTimeout(() => {
@@ -72,7 +72,7 @@ const Berichte = () => {
       })*/
       setTimeout(() => setPrinting(false))
     })
-  })
+  }, [setPrinting])
   const onClickCreatePdf = useCallback(() => {
     const landscape = !['personalblatt'].includes(activePrintForm)
     const printToPDFOptions = {
@@ -99,7 +99,7 @@ const Berichte = () => {
       })
       setTimeout(() => setPrinting(false))
     })
-  })
+  }, [activePrintForm, setPrinting])
 
   return (
     <StyledUncontrolledDropdown nav inNavbar active={!!activePrintForm}>

@@ -43,7 +43,7 @@ const Bereich = () => {
       e.preventDefault()
       setLocation([e.target.id])
     },
-    [location],
+    [setLocation],
   )
   // const addBereich = useCallback(() => addBereich())
   const deleteBereich = useCallback(() => {
@@ -80,7 +80,7 @@ const Bereich = () => {
       )
       setDeletionTitle('Bereich löschen')
     }
-  }, [bereiche.length, location])
+  }, [activeId, bereiche, setDeletionCallback, setDeletionMessage, setDeletionTitle, store])
 
   const existsActiveBereich = activeLocation === 'Bereiche' && location[1]
   const mayAddNewBereich =

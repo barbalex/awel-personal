@@ -70,11 +70,15 @@ const Filter = () => {
   const [filterDropdownIsOpen, setFilterDropdownIsOpen] = useState(false)
 
   const toggleShowFilter = useCallback(() => setShowFilter(!showFilter), [
+    setShowFilter,
     showFilter,
   ])
-  const onChangeFilterFulltext = useCallback(e => {
-    setFilterFulltext(e.target.value)
-  })
+  const onChangeFilterFulltext = useCallback(
+    e => {
+      setFilterFulltext(e.target.value)
+    },
+    [setFilterFulltext],
+  )
   const onBlurFilterFulltext = useCallback(
     e => {
       if (
@@ -90,13 +94,13 @@ const Filter = () => {
         personPages.initiate()
       }
     },
-    [activePrintForm],
+    [activePrintForm, personPages],
   )
   const onKeyPressFilterFulltext = useCallback(e => {
     if (e.key === 'Enter') {
       onBlurFilterFulltext(e)
     }
-  })
+  }, [onBlurFilterFulltext])
   const onEmptyFilterFulltext = useCallback(() => {
     setFilterFulltext(null)
     if (
@@ -111,7 +115,7 @@ const Filter = () => {
     ) {
       personPages.initiate()
     }
-  }, [activePrintForm])
+  }, [activePrintForm, personPages, setFilterFulltext])
   const toggleFilterDropdown = useCallback(
     e => {
       setFilterDropdownIsOpen(!filterDropdownIsOpen)
@@ -140,22 +144,22 @@ const Filter = () => {
     }
     setFilter({ model, value: { mutationNoetig: 1 } })
     setShowMutationNoetig(true)
-  }, [activeLocation])
+  }, [activeLocation, setFilter, setShowMutationNoetig])
   const onClickKader = useCallback(() => {
     setFilterPersonKader(true)
-  }, [activeLocation])
+  }, [setFilterPersonKader])
   const onClickAktivJetzt = useCallback(() => {
     setFilterPersonAktivJetzt(true)
-  }, [activeLocation])
+  }, [setFilterPersonAktivJetzt])
   const onClickAktivJetztMitTel = useCallback(() => {
     setFilterPersonAktivJetztMitTel(true)
-  }, [activeLocation])
+  }, [setFilterPersonAktivJetztMitTel])
   const onClickAktivJetztMitMobiltel = useCallback(() => {
     setFilterPersonAktivJetztMitMobiltel(true)
-  }, [activeLocation])
+  }, [setFilterPersonAktivJetztMitMobiltel])
   const onClickAktivJetztMitKurzzeichen = useCallback(() => {
     setFilterPersonAktivJetztMitKurzzeichen(true)
-  }, [activeLocation])
+  }, [setFilterPersonAktivJetztMitKurzzeichen])
 
   return (
     <div>

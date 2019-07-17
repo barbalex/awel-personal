@@ -29,15 +29,7 @@ const adressenFields = ['name', 'vorname', 'adresse', 'plz', 'ort', 'land']
 const Export = () => {
   const db = useContext(dbContext)
   const store = useContext(storeContext)
-  const {
-    personenSorted,
-    personenFiltered,
-    bereicheFiltered,
-    sektionenFiltered,
-    abteilungenFiltered,
-    aemterFiltered,
-    addError,
-  } = store
+  const { personenSorted, personenFiltered, addError } = store
 
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
@@ -47,7 +39,7 @@ const Export = () => {
     fetchAbteilungen({ db, store })
     fetchBereiche({ db, store })
     fetchSektionen({ db, store })
-  }, [])
+  }, [db, store])
 
   const onClickExportPersonen = useCallback(() => {
     const exportObjects = personenPrepareData({ store })
@@ -60,7 +52,7 @@ const Export = () => {
       setModalMessage,
       subject: 'Personen',
     })
-  }, [personenFiltered])
+  }, [addError, store])
   const onClickExportAdressen = useCallback(() => {
     const exportObjects = personenFiltered
       .slice()
@@ -75,7 +67,7 @@ const Export = () => {
       subject: 'Adressen',
       sorting: { name: 1, vorname: 2, adresse: 3, plz: 4, ort: 5, land: 6 },
     })
-  }, [personenFiltered])
+  }, [addError, personenFiltered])
   const onClickExportAdressenAktive = useCallback(() => {
     const exportObjects = personenSorted
       .slice()
@@ -91,7 +83,7 @@ const Export = () => {
       subject: 'Adressen',
       sorting: { name: 1, vorname: 2, adresse: 3, plz: 4, ort: 5, land: 6 },
     })
-  }, [personenSorted])
+  }, [addError, personenSorted])
   const onClickExportAdressenPensionierte = useCallback(() => {
     const exportObjects = personenSorted
       .slice()
@@ -107,7 +99,7 @@ const Export = () => {
       subject: 'Adressen',
       sorting: { name: 1, vorname: 2, adresse: 3, plz: 4, ort: 5, land: 6 },
     })
-  }, [personenSorted])
+  }, [addError, personenSorted])
   const onClickExportPersonenKader = useCallback(() => {
     const exportObjects = personenKaderPrepareData({ store })
     if (!exportObjects.length) {
@@ -129,7 +121,7 @@ const Export = () => {
         funktionen: 8,
       },
     })
-  }, [personenSorted])
+  }, [addError, store])
 
   const onClickExportBereiche = useCallback(() => {
     const exportObjects = bereichePrepareData({ store })
@@ -142,7 +134,7 @@ const Export = () => {
       setModalMessage,
       subject: 'Bereiche',
     })
-  }, [bereicheFiltered])
+  }, [addError, store])
   const onClickExportSektionen = useCallback(() => {
     const exportObjects = sektionenPrepareData({ store })
     if (!exportObjects.length) {
@@ -154,7 +146,7 @@ const Export = () => {
       setModalMessage,
       subject: 'Sektionen',
     })
-  }, [sektionenFiltered])
+  }, [addError, store])
   const onClickExportAbteilungen = useCallback(() => {
     const exportObjects = abteilungenPrepareData({ store })
     if (!exportObjects.length) {
@@ -166,7 +158,7 @@ const Export = () => {
       setModalMessage,
       subject: 'Abteilungen',
     })
-  }, [abteilungenFiltered])
+  }, [addError, store])
   const onClickExportAemter = useCallback(() => {
     const exportObjects = aemterPrepareData({ store })
     if (!exportObjects.length) {
@@ -178,7 +170,7 @@ const Export = () => {
       setModalMessage,
       subject: 'Aemter',
     })
-  }, [aemterFiltered])
+  }, [addError, store])
   const toggleModal = useCallback(() => setModalOpen(!modalOpen), [modalOpen])
 
   return (
