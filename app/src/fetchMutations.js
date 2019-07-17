@@ -1,4 +1,4 @@
-export default ({ db, store }) => {
+export default ({ db, setMutations }) => {
   const mutations = db.prepare('SELECT * from mutations').all()
-  store.setMutations(mutations)
+  setMutations(mutations)
 }

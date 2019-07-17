@@ -56,6 +56,7 @@ const PersonContainer = () => {
     setKaderFunktionen,
     setLinks,
     setMobileAbos,
+    setPersonen,
   } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
@@ -64,7 +65,7 @@ const PersonContainer = () => {
   const personJson = person ? person.toJSON() : {}
 
   useEffect(() => {
-    fetchPersonen({ db, store })
+    fetchPersonen({ db, setPersonen })
     fetchAemter({ db, setAemter })
     fetchAbteilungen({ db, setAbteilungen })
     fetchBereiche({ db, setBereiche })
@@ -92,7 +93,7 @@ const PersonContainer = () => {
     fetchFunktionen({ db, setFunktionen })
     fetchKaderFunktionen({ db, setKaderFunktionen })
     fetchSettings({ db, store })
-  }, [db, setAbteilungen, setAemter, setAnwesenheitstage, setBereiche, setEtiketten, setFunktionen, setKaderFunktionen, setLinks, setMobileAbos, store])
+  }, [db, setAbteilungen, setAemter, setAnwesenheitstage, setBereiche, setEtiketten, setFunktionen, setKaderFunktionen, setLinks, setMobileAbos, setPersonen, store])
 
   return (
     <Container>

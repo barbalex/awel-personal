@@ -98,7 +98,7 @@ const getValueToShow = value => {
 const Mutations = () => {
   const store = useContext(storeContext)
   const db = useContext(dbContext)
-  const { mutations: rawMutations } = store
+  const { mutations: rawMutations, setMutations } = store
   const location = store.location.toJSON()
 
   const [zeitFilter, setZeitFilter] = useState(null)
@@ -142,9 +142,7 @@ const Mutations = () => {
     [],
   )
 
-  useEffect(() => {
-    fetchMutations({ db, store })
-  }, [db, store])
+  useEffect(() => fetchMutations({ db, setMutations }), [db, setMutations])
 
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const mutations = sortBy(rawMutations.slice(), 'id')
