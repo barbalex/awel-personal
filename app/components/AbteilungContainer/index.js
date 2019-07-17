@@ -32,7 +32,7 @@ const StyledReflexElement = styled(ReflexElement)`
 const AbteilungContainer = () => {
   const store = useContext(storeContext)
   const db = useContext(dbContext)
-  const { showFilter, abteilungen, setAbteilungen, setAemter } = store
+  const { showFilter, abteilungen, setAbteilungen, setAemter, setWerte } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const abteilung = abteilungen.find(p => p.id === activeId)
@@ -42,8 +42,8 @@ const AbteilungContainer = () => {
   useEffect(() => {
     fetchAbteilungen({ db, setAbteilungen })
     fetchAemter({ db, setAemter })
-    fetchWerte({ db, store, table: 'kostenstelleWerte' })
-  }, [db, setAbteilungen, setAemter, store])
+    fetchWerte({ db, setWerte, table: 'kostenstelleWerte' })
+  }, [db, setAbteilungen, setAemter, setWerte, store])
 
   return (
     <Container>

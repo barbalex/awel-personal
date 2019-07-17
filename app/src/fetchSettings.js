@@ -1,4 +1,4 @@
-export default ({ db, store }) => {
+export default ({ db, setSettings }) => {
   const value = db.prepare(`SELECT * from settings where id=?`).get(1)
-  store.setSettings(value)
+  setSettings(value)
 }

@@ -31,7 +31,7 @@ const StyledReflexElement = styled(ReflexElement)`
 const AmtContainer = () => {
   const store = useContext(storeContext)
   const db = useContext(dbContext)
-  const { showFilter, aemter, setAemter } = store
+  const { showFilter, aemter, setAemter, setWerte } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const amt = aemter.find(p => p.id === activeId)
@@ -40,8 +40,8 @@ const AmtContainer = () => {
 
   useEffect(() => {
     fetchAemter({ db, setAemter })
-    fetchWerte({ db, store, table: 'kostenstelleWerte' })
-  }, [db, setAemter, store])
+    fetchWerte({ db, setWerte, table: 'kostenstelleWerte' })
+  }, [db, setAemter, setWerte, store])
 
   return (
     <Container>

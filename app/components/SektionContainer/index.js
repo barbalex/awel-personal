@@ -39,6 +39,7 @@ const SektionContainer = () => {
     setAbteilungen,
     setPersonen,
     setSektionen,
+    setWerte,
   } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
@@ -50,8 +51,8 @@ const SektionContainer = () => {
     fetchSektionen({ db, setSektionen })
     fetchAbteilungen({ db, setAbteilungen })
     fetchPersonen({ db, setPersonen })
-    fetchWerte({ db, store, table: 'kostenstelleWerte' })
-  }, [db, setAbteilungen, setPersonen, setSektionen, store])
+    fetchWerte({ db, setWerte, table: 'kostenstelleWerte' })
+  }, [db, setAbteilungen, setPersonen, setSektionen, setWerte, store])
 
   return (
     <Container>

@@ -57,7 +57,11 @@ const PersonContainer = () => {
     setLinks,
     setMobileAbos,
     setPersonen,
-    setSchluessel,setSektionen
+    setSchluessel,
+    setSektionen,
+    setSettings,
+    setTelefones,
+    setWerte,
   } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
@@ -71,30 +75,30 @@ const PersonContainer = () => {
     fetchAbteilungen({ db, setAbteilungen })
     fetchBereiche({ db, setBereiche })
     fetchSektionen({ db, setSektionen })
-    fetchWerte({ db, store, table: 'statusWerte' })
-    fetchWerte({ db, store, table: 'anredeWerte' })
-    fetchWerte({ db, store, table: 'funktionWerte' })
-    fetchWerte({ db, store, table: 'kaderFunktionWerte' })
+    fetchWerte({ db, setWerte, table: 'statusWerte' })
+    fetchWerte({ db, setWerte, table: 'anredeWerte' })
+    fetchWerte({ db, setWerte, table: 'funktionWerte' })
+    fetchWerte({ db, setWerte, table: 'kaderFunktionWerte' })
     fetchEtiketten({ db, setEtiketten })
     fetchAnwesenheitstage({ db, setAnwesenheitstage })
-    fetchWerte({ db, store, table: 'etikettWerte' })
-    fetchWerte({ db, store, table: 'anwesenheitstagWerte' })
-    fetchWerte({ db, store, table: 'landWerte' })
-    fetchWerte({ db, store, table: 'mutationArtWerte' })
-    fetchWerte({ db, store, table: 'standortWerte' })
+    fetchWerte({ db, setWerte, table: 'etikettWerte' })
+    fetchWerte({ db, setWerte, table: 'anwesenheitstagWerte' })
+    fetchWerte({ db, setWerte, table: 'landWerte' })
+    fetchWerte({ db, setWerte, table: 'mutationArtWerte' })
+    fetchWerte({ db, setWerte, table: 'standortWerte' })
     fetchLinks({ db, setLinks })
     fetchSchluessel({ db, setSchluessel })
     fetchMobileAbos({ db, setMobileAbos })
-    fetchTelefones({ db, store })
-    fetchWerte({ db, store, table: 'mobileAboKostenstelleWerte' })
-    fetchWerte({ db, store, table: 'mobileAboTypWerte' })
-    fetchWerte({ db, store, table: 'telefonTypWerte' })
-    fetchWerte({ db, store, table: 'schluesselTypWerte' })
-    fetchWerte({ db, store, table: 'schluesselAnlageWerte' })
+    fetchTelefones({ db, setTelefones })
+    fetchWerte({ db, setWerte, table: 'mobileAboKostenstelleWerte' })
+    fetchWerte({ db, setWerte, table: 'mobileAboTypWerte' })
+    fetchWerte({ db, setWerte, table: 'telefonTypWerte' })
+    fetchWerte({ db, setWerte, table: 'schluesselTypWerte' })
+    fetchWerte({ db, setWerte, table: 'schluesselAnlageWerte' })
     fetchFunktionen({ db, setFunktionen })
     fetchKaderFunktionen({ db, setKaderFunktionen })
-    fetchSettings({ db, store })
-  }, [db, setAbteilungen, setAemter, setAnwesenheitstage, setBereiche, setEtiketten, setFunktionen, setKaderFunktionen, setLinks, setMobileAbos, setPersonen, setSchluessel, store])
+    fetchSettings({ db, setSettings })
+  }, [db, setAbteilungen, setAemter, setAnwesenheitstage, setBereiche, setEtiketten, setFunktionen, setKaderFunktionen, setLinks, setMobileAbos, setPersonen, setSchluessel, setSektionen, setSettings, setTelefones, setWerte, store])
 
   return (
     <Container>

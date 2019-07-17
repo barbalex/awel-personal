@@ -39,6 +39,7 @@ const BereichContainer = () => {
     setBereiche,
     setAbteilungen,
     setPersonen,
+    setWerte,
   } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
@@ -50,8 +51,8 @@ const BereichContainer = () => {
     fetchBereiche({ db, setBereiche })
     fetchAbteilungen({ db, setAbteilungen })
     fetchPersonen({ db, setPersonen })
-    fetchWerte({ db, store, table: 'kostenstelleWerte' })
-  }, [db, setAbteilungen, setBereiche, setPersonen, store])
+    fetchWerte({ db, setWerte, table: 'kostenstelleWerte' })
+  }, [db, setAbteilungen, setBereiche, setPersonen, setWerte, store])
 
   return (
     <Container>

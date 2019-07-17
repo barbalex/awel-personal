@@ -26,6 +26,7 @@ const StyledReflexElement = styled(ReflexElement)`
 
 const StammdatenContainer = () => {
   const store = useContext(storeContext)
+  const { setWerte } = store
   const db = useContext(dbContext)
   const location = store.location.toJSON()
   const activeTable = location[0]
@@ -36,22 +37,22 @@ const StammdatenContainer = () => {
   const datJson = dat || {}
 
   useEffect(() => {
-    fetchWerte({ db, store, table: 'statusWerte' })
-    fetchWerte({ db, store, table: 'anredeWerte' })
-    fetchWerte({ db, store, table: 'kostenstelleWerte' })
-    fetchWerte({ db, store, table: 'mobileAboTypWerte' })
-    fetchWerte({ db, store, table: 'telefonTypWerte' })
-    fetchWerte({ db, store, table: 'schluesselTypWerte' })
-    fetchWerte({ db, store, table: 'schluesselAnlageWerte' })
-    fetchWerte({ db, store, table: 'funktionWerte' })
-    fetchWerte({ db, store, table: 'kaderFunktionWerte' })
-    fetchWerte({ db, store, table: 'mobileAboKostenstelleWerte' })
-    fetchWerte({ db, store, table: 'etikettWerte' })
-    fetchWerte({ db, store, table: 'anwesenheitstagWerte' })
-    fetchWerte({ db, store, table: 'landWerte' })
-    fetchWerte({ db, store, table: 'mutationArtWerte' })
-    fetchWerte({ db, store, table: 'standortWerte' })
-  }, [])
+    fetchWerte({ db, setWerte, table: 'statusWerte' })
+    fetchWerte({ db, setWerte, table: 'anredeWerte' })
+    fetchWerte({ db, setWerte, table: 'kostenstelleWerte' })
+    fetchWerte({ db, setWerte, table: 'mobileAboTypWerte' })
+    fetchWerte({ db, setWerte, table: 'telefonTypWerte' })
+    fetchWerte({ db, setWerte, table: 'schluesselTypWerte' })
+    fetchWerte({ db, setWerte, table: 'schluesselAnlageWerte' })
+    fetchWerte({ db, setWerte, table: 'funktionWerte' })
+    fetchWerte({ db, setWerte, table: 'kaderFunktionWerte' })
+    fetchWerte({ db, setWerte, table: 'mobileAboKostenstelleWerte' })
+    fetchWerte({ db, setWerte, table: 'etikettWerte' })
+    fetchWerte({ db, setWerte, table: 'anwesenheitstagWerte' })
+    fetchWerte({ db, setWerte, table: 'landWerte' })
+    fetchWerte({ db, setWerte, table: 'mutationArtWerte' })
+    fetchWerte({ db, setWerte, table: 'standortWerte' })
+  }, [db, setWerte])
 
   return (
     <Container>

@@ -1,4 +1,4 @@
-export default ({ table, db, store }) => {
+export default ({ table, db, setWerte }) => {
   const values = db.prepare(`SELECT * from ${table}`).all()
-  store.setWerte({ table, values })
+  setWerte({ table, values })
 }
