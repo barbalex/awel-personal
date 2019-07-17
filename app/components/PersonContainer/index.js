@@ -44,7 +44,15 @@ const StyledReflexElement = styled(ReflexElement)`
 const PersonContainer = () => {
   const store = useContext(storeContext)
   const db = useContext(dbContext)
-  const { showFilter, personen } = store
+  const {
+    showFilter,
+    personen,
+    setAbteilungen,
+    setAemter,
+    setAnwesenheitstage,
+    setBereiche,
+    setEtiketten,
+  } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const person = personen.find(p => p.id === activeId)
@@ -53,16 +61,16 @@ const PersonContainer = () => {
 
   useEffect(() => {
     fetchPersonen({ db, store })
-    fetchAemter({ db, store })
-    fetchAbteilungen({ db, store })
-    fetchBereiche({ db, store })
+    fetchAemter({ db, setAemter })
+    fetchAbteilungen({ db, setAbteilungen })
+    fetchBereiche({ db, setBereiche })
     fetchSektionen({ db, store })
     fetchWerte({ db, store, table: 'statusWerte' })
     fetchWerte({ db, store, table: 'anredeWerte' })
     fetchWerte({ db, store, table: 'funktionWerte' })
     fetchWerte({ db, store, table: 'kaderFunktionWerte' })
-    fetchEtiketten({ db, store })
-    fetchAnwesenheitstage({ db, store })
+    fetchEtiketten({ db, setEtiketten })
+    fetchAnwesenheitstage({ db, setAnwesenheitstage })
     fetchWerte({ db, store, table: 'etikettWerte' })
     fetchWerte({ db, store, table: 'anwesenheitstagWerte' })
     fetchWerte({ db, store, table: 'landWerte' })
@@ -80,7 +88,7 @@ const PersonContainer = () => {
     fetchFunktionen({ db, store })
     fetchKaderFunktionen({ db, store })
     fetchSettings({ db, store })
-  }, [])
+  }, [db, setAbteilungen, setAemter, setAnwesenheitstage, setBereiche, setEtiketten, store])
 
   return (
     <Container>

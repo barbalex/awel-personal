@@ -29,17 +29,24 @@ const adressenFields = ['name', 'vorname', 'adresse', 'plz', 'ort', 'land']
 const Export = () => {
   const db = useContext(dbContext)
   const store = useContext(storeContext)
-  const { personenSorted, personenFiltered, addError } = store
+  const {
+    personenSorted,
+    personenFiltered,
+    addError,
+    setAbteilungen,
+    setAemter,
+    setBereiche,
+  } = store
 
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
 
   useEffect(() => {
-    fetchAemter({ db, store })
-    fetchAbteilungen({ db, store })
-    fetchBereiche({ db, store })
+    fetchAemter({ db, setAemter })
+    fetchAbteilungen({ db, setAbteilungen })
+    fetchBereiche({ db, setBereiche })
     fetchSektionen({ db, store })
-  }, [db, store])
+  }, [db, setAbteilungen, setAemter, setBereiche, store])
 
   const onClickExportPersonen = useCallback(() => {
     const exportObjects = personenPrepareData({ store })
