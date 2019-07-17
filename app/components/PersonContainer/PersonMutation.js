@@ -116,10 +116,13 @@ const PersonMutation = ({ activeId, dimensions }) => {
     () => setEditWeiterleiten(!editWeiterleiten),
     [editWeiterleiten],
   )
-  const onSaveWeiterleiten = useCallback(({ value }) => {
-    setSettingsKey({ key: 'personMutationWeiterleiten', value })
-    setEditWeiterleiten(false)
-  }, [setSettingsKey])
+  const onSaveWeiterleiten = useCallback(
+    ({ value }) => {
+      setSettingsKey({ key: 'personMutationWeiterleiten', value })
+      setEditWeiterleiten(false)
+    },
+    [setSettingsKey],
+  )
 
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [person])

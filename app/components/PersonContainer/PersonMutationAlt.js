@@ -214,7 +214,7 @@ const PersonMutation = ({ activeId }) => {
   const onSaveWeiterleiten = useCallback(({ value }) => {
     setSettingsKey({ key: 'personMutationWeiterleiten', value })
     setEditWeiterleiten(false)
-  })
+  }, [setSettingsKey])
 
   const person = personen.find(p => p.id === activeId) || {}
   const abteilung = abteilungen.find(a => a.id === person.abteilung)

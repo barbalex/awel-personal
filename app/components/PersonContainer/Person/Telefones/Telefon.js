@@ -95,7 +95,7 @@ const Telefon = ({ id }) => {
         setErrors,
       })
     }
-  }, (showFilter, filterTelefon, id))
+  }, ([filterTelefon, id, setFilter, showFilter, updateField]))
   const onChangeSelect = useCallback(({ field, value }) => {
     const newValue = ifIsNumericAsNumber(value)
     if (showFilter) {
@@ -113,8 +113,8 @@ const Telefon = ({ id }) => {
         setErrors,
       })
     }
-  }, (showFilter, filterTelefon, id))
-  const onClickDelete = useCallback(() => deleteTelefon(id), [id])
+  }, ([filterTelefon, id, setFilter, showFilter, updateField]))
+  const onClickDelete = useCallback(() => deleteTelefon(id), [deleteTelefon, id])
 
   return (
     <Row key={`${id}`} nosymbol={showFilter}>

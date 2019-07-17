@@ -106,7 +106,7 @@ const MobileAbo = ({ id }) => {
         setErrors,
       })
     }
-  }, (showFilter, filterMobileAbo, id))
+  }, ([filterMobileAbo, id, setFilter, showFilter, updateField]))
   const onChangeSelect = useCallback(({ field, value }) => {
     const newValue = ifIsNumericAsNumber(value)
     if (showFilter) {
@@ -124,8 +124,8 @@ const MobileAbo = ({ id }) => {
         setErrors,
       })
     }
-  }, (showFilter, filterMobileAbo, id))
-  const onClickDelete = useCallback(() => deleteMobileAbo(id), [id])
+  }, ([filterMobileAbo, id, setFilter, showFilter, updateField]))
+  const onClickDelete = useCallback(() => deleteMobileAbo(id), [deleteMobileAbo, id])
 
   return (
     <Row key={`${id}`} nosymbol={showFilter}>

@@ -77,7 +77,7 @@ const SchluesselsComponent = ({ row = true }) => {
     (schluessels.length === 0 ||
       !schluessels.map(s => s.name).some(n => n === null))
 
-  const onClickChangePath = useCallback(() => uploader.current.click())
+  const onClickChangePath = useCallback(() => uploader.current.click(), [])
   const onChangeFormPath = useCallback(event => {
     event.stopPropagation()
     event.preventDefault()
@@ -87,7 +87,7 @@ const SchluesselsComponent = ({ row = true }) => {
     } else {
       console.log('Path not set')
     }
-  })
+  }, [setSettingsKey])
   const onClickForm = useCallback(() => {
     let success = false
     if (settings.schluesselFormPath) {

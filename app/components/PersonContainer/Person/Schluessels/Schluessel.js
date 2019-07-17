@@ -108,7 +108,7 @@ const SchluesselComponent = ({ id }) => {
         })
       }
     },
-    [showFilter, filterSchluessel, id],
+    [showFilter, setFilter, filterSchluessel, updateField, schluessel.id],
   )
   const onChangeSelectSchluesselTyp = useCallback(({ field, value }) => {
     const newValue = ifIsNumericAsNumber(value)
@@ -127,7 +127,7 @@ const SchluesselComponent = ({ id }) => {
         setErrors,
       })
     }
-  }, (showFilter, filterSchluesselTyp, id))
+  }, ([filterSchluesselTyp, id, setFilter, showFilter, updateField]))
   const onChangeSelectSchluesselAnlage = useCallback(({ field, value }) => {
     const newValue = ifIsNumericAsNumber(value)
     if (showFilter) {
@@ -145,8 +145,8 @@ const SchluesselComponent = ({ id }) => {
         setErrors,
       })
     }
-  }, (showFilter, filterSchluesselAnlage, id))
-  const onClickDelete = useCallback(() => deleteSchluessel(id), [id])
+  }, ([filterSchluesselAnlage, id, setFilter, showFilter, updateField]))
+  const onClickDelete = useCallback(() => deleteSchluessel(id), [deleteSchluessel, id])
 
   return (
     <Row key={`${id}`} nosymbol={showFilter}>

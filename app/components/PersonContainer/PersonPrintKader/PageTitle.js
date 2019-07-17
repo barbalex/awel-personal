@@ -20,14 +20,14 @@ const PageTitle = ({ page }) => {
 
   const [edit, setEdit] = useState(title ? false : true)
 
-  const onClickTitle = useCallback(() => setEdit(true))
-  const onChange = useCallback(e => setTitle(e.target.value || ''))
-  const onBlur = useCallback(() => setEdit(false))
+  const onClickTitle = useCallback(() => setEdit(true), [])
+  const onChange = useCallback(e => setTitle(e.target.value || ''), [setTitle])
+  const onBlur = useCallback(() => setEdit(false), [])
   const onKeyPress = useCallback(e => {
     if (e.key === 'Enter') {
       onBlur(e)
     }
-  })
+  }, [onBlur])
 
   return (
     <Container>

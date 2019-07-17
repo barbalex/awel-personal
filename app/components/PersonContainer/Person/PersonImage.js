@@ -98,7 +98,7 @@ const PersonImage = () => {
       id: person.id,
       setErrors,
     })
-  })
+  }, [person.id, updateField])
   const onClickRemove = useCallback(e => {
     updateField({
       table: 'personen',
@@ -109,7 +109,7 @@ const PersonImage = () => {
       setErrors,
     })
     e.preventDefault()
-  })
+  }, [person.id, updateField])
 
   if (showFilter) return null
 
