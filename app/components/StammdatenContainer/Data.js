@@ -16,11 +16,14 @@ const StyledForm = styled(Form)`
 
 const Data = ({ activeId, activeTable }) => {
   const store = useContext(storeContext)
-  const { showDeleted, updateField } = store
-  const dat = store[activeTable].find(p => p.id === activeId)
+  const { showDeleted, updateField, setDirty } = store
+
+  const dat = activeId ? store[activeTable].find(p => p.id === activeId) : []
 
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [dat])
+
+  useEffect(() => setDirty(false), [dat, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {

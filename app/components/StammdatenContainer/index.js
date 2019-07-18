@@ -27,12 +27,14 @@ const StyledReflexElement = styled(ReflexElement)`
 const StammdatenContainer = () => {
   const store = useContext(storeContext)
   const { setWerte } = store
-  const db = useContext(dbContext)
+
   const location = store.location.toJSON()
   const activeTable = location[0]
   const activeId = ifIsNumericAsNumber(location[1])
   const data = store[activeTable]
   const dat = data.find(d => d.id === activeId)
+
+  const db = useContext(dbContext)
   // pass list the active dat's props to enable instant updates
   const datJson = dat || {}
 

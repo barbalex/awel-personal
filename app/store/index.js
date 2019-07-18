@@ -49,6 +49,7 @@ import PersonVerzeichnisPages from './PersonVerzeichnisPages'
 export default db =>
   types
     .model({
+      dirty: types.optional(types.boolean, false),
       deletionMessage: types.maybeNull(types.string),
       deletionTitle: types.maybeNull(types.string),
       etiketten: types.array(Etikett),
@@ -754,6 +755,9 @@ export default db =>
       setUndoManager(self)
 
       return {
+        setDirty(val) {
+          self.dirty = val
+        },
         setFilter({ model, value }) {
           self[model] = value
           if (self.filterFulltext) self.filterFulltext = null

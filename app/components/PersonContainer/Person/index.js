@@ -195,6 +195,7 @@ const Person = ({ activeId, dimensions }) => {
     existsFilter,
     setFilter,
     updateField,
+    setDirty,
   } = store
 
   let person
@@ -208,6 +209,8 @@ const Person = ({ activeId, dimensions }) => {
 
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [person])
+
+  useEffect(() => setDirty(false), [person, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {

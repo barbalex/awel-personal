@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useContext } from 'react'
 import {
   Col,
   FormGroup,
@@ -13,6 +13,8 @@ import DatePicker from 'react-datepicker'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { FaCalendarAlt } from 'react-icons/fa'
+
+import storeContext from '../../storeContext'
 
 moment.locale('de')
 
@@ -62,12 +64,21 @@ const StyledInputGroupAddon = styled(InputGroupAddon)`
 `
 
 const DateField = ({ value, field, label, saveToDb, error, row = true }) => {
+  const store = useContext(storeContext)
+  const { setDirty } = store
+
   const [open, setOpen] = useState(false)
   const [stateValue, setStateValue] = useState(
     value || value === 0 ? value : '',
   )
 
-  const onChange = useCallback(event => setStateValue(event.target.value), [])
+  const onChange = useCallback(
+    event => {
+      setStateValue(event.target.value)
+      if (event.target.value !== value) setDirty(true)
+    },
+    [setDirty, value],
+  )
   const onBlur = useCallback(
     event => {
       let newValue = event.target.value
@@ -77,8 +88,9 @@ const DateField = ({ value, field, label, saveToDb, error, row = true }) => {
       if (!newValue && !value && value !== 0 && newValue !== 0) return
       if (newValue === value) return
       saveToDb({ value: newValue, field })
+      setDirty(false)
     },
-    [value, saveToDb, field],
+    [value, saveToDb, field, setDirty],
   )
   const openPicker = useCallback(() => setOpen(true), [])
   const closePicker = useCallback(() => setOpen(false), [])

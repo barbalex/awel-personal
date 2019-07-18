@@ -40,6 +40,7 @@ const Sektion = ({ activeId }) => {
     existsFilter,
     setFilter,
     updateField,
+    setDirty,
   } = store
 
   let sektion
@@ -53,6 +54,8 @@ const Sektion = ({ activeId }) => {
 
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [sektion])
+
+  useEffect(() => setDirty(false), [sektion, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {

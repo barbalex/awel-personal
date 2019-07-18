@@ -40,6 +40,7 @@ const Abteilung = ({ activeId }) => {
     existsFilter,
     setFilter,
     updateField,
+    setDirty,
   } = store
 
   let abteilung
@@ -53,6 +54,8 @@ const Abteilung = ({ activeId }) => {
 
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [abteilung])
+
+  useEffect(() => setDirty(false), [abteilung, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {

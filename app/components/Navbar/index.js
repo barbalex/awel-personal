@@ -1,7 +1,7 @@
 import React, { useContext, useState, useCallback } from 'react'
 import { Collapse, Navbar, NavbarToggler, Nav, Button } from 'reactstrap'
 import { observer } from 'mobx-react-lite'
-import { FaUndo } from 'react-icons/fa'
+import { FaUndo, FaSave } from 'react-icons/fa'
 import styled from 'styled-components'
 
 import Filter from './Filter'
@@ -30,14 +30,24 @@ const UndoButton = styled(Button)`
       props.disabled ? 'transparent !important' : '#6c757d !important'};
   }
 `
+const SaveButton = styled(Button)`
+  background-color: transparent !important;
+  border: none !important;
+  &:hover {
+    background-color: ${props =>
+      props.disabled ? 'transparent !important' : '#6c757d !important'};
+  }
+`
 
 const MyNavbar = () => {
   const store = useContext(storeContext)
+  const { lastUserMutation, revertMutation, addError, dirty } = store
+
   const [open, setOpen] = useState(false)
   const toggleNavbar = useCallback(() => {
     setOpen(!open)
   }, [open])
-  const { lastUserMutation, revertMutation, addError } = store
+
   const onClickUndo = useCallback(() => {
     if (!lastUserMutation) {
       return addError(
@@ -65,6 +75,12 @@ const MyNavbar = () => {
           <Stammdaten />
         </Nav>
         <Nav className="ml-auto" navbar>
+          <SaveButton
+            disabled={!dirty}
+            title={dirty ? 'speichern' : 'alles ist gespeichert'}
+          >
+            <FaSave />
+          </SaveButton>
           <UndoButton
             disabled={!lastUserMutation}
             onClick={onClickUndo}

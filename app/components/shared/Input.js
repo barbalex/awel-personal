@@ -25,7 +25,7 @@ const SharedInput = ({
   row = true,
 }) => {
   const store = useContext(storeContext)
-  const { showFilter } = store
+  const { showFilter, setDirty } = store
   const [stateValue, setStateValue] = useState(
     value || value === 0 ? value : '',
   )
@@ -40,18 +40,20 @@ const SharedInput = ({
         return
       if (!showFilter && newValue === value) return
       saveToDb({ value: newValue, field })
+      setDirty(false)
     },
-    [field, saveToDb, showFilter, value],
+    [field, saveToDb, setDirty, showFilter, value],
   )
   const onChange = useCallback(
     event => {
       setStateValue(event.target.value)
+      if (event.target.value !== value) setDirty(true)
       if (showFilter) {
         // call onBlur to immediately update filters
         onBlur(event)
       }
     },
-    [onBlur, showFilter],
+    [onBlur, setDirty, showFilter, value],
   )
 
   // need this check because of filtering:

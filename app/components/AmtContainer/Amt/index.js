@@ -39,6 +39,7 @@ const Amt = ({ activeId }) => {
     existsFilter,
     setFilter,
     updateField,
+    setDirty,
   } = store
 
   let amt
@@ -52,6 +53,8 @@ const Amt = ({ activeId }) => {
 
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [amt])
+
+  useEffect(() => setDirty(false), [amt, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {

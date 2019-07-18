@@ -42,6 +42,7 @@ const Bereich = ({ activeId }) => {
     existsFilter,
     setFilter,
     updateField,
+    setDirty,
   } = store
 
   let bereich
@@ -55,6 +56,8 @@ const Bereich = ({ activeId }) => {
 
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [bereich])
+
+  useEffect(() => setDirty(false), [bereich, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {
