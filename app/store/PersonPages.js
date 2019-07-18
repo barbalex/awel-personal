@@ -20,9 +20,9 @@ export default types
     },
     initiate() {
       const store = getParent(self, 1)
-      const { personenFiltered } = store
+      const { personenFilteredSorted } = store
       self.reset()
-      self.remainingRows = personenFiltered.map(p => p.id)
+      self.remainingRows = personenFilteredSorted.map(p => p.id)
       self.building = true
       self.pages.push({ rows: [], full: false })
     },
@@ -58,10 +58,9 @@ export default types
   .views(self => ({
     get modal() {
       const store = getParent(self, 1)
-      const msgLine2Txt = `Bisher ${self.pages.length} Seiten, noch ${
-        self.remainingRows.length
-      } Personen zu verarbeiten`
-      const textLine2 = store.personenFiltered.length > 50 ? msgLine2Txt : ''
+      const msgLine2Txt = `Bisher ${self.pages.length} Seiten, noch ${self.remainingRows.length} Personen zu verarbeiten`
+      const textLine2 =
+        store.personenFilteredSorted.length > 50 ? msgLine2Txt : ''
 
       return {
         textLine1: 'Der Bericht wird aufgebaut...',

@@ -8,7 +8,6 @@ import sortBy from 'lodash/sortBy'
 import last from 'lodash/last'
 import keys from 'lodash/keys'
 import lValues from 'lodash/values'
-import moment from 'moment'
 
 import Amt from './Amt'
 import Abteilung from './Abteilung'
@@ -45,6 +44,10 @@ import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 import fetchAnwesenheitstage from '../src/fetchAnwesenheitstage'
 import PersonPages from './PersonPages'
 import PersonVerzeichnisPages from './PersonVerzeichnisPages'
+import personenFiltered from './personenFiltered'
+import existsFilter from './existsFilter'
+import personenSorted from './personenSorted'
+import personenSortedByHandlungsbedarf from './personenSortedByHandlungsbedarf'
 
 export default db =>
   types
@@ -137,351 +140,22 @@ export default db =>
     })
     .views(self => ({
       get existsFilter() {
-        const {
-          filterPerson,
-          filterPersonKader,
-          filterPersonAktivJetzt,
-          filterPersonAktivJetztMitTel,
-          filterPersonAktivJetztMitMobiltel,
-          filterPersonAktivJetztMitKurzzeichen,
-          filterAmt,
-          filterAbteilung,
-          filterBereich,
-          filterSektion,
-          filterEtikett,
-          filterAnwesenheitstage,
-          filterLink,
-          filterSchluessel,
-          filterMobileAbo,
-          filterTelefon,
-          filterFunktion,
-          filterKaderFunktion,
-        } = self
-        return (
-          [
-            ...Object.values(filterPerson),
-            ...Object.values(filterAmt),
-            ...Object.values(filterAbteilung),
-            ...Object.values(filterBereich),
-            ...Object.values(filterSektion),
-            ...Object.values(filterEtikett),
-            ...Object.values(filterAnwesenheitstage),
-            ...Object.values(filterLink),
-            ...Object.values(filterSchluessel),
-            ...Object.values(filterMobileAbo),
-            ...Object.values(filterTelefon),
-            ...Object.values(filterFunktion),
-            ...Object.values(filterKaderFunktion),
-          ].filter(v => v).length > 0 ||
-          filterPersonKader ||
-          filterPersonAktivJetzt ||
-          filterPersonAktivJetztMitTel ||
-          filterPersonAktivJetztMitMobiltel ||
-          filterPersonAktivJetztMitKurzzeichen
-        )
+        return existsFilter(self)
       },
       get personenSorted() {
-        return self.personen.slice().sort((a, b) => {
-          const nameCompared = (a.name || '').localeCompare(
-            b.name || '',
-            'de-Ch',
-          )
-          if (nameCompared !== 0) return nameCompared
-          return (a.vorname || '').localeCompare(b.vorname || '', 'de-Ch')
-        })
+        return personenSorted(self.personen)
       },
       get personenFiltered() {
-        const {
-          filterSchluessel,
-          filterMobileAbo,
-          filterTelefon,
-          filterFunktion,
-          filterKaderFunktion,
-          filterEtikett,
-          filterAnwesenheitstage,
-          filterPerson,
-          filterPersonKader,
-          filterPersonAktivJetzt,
-          filterPersonAktivJetztMitTel,
-          filterPersonAktivJetztMitMobiltel,
-          filterPersonAktivJetztMitKurzzeichen,
-        } = self
-        let { personen } = self
-        if (filterPersonKader) {
-          personen = personen.filter(p => {
-            const kaderfunktionen = self.kaderFunktionen
-              .filter(f => f.idPerson === p.id)
-              .filter(f => f.deleted === 0)
-            const etiketten = self.etiketten
-              .filter(f => f.idPerson === p.id)
-              .filter(f =>
-                ['Kader-Treffen', 'Sektionsleiter-Treffen'].includes(f.etikett),
-              )
-
-            return [...kaderfunktionen, ...etiketten].length > 0
-          })
-        }
-        if (filterPersonAktivJetzt) {
-          personen = personen
-            .filter(p => p.status === 'aktiv')
-            .filter(
-              p =>
-                !p.eintrittDatum ||
-                moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
-            )
-        }
-        if (filterPersonAktivJetztMitTel) {
-          personen = personen
-            .filter(p => p.status === 'aktiv')
-            .filter(
-              p =>
-                self.telefones
-                  .filter(t => t.idPerson === p.id)
-                  .filter(t => t.typ === 'Festnetz').length > 0,
-            )
-            .filter(
-              p =>
-                !p.eintrittDatum ||
-                moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
-            )
-        }
-        if (filterPersonAktivJetztMitMobiltel) {
-          personen = personen
-            .filter(p => p.status === 'aktiv')
-            .filter(
-              p =>
-                self.telefones
-                  .filter(t => t.idPerson === p.id)
-                  .filter(t => t.typ === 'mobile').length > 0,
-            )
-            .filter(
-              p =>
-                !p.eintrittDatum ||
-                moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
-            )
-        }
-        if (filterPersonAktivJetztMitKurzzeichen) {
-          personen = personen
-            .filter(p => p.status === 'aktiv')
-            .filter(p => !!p.kurzzeichen)
-            .filter(
-              p =>
-                !p.eintrittDatum ||
-                moment(p.eintrittDatum, 'DD.MM.YYYY').isBefore(new Date()),
-            )
-        }
-        Object.keys(filterPerson).forEach(key => {
-          if (filterPerson[key] || filterPerson[key] === 0) {
-            personen = personen.filter(p => {
-              if (!filterPerson[key]) return true
-              if (!p[key]) return false
-              return p[key]
-                .toString()
-                .toLowerCase()
-                .includes(filterPerson[key].toString().toLowerCase())
-            })
-          }
+        return personenFiltered({ self, db })
+      },
+      get personenFilteredSorted() {
+        return personenSorted(self.personenFiltered)
+      },
+      get personenFilteredSortedByHandlungsbedarf() {
+        return personenSortedByHandlungsbedarf({
+          personen: self.personenFiltered,
+          showMutationNoetig: self.showMutationNoetig,
         })
-        let schluessel = self.schluessel.filter(p => {
-          if (!self.showDeleted) return p.deleted === 0
-          return true
-        })
-        let schluesselIsFiltered = false
-        Object.keys(filterSchluessel).forEach(key => {
-          if (filterSchluessel[key]) {
-            schluesselIsFiltered = true
-            schluessel = schluessel.filter(p => {
-              if (!filterSchluessel[key]) return true
-              if (!p[key]) return false
-              return p[key]
-                .toString()
-                .toLowerCase()
-                .includes(filterSchluessel[key].toString().toLowerCase())
-            })
-          }
-        })
-        let mobileAbos = self.mobileAbos.filter(p => {
-          if (!self.showDeleted) return p.deleted === 0
-          return true
-        })
-        let mobileAbosIsFiltered = false
-        Object.keys(filterMobileAbo).forEach(key => {
-          if (filterMobileAbo[key]) {
-            mobileAbosIsFiltered = true
-            mobileAbos = mobileAbos.filter(p => {
-              if (!filterMobileAbo[key]) return true
-              if (!p[key]) return false
-              return p[key]
-                .toString()
-                .toLowerCase()
-                .includes(filterMobileAbo[key].toString().toLowerCase())
-            })
-          }
-        })
-        let telefones = self.telefones.filter(p => {
-          if (!self.showDeleted) return p.deleted === 0
-          return true
-        })
-        let telefonesIsFiltered = false
-        Object.keys(filterTelefon).forEach(key => {
-          if (filterTelefon[key]) {
-            telefonesIsFiltered = true
-            telefones = telefones.filter(p => {
-              if (!filterTelefon[key]) return true
-              if (!p[key]) return false
-              return p[key]
-                .toString()
-                .toLowerCase()
-                .includes(filterTelefon[key].toString().toLowerCase())
-            })
-          }
-        })
-        let funktionen = self.funktionen.filter(p => {
-          if (!self.showDeleted) return p.deleted === 0
-          return true
-        })
-        let funktionenIsFiltered = false
-        Object.keys(filterFunktion).forEach(key => {
-          if (filterFunktion[key]) {
-            funktionenIsFiltered = true
-            funktionen = funktionen.filter(p => {
-              if (!filterFunktion[key]) return true
-              if (!p[key]) return false
-              return p[key]
-                .toString()
-                .toLowerCase()
-                .includes(filterFunktion[key].toString().toLowerCase())
-            })
-          }
-        })
-        let kaderFunktionen = self.kaderFunktionen.filter(p => {
-          if (!self.showDeleted) return p.deleted === 0
-          return true
-        })
-        let kaderFunktionenIsFiltered = false
-        Object.keys(filterKaderFunktion).forEach(key => {
-          if (filterKaderFunktion[key]) {
-            kaderFunktionenIsFiltered = true
-            kaderFunktionen = kaderFunktionen.filter(p => {
-              if (!filterKaderFunktion[key]) return true
-              if (!p[key]) return false
-              return p[key]
-                .toString()
-                .toLowerCase()
-                .includes(filterKaderFunktion[key].toString().toLowerCase())
-            })
-          }
-        })
-        let etiketten = self.etiketten.filter(p => {
-          if (!self.showDeleted) return p.deleted === 0
-          return true
-        })
-        let etikettenIsFiltered = false
-        Object.keys(filterEtikett).forEach(key => {
-          if (filterEtikett[key]) {
-            etikettenIsFiltered = true
-            etiketten = etiketten.filter(p => {
-              if (!filterEtikett[key]) return true
-              if (!p[key]) return false
-              return p[key]
-                .toString()
-                .toLowerCase()
-                .includes(filterEtikett[key].toString().toLowerCase())
-            })
-          }
-        })
-
-        let anwesenheitstage = self.anwesenheitstage.filter(p => {
-          if (!self.showDeleted) return p.deleted === 0
-          return true
-        })
-        let anwesenheitstageIsFiltered = false
-        Object.keys(filterAnwesenheitstage).forEach(key => {
-          if (filterAnwesenheitstage[key]) {
-            anwesenheitstageIsFiltered = true
-            anwesenheitstage = anwesenheitstage.filter(p => {
-              if (!filterAnwesenheitstage[key]) return true
-              if (!p[key]) return false
-              return p[key]
-                .toString()
-                .toLowerCase()
-                .includes(filterAnwesenheitstage[key].toString().toLowerCase())
-            })
-          }
-        })
-
-        let personenIdsFulltextFiltered = []
-        if (self.filterFulltext) {
-          personenIdsFulltextFiltered = db
-            .prepare(
-              `SELECT id from personenFts where data like '%${self.filterFulltext}%'`,
-            )
-            .all()
-            .map(p => p.id)
-        }
-
-        personen = personen
-          .filter(p => {
-            if (!self.showDeleted) return p.deleted === 0
-            return true
-          })
-          .filter(p => {
-            if (!schluesselIsFiltered) return true
-            return schluessel.filter(s => s.idPerson === p.id).length > 0
-          })
-          .filter(p => {
-            if (!mobileAbosIsFiltered) return true
-            return mobileAbos.filter(s => s.idPerson === p.id).length > 0
-          })
-          .filter(p => {
-            if (!telefonesIsFiltered) return true
-            return telefones.filter(s => s.idPerson === p.id).length > 0
-          })
-          .filter(p => {
-            if (!funktionenIsFiltered) return true
-            return funktionen.filter(s => s.idPerson === p.id).length > 0
-          })
-          .filter(p => {
-            if (!kaderFunktionenIsFiltered) return true
-            return kaderFunktionen.filter(s => s.idPerson === p.id).length > 0
-          })
-          .filter(p => {
-            if (!etikettenIsFiltered) return true
-            return etiketten.filter(s => s.idPerson === p.id).length > 0
-          })
-          .filter(p => {
-            if (!anwesenheitstageIsFiltered) return true
-            return anwesenheitstage.filter(s => s.idPerson === p.id).length > 0
-          })
-          .filter(p => {
-            const { filterFulltext } = self
-            if (!filterFulltext) return true
-            return personenIdsFulltextFiltered.includes(p.id)
-          })
-          .sort((a, b) => {
-            if (self.showMutationNoetig) {
-              if (a.mutationFrist && b.mutationFrist) {
-                const aDate = new Date(a.mutationFrist)
-                const bDate = new Date(b.mutationFrist)
-                return aDate - bDate
-              } else if (a.mutationFrist) {
-                return -1
-              } else if (b.mutationFrist) {
-                return 1
-              } else if (a.mutationNoetig && !b.mutationNoetig) {
-                return -1
-              } else if (!a.mutationNoetig && b.mutationNoetig) {
-                return 1
-              }
-            }
-            const nameCompared = (a.name || '').localeCompare(
-              b.name || '',
-              'de-Ch',
-            )
-            if (nameCompared !== 0) return nameCompared
-            return (a.vorname || '').localeCompare(b.vorname || '', 'de-Ch')
-          })
-        return personen
       },
       get aemterFiltered() {
         const { filterAmt, filterFulltext } = self

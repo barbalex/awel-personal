@@ -22,15 +22,15 @@ export default types
     },
     initiate(type) {
       const store = getParent(self, 1)
-      const { personenFiltered } = store
+      const { personenFilteredSorted } = store
       self.reset()
       self.remainingRows =
         type === 'personVerzKurzzeichen'
           ? idWithCapitalMapFromPers({
-              personen: personenFiltered,
+              personen: personenFilteredSorted,
               field: 'kurzzeichen',
             })
-          : idWithCapitalMapFromPers({ personen: personenFiltered })
+          : idWithCapitalMapFromPers({ personen: personenFilteredSorted })
       self.building = true
       self.pages.push(standardPage)
     },
@@ -65,7 +65,8 @@ export default types
     get modal() {
       const store = getParent(self, 1)
       const msgLine2Txt = `Bisher ${self.pages.length} Seiten, noch ${self.remainingRows.length} Personen zu verarbeiten`
-      const textLine2 = store.personenFiltered.length > 50 ? msgLine2Txt : ''
+      const textLine2 =
+        store.personenFilteredSorted.length > 50 ? msgLine2Txt : ''
 
       return {
         textLine1: 'Der Bericht wird aufgebaut...',

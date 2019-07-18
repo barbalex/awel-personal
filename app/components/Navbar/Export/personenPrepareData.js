@@ -15,7 +15,7 @@ const mutationFields = [
 ]
 
 export default ({ store }) =>
-  store.personenFiltered
+  store.personenFilteredSorted
     .slice()
     .map(p => {
       const amt = store.aemter.find(a => a.id === p.amt) || {}

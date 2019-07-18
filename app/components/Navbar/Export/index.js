@@ -31,7 +31,7 @@ const Export = () => {
   const store = useContext(storeContext)
   const {
     personenSorted,
-    personenFiltered,
+    personenFilteredSorted,
     addError,
     setAbteilungen,
     setAemter,
@@ -62,7 +62,7 @@ const Export = () => {
     })
   }, [addError, store])
   const onClickExportAdressen = useCallback(() => {
-    const exportObjects = personenFiltered
+    const exportObjects = personenFilteredSorted
       .slice()
       .map(p => pick(p, adressenFields))
     if (!exportObjects.length) {
@@ -75,7 +75,7 @@ const Export = () => {
       subject: 'Adressen',
       sorting: { name: 1, vorname: 2, adresse: 3, plz: 4, ort: 5, land: 6 },
     })
-  }, [addError, personenFiltered])
+  }, [addError, personenFilteredSorted])
   const onClickExportAdressenAktive = useCallback(() => {
     const exportObjects = personenSorted
       .slice()

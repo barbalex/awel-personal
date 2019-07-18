@@ -151,7 +151,7 @@ const Field = styled.div`
 
 const PersonPrintKaderPage = ({ pageIndex }) => {
   const store = useContext(storeContext)
-  const { personPages, personenFiltered } = store
+  const { personPages, personenFilteredSorted } = store
   const {
     pages,
     building,
@@ -218,7 +218,7 @@ const PersonPrintKaderPage = ({ pageIndex }) => {
 
   if (!rows) return null
 
-  const personen = personenFiltered.filter(p => rows.includes(p.id))
+  const personen = personenFilteredSorted.filter(p => rows.includes(p.id))
 
   return (
     <Container className="querformat">

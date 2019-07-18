@@ -74,7 +74,7 @@ const PersonList = ({ dimensions, activeId }) => {
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
   // eslint-disable-next-line no-restricted-globals
   const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
-  const personen = store.personenFiltered
+  const personen = store.personenFilteredSortedByHandlungsbedarf
 
   return (
     <Container>

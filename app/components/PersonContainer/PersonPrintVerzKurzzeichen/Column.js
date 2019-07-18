@@ -61,7 +61,12 @@ const Row = styled.div`
 const PersonPrintVerzKurzzeichenColumn = ({ pageIndex, columnIndex }) => {
   const containerEl = useRef(null)
   const store = useContext(storeContext)
-  const { abteilungen, telefones, personVerzeichnis, personenFiltered } = store
+  const {
+    abteilungen,
+    telefones,
+    personVerzeichnis,
+    personenFilteredSorted,
+  } = store
   const {
     pages,
     activePageIndex,
@@ -128,7 +133,7 @@ const PersonPrintVerzKurzzeichenColumn = ({ pageIndex, columnIndex }) => {
       if (isNaN(r)) {
         return { type: 'title', kurzzeichen: r }
       }
-      return personenFiltered.find(p => p.id === r)
+      return personenFilteredSorted.find(p => p.id === r)
     })
     // while new filter is applied, undefined rows exist
     .filter(r => !!r)
