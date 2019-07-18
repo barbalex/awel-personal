@@ -86,7 +86,6 @@ const InnerPageContainer = styled.div`
 `
 const Title = styled.div`
   grid-area: title;
-  font-weight: 700;
   font-size: 1.2em;
   justify-self: center;
   font-family: Arial Black;

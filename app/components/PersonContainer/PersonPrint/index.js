@@ -185,7 +185,6 @@ const AreaZuletzt = styled(Area)`
   border-right: none;
 `
 const Title = styled.div`
-  font-weight: 900;
   font-size: 14px;
   font-family: Arial Black;
 `

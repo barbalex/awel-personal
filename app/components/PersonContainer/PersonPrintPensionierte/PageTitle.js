@@ -10,7 +10,6 @@ const StyledTitle = styled.h4`
   cursor: pointer;
   margin-top: -5px;
   margin-bottom: 5px;
-  font-weight: 700;
   font-size: 1.5em;
   font-family: Arial Black;
 `

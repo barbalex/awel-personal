@@ -96,8 +96,8 @@ const WrapperWide = styled.div`
     'areaWeiterleiten areaWeiterleiten';
 `
 const Title = styled.h5`
-  font-weight: 800;
   font-size: 1.2em;
+  font-family: Arial Black;
 `
 const Area = styled.div`
   padding: 8px;
@@ -171,10 +171,10 @@ const PersonMutationPrint = ({ activeId }) => {
   const Wrapper = viewIsNarrow ? WrapperNarrow : WrapperWide
 
   const v = personen.find(p => p.id === person.vorgesetztId)
-  const vorgesetzt = `${v.name} ${v.vorname}`
+  const vorgesetzt = v ? `${v.name} ${v.vorname}` : ''
 
   const tv = personen.find(p => p.id === person.telefonUebernommenVon)
-  const telefonUebernommenVon = `${tv.name} ${tv.vorname}`
+  const telefonUebernommenVon = tv ? `${tv.name} ${tv.vorname}` : ''
 
   return (
     <Container>
