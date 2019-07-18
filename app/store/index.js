@@ -54,6 +54,8 @@ import abteilungenFiltered from './abteilungenFiltered'
 import abteilungenFilteredSortedByHandlungsbedarf from './abteilungenFilteredSortedByHandlungsbedarf'
 import bereicheFiltered from './bereicheFiltered'
 import bereicheFilteredSortedByHandelsbedarf from './bereicheFilteredSortedByHandelsbedarf'
+import sektionenFiltered from './sektionenFiltered'
+import sektionenFilteredSortedByHandelsbedarf from './sektionenFilteredSortedByHandelsbedarf'
 
 export default db =>
   types
@@ -194,44 +196,7 @@ export default db =>
         return bereicheFilteredSortedByHandelsbedarf(self)
       },
       get sektionenFiltered() {
-        const { filterFulltext } = self
-        let sektionen = getSnapshot(self.sektionen)
-        const filterSektion = getSnapshot(self.filterSektion)
-        Object.keys(filterSektion).forEach(key => {
-          if (filterSektion[key] || filterSektion[key] === 0) {
-            sektionen = sektionen.filter(p => {
-              if (!filterSektion[key]) return true
-              if (!p[key]) return false
-              return p[key]
-                .toString()
-                .toLowerCase()
-                .includes(filterSektion[key].toString().toLowerCase())
-            })
-          }
-        })
-        sektionen = sektionen
-          .filter(p => {
-            if (!self.showDeleted) return p.deleted === 0
-            return true
-          })
-          .filter(p => {
-            if (!filterFulltext) return true
-            // now check for any value if includes
-            const personValues = Object.entries(p)
-              .filter(e => e[0] !== 'id')
-              .map(e => e[1])
-            return (
-              [...personValues].filter(v => {
-                if (!v) return false
-                if (!v.toString()) return false
-                return v
-                  .toString()
-                  .toLowerCase()
-                  .includes(filterFulltext.toString().toLowerCase())
-              }).length > 0
-            )
-          })
-        return sektionen
+        return sektionenFiltered(self)
       },
       get sektionenFilteredSorted() {
         return self.sektionenFiltered.sort((a, b) =>
@@ -239,24 +204,7 @@ export default db =>
         )
       },
       get sektionenFilteredSortedByHandelsbedarf() {
-        return self.sektionenFiltered.sort((a, b) => {
-          if (self.showMutationNoetig) {
-            if (a.mutationFrist && b.mutationFrist) {
-              const aDate = new Date(a.mutationFrist)
-              const bDate = new Date(b.mutationFrist)
-              return aDate - bDate
-            } else if (a.mutationFrist) {
-              return -1
-            } else if (b.mutationFrist) {
-              return 1
-            } else if (a.mutationNoetig && !b.mutationNoetig) {
-              return -1
-            } else if (!a.mutationNoetig && b.mutationNoetig) {
-              return 1
-            }
-          }
-          return (a.name || '').localeCompare(b.name || '', 'de-Ch')
-        })
+        return sektionenFilteredSortedByHandelsbedarf(self)
       },
       get revertedMutationIds() {
         return self.mutations.filter(m => !!m.reverts).map(m => m.reverts)
