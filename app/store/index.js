@@ -50,6 +50,8 @@ import personenSorted from './personenSorted'
 import personenSortedByHandlungsbedarf from './personenSortedByHandlungsbedarf'
 import aemterFiltered from './aemterFiltered'
 import aemterFilteredSortedByHandlungsbedarf from './aemterFilteredSortedByHandlungsbedarf'
+import abteilungenFiltered from './abteilungenFiltered'
+import abteilungenFilteredSortedByHandlungsbedarf from './abteilungenFilteredSortedByHandlungsbedarf'
 
 export default db =>
   types
@@ -168,43 +170,7 @@ export default db =>
         return aemterFilteredSortedByHandlungsbedarf(self)
       },
       get abteilungenFiltered() {
-        const { filterAbteilung, filterFulltext } = self
-        let abteilungen = getSnapshot(self.abteilungen)
-        Object.keys(filterAbteilung).forEach(key => {
-          if (filterAbteilung[key] || filterAbteilung[key] === 0) {
-            abteilungen = abteilungen.filter(p => {
-              if (!filterAbteilung[key]) return true
-              if (!p[key]) return false
-              return p[key]
-                .toString()
-                .toLowerCase()
-                .includes(filterAbteilung[key].toString().toLowerCase())
-            })
-          }
-        })
-        abteilungen = abteilungen
-          .filter(p => {
-            if (!self.showDeleted) return p.deleted === 0
-            return true
-          })
-          .filter(p => {
-            if (!filterFulltext) return true
-            // now check for any value if includes
-            const abteilungValues = Object.entries(p)
-              .filter(e => e[0] !== 'id')
-              .map(e => e[1])
-            return (
-              [...abteilungValues].filter(v => {
-                if (!v) return false
-                if (!v.toString()) return false
-                return v
-                  .toString()
-                  .toLowerCase()
-                  .includes(filterFulltext.toString().toLowerCase())
-              }).length > 0
-            )
-          })
-        return abteilungen
+        return abteilungenFiltered(self)
       },
       get abteilungenFilteredSorted() {
         return self.abteilungenFiltered.sort((a, b) =>
@@ -212,24 +178,7 @@ export default db =>
         )
       },
       get abteilungenFilteredSortedByHandlungsbedarf() {
-        return self.abteilungenFiltered.sort((a, b) => {
-          if (self.showMutationNoetig) {
-            if (a.mutationFrist && b.mutationFrist) {
-              const aDate = new Date(a.mutationFrist)
-              const bDate = new Date(b.mutationFrist)
-              return aDate - bDate
-            } else if (a.mutationFrist) {
-              return -1
-            } else if (b.mutationFrist) {
-              return 1
-            } else if (a.mutationNoetig && !b.mutationNoetig) {
-              return -1
-            } else if (!a.mutationNoetig && b.mutationNoetig) {
-              return 1
-            }
-          }
-          return (a.name || '').localeCompare(b.name || '', 'de-Ch')
-        })
+        return abteilungenFilteredSortedByHandlungsbedarf(self)
       },
       get bereicheFiltered() {
         const { filterFulltext } = self
