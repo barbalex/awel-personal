@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import storeContext from '../../../storeContext'
 import LogoAwel from '../../../etc/LogoAwel.jpg'
 import PageTitle from './PageTitle'
+import Row from './Row'
 
 /*
  * need defined height and overflow
@@ -147,36 +148,10 @@ const Field = styled.div`
   flex: 1;
   padding: 2px;
 `
-const StyledName = styled(Field)``
-const StyledVorname = styled(Field)``
-const StyledAbteilung = styled(Field)``
-const StyledSektion = styled(Field)``
-const StyledBereich = styled(Field)``
-const StyledFunktionen = styled(Field)``
-const Row = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: stretch;
-  padding: 3px;
-  background-color: ${props =>
-    props.shaded ? 'rgba(0, 0, 0, 0.05)' : 'inherit'};
-  page-break-inside: avoid !important;
-`
-
-function isOdd(num) {
-  return num % 2
-}
 
 const PersonPrintFunktionenPage = ({ pageIndex }) => {
   const store = useContext(storeContext)
-  const {
-    abteilungen,
-    sektionen,
-    bereiche,
-    funktionen,
-    personPages,
-    personenFiltered,
-  } = store
+  const { personPages, personenFiltered } = store
   const {
     pages,
     building,
@@ -257,38 +232,17 @@ const PersonPrintFunktionenPage = ({ pageIndex }) => {
         )}
         <StyledHeader>
           <HeaderRow>
-            <StyledName>Name</StyledName>
-            <StyledVorname>Vorname</StyledVorname>
-            <StyledAbteilung>Abteilung</StyledAbteilung>
-            <StyledSektion>Sektion</StyledSektion>
-            <StyledBereich>Bereich</StyledBereich>
-            <StyledFunktionen>Funktionen</StyledFunktionen>
+            <Field>Name</Field>
+            <Field>Vorname</Field>
+            <Field>Abteilung</Field>
+            <Field>Sektion</Field>
+            <Field>Bereich</Field>
+            <Field>Funktionen</Field>
           </HeaderRow>
         </StyledHeader>
         <StyledRowsContainer building={building} ref={rowsContainer}>
           {personen.map((p, i) => (
-            <Row key={p.id} shaded={!isOdd(i)}>
-              <StyledName>{p.name || ''}</StyledName>
-              <StyledVorname>{p.vorname || ''}</StyledVorname>
-              <StyledAbteilung>
-                {p.abteilung
-                  ? abteilungen.find(a => a.id === p.abteilung).name
-                  : ''}
-              </StyledAbteilung>
-              <StyledSektion>
-                {p.sektion ? sektionen.find(a => a.id === p.sektion).name : ''}
-              </StyledSektion>
-              <StyledBereich>
-                {p.bereich ? bereiche.find(a => a.id === p.bereich).name : ''}
-              </StyledBereich>
-              <StyledFunktionen>
-                {funktionen
-                  .filter(f => f.idPerson === p.id)
-                  .filter(f => f.deleted === 0)
-                  .map(f => f.funktion)
-                  .join(', ')}
-              </StyledFunktionen>
-            </Row>
+            <Row key={p.id} p={p} i={i} />
           ))}
         </StyledRowsContainer>
         <Footer>
