@@ -9,7 +9,7 @@
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  *
  */
-import { app, BrowserWindow, Menu } from 'electron'
+import { app, BrowserWindow, Menu, dialog } from 'electron'
 import MenuBuilder from './menu'
 
 /*
@@ -70,8 +70,8 @@ app.on('ready', async () => {
     width: 1024,
     height: 728,
     webPreferences: {
-      nodeIntegration: true
-    }
+      nodeIntegration: true,
+    },
   })
 
   mainWindow.maximize()
@@ -103,8 +103,4 @@ app.on('ready', async () => {
   } else {
     Menu.setApplicationMenu(null)
   }
-
-  // Remove this if your app does not use auto updates
-  // eslint-disable-next-line
-  //new AppUpdater()
 })
