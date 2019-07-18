@@ -89,6 +89,7 @@ const Title = styled.div`
   font-weight: 700;
   font-size: 1.2em;
   justify-self: center;
+  font-family: Arial Black;
 `
 const Column0 = styled.div`
   grid-area: column0;

@@ -141,6 +141,7 @@ const HeaderRow = styled.div`
   flex-wrap: nowrap;
   align-items: stretch;
   padding: 3px;
+  font-family: Arial Black;
 `
 const Field = styled.div`
   flex: 1;
@@ -230,7 +231,15 @@ const PersonPrintFunktionenPage = ({ pageIndex }) => {
         }
       }
     }
-  }, [activePageIndex, addRow, moveRowToNewPage, page, pageIndex, remainingRows.length, stop])
+  }, [
+    activePageIndex,
+    addRow,
+    moveRowToNewPage,
+    page,
+    pageIndex,
+    remainingRows.length,
+    stop,
+  ])
 
   if (!rows) return null
 

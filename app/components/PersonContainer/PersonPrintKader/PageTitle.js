@@ -11,7 +11,8 @@ const StyledTitle = styled.h4`
   margin-top: -5px;
   margin-bottom: 5px;
   font-weight: 700;
-  font-size: 26px;
+  font-size: 1.5em;
+  font-family: Arial Black;
 `
 
 const PageTitle = ({ page }) => {
@@ -23,11 +24,14 @@ const PageTitle = ({ page }) => {
   const onClickTitle = useCallback(() => setEdit(true), [])
   const onChange = useCallback(e => setTitle(e.target.value || ''), [setTitle])
   const onBlur = useCallback(() => setEdit(false), [])
-  const onKeyPress = useCallback(e => {
-    if (e.key === 'Enter') {
-      onBlur(e)
-    }
-  }, [onBlur])
+  const onKeyPress = useCallback(
+    e => {
+      if (e.key === 'Enter') {
+        onBlur(e)
+      }
+    },
+    [onBlur],
+  )
 
   return (
     <Container>

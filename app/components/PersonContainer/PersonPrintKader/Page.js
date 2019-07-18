@@ -141,6 +141,7 @@ const HeaderRow = styled.div`
   flex-wrap: nowrap;
   align-items: stretch;
   padding: 3px;
+  font-family: Arial Black;
 `
 const Field = styled.div`
   flex: 1;

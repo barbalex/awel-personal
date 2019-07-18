@@ -55,20 +55,13 @@ const Row = styled.div`
     props.topborder === 'true' ? '1px rgba(0, 0, 0, 0.5) solid' : 'unset'};
   border-bottom: 1px rgba(0, 0, 0, 0.5) solid;
   font-weight: ${props => (props.type === 'title' ? '800' : 'unset')};
+  font-family: ${props => (props.type === 'title' ? 'Arial Black' : 'unset')};
 `
 
 const PersonPrintVerzMobiltelColumn = ({ pageIndex, columnIndex }) => {
   const containerEl = useRef(null)
   const store = useContext(storeContext)
-  const {
-    aemter,
-    abteilungen,
-    sektionen,
-    bereiche,
-    telefones,
-    personVerzeichnis,
-    personenFiltered,
-  } = store
+  const { abteilungen, telefones, personVerzeichnis, personenFiltered } = store
   const {
     pages,
     activePageIndex,
@@ -162,14 +155,8 @@ const PersonPrintVerzMobiltelColumn = ({ pageIndex, columnIndex }) => {
           </StyledTelefon>
           <StyledBueroNr>{r.bueroNr || ''}</StyledBueroNr>
           <StyledBereich>
-            {r.bereich
-              ? bereiche.find(a => a.id === r.bereich).kurzzeichen
-              : r.sektion
-              ? sektionen.find(a => a.id === r.sektion).kurzzeichen
-              : r.abteilungen
-              ? abteilungen.find(a => a.id === r.abteilung).kurzzeichen
-              : r.aemter
-              ? aemter.find(a => a.id === r.amt).kurzzeichen
+            {r.abteilung
+              ? abteilungen.find(a => a.id === r.abteilung).kurzzeichen || ''
               : ''}
           </StyledBereich>
         </Row>
