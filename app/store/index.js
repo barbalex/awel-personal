@@ -49,6 +49,7 @@ import existsFilter from './existsFilter'
 import personenSorted from './personenSorted'
 import personenSortedByHandlungsbedarf from './personenSortedByHandlungsbedarf'
 import aemterFiltered from './aemterFiltered'
+import aemterFilteredSortedByHandlungsbedarf from './aemterFilteredSortedByHandlungsbedarf'
 
 export default db =>
   types
@@ -153,10 +154,7 @@ export default db =>
         return personenSorted(self.personenFiltered)
       },
       get personenFilteredSortedByHandlungsbedarf() {
-        return personenSortedByHandlungsbedarf({
-          personen: self.personenFiltered,
-          showMutationNoetig: self.showMutationNoetig,
-        })
+        return personenSortedByHandlungsbedarf(self)
       },
       get aemterFiltered() {
         return aemterFiltered(self)
@@ -167,24 +165,7 @@ export default db =>
         )
       },
       get aemterFilteredSortedByHandlungsbedarf() {
-        return self.aemterFiltered.sort((a, b) => {
-          if (self.showMutationNoetig) {
-            if (a.mutationFrist && b.mutationFrist) {
-              const aDate = new Date(a.mutationFrist)
-              const bDate = new Date(b.mutationFrist)
-              return aDate - bDate
-            } else if (a.mutationFrist) {
-              return -1
-            } else if (b.mutationFrist) {
-              return 1
-            } else if (a.mutationNoetig && !b.mutationNoetig) {
-              return -1
-            } else if (!a.mutationNoetig && b.mutationNoetig) {
-              return 1
-            }
-          }
-          return (a.name || '').localeCompare(b.name || '', 'de-Ch')
-        })
+        return aemterFilteredSortedByHandlungsbedarf(self)
       },
       get abteilungenFiltered() {
         const { filterAbteilung, filterFulltext } = self

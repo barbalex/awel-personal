@@ -1,5 +1,5 @@
 export default self =>
-  self.personenFiltered.sort((a, b) => {
+  self.aemterFiltered.sort((a, b) => {
     if (self.showMutationNoetig) {
       if (a.mutationFrist && b.mutationFrist) {
         const aDate = new Date(a.mutationFrist)
@@ -15,7 +15,5 @@ export default self =>
         return 1
       }
     }
-    const nameCompared = (a.name || '').localeCompare(b.name || '', 'de-Ch')
-    if (nameCompared !== 0) return nameCompared
-    return (a.vorname || '').localeCompare(b.vorname || '', 'de-Ch')
+    return (a.name || '').localeCompare(b.name || '', 'de-Ch')
   })
