@@ -26,7 +26,7 @@ const Bereich = () => {
   const store = useContext(storeContext)
   const {
     showDeleted,
-    bereicheFiltered,
+    bereicheFilteredSorted,
     bereiche,
     setLocation,
     addBereich,
@@ -80,18 +80,25 @@ const Bereich = () => {
       )
       setDeletionTitle('Bereich löschen')
     }
-  }, [activeId, bereiche, setDeletionCallback, setDeletionMessage, setDeletionTitle, store])
+  }, [
+    activeId,
+    bereiche,
+    setDeletionCallback,
+    setDeletionMessage,
+    setDeletionTitle,
+    store,
+  ])
 
   const existsActiveBereich = activeLocation === 'Bereiche' && location[1]
   const mayAddNewBereich =
-    bereicheFiltered.filter(p => !p.name && !p.vorname).length === 0
+    bereicheFilteredSorted.filter(p => !p.name && !p.vorname).length === 0
   const bereicheSum = showDeleted
     ? bereiche.length
     : bereiche.filter(p => p.deleted === 0).length
   const bereicheSumSup =
-    bereicheFiltered.length !== bereicheSum
-      ? `${bereicheFiltered.length}/${bereicheSum}`
-      : bereicheFiltered.length
+    bereicheFilteredSorted.length !== bereicheSum
+      ? `${bereicheFilteredSorted.length}/${bereicheSum}`
+      : bereicheFilteredSorted.length
 
   return (
     <StyledNavItem active={activeLocation === 'Bereiche'}>

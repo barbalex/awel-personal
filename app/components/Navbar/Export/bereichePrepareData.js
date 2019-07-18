@@ -1,5 +1,5 @@
 export default ({ store }) =>
-  store.bereicheFiltered
+  store.bereicheFilteredSorted
     .slice()
     .map(pOrig => {
       const p = { ...pOrig }
