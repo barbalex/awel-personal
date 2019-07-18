@@ -102,8 +102,11 @@ create table personen (
   parkplatzNr text,
   bemerkungen text,
   beschaeftigungsgrad integer,
+  -- TODO:
+  -- rename to handlungsbedarf
   mutationNoetig integer default 0,
   mutationFrist text,
+  mutationBemerkung text,
   -- ab jetzt: Mutation
   mutationArt text references mutationArtWerte(value) on update cascade on delete no action,
   telefonUebernommenVon integer references personen(id) on update cascade on delete no action,
@@ -129,6 +132,8 @@ drop index if exists iPersonVorname;
 create index iPersonVorname on personen (vorname);
 drop index if exists iPersonMutationFrist;
 create index iPersonMutationFrist on personen (mutationFrist);
+
+--alter table personen add column mutationBemerkung text;
 
 -------------------------------------------
 
