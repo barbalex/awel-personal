@@ -64,7 +64,7 @@ const SektionList = ({ dimensions, activeId }) => {
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
   // eslint-disable-next-line no-restricted-globals
   const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
-  const sektionen = store.sektionenFiltered
+  const sektionen = store.sektionenFilteredSortedByHandelsbedarf
 
   return (
     <Container>

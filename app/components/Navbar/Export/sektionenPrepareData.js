@@ -1,5 +1,5 @@
 export default ({ store }) =>
-  store.sektionenFiltered
+  store.sektionenFilteredSorted
     .slice()
     .map(pOrig => {
       const p = { ...pOrig }
