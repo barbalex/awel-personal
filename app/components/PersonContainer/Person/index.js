@@ -1083,11 +1083,13 @@ const Person = ({ activeId, dimensions }) => {
                 <Handlungsbedarf
                   key={`${personId}mutationHandlungsbedarf`}
                   mutationFristValue={person.mutationFrist}
+                  mutationBemerkungValue={person.mutationBemerkung}
                   mutationNoetigValue={person.mutationNoetig}
                   label="Handlungs&shy;bedarf"
                   saveToDb={saveToDb}
                   errorMutationNoetig={errors.mutationNoetig}
                   errorMutationFrist={errors.mutationFrist}
+                  errorMutationBemerkung={errors.mutationBemerkung}
                 />
               )}
               {showDeleted && (

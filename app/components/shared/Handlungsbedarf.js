@@ -49,6 +49,7 @@ const Container = styled.div`
 `
 const StyledInputGroupAddon = styled(InputGroupAddon)`
   cursor: pointer;
+  height: 38px;
 `
 const Label = styled.div`
   width: calc(16.667% + 8px);
@@ -58,25 +59,36 @@ const Label = styled.div`
 `
 const Data = styled.div`
   display: flex;
-  width: calc(83.332% - 10px);
+  width: calc(83.332% - 8px);
+  align-items: center;
 `
 const StyledInput = styled(Input)`
   position: relative !important;
   margin-left: 0 !important;
   margin-right: 20px;
-  top: 8px;
+  top: -2px;
   /* larger-sized Checkboxes */
-  -webkit-transform: scale(1.5); /* Safari and Chrome */
-  padding: 10px !important;
+  -webkit-transform: scale(1.5);
+`
+const FristInputGroup = styled(InputGroup)`
+  flex-basis: 145px;
+  flex-shrink: 0;
+  flex-grow: 0;
+`
+const MutationBemerkungContainer = styled.div`
+  flex-grow: 1;
+  padding-left: 8px;
 `
 
-const DateField = ({
+const Handlungsbedarf = ({
   mutationFristValue,
+  mutationBemerkungValue,
   mutationNoetigValue,
   label,
   saveToDb,
   errorMutationNoetig,
   errorMutationFrist,
+  errorMutationBemerkung,
 }) => {
   const [mutationNoetigStateValue, setMutationNoetigStateValue] = useState(
     !!mutationNoetigValue,
@@ -88,12 +100,17 @@ const DateField = ({
   }, [mutationNoetigStateValue, saveToDb])
 
   const [openDatePicker, setOpenDatePicker] = useState(false)
-  const [stateValue, setStateValue] = useState(
+  const [fristState, setFristState] = useState(
     mutationFristValue || mutationFristValue === 0 ? mutationFristValue : '',
+  )
+  const [bemerkungState, setBemerkungState] = useState(
+    mutationBemerkungValue || mutationBemerkungValue === 0
+      ? mutationBemerkungValue
+      : '',
   )
 
   const onChangeMutationFrist = useCallback(
-    event => setStateValue(event.target.value),
+    event => setFristState(event.target.value),
     [],
   )
   const onBlurMutationFrist = useCallback(
@@ -114,6 +131,30 @@ const DateField = ({
     },
     [mutationFristValue, saveToDb],
   )
+
+  const onChangeMutationBemerkung = useCallback(
+    event => setBemerkungState(event.target.value),
+    [],
+  )
+  const onBlurMutationBemerkung = useCallback(
+    event => {
+      let newValue = event.target.value
+      // save nulls if empty
+      if (newValue === '') newValue = null
+      // only save if value has changed
+      if (
+        !newValue &&
+        !mutationBemerkungValue &&
+        mutationBemerkungValue !== 0 &&
+        newValue !== 0
+      )
+        return
+      if (newValue === mutationBemerkungValue) return
+      saveToDb({ value: newValue, field: 'mutationBemerkung' })
+    },
+    [mutationBemerkungValue, saveToDb],
+  )
+
   const openPicker = useCallback(() => setOpenDatePicker(true), [])
   const closePicker = useCallback(() => setOpenDatePicker(false), [])
   const onChangeDatePicker = useCallback(
@@ -134,7 +175,7 @@ const DateField = ({
   // after user enters new date
   useEffect(
     () =>
-      setStateValue(
+      setFristState(
         mutationFristValue || mutationFristValue === 0
           ? mutationFristValue
           : '',
@@ -156,12 +197,12 @@ const DateField = ({
           invalid={!!errorMutationNoetig}
           title="Besteht Handlungsbedarf?"
         />
-        <InputGroup>
+        <FristInputGroup>
           <Input
             id="mutationFrist"
             type="text"
             name="mutationFrist"
-            value={stateValue}
+            value={fristState}
             onChange={onChangeMutationFrist}
             onBlur={onBlurMutationFrist}
             invalid={!!errorMutationFrist}
@@ -179,8 +220,8 @@ const DateField = ({
             {openDatePicker && (
               <DatePicker
                 selected={
-                  moment(stateValue, 'DD.MM.YYYY').isValid()
-                    ? moment(stateValue, 'DD.MM.YYYY').toDate()
+                  moment(fristState, 'DD.MM.YYYY').isValid()
+                    ? moment(fristState, 'DD.MM.YYYY').toDate()
                     : null
                 }
                 onChange={onChangeDatePicker}
@@ -192,10 +233,23 @@ const DateField = ({
             )}
           </StyledInputGroupAddon>
           <FormFeedback>{errorMutationFrist}</FormFeedback>
-        </InputGroup>
+        </FristInputGroup>
+        <MutationBemerkungContainer>
+          <Input
+            id="mutationBemerkung"
+            type="textarea"
+            name="mutationBemerkung"
+            value={bemerkungState}
+            onChange={onChangeMutationBemerkung}
+            onBlur={onBlurMutationBemerkung}
+            invalid={!!errorMutationBemerkung}
+            title="Bemerkung zum Handlungsbedarf"
+          />
+          <FormFeedback>{errorMutationBemerkung}</FormFeedback>
+        </MutationBemerkungContainer>
       </Data>
     </Container>
   )
 }
 
-export default observer(DateField)
+export default observer(Handlungsbedarf)

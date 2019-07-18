@@ -8,6 +8,9 @@ export default types
     mutationFrist: types.maybe(
       types.union(types.string, types.integer, types.null),
     ),
+    mutationBemerkung: types.maybe(
+      types.union(types.string, types.integer, types.null),
+    ),
     personalNr: types.maybe(types.union(types.integer, types.null)),
     name: types.maybe(types.union(types.string, types.integer, types.null)),
     vorname: types.maybe(types.union(types.string, types.integer, types.null)),
