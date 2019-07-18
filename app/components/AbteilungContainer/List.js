@@ -62,7 +62,7 @@ const AbteilungList = ({ dimensions, activeId }) => {
   const { setLocation, showFilter, setShowFilter, showMutationNoetig } = store
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
   const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
-  const abteilungen = store.abteilungenFiltered
+  const abteilungen = store.abteilungenFilteredSortedByHandlungsbedarf
 
   return (
     <Container>

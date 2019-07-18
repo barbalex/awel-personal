@@ -1,5 +1,5 @@
 export default ({ store }) =>
-  store.abteilungenFiltered
+  store.abteilungenFilteredSorted
     .slice()
     .map(pOrig => {
       const p = { ...pOrig }
