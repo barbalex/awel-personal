@@ -147,13 +147,6 @@ const Field = styled.div`
   flex: 1;
   padding: 2px;
 `
-const StyledName = styled(Field)``
-const StyledVorname = styled(Field)``
-const StyledAbteilung = styled(Field)``
-const StyledSektion = styled(Field)``
-const StyledBereich = styled(Field)``
-const StyledFunktionen = styled(Field)``
-const StyledKaderfunktionen = styled(Field)``
 const Row = styled.div`
   display: flex;
   flex-wrap: nowrap;
@@ -233,7 +226,15 @@ const PersonPrintKaderPage = ({ pageIndex }) => {
         }
       }
     }
-  }, [activePageIndex, addRow, moveRowToNewPage, page, pageIndex, remainingRows.length, stop])
+  }, [
+    activePageIndex,
+    addRow,
+    moveRowToNewPage,
+    page,
+    pageIndex,
+    remainingRows.length,
+    stop,
+  ])
 
   if (!rows) return null
 
@@ -251,45 +252,45 @@ const PersonPrintKaderPage = ({ pageIndex }) => {
         )}
         <StyledHeader>
           <HeaderRow>
-            <StyledName>Name</StyledName>
-            <StyledVorname>Vorname</StyledVorname>
-            <StyledAbteilung>Abteilung</StyledAbteilung>
-            <StyledSektion>Sektion</StyledSektion>
-            <StyledBereich>Bereich</StyledBereich>
-            <StyledFunktionen>Funktionen</StyledFunktionen>
-            <StyledKaderfunktionen>Kader-Funktionen</StyledKaderfunktionen>
+            <Field>Name</Field>
+            <Field>Vorname</Field>
+            <Field>Abteilung</Field>
+            <Field>Sektion</Field>
+            <Field>Bereich</Field>
+            <Field>Funktionen</Field>
+            <Field>Kader-Funktionen</Field>
           </HeaderRow>
         </StyledHeader>
         <StyledRowsContainer building={building} ref={rowsContainer}>
           {personen.map((p, i) => (
             <Row key={p.id} shaded={!isOdd(i)}>
-              <StyledName>{p.name || ''}</StyledName>
-              <StyledVorname>{p.vorname || ''}</StyledVorname>
-              <StyledAbteilung>
+              <Field>{p.name || ''}</Field>
+              <Field>{p.vorname || ''}</Field>
+              <Field>
                 {p.abteilung
                   ? abteilungen.find(a => a.id === p.abteilung).name
                   : ''}
-              </StyledAbteilung>
-              <StyledSektion>
+              </Field>
+              <Field>
                 {p.sektion ? sektionen.find(a => a.id === p.sektion).name : ''}
-              </StyledSektion>
-              <StyledBereich>
+              </Field>
+              <Field>
                 {p.bereich ? bereiche.find(a => a.id === p.bereich).name : ''}
-              </StyledBereich>
-              <StyledFunktionen>
+              </Field>
+              <Field>
                 {funktionen
                   .filter(f => f.idPerson === p.id)
                   .filter(f => f.deleted === 0)
                   .map(f => f.funktion)
                   .join(', ')}
-              </StyledFunktionen>
-              <StyledKaderfunktionen>
+              </Field>
+              <Field>
                 {kaderFunktionen
                   .filter(f => f.idPerson === p.id)
                   .filter(f => f.deleted === 0)
                   .map(f => f.funktion)
                   .join(', ')}
-              </StyledKaderfunktionen>
+              </Field>
             </Row>
           ))}
         </StyledRowsContainer>
