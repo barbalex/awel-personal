@@ -1,5 +1,5 @@
 export default ({ store }) =>
-  store.aemterFiltered.slice().map(pOrig => {
+  store.aemterFilteredSorted.slice().map(pOrig => {
     const p = { ...pOrig }
     const leiter = store.personen.find(a => a.id === p.leiter) || {}
     p.leiter_id = leiter.id || ''

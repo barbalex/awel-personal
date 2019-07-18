@@ -48,6 +48,7 @@ import personenFiltered from './personenFiltered'
 import existsFilter from './existsFilter'
 import personenSorted from './personenSorted'
 import personenSortedByHandlungsbedarf from './personenSortedByHandlungsbedarf'
+import aemterFiltered from './aemterFiltered'
 
 export default db =>
   types
@@ -158,61 +159,32 @@ export default db =>
         })
       },
       get aemterFiltered() {
-        const { filterAmt, filterFulltext } = self
-        let aemter = getSnapshot(self.aemter)
-        Object.keys(filterAmt).forEach(key => {
-          if (filterAmt[key] || filterAmt[key] === 0) {
-            aemter = aemter.filter(p => {
-              if (!filterAmt[key]) return true
-              if (!p[key]) return false
-              return p[key]
-                .toString()
-                .toLowerCase()
-                .includes(filterAmt[key].toString().toLowerCase())
-            })
-          }
-        })
-        aemter = aemter
-          .filter(p => {
-            if (!self.showDeleted) return p.deleted === 0
-            return true
-          })
-          .filter(p => {
-            if (!filterFulltext) return true
-            // now check for any value if includes
-            const amtValues = Object.entries(p)
-              .filter(e => e[0] !== 'id')
-              .map(e => e[1])
-            return (
-              [...amtValues].filter(v => {
-                if (!v) return false
-                if (!v.toString()) return false
-                return v
-                  .toString()
-                  .toLowerCase()
-                  .includes(filterFulltext.toString().toLowerCase())
-              }).length > 0
-            )
-          })
-          .sort((a, b) => {
-            if (self.showMutationNoetig) {
-              if (a.mutationFrist && b.mutationFrist) {
-                const aDate = new Date(a.mutationFrist)
-                const bDate = new Date(b.mutationFrist)
-                return aDate - bDate
-              } else if (a.mutationFrist) {
-                return -1
-              } else if (b.mutationFrist) {
-                return 1
-              } else if (a.mutationNoetig && !b.mutationNoetig) {
-                return -1
-              } else if (!a.mutationNoetig && b.mutationNoetig) {
-                return 1
-              }
+        return aemterFiltered(self)
+      },
+      get aemterFilteredSorted() {
+        return self.aemterFiltered.sort((a, b) =>
+          (a.name || '').localeCompare(b.name || '', 'de-Ch'),
+        )
+      },
+      get aemterFilteredSortedByHandlungsbedarf() {
+        return self.aemterFiltered.sort((a, b) => {
+          if (self.showMutationNoetig) {
+            if (a.mutationFrist && b.mutationFrist) {
+              const aDate = new Date(a.mutationFrist)
+              const bDate = new Date(b.mutationFrist)
+              return aDate - bDate
+            } else if (a.mutationFrist) {
+              return -1
+            } else if (b.mutationFrist) {
+              return 1
+            } else if (a.mutationNoetig && !b.mutationNoetig) {
+              return -1
+            } else if (!a.mutationNoetig && b.mutationNoetig) {
+              return 1
             }
-            return (a.name || '').localeCompare(b.name || '', 'de-Ch')
-          })
-        return aemter
+          }
+          return (a.name || '').localeCompare(b.name || '', 'de-Ch')
+        })
       },
       get abteilungenFiltered() {
         const { filterAbteilung, filterFulltext } = self
