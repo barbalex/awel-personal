@@ -28,16 +28,6 @@ const StyledButton = styled(Button)`
   border: unset !important;
 `
 
-const dialogOptions = {
-  title: 'pdf speichern',
-  filters: [
-    {
-      name: 'pdf',
-      extensions: ['pdf'],
-    },
-  ],
-}
-
 const Berichte = () => {
   const store = useContext(storeContext)
   const {
@@ -51,6 +41,7 @@ const Berichte = () => {
     setFilterPersonAktivJetztMitTel,
     setFilterPersonAktivJetztMitMobiltel,
     setFilterPersonAktivJetztMitKurzzeichen,
+    settings,
   } = store
   const location = store.location.toJSON()
   const showPD = location[0] === 'Personen' && location[1]
@@ -85,8 +76,25 @@ const Berichte = () => {
       landscape,
       printBackground: true,
     }
+    const isPersonMutation =
+      location[0] === 'Personen' &&
+      location[1] &&
+      activePrintForm === 'personMutation'
     const win = remote.getCurrentWindow()
     // https://github.com/electron/electron/blob/master/docs/api/web-contents.md#contentsprinttopdfoptions-callback
+    const dialogOptions = {
+      title: 'pdf speichern',
+      //'G:\Sekretariate_AWEL\Personalmutationen_nicht_umbenennen_PersonalDB',
+      filters: [
+        {
+          name: 'pdf',
+          extensions: ['pdf'],
+        },
+      ],
+    }
+    if (isPersonMutation && !!settings.mutationFormPath) {
+      dialogOptions.defaultPath = settings.mutationFormPath
+    }
 
     setPrinting(true)
     setTimeout(() => {
@@ -103,7 +111,7 @@ const Berichte = () => {
       })
       setTimeout(() => setPrinting(false))
     })
-  }, [activePrintForm, setPrinting])
+  }, [activePrintForm, location, setPrinting, settings.mutationFormPath])
 
   return (
     <StyledUncontrolledDropdown nav inNavbar active={!!activePrintForm}>

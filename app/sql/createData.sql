@@ -129,9 +129,9 @@ insert into telefones (idPerson,nr,typ,letzteMutationZeit,letzteMutationUser) se
 drop table telefones_import;
 
 insert into
-  settings(id,personMutationWeiterleiten,verzeichnisZeilenhoeheMm)
+  settings(id,personMutationWeiterleiten,verzeichnisZeilenhoeheMm,mutationFormPath)
 values
-  (1,'ausgefülltes Formular bitte an awel@bd.zh.ch, silvio.cerutti@bd.zh.ch sowie IKO der Abteilung weiterleiten',4);
+  (1,'ausgefülltes Formular bitte an awel@bd.zh.ch, silvio.cerutti@bd.zh.ch sowie IKO der Abteilung weiterleiten',4,'G:\Sekretariate_AWEL\Personalmutationen_nicht_umbenennen_PersonalDB');
 
 insert into
   anredeWerte(value, sort)

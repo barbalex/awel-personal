@@ -245,8 +245,12 @@ create table settings (
   id integer primary key,
   schluesselFormPath text,
   personMutationWeiterleiten text,
-  verzeichnisZeilenhoeheMm real
+  verzeichnisZeilenhoeheMm real,
+  mutationFormPath text
 );
+
+--alter table settings add column mutationFormPath text;
+--update settings set mutationFormPath = 'G:\Sekretariate_AWEL\Personalmutationen_nicht_umbenennen_PersonalDB' where id = 1;
 
 -------------------------------------------
 

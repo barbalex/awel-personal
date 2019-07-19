@@ -12,7 +12,7 @@ import moment from 'moment'
 import sortBy from 'lodash/sortBy'
 import Linkify from 'react-linkify'
 import { MdEdit } from 'react-icons/md'
-import { Button } from 'reactstrap'
+import { Button, InputGroup, ButtonGroup } from 'reactstrap'
 
 import Input from '../shared/Input'
 import InputWithoutLabel from '../shared/InputWithoutLabel'
@@ -62,9 +62,6 @@ const AreaIt = styled(Area)`
 const AreaWeiterleiten = styled(Area)`
   grid-area: areaWeiterleiten;
   display: flex;
-`
-const WeiterleitenRow = styled.div`
-  display: flex;
   justify-content: space-between;
   width: 100%;
 `
@@ -74,17 +71,24 @@ const WRLeft = styled.div`
 const StyledButton = styled(Button)`
   background-color: rgba(0, 0, 0, 0) !important;
   padding: 0 0.5rem;
-  margin-left: 8px;
   &:hover {
     background-color: rgba(0, 0, 0, 0.1) !important;
     color: black !important;
   }
+`
+const WLButton = styled(StyledButton)`
+  margin-left: 8px;
 `
 const EditText = styled.div`
   margin-top: 6px;
 `
 const EditIcon = styled(MdEdit)`
   margin-top: -4px;
+`
+const WRRight = styled.div`
+  textarea {
+    width: 570px !important;
+  }
 `
 
 const PersonMutation = ({ activeId, dimensions }) => {
@@ -121,10 +125,21 @@ const PersonMutation = ({ activeId, dimensions }) => {
     () => setEditWeiterleiten(!editWeiterleiten),
     [editWeiterleiten],
   )
+  const [editPdfPath, setEditPdfPath] = useState(false)
+  const onClickEditPdfPath = useCallback(() => setEditPdfPath(!editPdfPath), [
+    editPdfPath,
+  ])
   const onSaveWeiterleiten = useCallback(
     ({ value }) => {
       setSettingsKey({ key: 'personMutationWeiterleiten', value })
       setEditWeiterleiten(false)
+    },
+    [setSettingsKey],
+  )
+  const onSavePdfPath = useCallback(
+    ({ value }) => {
+      setSettingsKey({ key: 'mutationFormPath', value })
+      setEditPdfPath(false)
     },
     [setSettingsKey],
   )
@@ -572,37 +587,65 @@ const PersonMutation = ({ activeId, dimensions }) => {
           </AreaIt>
           {!showFilter && (
             <AreaWeiterleiten>
-              <WeiterleitenRow>
-                <WRLeft>
-                  {editWeiterleiten ? (
+              <WRLeft>
+                {editWeiterleiten ? (
+                  <InputWithoutLabel
+                    value={settings.personMutationWeiterleiten}
+                    saveToDb={onSaveWeiterleiten}
+                    type="textarea"
+                  />
+                ) : (
+                  <Linkify>
+                    <EditText>{settings.personMutationWeiterleiten}</EditText>
+                  </Linkify>
+                )}
+                <WLButton
+                  outline={true}
+                  onClick={onClickEditWeiterleiten}
+                  className="no-print"
+                  title="Weiterleiten-Text ändern"
+                >
+                  <EditIcon />
+                </WLButton>
+              </WRLeft>
+              <WRRight>
+                {editPdfPath ? (
+                  <InputGroup>
+                    <StyledButton
+                      outline={true}
+                      onClick={() => setActivePrintForm('personMutation')}
+                      className="no-print"
+                      title="drucken"
+                    >
+                      Drucken
+                    </StyledButton>
                     <InputWithoutLabel
-                      value={settings.personMutationWeiterleiten}
-                      saveToDb={onSaveWeiterleiten}
+                      value={settings.mutationFormPath}
+                      saveToDb={onSavePdfPath}
                       type="textarea"
                     />
-                  ) : (
-                    <Linkify>
-                      <EditText>{settings.personMutationWeiterleiten}</EditText>
-                    </Linkify>
-                  )}
-                  <StyledButton
-                    outline={true}
-                    onClick={onClickEditWeiterleiten}
-                    className="no-print"
-                    title="Weiterleiten-Text ändern"
-                  >
-                    <EditIcon />
-                  </StyledButton>
-                </WRLeft>
-                <StyledButton
-                  outline={true}
-                  onClick={() => setActivePrintForm('personMutation')}
-                  className="no-print"
-                  title="drucken"
-                >
-                  Drucken
-                </StyledButton>
-              </WeiterleitenRow>
+                  </InputGroup>
+                ) : (
+                  <ButtonGroup>
+                    <StyledButton
+                      outline={true}
+                      onClick={() => setActivePrintForm('personMutation')}
+                      className="no-print"
+                      title="drucken"
+                    >
+                      Drucken
+                    </StyledButton>
+                    <StyledButton
+                      outline={true}
+                      onClick={onClickEditPdfPath}
+                      className="no-print"
+                      title="Ablagepfad ändern"
+                    >
+                      <EditIcon />
+                    </StyledButton>
+                  </ButtonGroup>
+                )}
+              </WRRight>
             </AreaWeiterleiten>
           )}
         </Wrapper>
