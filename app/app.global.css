@@ -16,9 +16,6 @@ body {
 }
 
 @media print {
-  @page {
-    size: A4;
-  }
 
   /*
    * hide everything BUT what shall be printed
