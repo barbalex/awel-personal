@@ -313,7 +313,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
             setErrors,
           })
         }
-        if (field === 'name') {
+        if (['name', 'vorname'].includes(field)) {
           const index = findIndex(
             store.personenFilteredSortedByHandlungsbedarf,
             p => p.id === person.id,
