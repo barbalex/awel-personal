@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
@@ -43,6 +43,8 @@ const AmtContainer = () => {
     fetchWerte({ db, setWerte, table: 'kostenstelleWerte' })
   }, [db, setAemter, setWerte])
 
+  const listRef = useRef(null)
+
   return (
     <Container>
       <ErrorBoundary>
@@ -53,11 +55,11 @@ const AmtContainer = () => {
             renderOnResizeRate={100}
             renderOnResize
           >
-            <List activeId={activeId} {...amtJson} />
+            <List activeId={activeId} {...amtJson} listRef={listRef} />
           </ReflexElement>
           <ReflexSplitter />
           <StyledReflexElement showfilter={showFilter}>
-            <Amt activeId={activeId} />
+            <Amt activeId={activeId} listRef={listRef} />
           </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>
