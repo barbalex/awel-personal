@@ -11,7 +11,7 @@ const Container = styled.div`
   border-right: 1px solid rgb(46, 125, 50);
 `
 
-const DataList = ({ dimensions, activeId, activeTable }) => {
+const DataList = ({ dimensions, activeId, activeTable, listRef }) => {
   const store = useContext(storeContext)
   const { showDeleted } = store
 
@@ -25,7 +25,13 @@ const DataList = ({ dimensions, activeId, activeTable }) => {
 
   return (
     <Container>
-      <List height={height} itemCount={data.length} itemSize={50} width={width}>
+      <List
+        height={height}
+        itemCount={data.length}
+        itemSize={50}
+        width={width}
+        ref={listRef}
+      >
         {({ index, style }) => (
           <Row
             style={style}

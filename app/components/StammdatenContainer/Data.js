@@ -2,6 +2,8 @@ import React, { useContext, useCallback, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
+import findIndex from 'lodash/findIndex'
+import sortBy from 'lodash/sortBy'
 
 import Input from '../shared/Input'
 import SharedCheckbox from '../shared/Checkbox_01'
@@ -14,7 +16,7 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Data = ({ activeId, activeTable }) => {
+const Data = ({ activeId, activeTable, listRef }) => {
   const store = useContext(storeContext)
   const { showDeleted, updateField, setDirty } = store
 
@@ -38,8 +40,17 @@ const Data = ({ activeId, activeTable }) => {
         id: dat.id,
         setErrors,
       })
+      if (field === 'value') {
+        let data = store[activeTable].slice().filter(p => {
+          if (!showDeleted) return p.deleted === 0
+          return true
+        })
+        data = sortBy(data, ['sort', 'value'])
+        const index = findIndex(data, p => p.id === dat.id)
+        listRef.current.scrollToItem(index)
+      }
     },
-    [updateField, activeTable, dat.id],
+    [updateField, activeTable, dat.id, store, listRef, showDeleted],
   )
 
   if (!activeId) return null
