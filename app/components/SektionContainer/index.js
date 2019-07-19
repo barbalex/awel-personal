@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
@@ -54,6 +54,8 @@ const SektionContainer = () => {
     fetchWerte({ db, setWerte, table: 'kostenstelleWerte' })
   }, [db, setAbteilungen, setPersonen, setSektionen, setWerte, store])
 
+  const listRef = useRef(null)
+
   return (
     <Container>
       <ErrorBoundary>
@@ -64,11 +66,11 @@ const SektionContainer = () => {
             renderOnResizeRate={100}
             renderOnResize
           >
-            <List activeId={activeId} {...sektionJson} />
+            <List activeId={activeId} {...sektionJson} listRef={listRef} />
           </ReflexElement>
           <ReflexSplitter />
           <StyledReflexElement showfilter={showFilter}>
-            <Sektion activeId={activeId} />
+            <Sektion activeId={activeId} listRef={listRef} />
           </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>

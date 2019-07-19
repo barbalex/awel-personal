@@ -10,6 +10,7 @@ import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
+import findIndex from 'lodash/findIndex'
 
 import Input from '../../shared/Input'
 import Date from '../../shared/Date'
@@ -164,7 +165,7 @@ const Title = styled.div`
   font-size: 18px;
 `
 
-const Person = ({ activeId, dimensions }) => {
+const Person = ({ activeId, dimensions, listRef }) => {
   const store = useContext(storeContext)
   const {
     personen,
@@ -312,9 +313,25 @@ const Person = ({ activeId, dimensions }) => {
             setErrors,
           })
         }
+        if (field === 'name') {
+          const index = findIndex(
+            store.personenFilteredSortedByHandlungsbedarf,
+            p => p.id === person.id,
+          )
+          listRef.current.scrollToItem(index)
+        }
       }
     },
-    [person, showFilter, activeId, setFilter, filterPerson, updateField],
+    [
+      person,
+      showFilter,
+      activeId,
+      setFilter,
+      filterPerson,
+      updateField,
+      store.personenFilteredSortedByHandlungsbedarf,
+      listRef,
+    ],
   )
   const addEtikett = useCallback(
     etikett => {

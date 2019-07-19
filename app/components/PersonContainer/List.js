@@ -60,7 +60,7 @@ const MutationFrist = styled.div`
   font-size: 1rem;
 `
 
-const PersonList = ({ dimensions, activeId }) => {
+const PersonList = ({ dimensions, activeId, listRef }) => {
   const store = useContext(storeContext)
   const {
     setLocation,
@@ -83,6 +83,7 @@ const PersonList = ({ dimensions, activeId }) => {
         itemCount={personen.length}
         itemSize={50}
         width={width}
+        ref={listRef}
       >
         {({ index, style }) => {
           const row = personen[index]

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
@@ -71,6 +71,8 @@ const PersonContainer = () => {
   const personJson = person ? person.toJSON() : {}
   const isPrinting = useDetectPrint()
 
+  const listRef = useRef(null)
+
   useEffect(() => {
     fetchPersonen({ db, setPersonen })
     fetchAemter({ db, setAemter })
@@ -128,7 +130,7 @@ const PersonContainer = () => {
             propagateDimensions
             propagateDimensionsRate={100}
           >
-            <List activeId={activeId} {...personJson} />
+            <List activeId={activeId} {...personJson} listRef={listRef} />
           </ReflexElement>
           <ReflexSplitter />
           <StyledReflexElement
@@ -137,7 +139,7 @@ const PersonContainer = () => {
             propagateDimensionsRate={1000}
             resizeHeight={false}
           >
-            <PersonTab />
+            <PersonTab listRef={listRef} />
           </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>

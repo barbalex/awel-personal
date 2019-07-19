@@ -6,8 +6,6 @@ import findLast from 'lodash/findLast'
 import uniqBy from 'lodash/uniqBy'
 import sortBy from 'lodash/sortBy'
 import last from 'lodash/last'
-import keys from 'lodash/keys'
-import lValues from 'lodash/values'
 
 import Amt from './Amt'
 import Abteilung from './Abteilung'
@@ -57,6 +55,7 @@ import bereicheFilteredSortedByHandelsbedarf from './bereicheFilteredSortedByHan
 import sektionenFiltered from './sektionenFiltered'
 import sektionenFilteredSortedByHandelsbedarf from './sektionenFilteredSortedByHandelsbedarf'
 import revertMutation from './revertMutation'
+import addPerson from './addPerson'
 
 export default db =>
   types
@@ -400,31 +399,7 @@ export default db =>
           revertMutation({ self, db, mutationId })
         },
         addPerson() {
-          // 1. create new Person in db, returning id
-          let info
-          try {
-            info = db
-              .prepare(
-                'insert into personen (letzteMutationUser, letzteMutationZeit, land) values (@user, @zeit, @land)',
-              )
-              .run({ user: self.username, zeit: Date.now(), land: 'Schweiz' })
-          } catch (error) {
-            self.addError(error)
-            return console.log(error)
-          }
-          // 2. add to store
-          self.personen.push({
-            id: info.lastInsertRowid,
-            letzteMutationUser: self.username,
-            letzteMutationZeit: Date.now(),
-            land: 'Schweiz',
-          })
-          self.setLocation(['Personen', info.lastInsertRowid.toString()])
-          // 3 requery anwesenheitstage (are added in db by trigger)
-          fetchAnwesenheitstage({
-            db,
-            setAnwesenheitstage: self.setAnwesenheitstage,
-          })
+          addPerson({ self, db })
         },
         addAmt() {
           // 1. create new Amt in db, returning id
