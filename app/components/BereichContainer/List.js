@@ -57,7 +57,7 @@ const MutationFrist = styled.div`
   font-size: 1rem;
 `
 
-const BereichList = ({ dimensions, activeId }) => {
+const BereichList = ({ dimensions, activeId, listRef }) => {
   const store = useContext(storeContext)
   const { setLocation, showFilter, setShowFilter, showMutationNoetig } = store
   // eslint-disable-next-line no-restricted-globals
@@ -73,6 +73,7 @@ const BereichList = ({ dimensions, activeId }) => {
         itemCount={bereiche.length}
         itemSize={50}
         width={width}
+        ref={listRef}
       >
         {({ index, style }) => {
           const row = bereiche[index]

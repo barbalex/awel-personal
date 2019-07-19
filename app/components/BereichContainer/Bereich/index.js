@@ -10,6 +10,7 @@ import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
+import findIndex from 'lodash/findIndex'
 
 import Input from '../../shared/Input'
 import Select from '../../shared/Select'
@@ -25,7 +26,7 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Bereich = ({ activeId }) => {
+const Bereich = ({ activeId, listRef }) => {
   const store = useContext(storeContext)
   const {
     personen,
@@ -97,9 +98,16 @@ const Bereich = ({ activeId }) => {
             id: bereich.id,
           })
         }
+        if (field === 'name') {
+          const index = findIndex(
+            store.bereicheFilteredSortedByHandelsbedarf,
+            p => p.id === bereich.id,
+          )
+          listRef.current.scrollToItem(index)
+        }
       }
     },
-    [activeId, bereich, filterBereich, setFilter, showFilter, updateField],
+    [activeId, bereich, filterBereich, listRef, setFilter, showFilter, store.bereicheFilteredSortedByHandelsbedarf, updateField],
   )
 
   // filter out options with empty values - makes no sense and errors
