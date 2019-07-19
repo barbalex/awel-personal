@@ -26,8 +26,8 @@ const Container = styled.div`
     /* make sure body grows as needed */
     height: auto !important;
 
-    page-break-before: avoid !important;
-    page-break-after: avoid !important;
+    page-break-before: always !important;
+    page-break-after: always !important;
   }
 `
 

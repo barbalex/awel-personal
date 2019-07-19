@@ -54,7 +54,7 @@ const Container = styled.div`
 
     overflow: hidden !important;
 
-    page-break-inside: avoid !important;
+    /*page-break-inside: avoid !important;*/
     page-break-before: always !important;
     page-break-after: always !important;
   }
