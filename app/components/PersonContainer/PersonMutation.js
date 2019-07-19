@@ -639,7 +639,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
                       outline={true}
                       onClick={onClickEditPdfPath}
                       className="no-print"
-                      title="Ablagepfad ändern"
+                      title="Standard-Speicherort ändern"
                     >
                       <EditIcon />
                     </StyledButton>

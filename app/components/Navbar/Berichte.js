@@ -84,7 +84,6 @@ const Berichte = () => {
     // https://github.com/electron/electron/blob/master/docs/api/web-contents.md#contentsprinttopdfoptions-callback
     const dialogOptions = {
       title: 'pdf speichern',
-      //'G:\Sekretariate_AWEL\Personalmutationen_nicht_umbenennen_PersonalDB',
       filters: [
         {
           name: 'pdf',
