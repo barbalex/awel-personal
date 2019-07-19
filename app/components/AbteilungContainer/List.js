@@ -57,7 +57,7 @@ const MutationFrist = styled.div`
   font-size: 1rem;
 `
 
-const AbteilungList = ({ dimensions, activeId }) => {
+const AbteilungList = ({ dimensions, activeId, listRef }) => {
   const store = useContext(storeContext)
   const { setLocation, showFilter, setShowFilter, showMutationNoetig } = store
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
@@ -71,6 +71,7 @@ const AbteilungList = ({ dimensions, activeId }) => {
         itemCount={abteilungen.length}
         itemSize={50}
         width={width}
+        ref={listRef}
       >
         {({ index, style }) => {
           const row = abteilungen[index]
