@@ -31,6 +31,8 @@ const run = async () => {
   }
   if (user) store.setUsername(user)
 
+  window.store = store
+
   render(
     <HotLoaderContainer>
       <DbContextProvider value={db}>

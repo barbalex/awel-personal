@@ -16,6 +16,27 @@ body {
 }
 
 @media print {
+  @page {
+    size: A4;
+  }
+
+  /*
+   * hide everything BUT what shall be printed
+   */
+  body * {
+    visibility: hidden;
+  }
+
+  .printer-content,
+  .printer-content * {
+    visibility: visible !important;
+  }
+
+  .printer-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
 
   /**
    * ensure html and body

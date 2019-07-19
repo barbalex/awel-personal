@@ -117,7 +117,7 @@ const PersonPrintVerzTelPage = ({ pageIndex }) => {
   const { pages, building } = personVerzeichnis
 
   return (
-    <Container className="querformat">
+    <Container>
       <GlobalStyle />
       <InnerPageContainer building={building}>
         <Title>AWEL Telefon-Verzeichnis</Title>

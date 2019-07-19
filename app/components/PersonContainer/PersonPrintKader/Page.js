@@ -221,7 +221,7 @@ const PersonPrintKaderPage = ({ pageIndex }) => {
   const personen = personenFilteredSorted.filter(p => rows.includes(p.id))
 
   return (
-    <Container className="querformat">
+    <Container>
       <GlobalStyle />
       <InnerPageContainer>
         {pageIndex === 0 && (

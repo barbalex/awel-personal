@@ -117,7 +117,7 @@ const PersonPrintVerzKurzzeichenPage = ({ pageIndex }) => {
   const { pages, building } = personVerzeichnis
 
   return (
-    <Container className="querformat">
+    <Container>
       <GlobalStyle />
       <InnerPageContainer building={building}>
         <Title>AWEL Kurzzeichen-Verzeichnis</Title>

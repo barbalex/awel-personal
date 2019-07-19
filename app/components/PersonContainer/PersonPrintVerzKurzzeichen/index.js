@@ -36,7 +36,7 @@ const PersonPrintVerzKurzzeichenPages = () => {
   const { pages, modal, reset, building } = store.personVerzeichnis
 
   return (
-    <Container>
+    <Container className="printer-content">
       {pages.map((page, pageIndex) => (
         <Page key={pageIndex} pageIndex={pageIndex} />
       ))}

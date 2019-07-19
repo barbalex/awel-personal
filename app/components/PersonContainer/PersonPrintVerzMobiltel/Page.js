@@ -104,7 +104,6 @@ const Footer = styled.div`
   display: flex;
   justify-content: space-between;
 `
-// eslint-disable-next-line no-unused-expressions
 const GlobalStyle = createGlobalStyle`
   @page {
     size: A4 landscape;
@@ -117,7 +116,7 @@ const PersonPrintVerzMobiltelPage = ({ pageIndex }) => {
   const { pages, building } = personVerzeichnis
 
   return (
-    <Container className="querformat">
+    <Container>
       <GlobalStyle />
       <InnerPageContainer building={building}>
         <Title>AWEL Mobil-Telefon-Verzeichnis</Title>

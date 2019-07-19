@@ -56,20 +56,22 @@ const Berichte = () => {
   const onClickPrint = useCallback(() => {
     setPrinting(true)
     setTimeout(() => {
-      window.print()
+      //window.print()
       // turned off because printBackground = true did not work
-      /*const win = remote.getCurrentWindow()
+      const win = remote.getCurrentWindow()
       win.webContents.print({
         silent: false,
-        // true did not work!!!???
-        printBackground: false,
+        // true does not work!!!???
+        printBackground: true,
         deviceName: '',
-      })*/
+      })
       setTimeout(() => setPrinting(false))
     })
   }, [setPrinting])
   const onClickCreatePdf = useCallback(() => {
-    const landscape = !['personalblatt'].includes(activePrintForm)
+    const landscape = !['personalblatt', 'personMutation'].includes(
+      activePrintForm,
+    )
     const printToPDFOptions = {
       marginsType: 0,
       pageSize: 'A4',
@@ -94,6 +96,7 @@ const Berichte = () => {
     if (isPersonMutation && !!settings.mutationFormPath) {
       dialogOptions.defaultPath = settings.mutationFormPath
     }
+    console.log('onClickCreatePdf, printToPDFOptions:', printToPDFOptions)
 
     setPrinting(true)
     setTimeout(() => {
@@ -108,7 +111,9 @@ const Berichte = () => {
           }
         })
       })
-      setTimeout(() => setPrinting(false))
+      setTimeout(() => {
+        setPrinting(false)
+      })
     })
   }, [activePrintForm, location, setPrinting, settings.mutationFormPath])
 

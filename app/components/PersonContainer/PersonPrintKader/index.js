@@ -36,7 +36,7 @@ const PersonPrintKaderPages = () => {
   const { pages, modal, reset, building } = store.personPages
 
   return (
-    <Container>
+    <Container className="printer-content">
       {pages.map((page, pageIndex) => (
         <Page key={pageIndex} pageIndex={pageIndex} />
       ))}

@@ -178,7 +178,7 @@ const PersonMutationPrint = ({ activeId }) => {
 
   return (
     <Container>
-      <PageContainer className="hochformat">
+      <PageContainer className="printer-content">
         <GlobalStyle />
         <Content>
           <LogoImg src={LogoAwel} />
