@@ -58,6 +58,10 @@ const Berichte = () => {
   const onClickPD = useCallback(() => setActivePrintForm('personalblatt'), [
     setActivePrintForm,
   ])
+  const onClickMutationsFormular = useCallback(
+    () => setActivePrintForm('personMutation'),
+    [setActivePrintForm],
+  )
   const onClickPrint = useCallback(() => {
     setPrinting(true)
     setTimeout(() => {
@@ -192,6 +196,9 @@ const Berichte = () => {
             <DropdownItem divider />
             <DropdownItem header>Für den aktiven Datensatz</DropdownItem>
             <DropdownItem onClick={onClickPD}>Personal-Blatt</DropdownItem>
+            <DropdownItem onClick={onClickMutationsFormular}>
+              Mutations-Formular
+            </DropdownItem>
           </>
         )}
       </DropdownMenu>
