@@ -72,6 +72,11 @@ const Berichte = () => {
     const landscape = !['personalblatt', 'personMutation'].includes(
       activePrintForm,
     )
+    // TODO:
+    // this setting is ignored!!!!????
+    // no matter what is set for landscape
+    // size is always wrong, A3 instead of A4
+    // only setting respected is marginsType???
     const printToPDFOptions = {
       marginsType: 0,
       pageSize: 'A4',
@@ -83,7 +88,6 @@ const Berichte = () => {
       location[1] &&
       activePrintForm === 'personMutation'
     const win = remote.getCurrentWindow()
-    // https://github.com/electron/electron/blob/master/docs/api/web-contents.md#contentsprinttopdfoptions-callback
     const dialogOptions = {
       title: 'pdf speichern',
       filters: [
@@ -100,6 +104,7 @@ const Berichte = () => {
 
     setPrinting(true)
     setTimeout(() => {
+      // https://electronjs.org/docs/api/web-contents#contentsprinttopdfoptions-callback
       win.webContents.printToPDF(printToPDFOptions, (error, data) => {
         if (error) throw error
         dialog.showSaveDialog(dialogOptions, filePath => {

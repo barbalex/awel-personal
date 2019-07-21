@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useEffect } from 'react'
 import moment from 'moment'
-import styled, { createGlobalStyle } from 'styled-components'
+import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 
 import storeContext from '../../../storeContext'
@@ -95,12 +95,6 @@ const StyledRowsContainer = styled.div`
     page-break-before: avoid !important;
     page-break-after: avoid !important;
     page-break-inside: avoid !important;
-  }
-`
-// eslint-disable-next-line no-unused-expressions
-const GlobalStyle = createGlobalStyle`
-  @page {
-    size: A4 landscape;
   }
 `
 const Footer = styled.div`
@@ -222,7 +216,6 @@ const PersonPrintFunktionenPage = ({ pageIndex }) => {
 
   return (
     <Container>
-      <GlobalStyle />
       <InnerPageContainer>
         {pageIndex === 0 && (
           <>

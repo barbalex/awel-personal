@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import moment from 'moment'
-import styled, { createGlobalStyle } from 'styled-components'
+import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 
 import storeContext from '../../../storeContext'
@@ -104,12 +104,6 @@ const Footer = styled.div`
   display: flex;
   justify-content: space-between;
 `
-// eslint-disable-next-line no-unused-expressions
-const GlobalStyle = createGlobalStyle`
-  @page {
-    size: A4 landscape;
-  }
-`
 
 const PersonPrintVerzKurzzeichenPage = ({ pageIndex }) => {
   const store = useContext(storeContext)
@@ -118,7 +112,6 @@ const PersonPrintVerzKurzzeichenPage = ({ pageIndex }) => {
 
   return (
     <Container>
-      <GlobalStyle />
       <InnerPageContainer building={building}>
         <Title>AWEL Kurzzeichen-Verzeichnis</Title>
         <Column0>

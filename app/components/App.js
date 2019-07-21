@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import styled from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { registerLocale, setDefaultLocale } from 'react-datepicker'
 import { de } from 'date-fns/locale'
@@ -38,6 +38,16 @@ const Container = styled.div`
     overflow: visible !important;
   }
 `
+const A4Portrait = createGlobalStyle`
+  @page {
+    size: A4 portrait;
+  }
+`
+const A4Landscape = createGlobalStyle`
+  @page {
+    size: A4 landscape;
+  }
+`
 
 const App = () => {
   const store = useContext(storeContext)
@@ -49,29 +59,71 @@ const App = () => {
   if (printing || isPrinting) {
     if (activePrintForm === 'personalblatt') {
       const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-      if (activeId) return <PersonPrint activeId={activeId} />
+      if (activeId)
+        return (
+          <>
+            <A4Portrait />
+            <PersonPrint activeId={activeId} />
+          </>
+        )
     }
     if (activePrintForm === 'personMutation') {
       const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-      if (activeId) return <PersonMutationPrint activeId={activeId} />
+      if (activeId)
+        return (
+          <>
+            <A4Portrait />
+            <PersonMutationPrint activeId={activeId} />
+          </>
+        )
     }
     if (activePrintForm === 'personFunktionen') {
-      return <PersonPrintFunktionen />
+      return (
+        <>
+          <A4Landscape />
+          <PersonPrintFunktionen />
+        </>
+      )
     }
     if (activePrintForm === 'personPensionierte') {
-      return <PersonPrintPensionierte />
+      return (
+        <>
+          <A4Landscape />
+          <PersonPrintPensionierte />
+        </>
+      )
     }
     if (activePrintForm === 'personKader') {
-      return <PersonPrintKader />
+      return (
+        <>
+          <A4Landscape />
+          <PersonPrintKader />
+        </>
+      )
     }
     if (activePrintForm === 'personVerzTel') {
-      return <PersonPrintVerzTel />
+      return (
+        <>
+          <A4Landscape />
+          <PersonPrintVerzTel />
+        </>
+      )
     }
     if (activePrintForm === 'personVerzMobiltel') {
-      return <PersonPrintVerzMobiltel />
+      return (
+        <>
+          <A4Landscape />
+          <PersonPrintVerzMobiltel />
+        </>
+      )
     }
     if (activePrintForm === 'personVerzKurzzeichen') {
-      return <PersonPrintVerzKurzzeichen />
+      return (
+        <>
+          <A4Landscape />
+          <PersonPrintVerzKurzzeichen />
+        </>
+      )
     }
   }
 

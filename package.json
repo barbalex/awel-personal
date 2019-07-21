@@ -234,7 +234,7 @@
     "react-window": "1.8.5",
     "reactstrap": "8.0.1",
     "source-map-support": "0.5.12",
-    "styled-components": "4.3.2",
+    "styled-components": "^5.0.0-beta.8",
     "use-detect-print": "0.0.2",
     "username": "5.1.0"
   },

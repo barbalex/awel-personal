@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import moment from 'moment'
-import styled, { createGlobalStyle } from 'styled-components'
+import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 
 import storeContext from '../../../storeContext'
@@ -104,11 +104,6 @@ const Footer = styled.div`
   display: flex;
   justify-content: space-between;
 `
-const GlobalStyle = createGlobalStyle`
-  @page {
-    size: A4 landscape;
-  }
-`
 
 const PersonPrintVerzMobiltelPage = ({ pageIndex }) => {
   const store = useContext(storeContext)
@@ -117,7 +112,6 @@ const PersonPrintVerzMobiltelPage = ({ pageIndex }) => {
 
   return (
     <Container>
-      <GlobalStyle />
       <InnerPageContainer building={building}>
         <Title>AWEL Mobil-Telefon-Verzeichnis</Title>
         <Column0>
