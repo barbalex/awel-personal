@@ -56,12 +56,10 @@ const Berichte = () => {
   const onClickPrint = useCallback(() => {
     setPrinting(true)
     setTimeout(() => {
-      //window.print()
-      // turned off because printBackground = true did not work
       const win = remote.getCurrentWindow()
       win.webContents.print({
         silent: false,
-        // true does not work!!!???
+        // TODO: true does not work!!!???
         printBackground: true,
         deviceName: '',
       })
@@ -69,18 +67,8 @@ const Berichte = () => {
     })
   }, [setPrinting])
   const onClickCreatePdf = useCallback(() => {
-    const landscape = !['personalblatt', 'personMutation'].includes(
-      activePrintForm,
-    )
-    // TODO:
-    // this setting is ignored!!!!????
-    // no matter what is set for landscape
-    // size is always wrong, A3 instead of A4
-    // only setting respected is marginsType???
     const printToPDFOptions = {
       marginsType: 0,
-      pageSize: 'A4',
-      landscape,
       printBackground: true,
     }
     const isPersonMutation =
@@ -100,7 +88,6 @@ const Berichte = () => {
     if (isPersonMutation && !!settings.mutationFormPath) {
       dialogOptions.defaultPath = settings.mutationFormPath
     }
-    console.log('onClickCreatePdf, printToPDFOptions:', printToPDFOptions)
 
     setPrinting(true)
     setTimeout(() => {

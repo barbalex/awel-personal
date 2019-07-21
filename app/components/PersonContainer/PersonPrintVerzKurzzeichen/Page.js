@@ -71,6 +71,7 @@ const Container = styled.div`
 const InnerPageContainer = styled.div`
   display: grid;
   grid-template-rows: 5mm 16.75cm 5mm;
+  grid-column-gap: 2mm;
   grid-template-areas:
     'title title title'
     'column0 column1 column2'
@@ -103,6 +104,7 @@ const Footer = styled.div`
   grid-area: footer;
   display: flex;
   justify-content: space-between;
+  padding-right: 2mm;
 `
 
 const PersonPrintVerzKurzzeichenPage = ({ pageIndex }) => {
