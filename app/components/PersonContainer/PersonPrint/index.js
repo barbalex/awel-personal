@@ -89,7 +89,6 @@ const InnerPageContainer = styled.div`
   justify-content: space-between;
   overflow: hidden;
   height: 100%;
-  width: 100%;
 `
 const Content = styled.div``
 // eslint-disable-next-line no-unused-expressions
@@ -100,11 +99,6 @@ const GlobalStyle = createGlobalStyle`
 `
 const Footer = styled.div`
   padding-top: 5px;
-  @media print {
-    page-break-inside: avoid !important;
-    page-break-before: avoid !important;
-    page-break-after: avoid !important;
-  }
 `
 const Wrapper = styled.div`
   display: grid;
