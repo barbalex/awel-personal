@@ -19,6 +19,7 @@ const Container = styled.div`
   height: 100vh;
 
   @media print {
+    height: auto;
     /* remove grey backgrond set for nice UI */
     background-color: #fff;
     /* with overflow auto an empty page is inserted between each page */
