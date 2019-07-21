@@ -58,12 +58,17 @@ const More = () => {
   } = store
   const activeLocation = location.toJSON()[0]
 
-  const toggleShowDeleted = useCallback(() => setShowDeleted(!showDeleted), [setShowDeleted, showDeleted])
+  const toggleShowDeleted = useCallback(() => setShowDeleted(!showDeleted), [
+    setShowDeleted,
+    showDeleted,
+  ])
   const toggleShowMutationNoetig = useCallback(
     () => setShowMutationNoetig(!showMutationNoetig),
     [setShowMutationNoetig, showMutationNoetig],
   )
-  const showMutations = useCallback(() => setLocation(['mutations']), [setLocation])
+  const showMutations = useCallback(() => setLocation(['mutations']), [
+    setLocation,
+  ])
 
   return (
     <MoreMenu nav inNavbar>
@@ -111,7 +116,7 @@ const More = () => {
           Fehler und Wünsche melden
         </DropdownItem>
         <DropdownItem divider />
-        <Version>Version: 1.1.0 vom 17.07.2019</Version>
+        <Version>Version: 1.2.0 vom 21.07.2019</Version>
       </DropdownMenu>
     </MoreMenu>
   )
