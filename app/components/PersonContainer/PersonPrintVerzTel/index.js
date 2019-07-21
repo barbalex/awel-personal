@@ -19,16 +19,12 @@ const Container = styled.div`
   height: 100vh;
 
   @media print {
-    height: auto;
     /* remove grey backgrond set for nice UI */
     background-color: #fff;
     /* with overflow auto an empty page is inserted between each page */
     overflow-y: visible !important;
     /* make sure body grows as needed */
     height: auto !important;
-
-    page-break-before: always !important;
-    page-break-after: always !important;
   }
 `
 

@@ -22,8 +22,8 @@ const Container = styled.div`
 
   /* set page size and padding for screen */
   width: 29.7cm;
-  height: 20.95cm;
-  padding: 1.5cm;
+  height: 21cm;
+  padding: 1.2cm;
 
   overflow: hidden;
   overflow-y: visible;
@@ -31,30 +31,20 @@ const Container = styled.div`
   font-size: 10.5px;
   font-family: Arial, Helvetica, sans-serif;
 
-  /* When the document is actually printed */
   @media print {
-    /**
-   * something seems to change the measurements
-   * if they are not repeated here using important
-   * seems like export to pdf is moved right down
-   * without this
-   */
-    width: inherit;
-    height: inherit;
+    width: 29.7cm;
+    /* 
+     * set this too high and:
+     * an empty page is added at the end
+     * second page is placed lower than first
+    */
+    height: 20.3cm;
 
     /* gingerly set margins and padding */
-    margin-top: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    margin-bottom: 0 !important;
-    padding-top: 0.5cm !important;
-    padding-left: 0.5cm !important;
-    padding-right: 0 !important;
-    padding-bottom: 0 !important;
+    margin: 0 !important;
 
     overflow: hidden !important;
 
-    page-break-inside: avoid !important;
     page-break-before: always !important;
     page-break-after: always !important;
   }
@@ -76,8 +66,8 @@ const InnerPageContainer = styled.div`
     'title title title'
     'column0 column1 column2'
     'footer footer footer';
-  max-height: 17.95cm;
-  max-width: 26.7cm;
+  max-height: 18.6cm;
+  max-width: 27.3cm;
   /*
    * need overflow while building list
    * so list does not flow outside padding

@@ -31,7 +31,6 @@ const Container = styled.div`
   font-size: 10.5px;
   font-family: Arial, Helvetica, sans-serif;
 
-  /* When the document is actually printed */
   @media print {
     width: 29.7cm;
     /* 
@@ -46,7 +45,6 @@ const Container = styled.div`
 
     overflow: hidden !important;
 
-    /*page-break-inside: avoid !important;*/
     page-break-before: always !important;
     page-break-after: always !important;
   }

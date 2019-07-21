@@ -17,10 +17,10 @@ const Container = styled.div`
   overflow-y: ${props => (props.building ? 'auto' : 'hidden')};
   overflow-x: hidden;
 
-  height: 16.75cm;
-  width: 8.8cm;
-  max-height: 16.75cm;
-  max-width: 8.8cm;
+  height: 17.35cm;
+  width: 8.9cm;
+  max-height: 17.6cm;
+  max-width: 8.9cm;
 `
 const Field = styled.div`
   flex: 1;
