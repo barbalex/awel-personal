@@ -111,9 +111,7 @@ const Berichte = () => {
           }
         })
       })
-      setTimeout(() => {
-        setPrinting(false)
-      })
+      setTimeout(() => setPrinting(false))
     })
   }, [activePrintForm, location, setPrinting, settings.mutationFormPath])
 
