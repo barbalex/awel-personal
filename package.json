@@ -242,5 +242,5 @@
     "node": ">=10.x",
     "yarn": ">=1.x"
   },
-  "browserslist": "electron 4.0"
+  "browserslist": "electron 6.0"
 }
