@@ -99,6 +99,30 @@ eval("module.exports = __webpack_require__;\n\n//# sourceURL=webpack://renderer/
 
 /***/ }),
 
+/***/ "@typescript-eslint/eslint-plugin":
+/*!***************************************************!*\
+  !*** external "@typescript-eslint/eslint-plugin" ***!
+  \***************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+eval("module.exports = @typescript-eslint/eslint-plugin;\n\n//# sourceURL=webpack://renderer/external_%22@typescript-eslint/eslint-plugin%22?");
+
+/***/ }),
+
+/***/ "@typescript-eslint/parser":
+/*!********************************************!*\
+  !*** external "@typescript-eslint/parser" ***!
+  \********************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+eval("module.exports = @typescript-eslint/parser;\n\n//# sourceURL=webpack://renderer/external_%22@typescript-eslint/parser%22?");
+
+/***/ }),
+
 /***/ "better-sqlite3":
 /*!*********************************!*\
   !*** external "better-sqlite3" ***!
