@@ -77,7 +77,7 @@ const More = () => {
       </DropdownToggle>
       <DropdownMenu right>
         <DropdownItem onClick={chooseDbConnection}>
-          Datenbank wählen (TODO)
+          Datenbank wählen
           <br />
           <DbPath>{`Aktuell: ${db.name}`}</DbPath>
         </DropdownItem>
