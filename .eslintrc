@@ -10,6 +10,8 @@
     "node": true
   },
   "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
     //"no-param-reassign": "off",
     //"linebreak-style": 0,
     //"arrow-parens": ["off"],
@@ -69,7 +71,7 @@
     ],
     "react/prefer-stateless-function": "off"*/
   },
-  "plugins": ["flowtype", "import", "promise", "compat", "react"],
+  "plugins": ["flowtype", "import", "promise", "compat", "react", "react-hooks"],
   "settings": {
     "import/resolver": {
       "webpack": {
