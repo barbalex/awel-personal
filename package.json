@@ -44,8 +44,7 @@
       "package.json"
     ],
     "dmg": {
-      "contents": [
-        {
+      "contents": [{
           "x": 130,
           "y": 220
         },
@@ -224,7 +223,7 @@
     "react": "16.9.0",
     "react-datepicker": "2.8.0",
     "react-dom": "16.9.0",
-    "react-dropzone": "8.1.0",
+    "react-dropzone": "~8.1.0",
     "react-hot-loader": "4.8.4",
     "react-icons": "3.7.0",
     "react-json-view": "1.19.1",
