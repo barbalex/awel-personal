@@ -77,7 +77,6 @@ const Abteilung = ({ activeId, listRef }) => {
 
       if (showFilter) {
         setFilter({
-          model: 'filterAbteilung',
           value: { ...filterAbteilung, ...{ [field]: newValue } },
         })
       } else {

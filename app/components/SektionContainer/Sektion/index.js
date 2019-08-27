@@ -73,10 +73,7 @@ const Sektion = ({ activeId, listRef }) => {
       }
 
       if (showFilter) {
-        setFilter({
-          model: 'filterSektion',
-          value: { ...filterSektion, ...{ [field]: newValue } },
-        })
+        setFilter({value: { ...filterSektion, ...{ [field]: newValue } }})
       } else {
         updateField({
           table: 'sektionen',

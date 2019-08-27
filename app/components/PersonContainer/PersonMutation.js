@@ -166,32 +166,20 @@ const PersonMutation = ({ activeId, dimensions }) => {
       }
 
       if (showFilter) {
-        setFilter({
-          model: 'filterPerson',
-          value: { ...filterPerson, ...{ [field]: newValue } },
-        })
+        setFilter({ value: { ...filterPerson, ...{ [field]: newValue } } })
         if (field === 'amt') {
           if (person.abteilung) {
             // reset abteilung
-            setFilter({
-              model: 'filterPerson',
-              value: { ...filterPerson, ...{ abteilung: null } },
-            })
+            setFilter({ value: { ...filterPerson, ...{ abteilung: null } } })
           }
           if (person.sektion) {
             // reset sektion
-            setFilter({
-              model: 'filterPerson',
-              value: { ...filterPerson, ...{ sektion: null } },
-            })
+            setFilter({ value: { ...filterPerson, ...{ sektion: null } } })
           }
         }
         if (field === 'abteilung' && person.sektion) {
           // reset sektion
-          setFilter({
-            model: 'filterPerson',
-            value: { ...filterPerson, ...{ sektion: null } },
-          })
+          setFilter({ value: { ...filterPerson, ...{ sektion: null } } })
         }
       } else {
         updateField({

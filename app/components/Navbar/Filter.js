@@ -15,6 +15,10 @@ import {
 import { FaTimes, FaEdit, FaFilter } from 'react-icons/fa'
 
 import storeContext from '../../storeContext'
+const StyledDropdownItem = styled(DropdownItem)`
+  background-color: ${props => (props.active ? '#f7f791 !important' : 'unset')};
+  color: ${props => (props.active ? '#212529 !important' : 'unset')};
+`
 
 const VolltextInput = styled(Input)`
   background-color: ${props =>
@@ -48,6 +52,7 @@ const StyledDropdown = styled(Dropdown)`
 const Filter = () => {
   const store = useContext(storeContext)
   const {
+    activeFilterModel,
     showFilter,
     setShowFilter,
     filterFulltext,
@@ -63,6 +68,8 @@ const Filter = () => {
     setFilterPersonAktivJetztMitMobiltel,
     setFilterPersonAktivJetztMitKurzzeichen,
   } = store
+
+  console.log('Filter, activeFilterModel:', activeFilterModel)
 
   const location = store.location.toJSON()
   const activeLocation = location[0]
@@ -96,11 +103,14 @@ const Filter = () => {
     },
     [activePrintForm, personPages],
   )
-  const onKeyPressFilterFulltext = useCallback(e => {
-    if (e.key === 'Enter') {
-      onBlurFilterFulltext(e)
-    }
-  }, [onBlurFilterFulltext])
+  const onKeyPressFilterFulltext = useCallback(
+    e => {
+      if (e.key === 'Enter') {
+        onBlurFilterFulltext(e)
+      }
+    },
+    [onBlurFilterFulltext],
+  )
   const onEmptyFilterFulltext = useCallback(() => {
     setFilterFulltext(null)
     if (
@@ -124,27 +134,9 @@ const Filter = () => {
     [filterDropdownIsOpen],
   )
   const onClickAnstehendeMutationen = useCallback(() => {
-    let model
-    switch (activeLocation) {
-      case 'Aemter':
-        model = 'filterAmt'
-        break
-      case 'Abteilungen':
-        model = 'filterAbteilung'
-        break
-      case 'Sektionen':
-        model = 'filterSektion'
-        break
-      case 'Bereiche':
-        model = 'filterBereich'
-        break
-      case 'Personen':
-      default:
-        model = 'filterPerson'
-    }
-    setFilter({ model, value: { mutationNoetig: 1 } })
+    setFilter({ value: { mutationNoetig: 1 } })
     setShowMutationNoetig(true)
-  }, [activeLocation, setFilter, setShowMutationNoetig])
+  }, [setFilter, setShowMutationNoetig])
   const onClickKader = useCallback(() => {
     setFilterPersonKader(true)
   }, [setFilterPersonKader])
@@ -214,24 +206,41 @@ const Filter = () => {
               </DropdownToggle>
               <DropdownMenu>
                 <DropdownItem header>vorbereitete Filter</DropdownItem>
-                <DropdownItem onClick={onClickAnstehendeMutationen}>
+                <StyledDropdownItem onClick={onClickAnstehendeMutationen}>
                   Anstehende Mutationen
-                </DropdownItem>
+                </StyledDropdownItem>
                 {activeLocation === 'Personen' && (
                   <>
-                    <DropdownItem onClick={onClickAktivJetzt}>
+                    <StyledDropdownItem
+                      active={store.filterPersonAktivJetzt}
+                      onClick={onClickAktivJetzt}
+                    >
                       aktuell aktiv (bereits eingetreten)
-                    </DropdownItem>
-                    <DropdownItem onClick={onClickAktivJetztMitTel}>
+                    </StyledDropdownItem>
+                    <StyledDropdownItem
+                      active={store.filterPersonAktivJetztMitTel}
+                      onClick={onClickAktivJetztMitTel}
+                    >
                       aktuell aktiv, mit Telefon
-                    </DropdownItem>
-                    <DropdownItem onClick={onClickAktivJetztMitMobiltel}>
+                    </StyledDropdownItem>
+                    <StyledDropdownItem
+                      active={store.filterPersonAktivJetztMitMobiltel}
+                      onClick={onClickAktivJetztMitMobiltel}
+                    >
                       aktuell aktiv, mit Mobil-Telefon
-                    </DropdownItem>
-                    <DropdownItem onClick={onClickAktivJetztMitKurzzeichen}>
+                    </StyledDropdownItem>
+                    <StyledDropdownItem
+                      active={store.filterPersonAktivJetztMitKurzzeichen}
+                      onClick={onClickAktivJetztMitKurzzeichen}
+                    >
                       aktuell aktiv, mit Kurzzeichen
-                    </DropdownItem>
-                    <DropdownItem onClick={onClickKader}>Kader</DropdownItem>
+                    </StyledDropdownItem>
+                    <StyledDropdownItem
+                      active={store.filterPersonKader}
+                      onClick={onClickKader}
+                    >
+                      Kader
+                    </StyledDropdownItem>
                   </>
                 )}
               </DropdownMenu>

@@ -61,7 +61,7 @@ const SchluesselComponent = ({ id }) => {
     schluesselAnlageWerte,
     updateField,
     filterSchluesselTyp,
-    filterSchluesselAnlage,
+    filterSchluessel,
   } = store
   let schluessel
   if (showFilter) {
@@ -136,8 +136,8 @@ const SchluesselComponent = ({ id }) => {
       const newValue = ifIsNumericAsNumber(value)
       if (showFilter) {
         setFilter({
-          model: 'filterSchluesselAnlage',
-          value: { ...filterSchluesselAnlage, ...{ [field]: newValue } },
+          model: 'filterSchluessel',
+          value: { ...filterSchluessel, ...{ [field]: newValue } },
         })
       } else {
         updateField({
@@ -150,7 +150,7 @@ const SchluesselComponent = ({ id }) => {
         })
       }
     },
-    [filterSchluesselAnlage, id, setFilter, showFilter, updateField],
+    [filterSchluessel, id, setFilter, showFilter, updateField],
   )
   const onClickDelete = useCallback(() => deleteSchluessel(id), [
     deleteSchluessel,

@@ -1,3 +1,6 @@
+/**
+ * This is filter used after starting the application
+ */
 export default self =>
   self.personenFiltered.sort((a, b) => {
     if (self.showMutationNoetig) {

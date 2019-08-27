@@ -39,7 +39,7 @@ import Mutation from './Mutation'
 import StatusWert from './StatusWert'
 import TagWert from './TagWert'
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
-import fetchAnwesenheitstage from '../src/fetchAnwesenheitstage'
+//import fetchAnwesenheitstage from '../src/fetchAnwesenheitstage'
 import PersonPages from './PersonPages'
 import PersonVerzeichnisPages from './PersonVerzeichnisPages'
 import personenFiltered from './personenFiltered'
@@ -107,7 +107,7 @@ export default db =>
       history: types.optional(UndoManager, {}),
       filterPerson: types.optional(Person, {}),
       filterPersonKader: types.optional(types.boolean, false),
-      filterPersonAktivJetzt: types.optional(types.boolean, false),
+      filterPersonAktivJetzt: types.optional(types.boolean, true),
       filterPersonAktivJetztMitTel: types.optional(types.boolean, false),
       filterPersonAktivJetztMitMobiltel: types.optional(types.boolean, false),
       filterPersonAktivJetztMitKurzzeichen: types.optional(
@@ -147,6 +147,24 @@ export default db =>
       }),
     })
     .views(self => ({
+      get activeFilterModel() {
+        const location = self.location.toJSON()
+        const activeLocation = location[0]
+
+        switch (activeLocation) {
+          case 'Aemter':
+            return 'filterAmt'
+          case 'Abteilungen':
+            return 'filterAbteilung'
+          case 'Sektionen':
+            return 'filterSektion'
+          case 'Bereiche':
+            return 'filterBereich'
+          case 'Personen':
+          default:
+            return 'filterPerson'
+        }
+      },
       get existsFilter() {
         return existsFilter(self)
       },
@@ -252,7 +270,10 @@ export default db =>
           self.dirty = val
         },
         setFilter({ model, value }) {
-          self[model] = value
+          // usually model can be deduced from location[0]
+          // but if a n-side table is filtered, model needs to be passed
+          const modelToUse = model || self[self.activeFilterModel]
+          self[modelToUse] = value
           if (self.filterFulltext) self.filterFulltext = null
         },
         setFilterFulltext(value) {

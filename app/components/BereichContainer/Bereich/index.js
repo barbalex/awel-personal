@@ -76,7 +76,6 @@ const Bereich = ({ activeId, listRef }) => {
 
       if (showFilter) {
         setFilter({
-          model: 'filterBereich',
           value: { ...filterBereich, ...{ [field]: newValue } },
         })
       } else {
@@ -107,7 +106,16 @@ const Bereich = ({ activeId, listRef }) => {
         }
       }
     },
-    [activeId, bereich, filterBereich, listRef, setFilter, showFilter, store.bereicheFilteredSortedByHandelsbedarf, updateField],
+    [
+      activeId,
+      bereich,
+      filterBereich,
+      listRef,
+      setFilter,
+      showFilter,
+      store.bereicheFilteredSortedByHandelsbedarf,
+      updateField,
+    ],
   )
 
   // filter out options with empty values - makes no sense and errors

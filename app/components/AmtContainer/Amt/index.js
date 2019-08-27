@@ -76,7 +76,6 @@ const Amt = ({ activeId, listRef }) => {
 
       if (showFilter) {
         setFilter({
-          model: 'filterAmt',
           value: { ...filterAmt, ...{ [field]: newValue } },
         })
       } else {

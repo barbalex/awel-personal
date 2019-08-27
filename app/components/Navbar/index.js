@@ -61,7 +61,7 @@ const MyNavbar = () => {
   const activeLocation = location[0]
 
   return (
-    <StyledNavbar color="dark" dark expand="lg">
+    <StyledNavbar color="dark" dark expand="xl">
       <NavbarToggler onClick={toggleNavbar} />
       <Collapse isOpen={open} navbar>
         <Nav className="mr-auto" navbar>
