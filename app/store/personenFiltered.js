@@ -1,3 +1,7 @@
+/**
+ * TODO:
+ * add filtering by 1:n connected tables
+ */
 import moment from 'moment'
 
 export default ({ self, db }) => {
