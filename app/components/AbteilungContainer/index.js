@@ -61,7 +61,7 @@ const AbteilungContainer = () => {
           </ReflexElement>
           <ReflexSplitter />
           <StyledReflexElement showfilter={showFilter}>
-            <Abteilung activeId={activeId} listRef={listRef} />
+            {activeId && <Abteilung activeId={activeId} listRef={listRef} />}
           </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>

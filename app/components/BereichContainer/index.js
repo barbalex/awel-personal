@@ -70,7 +70,7 @@ const BereichContainer = () => {
           </ReflexElement>
           <ReflexSplitter />
           <StyledReflexElement showfilter={showFilter}>
-            <Bereich activeId={activeId} listRef={listRef} />
+            {activeId && <Bereich activeId={activeId} listRef={listRef} />}
           </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>

@@ -77,11 +77,13 @@ const StammdatenContainer = () => {
           </ReflexElement>
           <ReflexSplitter />
           <StyledReflexElement>
-            <Data
-              activeId={activeId}
-              activeTable={activeTable}
-              listRef={listRef}
-            />
+            {activeId && (
+              <Data
+                activeId={activeId}
+                activeTable={activeTable}
+                listRef={listRef}
+              />
+            )}
           </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>
