@@ -61,7 +61,6 @@ const SchluesselComponent = ({ id }) => {
     schluesselAnlageWerte,
     updateField,
     filterSchluesselTyp,
-    filterSchluessel,
   } = store
   let schluessel
   if (showFilter) {
