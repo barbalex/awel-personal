@@ -52,7 +52,7 @@ const StyledDropdown = styled(Dropdown)`
 const Filter = () => {
   const store = useContext(storeContext)
   const {
-    activeFilterModel,
+    activeFilter,
     showFilter,
     setShowFilter,
     filterFulltext,
@@ -68,8 +68,6 @@ const Filter = () => {
     setFilterPersonAktivJetztMitMobiltel,
     setFilterPersonAktivJetztMitKurzzeichen,
   } = store
-
-  console.log('Filter, activeFilterModel:', activeFilterModel)
 
   const location = store.location.toJSON()
   const activeLocation = location[0]
@@ -206,7 +204,10 @@ const Filter = () => {
               </DropdownToggle>
               <DropdownMenu>
                 <DropdownItem header>vorbereitete Filter</DropdownItem>
-                <StyledDropdownItem onClick={onClickAnstehendeMutationen}>
+                <StyledDropdownItem
+                  active={!!activeFilter.mutationNoetig}
+                  onClick={onClickAnstehendeMutationen}
+                >
                   Anstehende Mutationen
                 </StyledDropdownItem>
                 {activeLocation === 'Personen' && (

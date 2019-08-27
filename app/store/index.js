@@ -147,6 +147,26 @@ export default db =>
       }),
     })
     .views(self => ({
+      get activeForm() {
+        const location = self.location.toJSON()
+        const activeLocation = location[0]
+        const activeId = ifIsNumericAsNumber(location[1])
+        if (!activeId) return null
+
+        switch (activeLocation) {
+          case 'Aemter':
+            return 'amt'
+          case 'Abteilungen':
+            return 'abteilung'
+          case 'Sektionen':
+            return 'sektion'
+          case 'Bereiche':
+            return 'bereich'
+          case 'Personen':
+          default:
+            return 'person'
+        }
+      },
       get activeFilterModel() {
         const location = self.location.toJSON()
         const activeLocation = location[0]
@@ -163,6 +183,25 @@ export default db =>
           case 'Personen':
           default:
             return 'filterPerson'
+        }
+      },
+      get activeFilter() {
+        const location = self.location.toJSON()
+        const activeLocation = location[0]
+        if (!activeLocation) return null
+
+        switch (activeLocation) {
+          case 'Aemter':
+            return self.filterAmt
+          case 'Abteilungen':
+            return self.filterAbteilung
+          case 'Sektionen':
+            return self.filterSektion
+          case 'Bereiche':
+            return self.filterBereich
+          case 'Personen':
+          default:
+            return self.filterPerson
         }
       },
       get existsFilter() {
@@ -272,7 +311,7 @@ export default db =>
         setFilter({ model, value }) {
           // usually model can be deduced from location[0]
           // but if a n-side table is filtered, model needs to be passed
-          const modelToUse = model || self[self.activeFilterModel]
+          const modelToUse = model || self.activeFilterModel
           self[modelToUse] = value
           if (self.filterFulltext) self.filterFulltext = null
         },
