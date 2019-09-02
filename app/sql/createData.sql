@@ -89,7 +89,7 @@ values
   (1, 'Abfallwirtschaft', 'aw', 1, '851210'),
   (2, 'Altlasten', 'al', 1, '851220'),
   (3, 'Betrieblicher Umweltschutz und Störfallvorsorge', 'bus', 1, '851230'),
-  (4, 'Biosicherheit', null, 1, '851240'),
+  (4, 'Biosicherheit', 'bs', 1, '851240'),
   (5, 'Energieberatung', null, 3, '853830'),
   (6, 'Energietechnik', null, 3, '853810'),
   (7, 'Energiewirtschaft', null, 3, '853820'),
@@ -106,7 +106,8 @@ values
   (18, 'Planung', null, 7, '852730'),
   (19, 'Gewässernutzung', null, 7, '852740'),
   (20, 'Bau', null, 7, '852710'),
-  (21, 'Gewässerunterhalt', 'gu', 7, '852760');
+  (21, 'Gewässerunterhalt', 'gu', 7, '852760'),
+  (22, 'Tankanlagen und Transportgewerbe', 'ta', 1, null);
 
 insert into
   bereiche(id, abteilung, amt, sektion, name, standort, leiter, kurzzeichen)
@@ -202,21 +203,5 @@ insert into
 values
   ('test 1'),
   ('test 2');
-
---insert into
---  bereiche(name)
---values
---  ('Kernenergietechnik/Radioaktive Abfälle'),
---  ('Tiefenlager'),
---  ('Bearbeitung von Rechtsfragen'),
---  ('Rekurse und Beschwerden'),
---  ('Juristische Beratung'),
---  ('Rechtliche Vertretung des Amtes nach Aussen'),
---  ('Finanz und Rechnungswesen'),
---  ('Controllerdienst'),
---  ('Qualitäts- und Umweltmanagement'),
---  ('Informatik'),
---  ('Internet'),
---  ('Kanzlei AWEL');
 
 PRAGMA foreign_keys = ON;
