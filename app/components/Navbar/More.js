@@ -26,7 +26,7 @@ const MoreMenu = styled(UncontrolledDropdown)`
 `
 const Version = styled.div`
   padding: 4px 24px;
-  color: rgba(0, 0, 0, 0.87);
+  color: grey;
   user-select: none;
   font-style: italic;
 `
@@ -116,7 +116,7 @@ const More = () => {
           Fehler und Wünsche melden
         </DropdownItem>
         <DropdownItem divider />
-        <Version>Version: 1.2.2 vom 27.08.2019</Version>
+        <Version>Version: 1.2.3 vom 3.09.2019</Version>
       </DropdownMenu>
     </MoreMenu>
   )
