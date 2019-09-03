@@ -60,7 +60,6 @@ const SchluesselComponent = ({ id }) => {
     schluesselTypWerte,
     schluesselAnlageWerte,
     updateField,
-    filterSchluesselTyp,
   } = store
   let schluessel
   if (showFilter) {
@@ -114,8 +113,8 @@ const SchluesselComponent = ({ id }) => {
       const newValue = ifIsNumericAsNumber(value)
       if (showFilter) {
         setFilter({
-          model: 'filterSchluesselTyp',
-          value: { ...filterSchluesselTyp, ...{ [field]: newValue } },
+          model: 'filterSchluessel',
+          value: { ...filterSchluessel, ...{ [field]: newValue } },
         })
       } else {
         updateField({
@@ -128,7 +127,7 @@ const SchluesselComponent = ({ id }) => {
         })
       }
     },
-    [filterSchluesselTyp, id, setFilter, showFilter, updateField],
+    [filterSchluessel, id, setFilter, showFilter, updateField],
   )
   const onChangeSelectSchluesselAnlage = useCallback(
     ({ field, value }) => {

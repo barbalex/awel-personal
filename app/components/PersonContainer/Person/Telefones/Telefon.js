@@ -82,7 +82,10 @@ const Telefon = ({ id }) => {
     ({ field, value }) => {
       const newValue = value
       if (showFilter) {
-        setFilter({ value: { ...filterTelefon, ...{ [field]: newValue } } })
+        setFilter({
+          model: 'filterTelefon',
+          value: { ...filterTelefon, ...{ [field]: newValue } },
+        })
       } else {
         updateField({
           table: 'telefones',
@@ -100,7 +103,10 @@ const Telefon = ({ id }) => {
     ({ field, value }) => {
       const newValue = ifIsNumericAsNumber(value)
       if (showFilter) {
-        setFilter({ value: { ...filterTelefon, ...{ [field]: newValue } } })
+        setFilter({
+          model: 'filterTelefon',
+          value: { ...filterTelefon, ...{ [field]: newValue } },
+        })
       } else {
         updateField({
           table: 'telefones',
