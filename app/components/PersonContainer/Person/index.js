@@ -199,12 +199,6 @@ const Person = ({ activeId, dimensions, listRef }) => {
     setDirty,
   } = store
 
-  /*console.log('Person', {
-    showFilter,
-    filterPerson,
-    filterTelefon: store.filterTelefon,
-  })*/
-
   let person
   if (showFilter) {
     person = filterPerson
@@ -404,10 +398,6 @@ const Person = ({ activeId, dimensions, listRef }) => {
   )
   const setFilterAnwesenheitstage = useCallback(
     ({ value }) => {
-      console.log('setFilterAnwesenheitstage:', {
-        value,
-        filterAnwesenheitstage,
-      })
       if (value) {
         return setFilter({
           model: 'filterAnwesenheitstage',
@@ -732,12 +722,6 @@ const Person = ({ activeId, dimensions, listRef }) => {
     : showFilter
     ? WrapperWideShowFilter
     : WrapperWide
-
-  console.log('Person', {
-    filterFunktion,
-    myFunktionen,
-    funktionenOptions,
-  })
 
   return (
     <Container showfilter={showFilter}>
