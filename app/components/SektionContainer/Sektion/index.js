@@ -54,7 +54,7 @@ const Sektion = ({ activeId, listRef }) => {
   const sektionId = showFilter ? '' : sektion.id
 
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [sektion])
+  useEffect(() => setErrors({}), [sektion.id])
 
   useEffect(() => setDirty(false), [sektion, setDirty])
 
@@ -73,7 +73,7 @@ const Sektion = ({ activeId, listRef }) => {
       }
 
       if (showFilter) {
-        setFilter({value: { ...filterSektion, ...{ [field]: newValue } }})
+        setFilter({ value: { ...filterSektion, ...{ [field]: newValue } } })
       } else {
         updateField({
           table: 'sektionen',

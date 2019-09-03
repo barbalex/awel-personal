@@ -23,7 +23,7 @@ const Data = ({ activeId, activeTable, listRef }) => {
   const dat = activeId ? store[activeTable].find(p => p.id === activeId) : []
 
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [dat])
+  useEffect(() => setErrors({}), [dat.id])
 
   useEffect(() => setDirty(false), [dat, setDirty])
 

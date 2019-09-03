@@ -53,7 +53,7 @@ const Amt = ({ activeId, listRef }) => {
   const amtId = showFilter ? '' : amt.id
 
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [amt])
+  useEffect(() => setErrors({}), [amt.id])
 
   useEffect(() => setDirty(false), [amt, setDirty])
 

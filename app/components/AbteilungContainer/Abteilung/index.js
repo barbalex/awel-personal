@@ -54,7 +54,7 @@ const Abteilung = ({ activeId, listRef }) => {
   const abteilungId = showFilter ? '' : abteilung.id
 
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [abteilung])
+  useEffect(() => setErrors({}), [abteilung.id])
 
   useEffect(() => setDirty(false), [abteilung, setDirty])
 

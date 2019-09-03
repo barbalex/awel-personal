@@ -199,17 +199,18 @@ const Person = ({ activeId, dimensions, listRef }) => {
     setDirty,
   } = store
 
+  console.log('Person', { showFilter, filterPerson })
+
   let person
   if (showFilter) {
     person = filterPerson
   } else {
-    person = personen.find(p => p.id === activeId)
-    if (!person) person = {}
+    person = personen.find(p => p.id === activeId) || {}
   }
   const personId = showFilter ? '' : person.id
 
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [person])
+  useEffect(() => setErrors({}), [person.id])
 
   useEffect(() => setDirty(false), [person, setDirty])
 

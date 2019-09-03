@@ -56,7 +56,7 @@ const Bereich = ({ activeId, listRef }) => {
   const bereichId = showFilter ? '' : bereich.id
 
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [bereich])
+  useEffect(() => setErrors({}), [bereich.id])
 
   useEffect(() => setDirty(false), [bereich, setDirty])
 

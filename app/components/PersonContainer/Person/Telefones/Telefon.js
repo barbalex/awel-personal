@@ -69,7 +69,7 @@ const Telefon = ({ id }) => {
   }
 
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [telefon])
+  useEffect(() => setErrors({}), [telefon.id])
 
   const telefoneTypOptions = sortBy(telefonTypWerte, ['sort', 'value'])
     .filter(w => !!w.value)
