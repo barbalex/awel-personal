@@ -56,7 +56,7 @@ const Sektion = ({ activeId, listRef }) => {
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [sektion.id])
 
-  useEffect(() => setDirty(false), [sektion, setDirty])
+  useEffect(() => setDirty(false), [sektion.id, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {

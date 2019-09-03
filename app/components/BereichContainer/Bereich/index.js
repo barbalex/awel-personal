@@ -58,7 +58,7 @@ const Bereich = ({ activeId, listRef }) => {
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [bereich.id])
 
-  useEffect(() => setDirty(false), [bereich, setDirty])
+  useEffect(() => setDirty(false), [bereich.id, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {

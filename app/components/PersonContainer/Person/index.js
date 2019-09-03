@@ -212,7 +212,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [person.id])
 
-  useEffect(() => setDirty(false), [person, setDirty])
+  useEffect(() => setDirty(false), [person.id, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {

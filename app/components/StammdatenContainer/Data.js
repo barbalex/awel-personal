@@ -25,7 +25,7 @@ const Data = ({ activeId, activeTable, listRef }) => {
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [dat.id])
 
-  useEffect(() => setDirty(false), [dat, setDirty])
+  useEffect(() => setDirty(false), [dat.id, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {

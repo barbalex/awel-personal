@@ -55,7 +55,7 @@ const Amt = ({ activeId, listRef }) => {
   const [errors, setErrors] = useState({})
   useEffect(() => setErrors({}), [amt.id])
 
-  useEffect(() => setDirty(false), [amt, setDirty])
+  useEffect(() => setDirty(false), [amt.id, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {
