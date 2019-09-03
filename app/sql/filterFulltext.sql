@@ -47,28 +47,28 @@ select
   as data
 from personen
 left join aemter
-on personen.amt = aemter.id
+  on personen.amt = aemter.id
 left join abteilungen
-on personen.abteilung = abteilungen.id
+  on personen.abteilung = abteilungen.id
 left join sektionen
-on personen.sektion = sektionen.id
+  on personen.sektion = sektionen.id
 left join bereiche
-on personen.bereich = bereiche.id
+  on personen.bereich = bereiche.id
 left join kaderFunktionen
-on kaderFunktionen.idPerson = personen.id
+  on kaderFunktionen.idPerson = personen.id
 left join funktionen
-on funktionen.idPerson = personen.id
+  on funktionen.idPerson = personen.id
 left join telefones
-on telefones.idPerson = personen.id
+  on telefones.idPerson = personen.id
 left join mobileAbos
-on mobileAbos.idPerson = personen.id
+  on mobileAbos.idPerson = personen.id
 left join schluessel
-on schluessel.idPerson = personen.id
+  on schluessel.idPerson = personen.id
 left join links
-on links.idPerson = personen.id
+  on links.idPerson = personen.id
 left join etiketten
-on etiketten.idPerson = personen.id
+  on etiketten.idPerson = personen.id
 left join anwesenheitstage
-on anwesenheitstage.idPerson = personen.id
+  on anwesenheitstage.idPerson = personen.id
 group by personen.id;
 
