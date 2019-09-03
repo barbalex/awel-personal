@@ -377,42 +377,46 @@ const Person = ({ activeId, dimensions, listRef }) => {
   )
 
   const addAnwesenheitstag = useCallback(
-    anwesenheitstag => {
+    tag => {
       if (showFilter) {
         setFilter({
           model: 'filterAnwesenheitstage',
-          value: { ...filterAnwesenheitstage, ...{ anwesenheitstag } },
+          value: { ...filterAnwesenheitstage, ...{ tag } },
         })
       } else {
-        store.addAnwesenheitstag(anwesenheitstag)
+        store.addAnwesenheitstag(tag)
       }
     },
     [showFilter, setFilter, filterAnwesenheitstage, store],
   )
   const deleteAnwesenheitstag = useCallback(
-    anwesenheitstag => {
+    tag => {
       if (showFilter) {
         setFilter({
           model: 'filterAnwesenheitstage',
-          value: { ...filterAnwesenheitstage, ...{ anwesenheitstag: null } },
+          value: { ...filterAnwesenheitstage, ...{ tag: null } },
         })
       } else {
-        store.deleteAnwesenheitstag(anwesenheitstag)
+        store.deleteAnwesenheitstag(tag)
       }
     },
     [filterAnwesenheitstage, setFilter, showFilter, store],
   )
-  const saveToDbAnwesenheitstage = useCallback(
+  const setFilterAnwesenheitstage = useCallback(
     ({ value }) => {
+      console.log('setFilterAnwesenheitstage:', {
+        value,
+        filterAnwesenheitstage,
+      })
       if (value) {
         return setFilter({
           model: 'filterAnwesenheitstage',
-          value: { ...filterAnwesenheitstage, ...{ anwesenheitstag: value } },
+          value: { ...filterAnwesenheitstage, ...{ tag: value } },
         })
       }
       setFilter({
         model: 'filterAnwesenheitstage',
-        value: { ...filterAnwesenheitstage, ...{ anwesenheitstag: null } },
+        value: { ...filterAnwesenheitstage, ...{ tag: null } },
       })
     },
     [filterAnwesenheitstage, setFilter],
@@ -444,7 +448,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
     },
     [filterFunktion, setFilter, showFilter, store],
   )
-  const saveToDbFunktion = useCallback(
+  const setFilterFunktion = useCallback(
     ({ value }) => {
       if (value) {
         return setFilter({
@@ -461,42 +465,42 @@ const Person = ({ activeId, dimensions, listRef }) => {
   )
 
   const addKaderFunktion = useCallback(
-    kaderFunktion => {
+    funktion => {
       if (showFilter) {
         setFilter({
           model: 'filterKaderFunktion',
-          value: { ...filterKaderFunktion, ...{ kaderFunktion } },
+          value: { ...filterKaderFunktion, ...{ funktion } },
         })
       } else {
-        store.addKaderFunktion(kaderFunktion)
+        store.addKaderFunktion(funktion)
       }
     },
     [showFilter, setFilter, filterKaderFunktion, store],
   )
   const deleteKaderFunktion = useCallback(
-    kaderFunktion => {
+    funktion => {
       if (showFilter) {
         setFilter({
           model: 'filterKaderFunktion',
-          value: { ...filterKaderFunktion, ...{ kaderFunktion: null } },
+          value: { ...filterKaderFunktion, ...{ funktion: null } },
         })
       } else {
-        store.deleteKaderFunktion(kaderFunktion)
+        store.deleteKaderFunktion(funktion)
       }
     },
     [filterKaderFunktion, setFilter, showFilter, store],
   )
-  const saveToDbKaderFunktion = useCallback(
+  const setFilterKaderFunktion = useCallback(
     ({ value }) => {
       if (value) {
         return setFilter({
           model: 'filterKaderFunktion',
-          value: { ...filterKaderFunktion, ...{ kaderFunktion: value } },
+          value: { ...filterKaderFunktion, ...{ funktion: value } },
         })
       }
       setFilter({
         model: 'filterKaderFunktion',
-        value: { ...filterKaderFunktion, ...{ kaderFunktion: null } },
+        value: { ...filterKaderFunktion, ...{ funktion: null } },
       })
     },
     [filterKaderFunktion, setFilter],
@@ -507,7 +511,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
     () =>
       sortBy(personen, ['name', 'vorname'])
         .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-        .filter(w => !showFilter && w.id !== person.id)
+        .filter(w => showFilter || (!showFilter && w.id !== person.id))
         .map(w => ({
           label: `${w.name} ${w.vorname}`,
           value: w.id,
@@ -673,7 +677,8 @@ const Person = ({ activeId, dimensions, listRef }) => {
           label: e.etikett,
           value: e.etikett,
         })),
-    [activeId, etiketten],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [activeId, JSON.stringify(etiketten)],
   )
   const myAnwesenheitstage = useMemo(
     () =>
@@ -688,7 +693,8 @@ const Person = ({ activeId, dimensions, listRef }) => {
           label: e.tag,
           value: e.tag,
         })),
-    [activeId, anwesenheitstagWerte, anwesenheitstage],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [activeId, anwesenheitstagWerte, JSON.stringify(anwesenheitstage)],
   )
   const myFunktionen = useMemo(
     () =>
@@ -699,7 +705,8 @@ const Person = ({ activeId, dimensions, listRef }) => {
           label: e.funktion,
           value: e.funktion,
         })),
-    [activeId, funktionen],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [activeId, JSON.stringify(funktionen)],
   )
   const myKaderFunktionen = useMemo(
     () =>
@@ -710,7 +717,8 @@ const Person = ({ activeId, dimensions, listRef }) => {
           label: e.funktion,
           value: e.funktion,
         })),
-    [activeId, kaderFunktionen],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [activeId, JSON.stringify(kaderFunktionen)],
   )
 
   if (!showFilter && !activeId) return null
@@ -724,6 +732,12 @@ const Person = ({ activeId, dimensions, listRef }) => {
     : showFilter
     ? WrapperWideShowFilter
     : WrapperWide
+
+  console.log('Person', {
+    filterFunktion,
+    myFunktionen,
+    funktionenOptions,
+  })
 
   return (
     <Container showfilter={showFilter}>
@@ -907,11 +921,11 @@ const Person = ({ activeId, dimensions, listRef }) => {
             {showFilter ? (
               <Select
                 key={`${personId}${existsFilter ? 1 : 0}anwesenheitstag`}
-                value={filterAnwesenheitstage.anwesenheitstage}
+                value={filterAnwesenheitstage.tag}
                 field="anwesenheitstage"
                 label="Anwesenheitstage"
                 options={anwesenheitstageOptions}
-                saveToDb={saveToDbAnwesenheitstage}
+                saveToDb={setFilterAnwesenheitstage}
                 error={errors.anwesenheitstage}
                 row={false}
               />
@@ -1007,7 +1021,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
                 field="funktion"
                 label="Funktion"
                 options={funktionenOptions}
-                saveToDb={saveToDbFunktion}
+                saveToDb={setFilterFunktion}
                 error={errors.funktion}
                 row={false}
               />
@@ -1031,7 +1045,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
                 field="funktion"
                 label="Kader-&shy;Funktion"
                 options={kaderFunktionenOptions}
-                saveToDb={saveToDbKaderFunktion}
+                saveToDb={setFilterKaderFunktion}
                 error={errors.kaderFunktion}
                 row={false}
               />

@@ -235,7 +235,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
     () =>
       sortBy(personen, ['name', 'vorname'])
         .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-        .filter(w => !showFilter && w.id !== person.id)
+        .filter(w => showFilter || (!showFilter && w.id !== person.id))
         .map(w => ({
           label: `${w.name} ${w.vorname}`,
           value: w.id,
