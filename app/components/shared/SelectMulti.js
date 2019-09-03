@@ -50,6 +50,7 @@ const SharedSelectMulti = ({
     },
     [add, remove],
   )
+  console.log('SelectMulti', { value, field, label, row, options })
 
   return (
     <StyledFormGroup row={row}>
