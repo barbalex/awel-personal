@@ -36,6 +36,7 @@
   "build": {
     "productName": "Personal",
     "appId": "ch.zh.awel.personal",
+    "copyright": "AWEL Kt. Zürich, Schweiz",
     "files": [
       "app/dist/",
       "app/app.html",
@@ -88,7 +89,7 @@
     "url": "git+https://github.com/barbalex/awel-personal.git"
   },
   "author": {
-    "name": "Gabriel-Software",
+    "name": "Alexander Gabriel",
     "email": "alex@gabriel-software.ch",
     "url": "https://gabriel-software.ch"
   },
