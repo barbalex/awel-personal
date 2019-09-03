@@ -199,11 +199,11 @@ const Person = ({ activeId, dimensions, listRef }) => {
     setDirty,
   } = store
 
-  console.log('Person', {
+  /*console.log('Person', {
     showFilter,
     filterPerson,
     filterTelefon: store.filterTelefon,
-  })
+  })*/
 
   let person
   if (showFilter) {
