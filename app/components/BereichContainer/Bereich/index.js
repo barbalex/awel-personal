@@ -56,9 +56,13 @@ const Bereich = ({ activeId, listRef }) => {
   const bereichId = showFilter ? '' : bereich.id
 
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [bereich.id])
+  useEffect(() => {
+    setErrors({})
+  }, [bereich.id])
 
-  useEffect(() => setDirty(false), [bereich.id, setDirty])
+  useEffect(() => {
+    setDirty(false)
+  }, [bereich.id, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {

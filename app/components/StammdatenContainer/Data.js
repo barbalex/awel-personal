@@ -23,9 +23,13 @@ const Data = ({ activeId, activeTable, listRef }) => {
   const dat = activeId ? store[activeTable].find(p => p.id === activeId) : []
 
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [dat.id])
+  useEffect(() => {
+    setErrors({})
+  }, [dat.id])
 
-  useEffect(() => setDirty(false), [dat.id, setDirty])
+  useEffect(() => {
+    setDirty(false)
+  }, [dat.id, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {

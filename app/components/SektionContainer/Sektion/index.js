@@ -54,9 +54,13 @@ const Sektion = ({ activeId, listRef }) => {
   const sektionId = showFilter ? '' : sektion.id
 
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [sektion.id])
+  useEffect(() => {
+    setErrors({})
+  }, [sektion.id])
 
-  useEffect(() => setDirty(false), [sektion.id, setDirty])
+  useEffect(() => {
+    setDirty(false)
+  }, [sektion.id, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {

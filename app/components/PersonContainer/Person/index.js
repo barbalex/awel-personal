@@ -208,9 +208,13 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const personId = showFilter ? '' : person.id
 
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [person.id])
+  useEffect(() => {
+    setErrors({})
+  }, [person.id])
 
-  useEffect(() => setDirty(false), [person.id, setDirty])
+  useEffect(() => {
+    setDirty(false)
+  }, [person.id, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {

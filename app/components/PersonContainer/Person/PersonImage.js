@@ -80,7 +80,7 @@ const PersonImage = () => {
 
   // eslint-disable-next-line no-unused-vars
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [person.id])
+  useEffect(() => { setErrors({}) }, [person.id])
 
   const [image, setImage] = useState(null)
 

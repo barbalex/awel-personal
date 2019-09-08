@@ -69,7 +69,7 @@ const SchluesselComponent = ({ id }) => {
   }
 
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [schluessel.id])
+  useEffect(() => { setErrors({}) }, [schluessel.id])
 
   const schluesselTypOptions = sortBy(schluesselTypWerte, ['sort', 'value'])
     .filter(w => !!w.value)

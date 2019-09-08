@@ -71,7 +71,7 @@ const MobileAbo = ({ id }) => {
   }
 
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [mobileAbo.id])
+  useEffect(() => { setErrors({}) }, [mobileAbo.id])
 
   const mobileAboTypOptions = sortBy(mobileAboTypWerte, ['sort', 'value'])
     .filter(w => !!w.value)

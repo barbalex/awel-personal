@@ -110,7 +110,9 @@ const DateField = ({ value, field, label, saveToDb, error, row = true }) => {
 
   // without lifecycle state value does not immediately update
   // after user enters new date
-  useEffect(() => setStateValue(value || value === 0 ? value : ''), [value])
+  useEffect(() => {
+    setStateValue(value || value === 0 ? value : '')
+  }, [value])
 
   return (
     <StyledFormGroup row={row}>

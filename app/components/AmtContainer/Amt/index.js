@@ -53,9 +53,13 @@ const Amt = ({ activeId, listRef }) => {
   const amtId = showFilter ? '' : amt.id
 
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [amt.id])
+  useEffect(() => {
+    setErrors({})
+  }, [amt.id])
 
-  useEffect(() => setDirty(false), [amt.id, setDirty])
+  useEffect(() => {
+    setDirty(false)
+  }, [amt.id, setDirty])
 
   const saveToDb = useCallback(
     ({ field, value }) => {

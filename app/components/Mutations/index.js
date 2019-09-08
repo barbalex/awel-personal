@@ -142,7 +142,9 @@ const Mutations = () => {
     [],
   )
 
-  useEffect(() => fetchMutations({ db, setMutations }), [db, setMutations])
+  useEffect(() => {
+    fetchMutations({ db, setMutations })
+  }, [db, setMutations])
 
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const mutations = sortBy(rawMutations.slice(), 'id')

@@ -33,7 +33,9 @@ const SharedCheckbox = ({
     return setStateValue(newValue)
   }, [stateValue, saveToDb, field])
 
-  useEffect(() => setStateValue(!!value), [value])
+  useEffect(() => {
+    setStateValue(!!value)
+  }, [value])
 
   if (row) {
     return (

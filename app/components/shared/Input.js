@@ -58,7 +58,9 @@ const SharedInput = ({
 
   // need this check because of filtering:
   // when filter is emptied, value needs to reset
-  useEffect(() => setStateValue(value || value === 0 ? value : ''), [value])
+  useEffect(() => {
+    setStateValue(value || value === 0 ? value : '')
+  }, [value])
 
   return (
     <StyledFormGroup row={row}>

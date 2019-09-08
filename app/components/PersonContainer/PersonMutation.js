@@ -145,7 +145,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
   )
 
   const [errors, setErrors] = useState({})
-  useEffect(() => setErrors({}), [person.id])
+  useEffect(() => { setErrors({}) }, [person.id])
 
   const saveToDb = useCallback(
     ({ field, value }) => {
