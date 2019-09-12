@@ -81,7 +81,7 @@ const PersonPrintVerzTelColumn = ({ pageIndex, columnIndex }) => {
   const column = page[`column${columnIndex}`]
   const { rows, full: columnIsFull } = column
 
-  const next = () => {
+  setTimeout(() => {
     /**
      * - measure height of pageSize-component
      * - if > desired page height:
@@ -117,15 +117,11 @@ const PersonPrintVerzTelColumn = ({ pageIndex, columnIndex }) => {
           moveRowToNewColumn()
         } else {
           // for unknown reason setTimeout is needed
-          setTimeout(() => {
-            stop()
-          })
+          setTimeout(() => stop())
         }
       }
     }
-  }
-
-  setTimeout(() => next())
+  })
 
   if (!rows) return null
 
