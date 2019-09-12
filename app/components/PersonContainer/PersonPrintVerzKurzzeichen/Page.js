@@ -26,7 +26,6 @@ const Container = styled.div`
   padding: 1.2cm;
 
   overflow: hidden;
-  overflow-y: visible;
 
   font-size: 10.5px;
   font-family: Arial, Helvetica, sans-serif;
@@ -59,34 +58,39 @@ const Container = styled.div`
  * and give it full page size
  */
 const InnerPageContainer = styled.div`
+  position: relative;
+  top: 0.2cm;
+  height: 18.2cm;
+  width: 27.3cm;
   display: grid;
   grid-template-rows: 5mm 16.75cm 5mm;
   grid-column-gap: 2mm;
-  grid-template-areas:
-    'title title title'
-    'column0 column1 column2';
-  max-height: 18.1cm;
+  grid-template-areas: 'column0 column1 column2';
+  max-height: 18.6cm;
   max-width: 27.3cm;
   /*
-   * need overflow while building list
-   * so list does not flow outside padding
-   */
+ * need overflow while building list
+ * so list does not flow outside padding
+ */
   overflow-y: ${props => (props.building ? 'auto' : 'hidden')};
   overflow-x: hidden;
 `
 const Footer = styled.div`
   position: relative;
-  bottom: 0;
-  height: 0.5cm;
+  bottom: 0.5cm;
+  height: 0.3cm;
   width: 27.3cm;
   display: flex;
   justify-content: space-between;
 `
 const Title = styled.div`
-  grid-area: title;
+  position: relative;
+  top: 0;
+  height: 0.4cm;
+  width: 27.3cm;
   font-size: 1.2em;
-  justify-self: center;
   font-family: Arial Black;
+  text-align: center;
 `
 const Column0 = styled.div`
   grid-area: column0;
@@ -105,8 +109,8 @@ const PersonPrintVerzKurzzeichenPage = ({ pageIndex }) => {
 
   return (
     <Container>
+      <Title>AWEL Kurzzeichen-Verzeichnis</Title>
       <InnerPageContainer building={building}>
-        <Title>AWEL Kurzzeichen-Verzeichnis</Title>
         <Column0>
           <Column pageIndex={pageIndex} columnIndex={0} />
         </Column0>
