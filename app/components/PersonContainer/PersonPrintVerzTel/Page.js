@@ -60,7 +60,7 @@ const Container = styled.div`
  */
 const InnerPageContainer = styled.div`
   display: grid;
-  grid-template-rows: 5mm 17.35cm 5mm;
+  grid-template-rows: 5mm 16.75cm 5mm;
   grid-column-gap: 2mm;
   grid-template-areas:
     'title title title'
@@ -74,6 +74,14 @@ const InnerPageContainer = styled.div`
    */
   overflow-y: ${props => (props.building ? 'auto' : 'hidden')};
   overflow-x: hidden;
+`
+const Footer = styled.div`
+  position: relative;
+  bottom: 0;
+  height: 0.5cm;
+  width: 27.3cm;
+  display: flex;
+  justify-content: space-between;
 `
 const Title = styled.div`
   grid-area: title;
@@ -89,12 +97,6 @@ const Column1 = styled.div`
 `
 const Column2 = styled.div`
   grid-area: column2;
-`
-const Footer = styled.div`
-  grid-area: footer;
-  display: flex;
-  justify-content: space-between;
-  padding-right: 2mm;
 `
 
 const PersonPrintVerzTelPage = ({ pageIndex }) => {
@@ -115,13 +117,13 @@ const PersonPrintVerzTelPage = ({ pageIndex }) => {
         <Column2>
           <Column pageIndex={pageIndex} columnIndex={2} />
         </Column2>
-        <Footer>
-          <div>{`Stand: ${moment().format('DD.MM.YYYY')}`}</div>
-          <div>
-            Seite {pageIndex + 1}/{pages.length}
-          </div>
-        </Footer>
       </InnerPageContainer>
+      <Footer>
+        <div>{`Stand: ${moment().format('DD.MM.YYYY')}`}</div>
+        <div>
+          Seite {pageIndex + 1}/{pages.length}
+        </div>
+      </Footer>
     </Container>
   )
 }
