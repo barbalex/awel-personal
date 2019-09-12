@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useRef } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 
@@ -120,11 +120,7 @@ const PersonPrintVerzKurzzeichenColumn = ({ pageIndex, columnIndex }) => {
     }
   }
 
-  // DO NOT add next function in here
-  // reason: cant cancel build and renders wrong !!??
-  useEffect(() => {
-    next()
-  })
+  setTimeout(() => next())
 
   if (!rows) return null
 

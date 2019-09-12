@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useRef } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
+import get from 'lodash/get'
 
 import storeContext from '../../../storeContext'
 
@@ -92,8 +93,12 @@ const PersonPrintVerzTelColumn = ({ pageIndex, columnIndex }) => {
      */
     // don't do anything on not active pages
     if (pageIndex === activePageIndex) {
-      const offsetHeight = containerEl ? containerEl.current.offsetHeight : null
-      const scrollHeight = containerEl ? containerEl.current.scrollHeight : null
+      const offsetHeight = get(containerEl, 'current.offsetHeight')
+        ? containerEl.current.offsetHeight
+        : null
+      const scrollHeight = get(containerEl, 'current.scrollHeight')
+        ? containerEl.current.scrollHeight
+        : null
 
       if (!pageIsFull && remainingRows.length > 0) {
         if (offsetHeight < scrollHeight) {
@@ -120,11 +125,7 @@ const PersonPrintVerzTelColumn = ({ pageIndex, columnIndex }) => {
     }
   }
 
-  // DO NOT add next function in here
-  // reason: cant cancel build and renders wrong !!??
-  useEffect(() => {
-    next()
-  })
+  setTimeout(() => next())
 
   if (!rows) return null
 
