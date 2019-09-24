@@ -116,7 +116,7 @@ const More = () => {
           Fehler und Wünsche melden
         </DropdownItem>
         <DropdownItem divider />
-        <Version>Version: 1.2.4 vom 12.09.2019</Version>
+        <Version>Version: 1.2.5 vom 24.09.2019</Version>
       </DropdownMenu>
     </MoreMenu>
   )
