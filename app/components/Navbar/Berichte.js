@@ -56,14 +56,17 @@ const Berichte = () => {
   const onClickPrint = useCallback(() => {
     setPrinting(true)
     setTimeout(() => {
+      //window.print()
       const win = remote.getCurrentWindow()
-      win.webContents.print({
-        silent: false,
-        // TODO: true does not work!!!???
-        printBackground: true,
-        deviceName: '',
-      })
-      setTimeout(() => setPrinting(false))
+      win.webContents.print(
+        {
+          silent: false,
+          // TODO: true does not work!!!???
+          printBackground: true,
+          deviceName: '',
+        },
+        () => setPrinting(false),
+      )
     })
   }, [setPrinting])
   const onClickCreatePdf = useCallback(() => {
@@ -93,7 +96,11 @@ const Berichte = () => {
     setTimeout(() => {
       // https://electronjs.org/docs/api/web-contents#contentsprinttopdfoptions-callback
       win.webContents.printToPDF(printToPDFOptions, (error, data) => {
-        if (error) throw error
+        if (error) {
+          setPrinting(false)
+          throw error
+        }
+        setPrinting(false)
         dialog.showSaveDialog(dialogOptions, filePath => {
           if (filePath) {
             fs.writeFile(filePath, data, err => {
@@ -103,7 +110,6 @@ const Berichte = () => {
           }
         })
       })
-      setTimeout(() => setPrinting(false))
     })
   }, [activePrintForm, location, setPrinting, settings.mutationFormPath])
 
