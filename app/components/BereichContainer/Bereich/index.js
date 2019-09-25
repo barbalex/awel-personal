@@ -127,12 +127,12 @@ const Bereich = ({ activeId, listRef }) => {
     () =>
       sortBy(personen, ['name', 'vorname'])
         .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-        .filter(w => !showFilter && w.id !== bereich.leiter)
+        .filter(w => !showFilter)
         .map(w => ({
           label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
-    [bereich.leiter, personen, showFilter],
+    [personen, showFilter],
   )
   const kostenstelleOptions = useMemo(
     () =>

@@ -123,12 +123,12 @@ const Sektion = ({ activeId, listRef }) => {
     () =>
       sortBy(personen, ['name', 'vorname'])
         .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-        .filter(w => !showFilter && w.id !== sektion.leiter)
+        .filter(w => !showFilter)
         .map(w => ({
           label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
-    [personen, sektion.leiter, showFilter],
+    [personen, showFilter],
   )
   const kostenstelleOptions = useMemo(
     () =>

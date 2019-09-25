@@ -84,6 +84,11 @@ const Abteilung = ({ activeId, listRef }) => {
           value: { ...filterAbteilung, ...{ [field]: newValue } },
         })
       } else {
+        console.log('Abteilung, will update:', {
+          field,
+          value: newValue,
+          id: abteilung.id,
+        })
         updateField({
           table: 'abteilungen',
           parentModel: 'abteilungen',
@@ -132,12 +137,12 @@ const Abteilung = ({ activeId, listRef }) => {
     () =>
       sortBy(personen, ['name', 'vorname'])
         .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-        .filter(w => !showFilter && w.id !== abteilung.leiter)
+        .filter(w => !showFilter)
         .map(w => ({
           label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
-    [abteilung.leiter, personen, showFilter],
+    [personen, showFilter],
   )
   const amtOptions = useMemo(
     () =>
@@ -169,6 +174,8 @@ const Abteilung = ({ activeId, listRef }) => {
         })),
     [standortWerte],
   )
+
+  console.log('Abteilung', { abteilung, personOptions })
 
   if (!showFilter && !activeId) return null
 
