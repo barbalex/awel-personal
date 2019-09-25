@@ -31,8 +31,8 @@ const Container = styled.div`
     background-color: #fff;
     /* with overflow auto an empty page is inserted between each page */
     overflow-y: visible;
-    /* make sure body grows as needed */
-    height: auto !important;
+    height: 29.7cm;
+    width: 21cm;
 
     page-break-inside: avoid;
     page-break-before: avoid;
@@ -61,12 +61,10 @@ const PageContainer = styled.div`
   overflow-y: visible;
 
   @media print {
-    /* this is when it is actually printed */
-    height: inherit;
-    width: inherit;
-
     margin: 0 !important;
     padding: 0.5cm !important;
+    height: 100%;
+    width: 100%;
     overflow-y: hidden !important;
     /* try this */
     page-break-inside: avoid !important;
