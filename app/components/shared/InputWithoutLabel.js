@@ -12,6 +12,9 @@ const SharedInputWithoutLabel = ({
   placeholder = '',
   disabled = false,
   saveToDb,
+  // need this to run on blur even if value has not changed
+  // used in: Mutationsformular, edit path
+  callback,
   error,
 }) => {
   const store = useContext(storeContext)
@@ -29,6 +32,7 @@ const SharedInputWithoutLabel = ({
       // only save if value has changed
       if (!showFilter && (!newValue && !value && value !== 0 && newValue !== 0))
         return
+      callback && callback()
       if (!showFilter && newValue === value) return
       saveToDb({ value: newValue, field })
       setDirty(false)

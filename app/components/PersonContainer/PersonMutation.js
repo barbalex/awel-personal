@@ -139,13 +139,15 @@ const PersonMutation = ({ activeId, dimensions }) => {
   const onSavePdfPath = useCallback(
     ({ value }) => {
       setSettingsKey({ key: 'mutationFormPath', value })
-      setEditPdfPath(false)
     },
     [setSettingsKey],
   )
+  const callbackPdfPath = useCallback(() => setEditPdfPath(false), [])
 
   const [errors, setErrors] = useState({})
-  useEffect(() => { setErrors({}) }, [person.id])
+  useEffect(() => {
+    setErrors({})
+  }, [person.id])
 
   const saveToDb = useCallback(
     ({ field, value }) => {
@@ -599,17 +601,10 @@ const PersonMutation = ({ activeId, dimensions }) => {
               <WRRight>
                 {editPdfPath ? (
                   <InputGroup>
-                    <StyledButton
-                      outline={true}
-                      onClick={() => setActivePrintForm('personMutation')}
-                      className="no-print"
-                      title="drucken"
-                    >
-                      Drucken
-                    </StyledButton>
                     <InputWithoutLabel
                       value={settings.mutationFormPath}
                       saveToDb={onSavePdfPath}
+                      callback={callbackPdfPath}
                       type="textarea"
                     />
                   </InputGroup>
