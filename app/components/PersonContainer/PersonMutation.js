@@ -67,6 +67,8 @@ const AreaWeiterleiten = styled(Area)`
 `
 const WRLeft = styled.div`
   display: flex;
+  height: 34px;
+  padding-right: 8px;
 `
 const StyledButton = styled(Button)`
   background-color: rgba(0, 0, 0, 0) !important;
@@ -80,12 +82,16 @@ const WLButton = styled(StyledButton)`
   margin-left: 8px;
 `
 const EditText = styled.div`
-  margin-top: 6px;
+  margin-top: 4px;
 `
 const EditIcon = styled(MdEdit)`
   margin-top: -4px;
 `
 const WRRight = styled.div`
+  height: 34px;
+  > div {
+    height: 34px;
+  }
   textarea {
     width: 570px !important;
   }
