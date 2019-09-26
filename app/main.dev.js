@@ -9,7 +9,7 @@
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  *
  */
-import { app, BrowserWindow, Menu } from 'electron'
+import { app, BrowserWindow, Menu, dialog } from 'electron'
 import MenuBuilder from './menu'
 
 let mainWindow = null
@@ -81,6 +81,14 @@ app.on('ready', async () => {
       mainWindow.show()
       mainWindow.focus()
     }
+  })
+
+  mainWindow.on('close', e => {
+    e.preventDefault()
+    // in case user has changed data inside an input and not blured yet,
+    // force bluring so data is saved
+    mainWindow.webContents.executeJavaScript('document.activeElement.blur()')
+    mainWindow.destroy()
   })
 
   mainWindow.on('closed', () => {
