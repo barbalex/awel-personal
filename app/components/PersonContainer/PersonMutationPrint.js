@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import Linkify from 'react-linkify'
 import styled from 'styled-components'
 import moment from 'moment'
+import get from 'lodash/get'
 
 import storeContext from '../../storeContext'
 import LogoAwel from '../../etc/LogoAwel.jpg'
@@ -163,7 +164,16 @@ const Field = ({ label, value }) => (
 
 const PersonMutationPrint = ({ activeId }) => {
   const store = useContext(storeContext)
-  const { personen, showFilter, existsFilter, settings } = store
+  const {
+    personen,
+    bereiche,
+    sektionen,
+    abteilungen,
+    aemter,
+    showFilter,
+    existsFilter,
+    settings,
+  } = store
 
   const person = personen.find(p => p.id === activeId)
   const personId = person.id
@@ -178,6 +188,14 @@ const PersonMutationPrint = ({ activeId }) => {
 
   const tv = personen.find(p => p.id === person.telefonUebernommenVon)
   const telefonUebernommenVon = tv ? `${tv.name} ${tv.vorname}` : ''
+
+  const amtName = get(aemter.find(a => a.id === person.amt), 'name') || ''
+  const abteilungName =
+    get(abteilungen.find(a => a.id === person.abteilung), 'name') || ''
+  const sektionName =
+    get(sektionen.find(a => a.id === person.sektion), 'name') || ''
+  const bereichName =
+    get(bereiche.find(a => a.id === person.bereich), 'name') || ''
 
   return (
     <div className="printer-content">
@@ -219,24 +237,20 @@ const PersonMutationPrint = ({ activeId }) => {
                     value={person.kurzzeichen}
                     label="Kurz&shy;zei&shy;chen"
                   />
-                  <Field
-                    key={`${personId}amt`}
-                    value={person.amt}
-                    label="Amt"
-                  />
+                  <Field key={`${personId}amt`} value={amtName} label="Amt" />
                   <Field
                     key={`${personId}abteilung`}
-                    value={person.abteilung}
+                    value={abteilungName}
                     label="Abtei&shy;lung"
                   />
                   <Field
                     key={`${personId}sektion`}
-                    value={person.sektion}
+                    value={sektionName}
                     label="Sektion"
                   />
                   <Field
                     key={`${personId}bereich`}
-                    value={person.bereich}
+                    value={bereichName}
                     label="Bereich"
                   />
                   <Field
