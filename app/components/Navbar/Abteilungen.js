@@ -83,10 +83,15 @@ const Abteilung = () => {
       )
       setDeletionTitle('Abteilung löschen')
     }
-  }, [abteilungen, activeId, setDeletionCallback, setDeletionMessage, setDeletionTitle, store])
+  }, [
+    abteilungen,
+    activeId,
+    setDeletionCallback,
+    setDeletionMessage,
+    setDeletionTitle,
+    store,
+  ])
 
-  const mayAddNewAbteilung =
-    abteilungenFiltered.filter(p => !p.name && !p.vorname).length === 0
   const abteilungenSum = showDeleted
     ? abteilungen.length
     : abteilungen.filter(p => p.deleted === 0).length
@@ -110,18 +115,12 @@ const Abteilung = () => {
       )}
       {active && (
         <>
-          <StyledButton
-            id="newAbteilungButton"
-            onClick={addAbteilung}
-            disabled={!mayAddNewAbteilung}
-          >
+          <StyledButton id="newAbteilungButton" onClick={addAbteilung}>
             <FaPlus />
           </StyledButton>
-          {mayAddNewAbteilung && (
-            <UncontrolledTooltip placement="bottom" target="newAbteilungButton">
-              neue Abteilung erfassen
-            </UncontrolledTooltip>
-          )}
+          <UncontrolledTooltip placement="bottom" target="newAbteilungButton">
+            neue Abteilung erfassen
+          </UncontrolledTooltip>
           <StyledButton
             id="deleteAbteilungButton"
             onClick={deleteAbteilung}

@@ -79,10 +79,15 @@ const Amt = () => {
       )
       setDeletionTitle('Amt löschen')
     }
-  }, [activeId, aemter, setDeletionCallback, setDeletionMessage, setDeletionTitle, store])
+  }, [
+    activeId,
+    aemter,
+    setDeletionCallback,
+    setDeletionMessage,
+    setDeletionTitle,
+    store,
+  ])
 
-  const mayAddNewAmt =
-    aemterFiltered.filter(p => !p.name && !p.vorname).length === 0
   const aemterSum = showDeleted
     ? aemter.length
     : aemter.filter(p => p.deleted === 0).length
@@ -106,18 +111,12 @@ const Amt = () => {
       )}
       {active && (
         <>
-          <StyledButton
-            id="newAmtButton"
-            onClick={addAmt}
-            disabled={!mayAddNewAmt}
-          >
+          <StyledButton id="newAmtButton" onClick={addAmt}>
             <FaPlus />
           </StyledButton>
-          {mayAddNewAmt && (
-            <UncontrolledTooltip placement="bottom" target="newAmtButton">
-              neues Amt erfassen
-            </UncontrolledTooltip>
-          )}
+          <UncontrolledTooltip placement="bottom" target="newAmtButton">
+            neues Amt erfassen
+          </UncontrolledTooltip>
           <StyledButton
             id="deleteAmtButton"
             onClick={deleteAmt}

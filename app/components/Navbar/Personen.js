@@ -84,11 +84,16 @@ const Person = () => {
       )
       setDeletionTitle('Person löschen')
     }
-  }, [personen, activeId, setDeletionCallback, setDeletionMessage, setDeletionTitle, store])
+  }, [
+    personen,
+    activeId,
+    setDeletionCallback,
+    setDeletionMessage,
+    setDeletionTitle,
+    store,
+  ])
 
   const existsActivePerson = activeLocation === 'Personen' && location[1]
-  const mayAddNewPerson =
-    personenFiltered.filter(p => !p.name && !p.vorname).length === 0
   const personenSum = showDeleted
     ? personen.length
     : personen.filter(p => p.deleted === 0).length
@@ -111,18 +116,12 @@ const Person = () => {
       )}
       {active && (
         <>
-          <StyledButton
-            id="newPersonButton"
-            onClick={addPerson}
-            disabled={!mayAddNewPerson}
-          >
+          <StyledButton id="newPersonButton" onClick={addPerson}>
             <FaPlus />
           </StyledButton>
-          {mayAddNewPerson && (
-            <UncontrolledTooltip placement="bottom" target="newPersonButton">
-              neue Person erfassen
-            </UncontrolledTooltip>
-          )}
+          <UncontrolledTooltip placement="bottom" target="newPersonButton">
+            neue Person erfassen
+          </UncontrolledTooltip>
           <StyledButton
             id="deletePersonButton"
             onClick={deletePerson}

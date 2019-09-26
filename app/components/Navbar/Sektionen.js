@@ -81,10 +81,15 @@ const Sektion = () => {
       )
       setDeletionTitle('Sektion löschen')
     }
-  }, [sektionen, activeId, setDeletionCallback, setDeletionMessage, setDeletionTitle, store])
+  }, [
+    sektionen,
+    activeId,
+    setDeletionCallback,
+    setDeletionMessage,
+    setDeletionTitle,
+    store,
+  ])
 
-  const mayAddNewSektion =
-    sektionenFiltered.filter(p => !p.name && !p.vorname).length === 0
   const sektionenSum = showDeleted
     ? sektionen.length
     : sektionen.filter(p => p.deleted === 0).length
@@ -108,18 +113,12 @@ const Sektion = () => {
       )}
       {active && (
         <>
-          <StyledButton
-            id="newSektionButton"
-            onClick={addSektion}
-            disabled={!mayAddNewSektion}
-          >
+          <StyledButton id="newSektionButton" onClick={addSektion}>
             <FaPlus />
           </StyledButton>
-          {mayAddNewSektion && (
-            <UncontrolledTooltip placement="bottom" target="newSektionButton">
-              neue Sektion erfassen
-            </UncontrolledTooltip>
-          )}
+          <UncontrolledTooltip placement="bottom" target="newSektionButton">
+            neue Sektion erfassen
+          </UncontrolledTooltip>
           <StyledButton
             id="deleteSektionButton"
             onClick={deleteSektion}

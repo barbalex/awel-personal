@@ -81,10 +81,15 @@ const Bereich = () => {
       )
       setDeletionTitle('Bereich löschen')
     }
-  }, [activeId, bereiche, setDeletionCallback, setDeletionMessage, setDeletionTitle, store])
+  }, [
+    activeId,
+    bereiche,
+    setDeletionCallback,
+    setDeletionMessage,
+    setDeletionTitle,
+    store,
+  ])
 
-  const mayAddNewBereich =
-    bereicheFiltered.filter(p => !p.name && !p.vorname).length === 0
   const bereicheSum = showDeleted
     ? bereiche.length
     : bereiche.filter(p => p.deleted === 0).length
@@ -108,18 +113,12 @@ const Bereich = () => {
       )}
       {active && (
         <>
-          <StyledButton
-            id="newBereichButton"
-            onClick={addBereich}
-            disabled={!mayAddNewBereich}
-          >
+          <StyledButton id="newBereichButton" onClick={addBereich}>
             <FaPlus />
           </StyledButton>
-          {mayAddNewBereich && (
-            <UncontrolledTooltip placement="bottom" target="newBereichButton">
-              neuen Bereich erfassen
-            </UncontrolledTooltip>
-          )}
+          <UncontrolledTooltip placement="bottom" target="newBereichButton">
+            neuen Bereich erfassen
+          </UncontrolledTooltip>
           <StyledButton
             id="deleteBereichButton"
             onClick={deleteBereich}

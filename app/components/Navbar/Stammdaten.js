@@ -38,11 +38,6 @@ const Stammdaten = () => {
   if (activeTable.includes('Werte')) {
     stammdatenCount = store[activeTable].length
   }
-  let mayAddNewWert
-  if (activeTable && store[activeTable]) {
-    mayAddNewWert =
-      store[activeTable].filter(p => p.deleted === 0 && !p.value).length === 0
-  }
   const existsActiveWert = activeTable.includes('Werte') && location[1]
 
   const addWert = useCallback(() => {
@@ -165,21 +160,12 @@ const Stammdaten = () => {
       </UncontrolledDropdown>
       {activeTable.includes('Werte') && (
         <>
-          <StyledButton
-            id="newStammdatenButton"
-            onClick={addWert}
-            disabled={!mayAddNewWert}
-          >
+          <StyledButton id="newStammdatenButton" onClick={addWert}>
             <FaPlus />
           </StyledButton>
-          {mayAddNewWert && (
-            <UncontrolledTooltip
-              placement="bottom"
-              target="newStammdatenButton"
-            >
-              neuen Wert erfassen
-            </UncontrolledTooltip>
-          )}
+          <UncontrolledTooltip placement="bottom" target="newStammdatenButton">
+            neuen Wert erfassen
+          </UncontrolledTooltip>
           <StyledButton
             id="deleteStammdatenButton"
             onClick={deleteWert}
