@@ -146,6 +146,12 @@ export default db =>
         building: false,
       }),
     })
+    // functions are not serializable
+    // so need to define this as volatile
+    .volatile(() => ({
+      deletionCallback: null,
+      errors: [],
+    }))
     .views(self => ({
       get activeForm() {
         const location = self.location.toJSON()
@@ -294,12 +300,6 @@ export default db =>
         // revert this one to revert last undo
         return last(self.userRevertions)
       },
-    }))
-    // functions are not serializable
-    // so need to define this as volatile
-    .volatile(() => ({
-      deletionCallback: null,
-      errors: [],
     }))
     .actions(self => {
       setUndoManager(self)
