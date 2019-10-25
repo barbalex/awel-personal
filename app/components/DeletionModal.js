@@ -1,6 +1,7 @@
 import React, { useContext, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import ErrorBoundary from 'react-error-boundary'
 
 import storeContext from '../storeContext'
 
@@ -18,7 +19,12 @@ const DeletionModal = () => {
     setDeletionCallback(null)
     setDeletionTitle(null)
     setDeletionMessage(null)
-  }, [deletionCallback, setDeletionCallback, setDeletionMessage, setDeletionTitle])
+  }, [
+    deletionCallback,
+    setDeletionCallback,
+    setDeletionMessage,
+    setDeletionTitle,
+  ])
   const close = useCallback(() => {
     setDeletionCallback(null)
     setDeletionTitle(null)
@@ -26,18 +32,20 @@ const DeletionModal = () => {
   }, [setDeletionCallback, setDeletionMessage, setDeletionTitle])
 
   return (
-    <Modal isOpen={!!store.deletionMessage} toggle={close}>
-      <ModalHeader toggle={close}>{store.deletionTitle}</ModalHeader>
-      <ModalBody>{store.deletionMessage}</ModalBody>
-      <ModalFooter>
-        <Button color="primary" onClick={remove} outline>
-          ja
-        </Button>
-        <Button color="secondary" onClick={close} outline>
-          nein
-        </Button>
-      </ModalFooter>
-    </Modal>
+    <ErrorBoundary>
+      <Modal isOpen={!!store.deletionMessage} toggle={close}>
+        <ModalHeader toggle={close}>{store.deletionTitle}</ModalHeader>
+        <ModalBody>{store.deletionMessage}</ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={remove} outline>
+            ja
+          </Button>
+          <Button color="secondary" onClick={close} outline>
+            nein
+          </Button>
+        </ModalFooter>
+      </Modal>
+    </ErrorBoundary>
   )
 }
 
