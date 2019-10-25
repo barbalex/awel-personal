@@ -9,7 +9,7 @@ import getDataArrayFromExportObjects from './getDataArrayFromExportObjects'
 
 const { dialog } = remote
 
-export default ({
+export default async ({
   exportObjects,
   setModalOpen,
   setModalMessage,
@@ -25,27 +25,28 @@ export default ({
       },
     ],
   }
-  dialog.showSaveDialog(dialogOptions, path => {
-    if (path) {
-      setModalMessage('Der Export wird aufgebaut...')
-      setModalOpen(true)
-      // set timeout so message appears before exceljs starts working
-      // and possibly blocks execution of message
-      setTimeout(async () => {
-        const dataArray = getDataArrayFromExportObjects({
-          exportObjects,
-          sorting,
-        })
-        try {
-          await writeExport(path, dataArray)
-        } catch (error) {
-          setModalMessage(`Fehler: ${error.message}`)
-          setModalOpen(true)
-          setTimeout(() => setModalOpen(false), 8000)
-        }
+  const { filePath: path } = await dialog.showSaveDialog(dialogOptions)
+  if (path) {
+    setModalMessage('Der Export wird aufgebaut...')
+    setModalOpen(true)
+    // set timeout so message appears before exceljs starts working
+    // and possibly blocks execution of message
+    setTimeout(() => {
+      const dataArray = getDataArrayFromExportObjects({
+        exportObjects,
+        sorting,
+      })
+      const callback = () => {
         setModalOpen(false)
         shell.openItem(path)
-      }, 0)
-    }
-  })
+      }
+      try {
+        writeExport(path, dataArray, callback)
+      } catch (error) {
+        setModalMessage(`Fehler: ${error.message}`)
+        setModalOpen(true)
+        setTimeout(() => setModalOpen(false), 8000)
+      }
+    }, 0)
+  }
 }

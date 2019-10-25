@@ -9,8 +9,7 @@ import {
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { FaPrint, FaRegFilePdf } from 'react-icons/fa'
-import { remote, shell } from 'electron'
-import fs from 'fs'
+import { remote, shell, ipcRenderer } from 'electron'
 
 import storeContext from '../../storeContext'
 
@@ -93,23 +92,25 @@ const Berichte = () => {
     }
 
     setPrinting(true)
-    setTimeout(() => {
-      // https://electronjs.org/docs/api/web-contents#contentsprinttopdfoptions-callback
-      win.webContents.printToPDF(printToPDFOptions, (error, data) => {
-        if (error) {
-          setPrinting(false)
-          throw error
-        }
+    setTimeout(async () => {
+      let data
+      try {
+        data = await win.webContents.printToPDF(printToPDFOptions)
+      } catch (error) {
         setPrinting(false)
-        dialog.showSaveDialog(dialogOptions, filePath => {
-          if (filePath) {
-            fs.writeFile(filePath, data, err => {
-              if (err) throw err
-              shell.openItem(filePath)
-            })
-          }
+        throw error
+      }
+      setPrinting(false)
+      const { filePath } = await dialog.showSaveDialog(dialogOptions)
+      if (filePath) {
+        ipcRenderer.send('SAVE_FILE', filePath, data)
+        ipcRenderer.once('SAVED_FILE', () => {
+          shell.openItem(filePath)
         })
-      })
+        ipcRenderer.once('ERROR', error => {
+          throw new Error(error)
+        })
+      }
     })
   }, [activePrintForm, location, setPrinting, settings.mutationFormPath])
 

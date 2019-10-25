@@ -9,8 +9,9 @@
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  *
  */
-import { app, BrowserWindow, Menu, dialog } from 'electron'
+import { app, BrowserWindow, Menu, ipcMain } from 'electron'
 import MenuBuilder from './menu'
+const fs = require('fs-extra')
 
 let mainWindow = null
 
@@ -102,4 +103,12 @@ app.on('ready', async () => {
   } else {
     Menu.setApplicationMenu(null)
   }
+
+  // exceljs workbook.xlsx.writeFile does not work
+  // so export in main thread
+  ipcMain.on('SAVE_FILE', (event, path, data) => {
+    fs.outputFile(path, data)
+      .then(() => event.sender.send('SAVED_FILE'))
+      .catch(error => event.sender.send('ERROR', error.message))
+  })
 })
