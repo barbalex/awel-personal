@@ -4,6 +4,7 @@ import Linkify from 'react-linkify'
 import styled from 'styled-components'
 import moment from 'moment'
 import get from 'lodash/get'
+import ErrorBoundary from 'react-error-boundary'
 
 import storeContext from '../../storeContext'
 import LogoAwel from '../../etc/LogoAwel.jpg'
@@ -198,160 +199,162 @@ const PersonMutationPrint = ({ activeId }) => {
     get(bereiche.find(a => a.id === person.bereich), 'name') || ''
 
   return (
-    <div className="printer-content">
-      <Container>
-        <PageContainer>
-          <InnerPageContainer>
-            <Content>
-              <LogoImg src={LogoAwel} />
-              <Wrapper>
-                <AreaPerson>
-                  <Title>Person</Title>
-                  <Field
-                    key={`${personId}mutationArt`}
-                    value={person.mutationArt}
-                    label="Mutations-Art"
-                  />
-                  <Field
-                    key={`${personId}eintrittDatum`}
-                    value={person.eintrittDatum}
-                    label="Eintritt"
-                  />
-                  <Field
-                    key={`${personId}austrittDatum`}
-                    value={person.austrittDatum}
-                    label="Austritt"
-                  />
-                  <Field
-                    key={`${personId}name`}
-                    value={person.name}
-                    label="Name"
-                  />
-                  <Field
-                    key={`${personId}vorname`}
-                    value={person.vorname}
-                    label="Vorname"
-                  />
-                  <Field
-                    key={`${personId}kurzzeichen`}
-                    value={person.kurzzeichen}
-                    label="Kurz&shy;zei&shy;chen"
-                  />
-                  <Field key={`${personId}amt`} value={amtName} label="Amt" />
-                  <Field
-                    key={`${personId}abteilung`}
-                    value={abteilungName}
-                    label="Abtei&shy;lung"
-                  />
-                  <Field
-                    key={`${personId}sektion`}
-                    value={sektionName}
-                    label="Sektion"
-                  />
-                  <Field
-                    key={`${personId}bereich`}
-                    value={bereichName}
-                    label="Bereich"
-                  />
-                  <Field
-                    key={`${personId}standort`}
-                    value={person.standort}
-                    label="Stand&shy;ort"
-                  />
-                  <Field
-                    key={`${personId}vorgesetztId`}
-                    value={vorgesetzt}
-                    label="Vorge&shy;setz&shy;te(r)"
-                  />
-                  <Field
-                    key={`${personId}kostenstelle`}
-                    value={person.kostenstelle}
-                    label="Kosten&shy;stelle"
-                  />
-                  <Field
-                    key={`${personId}${
-                      existsFilter ? 1 : 0
-                    }kostenstellenAenderungPer`}
-                    value={person.kostenstellenAenderungPer}
-                    label="Kosten&shy;stel&shy;le Ände&shy;rung per"
-                  />
-                  <Field
-                    key={`${personId}bueroNr`}
-                    value={person.bueroNr}
-                    label="Büro Nr."
-                  />
-                  <Field
-                    key={`${personId}bueroWechselPer`}
-                    value={person.bueroWechselPer}
-                    label="Büro-Wechsel per"
-                  />
-                </AreaPerson>
-                <AreaTel>
-                  <Title>Telefon / Schlüssel / Badge</Title>
-                  <Field
-                    key={`${personId}rufnummer`}
-                    value={person.rufnummer}
-                    label="Ruf&shy;num&shy;mer"
-                  />
-                  <Field
-                    key={`${personId}telefonUebernommenVon`}
-                    value={telefonUebernommenVon}
-                    label="Tele&shy;fon über&shy;nom&shy;men von"
-                  />
-                  <Field
-                    key={`${personId}schluesselNoetig`}
-                    value={person.schluesselNoetig}
-                    label="Schlüs&shy;sel nötig"
-                  />
-                </AreaTel>
-                <AreaIt>
-                  <Title>IT</Title>
-                  <Field
-                    key={`${personId}${
-                      existsFilter ? 1 : 0
-                    }arbeitsplatzeroeffnungPer`}
-                    value={person.arbeitsplatzeroeffnungPer}
-                    label="Arbeitsplatz eröffnen per"
-                  />
-                  <Field
-                    key={`${personId}benoetigteSoftware`}
-                    value={person.benoetigteSoftware}
-                    label="Benötigte Software"
-                  />
-                  <Field
-                    key={`${personId}standardabweichendeHardware`}
-                    value={person.standardabweichendeHardware}
-                    label="Vom Standard abweichende Hardware"
-                  />
-                  <Field
-                    key={`${personId}abmeldungArbeitsplatzPer`}
-                    value={person.abmeldungArbeitsplatzPer}
-                    label="Arbeitsplatz abmelden per"
-                  />
-                  <Field
-                    key={`${personId}itMutationBemerkungen`}
-                    value={person.itMutationBemerkungen}
-                    label="Bemerkungen zur IT"
-                  />
-                </AreaIt>
-                <AreaWeiterleiten>
-                  <WeiterleitenRow>
-                    <WRLeft>
-                      <Linkify>
-                        <EditText>
-                          {settings.personMutationWeiterleiten}
-                        </EditText>
-                      </Linkify>
-                    </WRLeft>
-                  </WeiterleitenRow>
-                </AreaWeiterleiten>
-              </Wrapper>
-            </Content>
-            <Footer>{moment().format('DD.MM.YYYY')}</Footer>
-          </InnerPageContainer>
-        </PageContainer>
-      </Container>
-    </div>
+    <ErrorBoundary>
+      <div className="printer-content">
+        <Container>
+          <PageContainer>
+            <InnerPageContainer>
+              <Content>
+                <LogoImg src={LogoAwel} />
+                <Wrapper>
+                  <AreaPerson>
+                    <Title>Person</Title>
+                    <Field
+                      key={`${personId}mutationArt`}
+                      value={person.mutationArt}
+                      label="Mutations-Art"
+                    />
+                    <Field
+                      key={`${personId}eintrittDatum`}
+                      value={person.eintrittDatum}
+                      label="Eintritt"
+                    />
+                    <Field
+                      key={`${personId}austrittDatum`}
+                      value={person.austrittDatum}
+                      label="Austritt"
+                    />
+                    <Field
+                      key={`${personId}name`}
+                      value={person.name}
+                      label="Name"
+                    />
+                    <Field
+                      key={`${personId}vorname`}
+                      value={person.vorname}
+                      label="Vorname"
+                    />
+                    <Field
+                      key={`${personId}kurzzeichen`}
+                      value={person.kurzzeichen}
+                      label="Kurz&shy;zei&shy;chen"
+                    />
+                    <Field key={`${personId}amt`} value={amtName} label="Amt" />
+                    <Field
+                      key={`${personId}abteilung`}
+                      value={abteilungName}
+                      label="Abtei&shy;lung"
+                    />
+                    <Field
+                      key={`${personId}sektion`}
+                      value={sektionName}
+                      label="Sektion"
+                    />
+                    <Field
+                      key={`${personId}bereich`}
+                      value={bereichName}
+                      label="Bereich"
+                    />
+                    <Field
+                      key={`${personId}standort`}
+                      value={person.standort}
+                      label="Stand&shy;ort"
+                    />
+                    <Field
+                      key={`${personId}vorgesetztId`}
+                      value={vorgesetzt}
+                      label="Vorge&shy;setz&shy;te(r)"
+                    />
+                    <Field
+                      key={`${personId}kostenstelle`}
+                      value={person.kostenstelle}
+                      label="Kosten&shy;stelle"
+                    />
+                    <Field
+                      key={`${personId}${
+                        existsFilter ? 1 : 0
+                      }kostenstellenAenderungPer`}
+                      value={person.kostenstellenAenderungPer}
+                      label="Kosten&shy;stel&shy;le Ände&shy;rung per"
+                    />
+                    <Field
+                      key={`${personId}bueroNr`}
+                      value={person.bueroNr}
+                      label="Büro Nr."
+                    />
+                    <Field
+                      key={`${personId}bueroWechselPer`}
+                      value={person.bueroWechselPer}
+                      label="Büro-Wechsel per"
+                    />
+                  </AreaPerson>
+                  <AreaTel>
+                    <Title>Telefon / Schlüssel / Badge</Title>
+                    <Field
+                      key={`${personId}rufnummer`}
+                      value={person.rufnummer}
+                      label="Ruf&shy;num&shy;mer"
+                    />
+                    <Field
+                      key={`${personId}telefonUebernommenVon`}
+                      value={telefonUebernommenVon}
+                      label="Tele&shy;fon über&shy;nom&shy;men von"
+                    />
+                    <Field
+                      key={`${personId}schluesselNoetig`}
+                      value={person.schluesselNoetig}
+                      label="Schlüs&shy;sel nötig"
+                    />
+                  </AreaTel>
+                  <AreaIt>
+                    <Title>IT</Title>
+                    <Field
+                      key={`${personId}${
+                        existsFilter ? 1 : 0
+                      }arbeitsplatzeroeffnungPer`}
+                      value={person.arbeitsplatzeroeffnungPer}
+                      label="Arbeitsplatz eröffnen per"
+                    />
+                    <Field
+                      key={`${personId}benoetigteSoftware`}
+                      value={person.benoetigteSoftware}
+                      label="Benötigte Software"
+                    />
+                    <Field
+                      key={`${personId}standardabweichendeHardware`}
+                      value={person.standardabweichendeHardware}
+                      label="Vom Standard abweichende Hardware"
+                    />
+                    <Field
+                      key={`${personId}abmeldungArbeitsplatzPer`}
+                      value={person.abmeldungArbeitsplatzPer}
+                      label="Arbeitsplatz abmelden per"
+                    />
+                    <Field
+                      key={`${personId}itMutationBemerkungen`}
+                      value={person.itMutationBemerkungen}
+                      label="Bemerkungen zur IT"
+                    />
+                  </AreaIt>
+                  <AreaWeiterleiten>
+                    <WeiterleitenRow>
+                      <WRLeft>
+                        <Linkify>
+                          <EditText>
+                            {settings.personMutationWeiterleiten}
+                          </EditText>
+                        </Linkify>
+                      </WRLeft>
+                    </WeiterleitenRow>
+                  </AreaWeiterleiten>
+                </Wrapper>
+              </Content>
+              <Footer>{moment().format('DD.MM.YYYY')}</Footer>
+            </InnerPageContainer>
+          </PageContainer>
+        </Container>
+      </div>
+    </ErrorBoundary>
   )
 }
 

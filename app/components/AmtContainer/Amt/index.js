@@ -11,6 +11,7 @@ import { Form } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
 import moment from 'moment'
+import ErrorBoundary from 'react-error-boundary'
 
 import Input from '../../shared/Input'
 import Select from '../../shared/Select'
@@ -158,91 +159,93 @@ const Amt = ({ activeId, listRef }) => {
   if (!showFilter && !activeId) return null
 
   return (
-    <Container showfilter={showFilter}>
-      <StyledForm>
-        <Input
-          key={`${amtId}name`}
-          value={amt.name}
-          field="name"
-          label="Name"
-          saveToDb={saveToDb}
-          error={errors.name}
-        />
-        <Input
-          key={`${amtId}kurzzeichen`}
-          value={amt.kurzzeichen}
-          field="kurzzeichen"
-          label="Kurzzeichen"
-          saveToDb={saveToDb}
-          error={errors.kurzzeichen}
-        />
-        <Input
-          key={`${amtId}telefonNr`}
-          value={amt.telefonNr}
-          field="telefonNr"
-          label="Telefon"
-          saveToDb={saveToDb}
-          error={errors.telefonNr}
-        />
-        <Input
-          key={`${amtId}email`}
-          value={amt.email}
-          field="email"
-          label="Email"
-          saveToDb={saveToDb}
-          error={errors.email}
-        />
-        <Select
-          key={`${amtId}${existsFilter ? 1 : 0}standort`}
-          value={amt.standort}
-          field="standort"
-          label="Standort"
-          options={standortOptions}
-          saveToDb={saveToDb}
-          error={errors.standort}
-        />
-        <Select
-          key={`${amtId}${existsFilter ? 1 : 0}leiter`}
-          value={amt.leiter}
-          field="leiter"
-          label="Leiter"
-          options={personOptions}
-          saveToDb={saveToDb}
-          error={errors.leiter}
-        />
-        <Select
-          key={`${amtId}${existsFilter ? 1 : 0}kostenstelle`}
-          value={amt.kostenstelle}
-          field="kostenstelle"
-          label="Kostenstelle"
-          options={kostenstelleOptions}
-          saveToDb={saveToDb}
-          error={errors.kostenstelle}
-        />
-        {showMutationNoetig && (
-          <Handlungsbedarf
-            key={`${amtId}mutationHandlungsbedarf`}
-            mutationFristValue={amt.mutationFrist}
-            mutationNoetigValue={amt.mutationNoetig}
-            label="Handlungs&shy;bedarf"
+    <ErrorBoundary>
+      <Container showfilter={showFilter}>
+        <StyledForm>
+          <Input
+            key={`${amtId}name`}
+            value={amt.name}
+            field="name"
+            label="Name"
             saveToDb={saveToDb}
-            errorMutationNoetig={errors.mutationNoetig}
-            errorMutationFrist={errors.mutationFrist}
+            error={errors.name}
           />
-        )}
-        {showDeleted && (
-          <SharedCheckbox
-            key={`${amtId}deleted`}
-            value={amt.deleted}
-            field="deleted"
-            label="Gelöscht"
+          <Input
+            key={`${amtId}kurzzeichen`}
+            value={amt.kurzzeichen}
+            field="kurzzeichen"
+            label="Kurzzeichen"
             saveToDb={saveToDb}
-            error={errors.deleted}
+            error={errors.kurzzeichen}
           />
-        )}
-        {!showFilter && <Zuletzt />}
-      </StyledForm>
-    </Container>
+          <Input
+            key={`${amtId}telefonNr`}
+            value={amt.telefonNr}
+            field="telefonNr"
+            label="Telefon"
+            saveToDb={saveToDb}
+            error={errors.telefonNr}
+          />
+          <Input
+            key={`${amtId}email`}
+            value={amt.email}
+            field="email"
+            label="Email"
+            saveToDb={saveToDb}
+            error={errors.email}
+          />
+          <Select
+            key={`${amtId}${existsFilter ? 1 : 0}standort`}
+            value={amt.standort}
+            field="standort"
+            label="Standort"
+            options={standortOptions}
+            saveToDb={saveToDb}
+            error={errors.standort}
+          />
+          <Select
+            key={`${amtId}${existsFilter ? 1 : 0}leiter`}
+            value={amt.leiter}
+            field="leiter"
+            label="Leiter"
+            options={personOptions}
+            saveToDb={saveToDb}
+            error={errors.leiter}
+          />
+          <Select
+            key={`${amtId}${existsFilter ? 1 : 0}kostenstelle`}
+            value={amt.kostenstelle}
+            field="kostenstelle"
+            label="Kostenstelle"
+            options={kostenstelleOptions}
+            saveToDb={saveToDb}
+            error={errors.kostenstelle}
+          />
+          {showMutationNoetig && (
+            <Handlungsbedarf
+              key={`${amtId}mutationHandlungsbedarf`}
+              mutationFristValue={amt.mutationFrist}
+              mutationNoetigValue={amt.mutationNoetig}
+              label="Handlungs&shy;bedarf"
+              saveToDb={saveToDb}
+              errorMutationNoetig={errors.mutationNoetig}
+              errorMutationFrist={errors.mutationFrist}
+            />
+          )}
+          {showDeleted && (
+            <SharedCheckbox
+              key={`${amtId}deleted`}
+              value={amt.deleted}
+              field="deleted"
+              label="Gelöscht"
+              saveToDb={saveToDb}
+              error={errors.deleted}
+            />
+          )}
+          {!showFilter && <Zuletzt />}
+        </StyledForm>
+      </Container>
+    </ErrorBoundary>
   )
 }
 
