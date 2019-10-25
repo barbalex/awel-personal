@@ -327,6 +327,18 @@ eval("module.exports = react-dropzone;\n\n//# sourceURL=webpack://renderer/exter
 
 /***/ }),
 
+/***/ "react-error-boundary":
+/*!***************************************!*\
+  !*** external "react-error-boundary" ***!
+  \***************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+eval("module.exports = react-error-boundary;\n\n//# sourceURL=webpack://renderer/external_%22react-error-boundary%22?");
+
+/***/ }),
+
 /***/ "react-hot-loader":
 /*!***********************************!*\
   !*** external "react-hot-loader" ***!

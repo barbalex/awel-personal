@@ -3,6 +3,7 @@ import { FixedSizeList as List } from 'react-window'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import sortBy from 'lodash/sortBy'
+import ErrorBoundary from 'react-error-boundary'
 
 import storeContext from '../../../storeContext'
 import Row from './Row'
@@ -24,24 +25,26 @@ const DataList = ({ dimensions, activeId, activeTable, listRef }) => {
   data = sortBy(data, ['sort', 'value'])
 
   return (
-    <Container>
-      <List
-        height={height}
-        itemCount={data.length}
-        itemSize={50}
-        width={width}
-        ref={listRef}
-      >
-        {({ index, style }) => (
-          <Row
-            style={style}
-            activeId={activeId}
-            index={index}
-            activeTable={activeTable}
-          />
-        )}
-      </List>
-    </Container>
+    <ErrorBoundary>
+      <Container>
+        <List
+          height={height}
+          itemCount={data.length}
+          itemSize={50}
+          width={width}
+          ref={listRef}
+        >
+          {({ index, style }) => (
+            <Row
+              style={style}
+              activeId={activeId}
+              index={index}
+              activeTable={activeTable}
+            />
+          )}
+        </List>
+      </Container>
+    </ErrorBoundary>
   )
 }
 
