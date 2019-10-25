@@ -11,6 +11,7 @@ import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
+import ErrorBoundary from 'react-error-boundary'
 
 import Input from '../../shared/Input'
 import Select from '../../shared/Select'
@@ -164,100 +165,102 @@ const Sektion = ({ activeId, listRef }) => {
   if (!showFilter && !activeId) return null
 
   return (
-    <Container showfilter={showFilter}>
-      <StyledForm>
-        <Input
-          key={`${sektionId}name`}
-          value={sektion.name}
-          field="name"
-          label="Name"
-          saveToDb={saveToDb}
-          error={errors.name}
-        />
-        <Select
-          key={`${sektionId}${existsFilter ? 1 : 0}abteilung`}
-          value={sektion.abteilung}
-          field="abteilung"
-          label="Abteilung"
-          options={abteilungOptions}
-          saveToDb={saveToDb}
-          error={errors.abteilung}
-        />
-        <Input
-          key={`${sektionId}kurzzeichen`}
-          value={sektion.kurzzeichen}
-          field="kurzzeichen"
-          label="Kurzzeichen"
-          saveToDb={saveToDb}
-          error={errors.kurzzeichen}
-        />
-        <Input
-          key={`${sektionId}telefonNr`}
-          value={sektion.telefonNr}
-          field="telefonNr"
-          label="Telefon"
-          saveToDb={saveToDb}
-          error={errors.telefonNr}
-        />
-        <Input
-          key={`${sektionId}email`}
-          value={sektion.email}
-          field="email"
-          label="Email"
-          saveToDb={saveToDb}
-          error={errors.email}
-        />
-        <Select
-          key={`${sektionId}${existsFilter ? 1 : 0}standort`}
-          value={sektion.standort}
-          field="standort"
-          label="Standort"
-          options={standortOptions}
-          saveToDb={saveToDb}
-          error={errors.standort}
-        />
-        <Select
-          key={`${sektionId}${existsFilter ? 1 : 0}leiter`}
-          value={sektion.leiter}
-          field="leiter"
-          label="Leiter"
-          options={personOptions}
-          saveToDb={saveToDb}
-          error={errors.leiter}
-        />
-        <Select
-          key={`${sektionId}${existsFilter ? 1 : 0}kostenstelle`}
-          value={sektion.kostenstelle}
-          field="kostenstelle"
-          label="Kostenstelle"
-          options={kostenstelleOptions}
-          saveToDb={saveToDb}
-          error={errors.kostenstelle}
-        />
-        {showMutationNoetig && (
-          <Handlungsbedarf
-            key={`${sektionId}mutationHandlungsbedarf`}
-            mutationFristValue={sektion.mutationFrist}
-            mutationNoetigValue={sektion.mutationNoetig}
-            label="Handlungs&shy;bedarf"
+    <ErrorBoundary>
+      <Container showfilter={showFilter}>
+        <StyledForm>
+          <Input
+            key={`${sektionId}name`}
+            value={sektion.name}
+            field="name"
+            label="Name"
             saveToDb={saveToDb}
-            errorMutationNoetig={errors.mutationNoetig}
-            errorMutationFrist={errors.mutationFrist}
+            error={errors.name}
           />
-        )}
-        {showDeleted && (
-          <SharedCheckbox
-            key={`${sektionId}deleted`}
-            value={sektion.deleted}
-            field="deleted"
-            label="Gelöscht"
+          <Select
+            key={`${sektionId}${existsFilter ? 1 : 0}abteilung`}
+            value={sektion.abteilung}
+            field="abteilung"
+            label="Abteilung"
+            options={abteilungOptions}
             saveToDb={saveToDb}
-            error={errors.deleted}
+            error={errors.abteilung}
           />
-        )}
-        {!showFilter && <Zuletzt />}
-      </StyledForm>
-    </Container>
+          <Input
+            key={`${sektionId}kurzzeichen`}
+            value={sektion.kurzzeichen}
+            field="kurzzeichen"
+            label="Kurzzeichen"
+            saveToDb={saveToDb}
+            error={errors.kurzzeichen}
+          />
+          <Input
+            key={`${sektionId}telefonNr`}
+            value={sektion.telefonNr}
+            field="telefonNr"
+            label="Telefon"
+            saveToDb={saveToDb}
+            error={errors.telefonNr}
+          />
+          <Input
+            key={`${sektionId}email`}
+            value={sektion.email}
+            field="email"
+            label="Email"
+            saveToDb={saveToDb}
+            error={errors.email}
+          />
+          <Select
+            key={`${sektionId}${existsFilter ? 1 : 0}standort`}
+            value={sektion.standort}
+            field="standort"
+            label="Standort"
+            options={standortOptions}
+            saveToDb={saveToDb}
+            error={errors.standort}
+          />
+          <Select
+            key={`${sektionId}${existsFilter ? 1 : 0}leiter`}
+            value={sektion.leiter}
+            field="leiter"
+            label="Leiter"
+            options={personOptions}
+            saveToDb={saveToDb}
+            error={errors.leiter}
+          />
+          <Select
+            key={`${sektionId}${existsFilter ? 1 : 0}kostenstelle`}
+            value={sektion.kostenstelle}
+            field="kostenstelle"
+            label="Kostenstelle"
+            options={kostenstelleOptions}
+            saveToDb={saveToDb}
+            error={errors.kostenstelle}
+          />
+          {showMutationNoetig && (
+            <Handlungsbedarf
+              key={`${sektionId}mutationHandlungsbedarf`}
+              mutationFristValue={sektion.mutationFrist}
+              mutationNoetigValue={sektion.mutationNoetig}
+              label="Handlungs&shy;bedarf"
+              saveToDb={saveToDb}
+              errorMutationNoetig={errors.mutationNoetig}
+              errorMutationFrist={errors.mutationFrist}
+            />
+          )}
+          {showDeleted && (
+            <SharedCheckbox
+              key={`${sektionId}deleted`}
+              value={sektion.deleted}
+              field="deleted"
+              label="Gelöscht"
+              saveToDb={saveToDb}
+              error={errors.deleted}
+            />
+          )}
+          {!showFilter && <Zuletzt />}
+        </StyledForm>
+      </Container>
+    </ErrorBoundary>
   )
 }
 
