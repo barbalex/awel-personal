@@ -93,7 +93,7 @@ const Amt = ({ activeId, listRef }) => {
           setErrors,
         })
         if (field === 'mutationFrist' && newValue && !amt.mutationNoetig) {
-          // set mutationNoetig to true of not yet so
+          // set mutationNoetig to true if not yet so
           updateField({
             table: 'aemter',
             parentModel: 'aemter',
