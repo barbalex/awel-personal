@@ -88,7 +88,7 @@ app.on('ready', async () => {
     // in case user has changed data inside an input and not blured yet,
     // force bluring so data is saved
     mainWindow.webContents.executeJavaScript('document.activeElement.blur()')
-    setTimeout(() => mainWindow.destroy())
+    setTimeout(() => mainWindow.destroy(), 500)
   })
 
   mainWindow.on('closed', () => {
