@@ -3,6 +3,7 @@ import { Collapse, Navbar, NavbarToggler, Nav, Button } from 'reactstrap'
 import { observer } from 'mobx-react-lite'
 import { FaUndo, FaSave } from 'react-icons/fa'
 import styled from 'styled-components'
+import ErrorBoundary from 'react-error-boundary'
 
 import Filter from './Filter'
 import Stammdaten from './Stammdaten'
@@ -61,48 +62,50 @@ const MyNavbar = () => {
   const activeLocation = location[0]
 
   return (
-    <StyledNavbar color="dark" dark expand="xl">
-      <NavbarToggler onClick={toggleNavbar} />
-      <Collapse isOpen={open} navbar>
-        <Nav className="mr-auto" navbar>
-          <Personen />
-          <Bereiche />
-          <Sektionen />
-          <Abteilungen />
-          <Aemter />
-          <Export />
-          <Berichte />
-          <Stammdaten />
-        </Nav>
-        <Nav className="ml-auto" navbar>
-          <SaveButton
-            disabled={!dirty}
-            title={dirty ? 'speichern' : 'alles ist gespeichert'}
-          >
-            <FaSave />
-          </SaveButton>
-          <UndoButton
-            disabled={!lastUserMutation}
-            onClick={onClickUndo}
-            title={
-              lastUserMutation
-                ? 'letzte Aktion rückgängig machen'
-                : 'keine Aktion, die rückgängig gemacht werden könnte'
-            }
-          >
-            <FaUndo />
-          </UndoButton>
-          {[
-            'Personen',
-            'Aemter',
-            'Abteilungen',
-            'Sektionen',
-            'Bereiche',
-          ].includes(activeLocation) && <Filter />}
-          <More />
-        </Nav>
-      </Collapse>
-    </StyledNavbar>
+    <ErrorBoundary>
+      <StyledNavbar color="dark" dark expand="xl">
+        <NavbarToggler onClick={toggleNavbar} />
+        <Collapse isOpen={open} navbar>
+          <Nav className="mr-auto" navbar>
+            <Personen />
+            <Bereiche />
+            <Sektionen />
+            <Abteilungen />
+            <Aemter />
+            <Export />
+            <Berichte />
+            <Stammdaten />
+          </Nav>
+          <Nav className="ml-auto" navbar>
+            <SaveButton
+              disabled={!dirty}
+              title={dirty ? 'speichern' : 'alles ist gespeichert'}
+            >
+              <FaSave />
+            </SaveButton>
+            <UndoButton
+              disabled={!lastUserMutation}
+              onClick={onClickUndo}
+              title={
+                lastUserMutation
+                  ? 'letzte Aktion rückgängig machen'
+                  : 'keine Aktion, die rückgängig gemacht werden könnte'
+              }
+            >
+              <FaUndo />
+            </UndoButton>
+            {[
+              'Personen',
+              'Aemter',
+              'Abteilungen',
+              'Sektionen',
+              'Bereiche',
+            ].includes(activeLocation) && <Filter />}
+            <More />
+          </Nav>
+        </Collapse>
+      </StyledNavbar>
+    </ErrorBoundary>
   )
 }
 

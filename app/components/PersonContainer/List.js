@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { UncontrolledTooltip } from 'reactstrap'
 import { FaTrashAlt } from 'react-icons/fa'
 import { FaRegEdit } from 'react-icons/fa'
+import ErrorBoundary from 'react-error-boundary'
 
 import storeContext from '../../storeContext'
 
@@ -77,76 +78,78 @@ const PersonList = ({ dimensions, activeId, listRef }) => {
   const personen = store.personenFilteredSortedByHandlungsbedarf
 
   return (
-    <Container>
-      <List
-        height={height}
-        itemCount={personen.length}
-        itemSize={50}
-        width={width}
-        ref={listRef}
-      >
-        {({ index, style }) => {
-          const row = personen[index]
-          const showDelSvg = row.deleted === 1
-          const showMutationNoetigSvg =
-            row.mutationNoetig === 1 && showMutationNoetig
+    <ErrorBoundary>
+      <Container>
+        <List
+          height={height}
+          itemCount={personen.length}
+          itemSize={50}
+          width={width}
+          ref={listRef}
+        >
+          {({ index, style }) => {
+            const row = personen[index]
+            const showDelSvg = row.deleted === 1
+            const showMutationNoetigSvg =
+              row.mutationNoetig === 1 && showMutationNoetig
 
-          return (
-            <Row
-              style={style}
-              onClick={() => {
-                setLocation(['Personen', row.id.toString()])
-                if (showFilter) setShowFilter(false)
-                if (activePrintForm) setActivePrintForm(null)
-              }}
-              active={!showFilter && activeId === row.id}
-            >
-              <RowContainer>
-                <Text>{`${row.name || ''} ${row.vorname || ''}`}</Text>
-                <Infos>
-                  {showMutationNoetigSvg && (
-                    <Svg>
-                      {row.mutationFrist && (
-                        <>
-                          <MutationFrist id={`mutationFrist${row.id}`}>
-                            {row.mutationFrist}
-                          </MutationFrist>
-                          <UncontrolledTooltip
-                            placement="bottom"
-                            target={`mutationFrist${row.id}`}
-                          >
-                            Frist für Handlungs-Bedarf
-                          </UncontrolledTooltip>
-                        </>
-                      )}
-                      <FaRegEdit id={`mutationNoetig${row.id}`} />
-                      <UncontrolledTooltip
-                        placement="bottom"
-                        target={`mutationNoetig${row.id}`}
-                      >
-                        Handlungs-Bedarf vorhanden
-                      </UncontrolledTooltip>
-                    </Svg>
-                  )}
-                  {!showDelSvg && !showMutationNoetigSvg && ''}
-                  {showDelSvg && (
-                    <Svg>
-                      <FaTrashAlt id={`deletedIcon${row.id}`} />
-                      <UncontrolledTooltip
-                        placement="bottom"
-                        target={`deletedIcon${row.id}`}
-                      >
-                        Diese Person wurde gelöscht
-                      </UncontrolledTooltip>
-                    </Svg>
-                  )}
-                </Infos>
-              </RowContainer>
-            </Row>
-          )
-        }}
-      </List>
-    </Container>
+            return (
+              <Row
+                style={style}
+                onClick={() => {
+                  setLocation(['Personen', row.id.toString()])
+                  if (showFilter) setShowFilter(false)
+                  if (activePrintForm) setActivePrintForm(null)
+                }}
+                active={!showFilter && activeId === row.id}
+              >
+                <RowContainer>
+                  <Text>{`${row.name || ''} ${row.vorname || ''}`}</Text>
+                  <Infos>
+                    {showMutationNoetigSvg && (
+                      <Svg>
+                        {row.mutationFrist && (
+                          <>
+                            <MutationFrist id={`mutationFrist${row.id}`}>
+                              {row.mutationFrist}
+                            </MutationFrist>
+                            <UncontrolledTooltip
+                              placement="bottom"
+                              target={`mutationFrist${row.id}`}
+                            >
+                              Frist für Handlungs-Bedarf
+                            </UncontrolledTooltip>
+                          </>
+                        )}
+                        <FaRegEdit id={`mutationNoetig${row.id}`} />
+                        <UncontrolledTooltip
+                          placement="bottom"
+                          target={`mutationNoetig${row.id}`}
+                        >
+                          Handlungs-Bedarf vorhanden
+                        </UncontrolledTooltip>
+                      </Svg>
+                    )}
+                    {!showDelSvg && !showMutationNoetigSvg && ''}
+                    {showDelSvg && (
+                      <Svg>
+                        <FaTrashAlt id={`deletedIcon${row.id}`} />
+                        <UncontrolledTooltip
+                          placement="bottom"
+                          target={`deletedIcon${row.id}`}
+                        >
+                          Diese Person wurde gelöscht
+                        </UncontrolledTooltip>
+                      </Svg>
+                    )}
+                  </Infos>
+                </RowContainer>
+              </Row>
+            )
+          }}
+        </List>
+      </Container>
+    </ErrorBoundary>
   )
 }
 

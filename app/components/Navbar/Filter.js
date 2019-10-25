@@ -13,6 +13,7 @@ import {
   DropdownItem,
 } from 'reactstrap'
 import { FaTimes, FaEdit, FaFilter } from 'react-icons/fa'
+import ErrorBoundary from 'react-error-boundary'
 
 import storeContext from '../../storeContext'
 const StyledDropdownItem = styled(DropdownItem)`
@@ -152,113 +153,115 @@ const Filter = () => {
   }, [setFilterPersonAktivJetztMitKurzzeichen])
 
   return (
-    <div>
-      <InputGroup>
-        <VolltextInput
-          placeholder="Volltext filtern"
-          onChange={onChangeFilterFulltext}
-          onBlur={onBlurFilterFulltext}
-          value={filterFulltext || ''}
-          onKeyPress={onKeyPressFilterFulltext}
-          existsfilter={!!filterFulltext ? 'true' : 'false'}
-        />
-        <InputGroupAddon addonType="append">
-          {filterFulltext && (
-            <VolltextFilterRemoveAddon
-              id="volltextFilterRemoveAddon"
-              onClick={onEmptyFilterFulltext}
-            >
-              <FaTimes />
-            </VolltextFilterRemoveAddon>
-          )}
-          <StyledInputGroupText
-            id="filterAddon"
-            onClick={toggleShowFilter}
-            existsfilter={existsFilter.toString()}
-          >
-            <FilterIconContainer>
-              {showFilter ? <FaEdit /> : <FaFilter />}
-            </FilterIconContainer>
+    <ErrorBoundary>
+      <div>
+        <InputGroup>
+          <VolltextInput
+            placeholder="Volltext filtern"
+            onChange={onChangeFilterFulltext}
+            onBlur={onBlurFilterFulltext}
+            value={filterFulltext || ''}
+            onKeyPress={onKeyPressFilterFulltext}
+            existsfilter={!!filterFulltext ? 'true' : 'false'}
+          />
+          <InputGroupAddon addonType="append">
             {filterFulltext && (
-              <UncontrolledTooltip
-                placement="left"
-                target="volltextFilterRemoveAddon"
+              <VolltextFilterRemoveAddon
+                id="volltextFilterRemoveAddon"
+                onClick={onEmptyFilterFulltext}
               >
-                Volltext-Filter leeren
-              </UncontrolledTooltip>
+                <FaTimes />
+              </VolltextFilterRemoveAddon>
             )}
-            <UncontrolledTooltip placement="left" target="filterAddon">
-              {showFilter ? 'Daten bearbeiten' : 'Nach Feldern filtern'}
-            </UncontrolledTooltip>
-            {existsFilter && (
-              <UncontrolledTooltip placement="left" target="emptyFilterAddon">
-                Filter leeren
-              </UncontrolledTooltip>
-            )}
-            <StyledDropdown
-              isOpen={filterDropdownIsOpen}
-              toggle={toggleFilterDropdown}
-            >
-              <DropdownToggle caret tag="div">
-                {' '}
-              </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem header>vorbereitete Filter</DropdownItem>
-                <StyledDropdownItem
-                  active={!!activeFilter.mutationNoetig}
-                  onClick={onClickAnstehendeMutationen}
-                >
-                  Anstehende Mutationen
-                </StyledDropdownItem>
-                {activeLocation === 'Personen' && (
-                  <>
-                    <StyledDropdownItem
-                      active={store.filterPersonAktivJetzt}
-                      onClick={onClickAktivJetzt}
-                    >
-                      aktuell aktiv (bereits eingetreten)
-                    </StyledDropdownItem>
-                    <StyledDropdownItem
-                      active={store.filterPersonAktivJetztMitTel}
-                      onClick={onClickAktivJetztMitTel}
-                    >
-                      aktuell aktiv, mit Telefon
-                    </StyledDropdownItem>
-                    <StyledDropdownItem
-                      active={store.filterPersonAktivJetztMitMobiltel}
-                      onClick={onClickAktivJetztMitMobiltel}
-                    >
-                      aktuell aktiv, mit Mobil-Telefon
-                    </StyledDropdownItem>
-                    <StyledDropdownItem
-                      active={store.filterPersonAktivJetztMitKurzzeichen}
-                      onClick={onClickAktivJetztMitKurzzeichen}
-                    >
-                      aktuell aktiv, mit Kurzzeichen
-                    </StyledDropdownItem>
-                    <StyledDropdownItem
-                      active={store.filterPersonKader}
-                      onClick={onClickKader}
-                    >
-                      Kader
-                    </StyledDropdownItem>
-                  </>
-                )}
-              </DropdownMenu>
-            </StyledDropdown>
-          </StyledInputGroupText>
-          {existsFilter && (
             <StyledInputGroupText
-              id="emptyFilterAddon"
-              onClick={store.emptyFilter}
+              id="filterAddon"
+              onClick={toggleShowFilter}
               existsfilter={existsFilter.toString()}
             >
-              <FaTimes />
+              <FilterIconContainer>
+                {showFilter ? <FaEdit /> : <FaFilter />}
+              </FilterIconContainer>
+              {filterFulltext && (
+                <UncontrolledTooltip
+                  placement="left"
+                  target="volltextFilterRemoveAddon"
+                >
+                  Volltext-Filter leeren
+                </UncontrolledTooltip>
+              )}
+              <UncontrolledTooltip placement="left" target="filterAddon">
+                {showFilter ? 'Daten bearbeiten' : 'Nach Feldern filtern'}
+              </UncontrolledTooltip>
+              {existsFilter && (
+                <UncontrolledTooltip placement="left" target="emptyFilterAddon">
+                  Filter leeren
+                </UncontrolledTooltip>
+              )}
+              <StyledDropdown
+                isOpen={filterDropdownIsOpen}
+                toggle={toggleFilterDropdown}
+              >
+                <DropdownToggle caret tag="div">
+                  {' '}
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem header>vorbereitete Filter</DropdownItem>
+                  <StyledDropdownItem
+                    active={!!activeFilter.mutationNoetig}
+                    onClick={onClickAnstehendeMutationen}
+                  >
+                    Anstehende Mutationen
+                  </StyledDropdownItem>
+                  {activeLocation === 'Personen' && (
+                    <>
+                      <StyledDropdownItem
+                        active={store.filterPersonAktivJetzt}
+                        onClick={onClickAktivJetzt}
+                      >
+                        aktuell aktiv (bereits eingetreten)
+                      </StyledDropdownItem>
+                      <StyledDropdownItem
+                        active={store.filterPersonAktivJetztMitTel}
+                        onClick={onClickAktivJetztMitTel}
+                      >
+                        aktuell aktiv, mit Telefon
+                      </StyledDropdownItem>
+                      <StyledDropdownItem
+                        active={store.filterPersonAktivJetztMitMobiltel}
+                        onClick={onClickAktivJetztMitMobiltel}
+                      >
+                        aktuell aktiv, mit Mobil-Telefon
+                      </StyledDropdownItem>
+                      <StyledDropdownItem
+                        active={store.filterPersonAktivJetztMitKurzzeichen}
+                        onClick={onClickAktivJetztMitKurzzeichen}
+                      >
+                        aktuell aktiv, mit Kurzzeichen
+                      </StyledDropdownItem>
+                      <StyledDropdownItem
+                        active={store.filterPersonKader}
+                        onClick={onClickKader}
+                      >
+                        Kader
+                      </StyledDropdownItem>
+                    </>
+                  )}
+                </DropdownMenu>
+              </StyledDropdown>
             </StyledInputGroupText>
-          )}
-        </InputGroupAddon>
-      </InputGroup>
-    </div>
+            {existsFilter && (
+              <StyledInputGroupText
+                id="emptyFilterAddon"
+                onClick={store.emptyFilter}
+                existsfilter={existsFilter.toString()}
+              >
+                <FaTimes />
+              </StyledInputGroupText>
+            )}
+          </InputGroupAddon>
+        </InputGroup>
+      </div>
+    </ErrorBoundary>
   )
 }
 
