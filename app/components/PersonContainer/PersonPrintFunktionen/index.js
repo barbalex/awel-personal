@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap'
+import ErrorBoundary from 'react-error-boundary'
 
 import storeContext from '../../../storeContext'
 import Page from './Page'
@@ -36,22 +37,24 @@ const PersonPrintFunktionenPages = () => {
   const { pages, modal, reset, building } = store.personPages
 
   return (
-    <Container className="printer-content">
-      {pages.map((page, pageIndex) => (
-        <Page key={pageIndex} pageIndex={pageIndex} />
-      ))}
-      <Modal isOpen={building}>
-        <ModalBody>
-          <p>{modal.textLine1}</p>
-          <p>{modal.textLine2}</p>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={reset} outline>
-            abbrechen
-          </Button>
-        </ModalFooter>
-      </Modal>
-    </Container>
+    <ErrorBoundary>
+      <Container className="printer-content">
+        {pages.map((page, pageIndex) => (
+          <Page key={pageIndex} pageIndex={pageIndex} />
+        ))}
+        <Modal isOpen={building}>
+          <ModalBody>
+            <p>{modal.textLine1}</p>
+            <p>{modal.textLine2}</p>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={reset} outline>
+              abbrechen
+            </Button>
+          </ModalFooter>
+        </Modal>
+      </Container>
+    </ErrorBoundary>
   )
 }
 
