@@ -13,6 +13,7 @@ import sortBy from 'lodash/sortBy'
 import Linkify from 'react-linkify'
 import { MdEdit } from 'react-icons/md'
 import { Button, InputGroup, ButtonGroup } from 'reactstrap'
+import ErrorBoundary from 'react-error-boundary'
 
 import Input from '../shared/Input'
 import InputWithoutLabel from '../shared/InputWithoutLabel'
@@ -330,316 +331,320 @@ const PersonMutation = ({ activeId, dimensions }) => {
   const Wrapper = viewIsNarrow ? WrapperNarrow : WrapperWide
 
   return (
-    <Container showfilter={showFilter}>
-      <StyledForm>
-        <Wrapper>
-          <AreaPerson>
-            <Title>Person</Title>
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}mutationArt`}
-              value={person.mutationArt}
-              field="mutationArt"
-              label="Mutations-Art"
-              options={mutationArtOptions}
-              saveToDb={saveToDb}
-              error={errors.mutationArt}
-              row={true}
-            />
-            <Date
-              key={`${personId}${existsFilter ? 1 : 0}eintrittDatum`}
-              value={person.eintrittDatum}
-              field="eintrittDatum"
-              label="Eintritt"
-              saveToDb={saveToDb}
-              error={errors.eintrittDatum}
-              row={true}
-            />
-            <Date
-              key={`${personId}${existsFilter ? 1 : 0}austrittDatum`}
-              value={person.austrittDatum}
-              field="austrittDatum"
-              label="Austritt"
-              saveToDb={saveToDb}
-              error={errors.austrittDatum}
-              row={true}
-            />
-            <Input
-              key={`${personId}name`}
-              value={person.name}
-              field="name"
-              label="Name"
-              saveToDb={saveToDb}
-              error={errors.name}
-              row={true}
-            />
-            <Input
-              key={`${personId}vorname`}
-              value={person.vorname}
-              field="vorname"
-              label="Vorname"
-              saveToDb={saveToDb}
-              error={errors.vorname}
-              row={true}
-            />
-            <Input
-              key={`${personId}kurzzeichen`}
-              value={person.kurzzeichen}
-              field="kurzzeichen"
-              label="Kurz&shy;zei&shy;chen"
-              saveToDb={saveToDb}
-              error={errors.kurzzeichen}
-              row={true}
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}amt`}
-              value={person.amt}
-              field="amt"
-              label="Amt"
-              options={amtOptions}
-              saveToDb={saveToDb}
-              error={errors.amt}
-              row={true}
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}abteilung`}
-              value={person.abteilung}
-              field="abteilung"
-              label="Abtei&shy;lung"
-              options={abteilungOptions}
-              saveToDb={saveToDb}
-              error={errors.abteilung}
-              row={true}
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}sektion`}
-              value={person.sektion}
-              field="sektion"
-              label="Sektion"
-              options={sektionOptions}
-              saveToDb={saveToDb}
-              error={errors.sektion}
-              row={true}
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}bereich`}
-              value={person.bereich}
-              field="bereich"
-              label="Bereich"
-              options={bereichOptions}
-              saveToDb={saveToDb}
-              error={errors.bereich}
-              row={true}
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}standort`}
-              value={person.standort}
-              field="standort"
-              label="Stand&shy;ort"
-              options={standortOptions}
-              saveToDb={saveToDb}
-              error={errors.standort}
-              row={true}
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
-              value={person.vorgesetztId}
-              field="vorgesetztId"
-              label="Vorge&shy;setz&shy;te(r)"
-              options={personOptions}
-              saveToDb={saveToDb}
-              error={errors.vorgesetztId}
-              row={true}
-            />
-            {!showFilter && (
-              <Input
-                key={`${personId}kostenstelle`}
-                value={person.kostenstelle}
-                field="kostenstelle"
-                label="Kosten&shy;stelle"
-                saveToDb={() =>
-                  setErrors({
-                    ...errors,
-                    kostenstelle:
-                      'Diese Feld wird berechnet und kann nicht verändert werden',
-                  })
-                }
-                error={errors.kostenstelle}
+    <ErrorBoundary>
+      <Container showfilter={showFilter}>
+        <StyledForm>
+          <Wrapper>
+            <AreaPerson>
+              <Title>Person</Title>
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}mutationArt`}
+                value={person.mutationArt}
+                field="mutationArt"
+                label="Mutations-Art"
+                options={mutationArtOptions}
+                saveToDb={saveToDb}
+                error={errors.mutationArt}
                 row={true}
               />
-            )}
-            <Date
-              key={`${personId}${
-                existsFilter ? 1 : 0
-              }kostenstellenAenderungPer`}
-              value={person.kostenstellenAenderungPer}
-              field="kostenstellenAenderungPer"
-              label="Kosten&shy;stel&shy;le Ände&shy;rung per"
-              saveToDb={saveToDb}
-              error={errors.kostenstellenAenderungPer}
-              row={true}
-            />
-            <Input
-              key={`${personId}bueroNr`}
-              value={person.bueroNr}
-              field="bueroNr"
-              label="Büro Nr."
-              saveToDb={saveToDb}
-              error={errors.bueroNr}
-              row={true}
-            />
-            <Date
-              key={`${personId}${existsFilter ? 1 : 0}bueroWechselPer`}
-              value={person.bueroWechselPer}
-              field="bueroWechselPer"
-              label="Büro-Wechsel per"
-              saveToDb={saveToDb}
-              error={errors.bueroWechselPer}
-              row={true}
-            />
-          </AreaPerson>
-          <AreaTel>
-            <Title>Telefon / Schlüssel / Badge</Title>
-            <Input
-              key={`${personId}rufnummer`}
-              value={person.rufnummer}
-              field="rufnummer"
-              label="Ruf&shy;num&shy;mer"
-              saveToDb={saveToDb}
-              error={errors.rufnummer}
-              row={true}
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}telefonUebernommenVon`}
-              value={person.telefonUebernommenVon}
-              field="telefonUebernommenVon"
-              label="Tele&shy;fon über&shy;nom&shy;men von"
-              options={personOptions}
-              saveToDb={saveToDb}
-              error={errors.telefonUebernommenVon}
-              row={true}
-            />
-            <Input
-              key={`${personId}schluesselNoetig`}
-              value={person.schluesselNoetig}
-              field="schluesselNoetig"
-              label="Schlüs&shy;sel nötig"
-              saveToDb={saveToDb}
-              error={errors.schluesselNoetig}
-              row={true}
-            />
-          </AreaTel>
-          <AreaIt>
-            <Title>IT</Title>
-            <Date
-              key={`${personId}${
-                existsFilter ? 1 : 0
-              }arbeitsplatzeroeffnungPer`}
-              value={person.arbeitsplatzeroeffnungPer}
-              field="arbeitsplatzeroeffnungPer"
-              label="Arbeitsplatz eröffnen per"
-              saveToDb={saveToDb}
-              error={errors.arbeitsplatzeroeffnungPer}
-              row={true}
-            />
-            <Input
-              key={`${personId}benoetigteSoftware`}
-              value={person.benoetigteSoftware}
-              field="benoetigteSoftware"
-              label="Benötigte Software"
-              type="textarea"
-              saveToDb={saveToDb}
-              error={errors.benoetigteSoftware}
-              row={true}
-            />
-            <Input
-              key={`${personId}standardabweichendeHardware`}
-              value={person.standardabweichendeHardware}
-              field="standardabweichendeHardware"
-              label="Vom Standard abweichende Hardware"
-              type="textarea"
-              saveToDb={saveToDb}
-              error={errors.standardabweichendeHardware}
-              row={true}
-            />
-            <Date
-              key={`${personId}${existsFilter ? 1 : 0}abmeldungArbeitsplatzPer`}
-              value={person.abmeldungArbeitsplatzPer}
-              field="abmeldungArbeitsplatzPer"
-              label="Arbeitsplatz abmelden per"
-              saveToDb={saveToDb}
-              error={errors.abmeldungArbeitsplatzPer}
-              row={true}
-            />
-            <Input
-              key={`${personId}itMutationBemerkungen`}
-              value={person.itMutationBemerkungen}
-              field="itMutationBemerkungen"
-              label="Bemerkungen zur IT"
-              type="textarea"
-              saveToDb={saveToDb}
-              error={errors.itMutationBemerkungen}
-              row={true}
-            />
-          </AreaIt>
-          {!showFilter && (
-            <AreaWeiterleiten>
-              <WRLeft>
-                {editWeiterleiten ? (
-                  <InputWithoutLabel
-                    value={settings.personMutationWeiterleiten}
-                    saveToDb={onSaveWeiterleiten}
-                    type="textarea"
-                  />
-                ) : (
-                  <Linkify>
-                    <EditText>{settings.personMutationWeiterleiten}</EditText>
-                  </Linkify>
-                )}
-                <WLButton
-                  outline={true}
-                  onClick={onClickEditWeiterleiten}
-                  className="no-print"
-                  title="Weiterleiten-Text ändern"
-                >
-                  <EditIcon />
-                </WLButton>
-              </WRLeft>
-              <WRRight>
-                {editPdfPath ? (
-                  <InputGroup>
+              <Date
+                key={`${personId}${existsFilter ? 1 : 0}eintrittDatum`}
+                value={person.eintrittDatum}
+                field="eintrittDatum"
+                label="Eintritt"
+                saveToDb={saveToDb}
+                error={errors.eintrittDatum}
+                row={true}
+              />
+              <Date
+                key={`${personId}${existsFilter ? 1 : 0}austrittDatum`}
+                value={person.austrittDatum}
+                field="austrittDatum"
+                label="Austritt"
+                saveToDb={saveToDb}
+                error={errors.austrittDatum}
+                row={true}
+              />
+              <Input
+                key={`${personId}name`}
+                value={person.name}
+                field="name"
+                label="Name"
+                saveToDb={saveToDb}
+                error={errors.name}
+                row={true}
+              />
+              <Input
+                key={`${personId}vorname`}
+                value={person.vorname}
+                field="vorname"
+                label="Vorname"
+                saveToDb={saveToDb}
+                error={errors.vorname}
+                row={true}
+              />
+              <Input
+                key={`${personId}kurzzeichen`}
+                value={person.kurzzeichen}
+                field="kurzzeichen"
+                label="Kurz&shy;zei&shy;chen"
+                saveToDb={saveToDb}
+                error={errors.kurzzeichen}
+                row={true}
+              />
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}amt`}
+                value={person.amt}
+                field="amt"
+                label="Amt"
+                options={amtOptions}
+                saveToDb={saveToDb}
+                error={errors.amt}
+                row={true}
+              />
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}abteilung`}
+                value={person.abteilung}
+                field="abteilung"
+                label="Abtei&shy;lung"
+                options={abteilungOptions}
+                saveToDb={saveToDb}
+                error={errors.abteilung}
+                row={true}
+              />
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}sektion`}
+                value={person.sektion}
+                field="sektion"
+                label="Sektion"
+                options={sektionOptions}
+                saveToDb={saveToDb}
+                error={errors.sektion}
+                row={true}
+              />
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}bereich`}
+                value={person.bereich}
+                field="bereich"
+                label="Bereich"
+                options={bereichOptions}
+                saveToDb={saveToDb}
+                error={errors.bereich}
+                row={true}
+              />
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}standort`}
+                value={person.standort}
+                field="standort"
+                label="Stand&shy;ort"
+                options={standortOptions}
+                saveToDb={saveToDb}
+                error={errors.standort}
+                row={true}
+              />
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
+                value={person.vorgesetztId}
+                field="vorgesetztId"
+                label="Vorge&shy;setz&shy;te(r)"
+                options={personOptions}
+                saveToDb={saveToDb}
+                error={errors.vorgesetztId}
+                row={true}
+              />
+              {!showFilter && (
+                <Input
+                  key={`${personId}kostenstelle`}
+                  value={person.kostenstelle}
+                  field="kostenstelle"
+                  label="Kosten&shy;stelle"
+                  saveToDb={() =>
+                    setErrors({
+                      ...errors,
+                      kostenstelle:
+                        'Diese Feld wird berechnet und kann nicht verändert werden',
+                    })
+                  }
+                  error={errors.kostenstelle}
+                  row={true}
+                />
+              )}
+              <Date
+                key={`${personId}${
+                  existsFilter ? 1 : 0
+                }kostenstellenAenderungPer`}
+                value={person.kostenstellenAenderungPer}
+                field="kostenstellenAenderungPer"
+                label="Kosten&shy;stel&shy;le Ände&shy;rung per"
+                saveToDb={saveToDb}
+                error={errors.kostenstellenAenderungPer}
+                row={true}
+              />
+              <Input
+                key={`${personId}bueroNr`}
+                value={person.bueroNr}
+                field="bueroNr"
+                label="Büro Nr."
+                saveToDb={saveToDb}
+                error={errors.bueroNr}
+                row={true}
+              />
+              <Date
+                key={`${personId}${existsFilter ? 1 : 0}bueroWechselPer`}
+                value={person.bueroWechselPer}
+                field="bueroWechselPer"
+                label="Büro-Wechsel per"
+                saveToDb={saveToDb}
+                error={errors.bueroWechselPer}
+                row={true}
+              />
+            </AreaPerson>
+            <AreaTel>
+              <Title>Telefon / Schlüssel / Badge</Title>
+              <Input
+                key={`${personId}rufnummer`}
+                value={person.rufnummer}
+                field="rufnummer"
+                label="Ruf&shy;num&shy;mer"
+                saveToDb={saveToDb}
+                error={errors.rufnummer}
+                row={true}
+              />
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}telefonUebernommenVon`}
+                value={person.telefonUebernommenVon}
+                field="telefonUebernommenVon"
+                label="Tele&shy;fon über&shy;nom&shy;men von"
+                options={personOptions}
+                saveToDb={saveToDb}
+                error={errors.telefonUebernommenVon}
+                row={true}
+              />
+              <Input
+                key={`${personId}schluesselNoetig`}
+                value={person.schluesselNoetig}
+                field="schluesselNoetig"
+                label="Schlüs&shy;sel nötig"
+                saveToDb={saveToDb}
+                error={errors.schluesselNoetig}
+                row={true}
+              />
+            </AreaTel>
+            <AreaIt>
+              <Title>IT</Title>
+              <Date
+                key={`${personId}${
+                  existsFilter ? 1 : 0
+                }arbeitsplatzeroeffnungPer`}
+                value={person.arbeitsplatzeroeffnungPer}
+                field="arbeitsplatzeroeffnungPer"
+                label="Arbeitsplatz eröffnen per"
+                saveToDb={saveToDb}
+                error={errors.arbeitsplatzeroeffnungPer}
+                row={true}
+              />
+              <Input
+                key={`${personId}benoetigteSoftware`}
+                value={person.benoetigteSoftware}
+                field="benoetigteSoftware"
+                label="Benötigte Software"
+                type="textarea"
+                saveToDb={saveToDb}
+                error={errors.benoetigteSoftware}
+                row={true}
+              />
+              <Input
+                key={`${personId}standardabweichendeHardware`}
+                value={person.standardabweichendeHardware}
+                field="standardabweichendeHardware"
+                label="Vom Standard abweichende Hardware"
+                type="textarea"
+                saveToDb={saveToDb}
+                error={errors.standardabweichendeHardware}
+                row={true}
+              />
+              <Date
+                key={`${personId}${
+                  existsFilter ? 1 : 0
+                }abmeldungArbeitsplatzPer`}
+                value={person.abmeldungArbeitsplatzPer}
+                field="abmeldungArbeitsplatzPer"
+                label="Arbeitsplatz abmelden per"
+                saveToDb={saveToDb}
+                error={errors.abmeldungArbeitsplatzPer}
+                row={true}
+              />
+              <Input
+                key={`${personId}itMutationBemerkungen`}
+                value={person.itMutationBemerkungen}
+                field="itMutationBemerkungen"
+                label="Bemerkungen zur IT"
+                type="textarea"
+                saveToDb={saveToDb}
+                error={errors.itMutationBemerkungen}
+                row={true}
+              />
+            </AreaIt>
+            {!showFilter && (
+              <AreaWeiterleiten>
+                <WRLeft>
+                  {editWeiterleiten ? (
                     <InputWithoutLabel
-                      value={settings.mutationFormPath}
-                      saveToDb={onSavePdfPath}
-                      callback={callbackPdfPath}
+                      value={settings.personMutationWeiterleiten}
+                      saveToDb={onSaveWeiterleiten}
                       type="textarea"
                     />
-                  </InputGroup>
-                ) : (
-                  <ButtonGroup>
-                    <StyledButton
-                      outline={true}
-                      onClick={() => setActivePrintForm('personMutation')}
-                      className="no-print"
-                      title="drucken"
-                    >
-                      Drucken
-                    </StyledButton>
-                    <StyledButton
-                      outline={true}
-                      onClick={onClickEditPdfPath}
-                      className="no-print"
-                      title="Standard-Speicherort ändern"
-                    >
-                      <EditIcon />
-                    </StyledButton>
-                  </ButtonGroup>
-                )}
-              </WRRight>
-            </AreaWeiterleiten>
-          )}
-        </Wrapper>
-      </StyledForm>
-    </Container>
+                  ) : (
+                    <Linkify>
+                      <EditText>{settings.personMutationWeiterleiten}</EditText>
+                    </Linkify>
+                  )}
+                  <WLButton
+                    outline={true}
+                    onClick={onClickEditWeiterleiten}
+                    className="no-print"
+                    title="Weiterleiten-Text ändern"
+                  >
+                    <EditIcon />
+                  </WLButton>
+                </WRLeft>
+                <WRRight>
+                  {editPdfPath ? (
+                    <InputGroup>
+                      <InputWithoutLabel
+                        value={settings.mutationFormPath}
+                        saveToDb={onSavePdfPath}
+                        callback={callbackPdfPath}
+                        type="textarea"
+                      />
+                    </InputGroup>
+                  ) : (
+                    <ButtonGroup>
+                      <StyledButton
+                        outline={true}
+                        onClick={() => setActivePrintForm('personMutation')}
+                        className="no-print"
+                        title="drucken"
+                      >
+                        Drucken
+                      </StyledButton>
+                      <StyledButton
+                        outline={true}
+                        onClick={onClickEditPdfPath}
+                        className="no-print"
+                        title="Standard-Speicherort ändern"
+                      >
+                        <EditIcon />
+                      </StyledButton>
+                    </ButtonGroup>
+                  )}
+                </WRRight>
+              </AreaWeiterleiten>
+            )}
+          </Wrapper>
+        </StyledForm>
+      </Container>
+    </ErrorBoundary>
   )
 }
 

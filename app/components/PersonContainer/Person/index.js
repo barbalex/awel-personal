@@ -11,6 +11,7 @@ import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
+import ErrorBoundary from 'react-error-boundary'
 
 import Input from '../../shared/Input'
 import Date from '../../shared/Date'
@@ -728,410 +729,412 @@ const Person = ({ activeId, dimensions, listRef }) => {
     : WrapperWide
 
   return (
-    <Container showfilter={showFilter}>
-      <StyledForm>
-        <Wrapper>
-          <AreaPersonalien>
-            <AreaPAreaTitle>
-              <Title>Personalien</Title>
-            </AreaPAreaTitle>
-            <AreaPBild>
-              <PersonImage person={person} />
-            </AreaPBild>
-            <AreaPName>
-              <Input
-                key={`${personId}name`}
-                value={person.name}
-                field="name"
-                label="Name"
-                saveToDb={saveToDb}
-                error={errors.name}
-                row={false}
-              />
-            </AreaPName>
-            <AreaPVorname>
-              <Input
-                key={`${personId}vorname`}
-                value={person.vorname}
-                field="vorname"
-                label="Vorname"
-                saveToDb={saveToDb}
-                error={errors.vorname}
-                row={false}
-              />
-            </AreaPVorname>
-            <AreaPAnrede>
+    <ErrorBoundary>
+      <Container showfilter={showFilter}>
+        <StyledForm>
+          <Wrapper>
+            <AreaPersonalien>
+              <AreaPAreaTitle>
+                <Title>Personalien</Title>
+              </AreaPAreaTitle>
+              <AreaPBild>
+                <PersonImage person={person} />
+              </AreaPBild>
+              <AreaPName>
+                <Input
+                  key={`${personId}name`}
+                  value={person.name}
+                  field="name"
+                  label="Name"
+                  saveToDb={saveToDb}
+                  error={errors.name}
+                  row={false}
+                />
+              </AreaPName>
+              <AreaPVorname>
+                <Input
+                  key={`${personId}vorname`}
+                  value={person.vorname}
+                  field="vorname"
+                  label="Vorname"
+                  saveToDb={saveToDb}
+                  error={errors.vorname}
+                  row={false}
+                />
+              </AreaPVorname>
+              <AreaPAnrede>
+                <Select
+                  key={`${personId}${existsFilter ? 1 : 0}anrede`}
+                  value={person.anrede}
+                  field="anrede"
+                  label="Anrede"
+                  options={anredeOptions}
+                  saveToDb={saveToDb}
+                  error={errors.anrede}
+                  row={false}
+                />
+              </AreaPAnrede>
+              <AreaPTitel>
+                <Input
+                  key={`${personId}titel`}
+                  value={person.titel}
+                  field="titel"
+                  label="Titel"
+                  saveToDb={saveToDb}
+                  error={errors.titel}
+                  row={false}
+                />
+              </AreaPTitel>
+              <AreaPKurzzeichen>
+                <Input
+                  key={`${personId}kurzzeichen`}
+                  value={person.kurzzeichen}
+                  field="kurzzeichen"
+                  label="Kurzzei&shy;chen"
+                  saveToDb={saveToDb}
+                  error={errors.kurzzeichen}
+                  row={false}
+                />
+              </AreaPKurzzeichen>
+              <AreaPAdresse>
+                <Input
+                  key={`${personId}adresse`}
+                  value={person.adresse}
+                  field="adresse"
+                  label="Adresse"
+                  saveToDb={saveToDb}
+                  error={errors.adresse}
+                  row={false}
+                />
+              </AreaPAdresse>
+              <AreaPPLZ>
+                <Input
+                  key={`${personId}plz`}
+                  value={person.plz}
+                  field="plz"
+                  label="PLZ"
+                  saveToDb={saveToDb}
+                  type="number"
+                  error={errors.plz}
+                  row={false}
+                />
+              </AreaPPLZ>
+              <AreaPOrt>
+                <Input
+                  key={`${personId}ort`}
+                  value={person.ort}
+                  field="ort"
+                  label="Ort"
+                  saveToDb={saveToDb}
+                  error={errors.ort}
+                  row={false}
+                />
+              </AreaPOrt>
+              <AreaPLand>
+                <Select
+                  key={`${personId}${existsFilter ? 1 : 0}land`}
+                  value={person.land}
+                  field="land"
+                  label="Land"
+                  options={landOptions}
+                  saveToDb={saveToDb}
+                  error={errors.land}
+                  row={false}
+                />
+              </AreaPLand>
+              <AreaPEmail>
+                <Input
+                  key={`${personId}email`}
+                  value={person.email}
+                  field="email"
+                  label="Email"
+                  saveToDb={saveToDb}
+                  error={errors.email}
+                  row={false}
+                />
+              </AreaPEmail>
+              <AreaPGeburtsdatum>
+                <Date
+                  key={`${personId}geburtDatum`}
+                  value={person.geburtDatum}
+                  field="geburtDatum"
+                  label="Geburts&shy;datum"
+                  saveToDb={saveToDb}
+                  error={errors.geburtDatum}
+                  row={false}
+                />
+              </AreaPGeburtsdatum>
+              <AreaPTelefon>
+                <Telefones row={false} />
+              </AreaPTelefon>
+            </AreaPersonalien>
+            <AreaAnstellung>
+              <Title>Anstellung</Title>
               <Select
-                key={`${personId}${existsFilter ? 1 : 0}anrede`}
-                value={person.anrede}
-                field="anrede"
-                label="Anrede"
-                options={anredeOptions}
+                key={`${personId}${existsFilter ? 1 : 0}status`}
+                value={person.status}
+                field="status"
+                label="Status"
+                options={statusOptions}
                 saveToDb={saveToDb}
-                error={errors.anrede}
+                error={errors.status}
                 row={false}
               />
-            </AreaPAnrede>
-            <AreaPTitel>
-              <Input
-                key={`${personId}titel`}
-                value={person.titel}
-                field="titel"
-                label="Titel"
+              <Date
+                key={`${personId}${existsFilter ? 1 : 0}eintrittDatum`}
+                value={person.eintrittDatum}
+                field="eintrittDatum"
+                label="Eintritt"
                 saveToDb={saveToDb}
-                error={errors.titel}
+                error={errors.eintrittDatum}
                 row={false}
               />
-            </AreaPTitel>
-            <AreaPKurzzeichen>
-              <Input
-                key={`${personId}kurzzeichen`}
-                value={person.kurzzeichen}
-                field="kurzzeichen"
-                label="Kurzzei&shy;chen"
+              <Date
+                key={`${personId}${existsFilter ? 1 : 0}austrittDatum`}
+                value={person.austrittDatum}
+                field="austrittDatum"
+                label="Austritt"
                 saveToDb={saveToDb}
-                error={errors.kurzzeichen}
+                error={errors.austrittDatum}
                 row={false}
               />
-            </AreaPKurzzeichen>
-            <AreaPAdresse>
               <Input
-                key={`${personId}adresse`}
-                value={person.adresse}
-                field="adresse"
-                label="Adresse"
-                saveToDb={saveToDb}
-                error={errors.adresse}
-                row={false}
-              />
-            </AreaPAdresse>
-            <AreaPPLZ>
-              <Input
-                key={`${personId}plz`}
-                value={person.plz}
-                field="plz"
-                label="PLZ"
+                key={`${personId}beschaeftigungsgrad`}
+                value={person.beschaeftigungsgrad}
+                field="beschaeftigungsgrad"
+                label="Beschäfti&shy;gungs&shy;grad (%)"
                 saveToDb={saveToDb}
                 type="number"
-                error={errors.plz}
+                error={errors.beschaeftigungsgrad}
                 row={false}
               />
-            </AreaPPLZ>
-            <AreaPOrt>
-              <Input
-                key={`${personId}ort`}
-                value={person.ort}
-                field="ort"
-                label="Ort"
-                saveToDb={saveToDb}
-                error={errors.ort}
-                row={false}
-              />
-            </AreaPOrt>
-            <AreaPLand>
-              <Select
-                key={`${personId}${existsFilter ? 1 : 0}land`}
-                value={person.land}
-                field="land"
-                label="Land"
-                options={landOptions}
-                saveToDb={saveToDb}
-                error={errors.land}
-                row={false}
-              />
-            </AreaPLand>
-            <AreaPEmail>
-              <Input
-                key={`${personId}email`}
-                value={person.email}
-                field="email"
-                label="Email"
-                saveToDb={saveToDb}
-                error={errors.email}
-                row={false}
-              />
-            </AreaPEmail>
-            <AreaPGeburtsdatum>
-              <Date
-                key={`${personId}geburtDatum`}
-                value={person.geburtDatum}
-                field="geburtDatum"
-                label="Geburts&shy;datum"
-                saveToDb={saveToDb}
-                error={errors.geburtDatum}
-                row={false}
-              />
-            </AreaPGeburtsdatum>
-            <AreaPTelefon>
-              <Telefones row={false} />
-            </AreaPTelefon>
-          </AreaPersonalien>
-          <AreaAnstellung>
-            <Title>Anstellung</Title>
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}status`}
-              value={person.status}
-              field="status"
-              label="Status"
-              options={statusOptions}
-              saveToDb={saveToDb}
-              error={errors.status}
-              row={false}
-            />
-            <Date
-              key={`${personId}${existsFilter ? 1 : 0}eintrittDatum`}
-              value={person.eintrittDatum}
-              field="eintrittDatum"
-              label="Eintritt"
-              saveToDb={saveToDb}
-              error={errors.eintrittDatum}
-              row={false}
-            />
-            <Date
-              key={`${personId}${existsFilter ? 1 : 0}austrittDatum`}
-              value={person.austrittDatum}
-              field="austrittDatum"
-              label="Austritt"
-              saveToDb={saveToDb}
-              error={errors.austrittDatum}
-              row={false}
-            />
-            <Input
-              key={`${personId}beschaeftigungsgrad`}
-              value={person.beschaeftigungsgrad}
-              field="beschaeftigungsgrad"
-              label="Beschäfti&shy;gungs&shy;grad (%)"
-              saveToDb={saveToDb}
-              type="number"
-              error={errors.beschaeftigungsgrad}
-              row={false}
-            />
-            {showFilter ? (
-              <Select
-                key={`${personId}${existsFilter ? 1 : 0}anwesenheitstag`}
-                value={filterAnwesenheitstage.tag}
-                field="anwesenheitstage"
-                label="Anwesenheitstage"
-                options={anwesenheitstageOptions}
-                saveToDb={setFilterAnwesenheitstage}
-                error={errors.anwesenheitstage}
-                row={false}
-              />
-            ) : (
-              <SelectMulti
-                key={`${personId}${existsFilter ? 1 : 0}anwesenheitstage`}
-                value={myAnwesenheitstage}
-                field="anwesenheitstage"
-                label="Anwesenheitstage"
-                options={anwesenheitstageOptions}
-                add={addAnwesenheitstag}
-                remove={deleteAnwesenheitstag}
-                error={errors.anwesenheitstage}
-                row={false}
-              />
-            )}
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}standort`}
-              value={person.standort}
-              field="standort"
-              label="Standort"
-              options={standortOptions}
-              saveToDb={saveToDb}
-              error={errors.standort}
-              row={false}
-            />
-            <Input
-              key={`${personId}bueroNr`}
-              value={person.bueroNr}
-              field="bueroNr"
-              label="Büro Nr."
-              saveToDb={saveToDb}
-              error={errors.bueroNr}
-              row={false}
-            />
-          </AreaAnstellung>
-          <AreaFunktionen>
-            <Title>Funktionen</Title>
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}amt`}
-              value={person.amt}
-              field="amt"
-              label="Amt"
-              options={amtOptions}
-              saveToDb={saveToDb}
-              error={errors.amt}
-              row={false}
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}abteilung`}
-              value={person.abteilung}
-              field="abteilung"
-              label="Abteilung"
-              options={abteilungOptions}
-              saveToDb={saveToDb}
-              error={errors.abteilung}
-              row={false}
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}sektion`}
-              value={person.sektion}
-              field="sektion"
-              label="Sektion"
-              options={sektionOptions}
-              saveToDb={saveToDb}
-              error={errors.sektion}
-              row={false}
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}bereich`}
-              value={person.bereich}
-              field="bereich"
-              label="Bereich"
-              options={bereichOptions}
-              saveToDb={saveToDb}
-              error={errors.bereich}
-              row={false}
-            />
-            <Select
-              key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
-              value={person.vorgesetztId}
-              field="vorgesetztId"
-              label="Vorge&shy;setz&shy;te(r)"
-              options={personOptions}
-              saveToDb={saveToDb}
-              error={errors.vorgesetztId}
-              row={false}
-            />
-            {showFilter ? (
-              <Select
-                key={`${personId}${existsFilter ? 1 : 0}funktion`}
-                value={filterFunktion.funktion}
-                field="funktion"
-                label="Funktion"
-                options={funktionenOptions}
-                saveToDb={setFilterFunktion}
-                error={errors.funktion}
-                row={false}
-              />
-            ) : (
-              <SelectMulti
-                key={`${personId}${existsFilter ? 1 : 0}funktion`}
-                value={myFunktionen}
-                field="funktion"
-                label="Funktio&shy;nen"
-                options={funktionenOptions}
-                add={addFunktion}
-                remove={deleteFunktion}
-                error={errors.funktion}
-                row={false}
-              />
-            )}
-            {showFilter ? (
-              <Select
-                key={`${personId}${existsFilter ? 1 : 0}kaderFunktion`}
-                value={filterKaderFunktion.funktion}
-                field="funktion"
-                label="Kader-&shy;Funktion"
-                options={kaderFunktionenOptions}
-                saveToDb={setFilterKaderFunktion}
-                error={errors.kaderFunktion}
-                row={false}
-              />
-            ) : (
-              <SelectMulti
-                key={`${personId}${existsFilter ? 1 : 0}kaderFunktion`}
-                value={myKaderFunktionen}
-                field="funktion"
-                label="Kader-&shy;Funktio&shy;nen"
-                options={kaderFunktionenOptions}
-                add={addKaderFunktion}
-                remove={deleteKaderFunktion}
-                error={errors.kaderFunktion}
-                row={false}
-              />
-            )}
-          </AreaFunktionen>
-          <AreaVerzeichnis>
-            <Title>Verzeichnis</Title>
-            <Input
-              key={`${personId}parkplatzNr`}
-              value={person.parkplatzNr}
-              field="parkplatzNr"
-              label="Parkplatz Nr."
-              saveToDb={saveToDb}
-              error={errors.parkplatzNr}
-              row={false}
-            />
-            {showFilter ? (
-              <Select
-                key={`${personId}${existsFilter ? 1 : 0}etikett`}
-                value={filterEtikett.etikett}
-                field="etikett"
-                label="Etikett"
-                options={etikettenOptions}
-                saveToDb={saveToDbEtikett}
-                error={errors.etikett}
-                row={false}
-              />
-            ) : (
-              <SelectMulti
-                key={`${personId}${existsFilter ? 1 : 0}etikett`}
-                value={myEtiketten}
-                field="etikett"
-                label="Etiketten"
-                options={etikettenOptions}
-                add={addEtikett}
-                remove={deleteEtikett}
-                error={errors.etikett}
-                row={false}
-              />
-            )}
-            <Input
-              key={`${personId}bemerkungen`}
-              value={person.bemerkungen}
-              field="bemerkungen"
-              label="Bemerkun&shy;gen"
-              saveToDb={saveToDb}
-              type="textarea"
-              error={errors.bemerkungen}
-              row={false}
-            />
-            {!showFilter && <Links row={false} />}
-            <Schluessels row={false} />
-            <MobileAbos row={false} />
-          </AreaVerzeichnis>
-          {!showFilter && (
-            <AreaZuletzt>
-              {showMutationNoetig && (
-                <Handlungsbedarf
-                  key={`${personId}mutationHandlungsbedarf`}
-                  mutationFristValue={person.mutationFrist}
-                  mutationBemerkungValue={person.mutationBemerkung}
-                  mutationNoetigValue={person.mutationNoetig}
-                  label="Handlungs&shy;bedarf"
-                  saveToDb={saveToDb}
-                  errorMutationNoetig={errors.mutationNoetig}
-                  errorMutationFrist={errors.mutationFrist}
-                  errorMutationBemerkung={errors.mutationBemerkung}
+              {showFilter ? (
+                <Select
+                  key={`${personId}${existsFilter ? 1 : 0}anwesenheitstag`}
+                  value={filterAnwesenheitstage.tag}
+                  field="anwesenheitstage"
+                  label="Anwesenheitstage"
+                  options={anwesenheitstageOptions}
+                  saveToDb={setFilterAnwesenheitstage}
+                  error={errors.anwesenheitstage}
+                  row={false}
+                />
+              ) : (
+                <SelectMulti
+                  key={`${personId}${existsFilter ? 1 : 0}anwesenheitstage`}
+                  value={myAnwesenheitstage}
+                  field="anwesenheitstage"
+                  label="Anwesenheitstage"
+                  options={anwesenheitstageOptions}
+                  add={addAnwesenheitstag}
+                  remove={deleteAnwesenheitstag}
+                  error={errors.anwesenheitstage}
+                  row={false}
                 />
               )}
-              {showDeleted && (
-                <SharedCheckbox
-                  key={`${personId}deleted`}
-                  value={person.deleted}
-                  field="deleted"
-                  label="Gelöscht"
-                  saveToDb={saveToDb}
-                  error={errors.deleted}
-                  row={true}
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}standort`}
+                value={person.standort}
+                field="standort"
+                label="Standort"
+                options={standortOptions}
+                saveToDb={saveToDb}
+                error={errors.standort}
+                row={false}
+              />
+              <Input
+                key={`${personId}bueroNr`}
+                value={person.bueroNr}
+                field="bueroNr"
+                label="Büro Nr."
+                saveToDb={saveToDb}
+                error={errors.bueroNr}
+                row={false}
+              />
+            </AreaAnstellung>
+            <AreaFunktionen>
+              <Title>Funktionen</Title>
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}amt`}
+                value={person.amt}
+                field="amt"
+                label="Amt"
+                options={amtOptions}
+                saveToDb={saveToDb}
+                error={errors.amt}
+                row={false}
+              />
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}abteilung`}
+                value={person.abteilung}
+                field="abteilung"
+                label="Abteilung"
+                options={abteilungOptions}
+                saveToDb={saveToDb}
+                error={errors.abteilung}
+                row={false}
+              />
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}sektion`}
+                value={person.sektion}
+                field="sektion"
+                label="Sektion"
+                options={sektionOptions}
+                saveToDb={saveToDb}
+                error={errors.sektion}
+                row={false}
+              />
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}bereich`}
+                value={person.bereich}
+                field="bereich"
+                label="Bereich"
+                options={bereichOptions}
+                saveToDb={saveToDb}
+                error={errors.bereich}
+                row={false}
+              />
+              <Select
+                key={`${personId}${existsFilter ? 1 : 0}vorgesetztId`}
+                value={person.vorgesetztId}
+                field="vorgesetztId"
+                label="Vorge&shy;setz&shy;te(r)"
+                options={personOptions}
+                saveToDb={saveToDb}
+                error={errors.vorgesetztId}
+                row={false}
+              />
+              {showFilter ? (
+                <Select
+                  key={`${personId}${existsFilter ? 1 : 0}funktion`}
+                  value={filterFunktion.funktion}
+                  field="funktion"
+                  label="Funktion"
+                  options={funktionenOptions}
+                  saveToDb={setFilterFunktion}
+                  error={errors.funktion}
+                  row={false}
+                />
+              ) : (
+                <SelectMulti
+                  key={`${personId}${existsFilter ? 1 : 0}funktion`}
+                  value={myFunktionen}
+                  field="funktion"
+                  label="Funktio&shy;nen"
+                  options={funktionenOptions}
+                  add={addFunktion}
+                  remove={deleteFunktion}
+                  error={errors.funktion}
+                  row={false}
                 />
               )}
-              <Zuletzt row={true} />
-            </AreaZuletzt>
-          )}
-        </Wrapper>
-      </StyledForm>
-    </Container>
+              {showFilter ? (
+                <Select
+                  key={`${personId}${existsFilter ? 1 : 0}kaderFunktion`}
+                  value={filterKaderFunktion.funktion}
+                  field="funktion"
+                  label="Kader-&shy;Funktion"
+                  options={kaderFunktionenOptions}
+                  saveToDb={setFilterKaderFunktion}
+                  error={errors.kaderFunktion}
+                  row={false}
+                />
+              ) : (
+                <SelectMulti
+                  key={`${personId}${existsFilter ? 1 : 0}kaderFunktion`}
+                  value={myKaderFunktionen}
+                  field="funktion"
+                  label="Kader-&shy;Funktio&shy;nen"
+                  options={kaderFunktionenOptions}
+                  add={addKaderFunktion}
+                  remove={deleteKaderFunktion}
+                  error={errors.kaderFunktion}
+                  row={false}
+                />
+              )}
+            </AreaFunktionen>
+            <AreaVerzeichnis>
+              <Title>Verzeichnis</Title>
+              <Input
+                key={`${personId}parkplatzNr`}
+                value={person.parkplatzNr}
+                field="parkplatzNr"
+                label="Parkplatz Nr."
+                saveToDb={saveToDb}
+                error={errors.parkplatzNr}
+                row={false}
+              />
+              {showFilter ? (
+                <Select
+                  key={`${personId}${existsFilter ? 1 : 0}etikett`}
+                  value={filterEtikett.etikett}
+                  field="etikett"
+                  label="Etikett"
+                  options={etikettenOptions}
+                  saveToDb={saveToDbEtikett}
+                  error={errors.etikett}
+                  row={false}
+                />
+              ) : (
+                <SelectMulti
+                  key={`${personId}${existsFilter ? 1 : 0}etikett`}
+                  value={myEtiketten}
+                  field="etikett"
+                  label="Etiketten"
+                  options={etikettenOptions}
+                  add={addEtikett}
+                  remove={deleteEtikett}
+                  error={errors.etikett}
+                  row={false}
+                />
+              )}
+              <Input
+                key={`${personId}bemerkungen`}
+                value={person.bemerkungen}
+                field="bemerkungen"
+                label="Bemerkun&shy;gen"
+                saveToDb={saveToDb}
+                type="textarea"
+                error={errors.bemerkungen}
+                row={false}
+              />
+              {!showFilter && <Links row={false} />}
+              <Schluessels row={false} />
+              <MobileAbos row={false} />
+            </AreaVerzeichnis>
+            {!showFilter && (
+              <AreaZuletzt>
+                {showMutationNoetig && (
+                  <Handlungsbedarf
+                    key={`${personId}mutationHandlungsbedarf`}
+                    mutationFristValue={person.mutationFrist}
+                    mutationBemerkungValue={person.mutationBemerkung}
+                    mutationNoetigValue={person.mutationNoetig}
+                    label="Handlungs&shy;bedarf"
+                    saveToDb={saveToDb}
+                    errorMutationNoetig={errors.mutationNoetig}
+                    errorMutationFrist={errors.mutationFrist}
+                    errorMutationBemerkung={errors.mutationBemerkung}
+                  />
+                )}
+                {showDeleted && (
+                  <SharedCheckbox
+                    key={`${personId}deleted`}
+                    value={person.deleted}
+                    field="deleted"
+                    label="Gelöscht"
+                    saveToDb={saveToDb}
+                    error={errors.deleted}
+                    row={true}
+                  />
+                )}
+                <Zuletzt row={true} />
+              </AreaZuletzt>
+            )}
+          </Wrapper>
+        </StyledForm>
+      </Container>
+    </ErrorBoundary>
   )
 }
 
