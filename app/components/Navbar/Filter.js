@@ -14,13 +14,12 @@ import {
 } from 'reactstrap'
 import { FaTimes, FaEdit, FaFilter } from 'react-icons/fa'
 import ErrorBoundary from 'react-error-boundary'
-
 import storeContext from '../../storeContext'
+
 const StyledDropdownItem = styled(DropdownItem)`
   background-color: ${props => (props.active ? '#f7f791 !important' : 'unset')};
   color: ${props => (props.active ? '#212529 !important' : 'unset')};
 `
-
 const VolltextInput = styled(Input)`
   background-color: ${props =>
     props.existsfilter === 'true' ? '#f7f791 !important' : '#e9ecef'};
