@@ -100,7 +100,7 @@ const Bereich = () => {
 
   return (
     <StyledNavItem active={activeLocation === 'Bereiche'}>
-      <NavLink href="/" id="Bereiche" onClick={showTab}>
+      <NavLink id="Bereiche" onClick={showTab}>
         Bereiche
         {activeLocation === 'Bereiche' && <Sup>{bereicheSumSup}</Sup>}
       </NavLink>

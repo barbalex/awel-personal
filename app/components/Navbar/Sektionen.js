@@ -102,7 +102,7 @@ const Sektion = () => {
 
   return (
     <StyledNavItem active={active}>
-      <NavLink href="/" id="Sektionen" onClick={showTab}>
+      <NavLink id="Sektionen" onClick={showTab}>
         Sektionen
         {active && <Sup>{sektionenSumSup}</Sup>}
       </NavLink>

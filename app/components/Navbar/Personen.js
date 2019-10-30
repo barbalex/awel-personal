@@ -105,7 +105,7 @@ const Person = () => {
 
   return (
     <StyledNavItem active={active}>
-      <NavLink href="/" id="Personen" onClick={showTab}>
+      <NavLink id="Personen" onClick={showTab}>
         Personen
         {active && <Sup>{personenSumSup}</Sup>}
       </NavLink>

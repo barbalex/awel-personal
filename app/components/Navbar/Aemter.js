@@ -100,7 +100,7 @@ const Amt = () => {
 
   return (
     <StyledNavItem active={active}>
-      <NavLink href="/" id="Aemter" onClick={showTab}>
+      <NavLink id="Aemter" onClick={showTab}>
         Ämter
         {active && <Sup>{aemterSumSup}</Sup>}
       </NavLink>

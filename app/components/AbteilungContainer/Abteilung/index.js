@@ -176,8 +176,6 @@ const Abteilung = ({ activeId, listRef }) => {
     [standortWerte],
   )
 
-  console.log('Abteilung', { abteilung, personOptions })
-
   if (!showFilter && !activeId) return null
 
   return (
