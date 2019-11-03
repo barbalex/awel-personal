@@ -61,6 +61,10 @@ const NonRowLabel = styled(Label)`
 `
 const StyledInputGroupAddon = styled(InputGroupAddon)`
   cursor: pointer;
+  span {
+    border-top-right-radius: 0.25rem !important;
+    border-bottom-right-radius: 0.25rem !important;
+  }
 `
 
 const DateField = ({ value, field, label, saveToDb, error, row = true }) => {
