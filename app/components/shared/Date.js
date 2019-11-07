@@ -5,14 +5,11 @@ import DatePicker from 'react-datepicker'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
-const Container = styled.div`
+const StyledFormGroup = styled(FormGroup)`
   margin-bottom: ${props => (props.row ? '16px' : '8px !important')};
   .react-datepicker-wrapper {
     width: 100%;
   }
-`
-const StyledFormGroup = styled(FormGroup)`
-  margin-bottom: 0 !important;
 `
 const NonRowLabel = styled(Label)`
   margin-bottom: 3px;
@@ -75,39 +72,38 @@ const DateField = ({
     ? new Date(moment(value, 'DD.MM.YYYY').toDate())
     : null
 
+  // for popperPlacement see https://github.com/Hacker0x01/react-datepicker/issues/1246#issuecomment-361833919
   if (row) {
     return (
-      <Container row={row}>
-        <StyledFormGroup>
-          <Label for={field} sm={2}>
-            {label}
-          </Label>
-          <Col sm={10}>
-            <StyledDatePicker
-              selected={selected}
-              onChange={onChangeDatePicker}
-              dateFormat={dateFormat}
-              popperPlacement={popperPlacement}
-            />
-            <FormFeedback>{error}</FormFeedback>
-          </Col>
-        </StyledFormGroup>
-      </Container>
+      <StyledFormGroup row={row}>
+        <Label for={field} sm={2}>
+          {label}
+        </Label>
+        <Col sm={10}>
+          <StyledDatePicker
+            id={field}
+            selected={selected}
+            onChange={onChangeDatePicker}
+            dateFormat={dateFormat}
+            popperPlacement={popperPlacement}
+          />
+          <FormFeedback>{error}</FormFeedback>
+        </Col>
+      </StyledFormGroup>
     )
   }
   return (
-    <Container row={row}>
-      <StyledFormGroup>
-        <NonRowLabel for={field}>{label}</NonRowLabel>
-        <StyledDatePicker
-          selected={selected}
-          onChange={onChangeDatePicker}
-          dateFormat={dateFormat}
-          popperPlacement={popperPlacement}
-        />
-        <FormFeedback>{error}</FormFeedback>
-      </StyledFormGroup>
-    </Container>
+    <StyledFormGroup row={row}>
+      <NonRowLabel for={field}>{label}</NonRowLabel>
+      <StyledDatePicker
+        id={field}
+        selected={selected}
+        onChange={onChangeDatePicker}
+        dateFormat={dateFormat}
+        popperPlacement={popperPlacement}
+      />
+      <FormFeedback>{error}</FormFeedback>
+    </StyledFormGroup>
   )
 }
 
