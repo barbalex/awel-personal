@@ -1,12 +1,12 @@
-import React, { useContext, useRef, useEffect } from 'react'
-import moment from 'moment'
-import styled from 'styled-components'
-import { observer } from 'mobx-react-lite'
+import React, { useContext, useRef, useEffect } from "react";
+import moment from "moment";
+import styled from "styled-components";
+import { observer } from "mobx-react-lite";
 
-import storeContext from '../../../storeContext'
-import LogoAwel from '../../../etc/LogoAwel.jpg'
-import PageTitle from './PageTitle'
-import Row from './Row'
+import storeContext from "../../../storeContext";
+import LogoAwel from "../../../etc/LogoAwel.jpg";
+import PageTitle from "./PageTitle";
+import Row from "./Row";
 
 /*
  * need defined height and overflow
@@ -60,7 +60,7 @@ const Container = styled.div`
     page-break-before: always !important;
     page-break-after: always !important;
   }
-`
+`;
 /**
  * width of PageContainer is set in print by @page
  * somehow this makes positioning of its children not react as usual
@@ -78,7 +78,7 @@ const InnerPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`
+`;
 const StyledRowsContainer = styled.div`
   max-height: 17.2cm;
   max-width: 26.7cm;
@@ -86,7 +86,7 @@ const StyledRowsContainer = styled.div`
    * need overflow while building list
    * so list does not flow outside padding
    */
-  overflow-y: ${props => (props.building ? 'auto' : 'hidden')};
+  overflow-y: ${props => (props.building ? "auto" : "hidden")};
   overflow-x: hidden;
   /* grow to fill page and thus move single rows to top */
   flex-grow: 2;
@@ -96,7 +96,7 @@ const StyledRowsContainer = styled.div`
     page-break-after: avoid !important;
     page-break-inside: avoid !important;
   }
-`
+`;
 const Footer = styled.div`
   height: 0.4cm !important;
   max-height: 0.4cm !important;
@@ -121,31 +121,31 @@ const Footer = styled.div`
     page-break-after: avoid !important;
     page-break-inside: avoid !important;
   }
-`
+`;
 const LogoImg = styled.img`
   max-width: 260px;
   margin-top: -20px;
   margin-left: -10px;
-`
+`;
 const StyledHeader = styled.div`
   border-bottom: 2px solid #717171;
   font-weight: 700;
-`
+`;
 const HeaderRow = styled.div`
   display: flex;
   flex-wrap: nowrap;
   align-items: stretch;
   padding: 3px;
   font-family: Arial Black;
-`
+`;
 const Field = styled.div`
   flex: 1;
   padding: 2px;
-`
+`;
 
 const PersonPrintKaderPage = ({ pageIndex }) => {
-  const store = useContext(storeContext)
-  const { personPages, personenFilteredSorted } = store
+  const store = useContext(storeContext);
+  const { personPages, personenFilteredSorted } = store;
   const {
     pages,
     building,
@@ -153,12 +153,12 @@ const PersonPrintKaderPage = ({ pageIndex }) => {
     remainingRows,
     moveRowToNewPage,
     addRow,
-    stop,
-  } = personPages
-  const rowsContainer = useRef(null)
+    stop
+  } = personPages;
+  const rowsContainer = useRef(null);
 
-  const page = pages[pageIndex]
-  const { rows } = page
+  const page = pages[pageIndex];
+  const { rows } = page;
 
   useEffect(() => {
     /**
@@ -174,29 +174,27 @@ const PersonPrintKaderPage = ({ pageIndex }) => {
     if (pageIndex === activePageIndex) {
       const offsetHeight = rowsContainer
         ? rowsContainer.current.offsetHeight
-        : null
+        : null;
       const scrollHeight = rowsContainer
         ? rowsContainer.current.scrollHeight
-        : null
-      const activePageIsFull = page.full
+        : null;
+      const activePageIsFull = page.full;
 
       if (!activePageIsFull && remainingRows.length > 0) {
         if (offsetHeight < scrollHeight) {
-          moveRowToNewPage(activePageIndex)
-          //this.showPagesModal()
+          moveRowToNewPage(activePageIndex);
         } else {
-          addRow(page)
+          addRow(page);
         }
       }
       if (remainingRows.length === 0) {
         if (offsetHeight < scrollHeight) {
-          moveRowToNewPage(activePageIndex)
-          //this.showPagesModal()
+          moveRowToNewPage(activePageIndex);
         } else {
           // for unknown reason setTimeout is needed
           setTimeout(() => {
-            stop()
-          })
+            stop();
+          });
         }
       }
     }
@@ -207,12 +205,12 @@ const PersonPrintKaderPage = ({ pageIndex }) => {
     page,
     pageIndex,
     remainingRows.length,
-    stop,
-  ])
+    stop
+  ]);
 
-  if (!rows) return null
+  if (!rows) return null;
 
-  const personen = personenFilteredSorted.filter(p => rows.includes(p.id))
+  const personen = personenFilteredSorted.filter(p => rows.includes(p.id));
 
   return (
     <Container>
@@ -240,14 +238,14 @@ const PersonPrintKaderPage = ({ pageIndex }) => {
           ))}
         </StyledRowsContainer>
         <Footer>
-          <div>{moment().format('DD.MM.YYYY')}</div>
+          <div>{moment().format("DD.MM.YYYY")}</div>
           <div>
             Seite {pageIndex + 1}/{pages.length}
           </div>
         </Footer>
       </InnerPageContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default observer(PersonPrintKaderPage)
+export default observer(PersonPrintKaderPage);
