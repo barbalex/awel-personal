@@ -80,13 +80,17 @@ const PersonImage = () => {
 
   // eslint-disable-next-line no-unused-vars
   const [errors, setErrors] = useState({})
-  useEffect(() => { setErrors({}) }, [person.id])
+  useEffect(() => {
+    setErrors({})
+  }, [person.id])
 
   const [image, setImage] = useState(null)
 
   useEffect(() => {
     setImage(person.bildUrl)
   }, [person.bildUrl])
+
+  //console.log('PersonImage', { image, personBildUrl: person.bildUrl })
 
   const onDrop = useCallback(
     files => {
