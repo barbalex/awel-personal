@@ -45,8 +45,7 @@
       "package.json"
     ],
     "dmg": {
-      "contents": [
-        {
+      "contents": [{
           "x": 130,
           "y": 220
         },
@@ -243,7 +242,6 @@
     "username": "5.1.0"
   },
   "dependenciesComments": {
-    "electron": "Do not upgrade from v6.0.7 to v6.0.8. See https://github.com/electron/electron/issues/20205",
     "react-dropzone": "Do not upgrade past v8.1.0, will break due to only filename being returned in the path property, not entire path. See https://github.com/react-dropzone/file-selector/issues/10"
   },
   "engines": {
