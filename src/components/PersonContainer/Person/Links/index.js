@@ -49,7 +49,6 @@ const LinksComponent = ({ row = true }) => {
 
   const onDrop = useCallback(
     files => {
-      console.log('file:', files[0])
       addLink(files[0].path)
     },
     [addLink],
