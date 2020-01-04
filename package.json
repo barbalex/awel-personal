@@ -51,7 +51,7 @@
     "react-window": "1.8.5",
     "reactstrap": "8.2.0",
     "source-map-support": "0.5.16",
-    "styled-components": "5.0.0-rc.2",
+    "styled-components": "5.0.0-rc.3",
     "use-detect-print": "0.0.2",
     "username": "5.1.0"
   },
@@ -80,7 +80,7 @@
     "@electron-forge/maker-rpm": "6.0.0-beta.47",
     "@electron-forge/maker-squirrel": "6.0.0-beta.47",
     "@electron-forge/maker-zip": "6.0.0-beta.47",
-    "@electron-forge/plugin-webpack": "^6.0.0-beta.47",
+    "@electron-forge/plugin-webpack": "6.0.0-beta.47",
     "@marshallofsound/webpack-asset-relocator-loader": "0.5.0",
     "babel-eslint": "10.x",
     "babel-loader": "8.0.6",
