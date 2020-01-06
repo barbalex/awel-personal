@@ -14,7 +14,7 @@ let mainWindow
 const browserWindowOptions = {
   width: 1800,
   height: 1024,
-  //icon: './src/etc/app.png',
+  icon: './src/etc/person.png',
   //show: false,
   webPreferences: {
     nodeIntegration: true,
@@ -31,7 +31,7 @@ const createWindow = () => {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
