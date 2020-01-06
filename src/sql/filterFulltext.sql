@@ -1,3 +1,4 @@
+drop view if exists personenFts;
 create view personenFts as
 select
   personen.id,
@@ -11,7 +12,8 @@ select
   coalesce(personen.plz, '') || ' ' ||
   coalesce(lower(personen.ort), '') || ' ' ||
   coalesce(lower(personen.land), '') || ' ' ||
-  coalesce(lower(personen.bildUrl), '') || ' ' ||
+  -- this leads to surprising results - remove?
+  --coalesce(lower(personen.bildUrl), '') || ' ' ||
   coalesce(lower(personen.email), '') || ' ' ||
   coalesce(personen.geburtDatum, '') || ' ' ||
   coalesce(lower(personen.bueroNr), '') || ' ' ||
@@ -41,7 +43,8 @@ select
   group_concat(lower(coalesce(telefones.nr, '') || ' ' || coalesce(telefones.typ, '') || ' ' || coalesce(telefones.bemerkungen, ''))) || ' ' ||
   group_concat(lower(coalesce(mobileAbos.kostenstelle, '') || ' ' || coalesce(mobileAbos.typ, '') || ' ' || coalesce(mobileAbos.bemerkungen, ''))) || ' ' ||
   group_concat(lower(coalesce(schluessel.typ, '') || ' ' || coalesce(schluessel.anlage, '') || ' ' || coalesce(schluessel.nr, '') || ' ' || coalesce(schluessel.bezeichnung, ''))) || ' ' ||
-  group_concat(lower(coalesce(links.url, ''))) || ' ' ||
+  -- this leads to surprising results - remove?
+  --group_concat(lower(coalesce(links.url, ''))) || ' ' ||
   group_concat(lower(coalesce(etiketten.etikett, ''))) || ' ' ||
   group_concat(lower(coalesce(anwesenheitstage.tag, '')))
   as data
