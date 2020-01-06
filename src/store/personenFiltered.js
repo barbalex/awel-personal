@@ -29,11 +29,12 @@ export default ({ self, db }) => {
       const etiketten = self.etiketten
         .filter(f => f.idPerson === p.id)
         .filter(f =>
-          ['Kader-Treffen', 'Sektionsleiter-Treffen'].includes(f.etikett),
+          ['Kadertreffen', 'Sektionsleitertreffen'].includes(f.etikett),
         )
 
       return [...kaderfunktionen, ...etiketten].length > 0
     })
+    .filter(f=>f.status === 'aktiv')
   }
   if (filterPersonAktivJetzt) {
     personen = personen
