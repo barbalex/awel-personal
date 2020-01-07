@@ -6,15 +6,15 @@ import saveConfig from './saveConfig'
 
 export default async () => {
   const config = getConfig()
-  //console.log('getDbConnection, config:', config)
+  //console.log('getDb, config:', config)
   let dbPath = config.dbPath || 'C:/Users/alexa/personal.db'
 
   let db
   try {
     db = new Database(dbPath, { fileMustExist: true })
   } catch (error) {
-    //console.log('getDbConnection, error', error)
-    console.log('getDbConnection, error.code', error.message)
+    //console.log('getDb, error', error)
+    console.log('getDb, error.code', error.message)
     if (
       (error.code && error.code === 'SQLITE_CANTOPEN') ||
       error.message.includes('directory does not exist')
@@ -25,7 +25,7 @@ export default async () => {
       } catch (chooseError) {
         return console.log('Error after choosing db:', chooseError)
       }
-      //console.log('getDbConnection, dbPath', dbPath)
+      //console.log('getDb, dbPath', dbPath)
       db = new Database(dbPath, { fileMustExist: true })
       config.dbPath = dbPath
       saveConfig(config)

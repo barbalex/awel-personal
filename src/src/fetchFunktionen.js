@@ -1,5 +1,10 @@
 export default ({ store }) => {
-  const { db, setFunktionen } = store
-  const funktionen = db.prepare('SELECT * from funktionen').all()
+  const { db, setFunktionen, addError } = store
+  let funktionen = []
+  try {
+    funktionen = db.prepare('SELECT * from funktionen').all()
+  } catch (error) {
+    addError(error)
+  }
   setFunktionen(funktionen)
 }

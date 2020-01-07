@@ -1,5 +1,10 @@
 export default ({ store }) => {
-  const { db, setBereiche } = store
-  const bereiche = db.prepare('SELECT * from bereiche').all()
+  const { db, setBereiche, addError } = store
+  let bereiche = []
+  try {
+    bereiche = db.prepare('SELECT * from bereiche').all()
+  } catch (error) {
+    addError(error)
+  }
   setBereiche(bereiche)
 }

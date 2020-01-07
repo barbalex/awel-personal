@@ -1,5 +1,10 @@
 export default ({ store }) => {
-  const { db, setPersonen } = store
-  const personen = db.prepare('SELECT * from personen').all()
+  const { db, setPersonen, addError } = store
+  let personen = []
+  try {
+    personen = db.prepare('SELECT * from personen').all()
+  } catch (error) {
+    addError(error)
+  }
   setPersonen(personen)
 }

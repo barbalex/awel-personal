@@ -1,5 +1,10 @@
 export default ({ store }) => {
-  const { db, setLinks } = store
-  const links = db.prepare('SELECT * from links').all()
+  const { db, setLinks, addError } = store
+  let links = []
+  try {
+    links = db.prepare('SELECT * from links').all()
+  } catch (error) {
+    addError(error)
+  }
   setLinks(links)
 }

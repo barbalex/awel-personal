@@ -4,7 +4,7 @@ import username from 'username'
 
 import App from './components/App'
 import './styles.css'
-import getDbConnection from './src/getDbConnection'
+import getDb from './src/getDb'
 import createStore from './store'
 import watchMutations from './src/watchMutations'
 
@@ -13,22 +13,23 @@ import { StoreContextProvider } from './storeContext'
 const run = async () => {
 
   const store = createStore().create()
+  const {addError, setDb, setUsername} = store
   watchMutations({ store })
   let db
   try {
-    db = await getDbConnection()
+    db = await getDb()
   } catch (error) {
-    return console.log(error)
+    addError(error)
   }
-  store.setDb(db)
+  setDb(db)
 
   let user
   try {
     user = await username()
   } catch (error) {
-    console.log('Error accessing username:', error.message)
+    addError(error)
   }
-  if (user) store.setUsername(user)
+  if (user) setUsername(user)
 
   window.store = store
 
