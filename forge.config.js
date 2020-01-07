@@ -12,6 +12,11 @@ module.exports = {
       name: '@electron-forge/maker-squirrel',
       config: {
         name: 'Personal',
+        iconUrl: './src/etc/person.ico',
+        copyright: 'AWEL Kt. Zürich, Schweiz',
+        owners: 'AWEL Kt. Zürich, Schweiz',
+        description: 'Damit verwaltet das AWEL Kt. ZH Personal-Daten',
+        authors: 'Alexander Gabriel, Gabriel-Software'
       },
     },
     {
