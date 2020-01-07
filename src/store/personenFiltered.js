@@ -4,7 +4,7 @@
  */
 import moment from 'moment'
 
-export default ({ self, db }) => {
+export default ({ self }) => {
   const {
     filterSchluessel,
     filterMobileAbo,
@@ -18,7 +18,7 @@ export default ({ self, db }) => {
     filterPersonAktivJetzt,
     filterPersonAktivJetztMitTel,
     filterPersonAktivJetztMitMobiltel,
-    filterPersonAktivJetztMitKurzzeichen,
+    filterPersonAktivJetztMitKurzzeichen,db
   } = self
   let { personen } = self
   if (filterPersonKader) {

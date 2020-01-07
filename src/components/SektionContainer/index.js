@@ -12,7 +12,6 @@ import fetchAbteilungen from '../../src/fetchAbteilungen'
 import fetchWerte from '../../src/fetchWerte'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
-import dbContext from '../../dbContext'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
@@ -32,15 +31,7 @@ const StyledReflexElement = styled(ReflexElement)`
 
 const SektionContainer = () => {
   const store = useContext(storeContext)
-  const db = useContext(dbContext)
-  const {
-    showFilter,
-    sektionen,
-    setAbteilungen,
-    setPersonen,
-    setSektionen,
-    setWerte,
-  } = store
+  const { showFilter, sektionen, db } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const sektion = sektionen.find(p => p.id === activeId)
@@ -48,11 +39,11 @@ const SektionContainer = () => {
   const sektionJson = sektion ? sektion.toJSON() : {}
 
   useEffect(() => {
-    fetchSektionen({ db, setSektionen })
-    fetchAbteilungen({ db, setAbteilungen })
-    fetchPersonen({ db, setPersonen })
-    fetchWerte({ db, setWerte, table: 'kostenstelleWerte' })
-  }, [db, setAbteilungen, setPersonen, setSektionen, setWerte, store])
+    fetchSektionen({ store })
+    fetchAbteilungen({ store })
+    fetchPersonen({ store })
+    fetchWerte({ store, table: 'kostenstelleWerte' })
+  }, [db])
 
   const listRef = useRef(null)
 

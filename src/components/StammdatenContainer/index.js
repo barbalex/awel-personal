@@ -9,7 +9,6 @@ import List from './List'
 import fetchWerte from '../../src/fetchWerte'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
-import dbContext from '../../dbContext'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
@@ -26,7 +25,7 @@ const StyledReflexElement = styled(ReflexElement)`
 
 const StammdatenContainer = () => {
   const store = useContext(storeContext)
-  const { setWerte } = store
+  const { db } = store
 
   const location = store.location.toJSON()
   const activeTable = location[0]
@@ -34,27 +33,26 @@ const StammdatenContainer = () => {
   const data = store[activeTable]
   const dat = data.find(d => d.id === activeId)
 
-  const db = useContext(dbContext)
   // pass list the active dat's props to enable instant updates
   const datJson = dat || {}
 
   useEffect(() => {
-    fetchWerte({ db, setWerte, table: 'statusWerte' })
-    fetchWerte({ db, setWerte, table: 'anredeWerte' })
-    fetchWerte({ db, setWerte, table: 'kostenstelleWerte' })
-    fetchWerte({ db, setWerte, table: 'mobileAboTypWerte' })
-    fetchWerte({ db, setWerte, table: 'telefonTypWerte' })
-    fetchWerte({ db, setWerte, table: 'schluesselTypWerte' })
-    fetchWerte({ db, setWerte, table: 'schluesselAnlageWerte' })
-    fetchWerte({ db, setWerte, table: 'funktionWerte' })
-    fetchWerte({ db, setWerte, table: 'kaderFunktionWerte' })
-    fetchWerte({ db, setWerte, table: 'mobileAboKostenstelleWerte' })
-    fetchWerte({ db, setWerte, table: 'etikettWerte' })
-    fetchWerte({ db, setWerte, table: 'anwesenheitstagWerte' })
-    fetchWerte({ db, setWerte, table: 'landWerte' })
-    fetchWerte({ db, setWerte, table: 'mutationArtWerte' })
-    fetchWerte({ db, setWerte, table: 'standortWerte' })
-  }, [db, setWerte])
+    fetchWerte({ store, table: 'statusWerte' })
+    fetchWerte({ store, table: 'anredeWerte' })
+    fetchWerte({ store, table: 'kostenstelleWerte' })
+    fetchWerte({ store, table: 'mobileAboTypWerte' })
+    fetchWerte({ store, table: 'telefonTypWerte' })
+    fetchWerte({ store, table: 'schluesselTypWerte' })
+    fetchWerte({ store, table: 'schluesselAnlageWerte' })
+    fetchWerte({ store, table: 'funktionWerte' })
+    fetchWerte({ store, table: 'kaderFunktionWerte' })
+    fetchWerte({ store, table: 'mobileAboKostenstelleWerte' })
+    fetchWerte({ store, table: 'etikettWerte' })
+    fetchWerte({ store, table: 'anwesenheitstagWerte' })
+    fetchWerte({ store, table: 'landWerte' })
+    fetchWerte({ store, table: 'mutationArtWerte' })
+    fetchWerte({ store, table: 'standortWerte' })
+  }, [db])
 
   const listRef = useRef(null)
 

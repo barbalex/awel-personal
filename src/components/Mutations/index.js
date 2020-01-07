@@ -11,7 +11,6 @@ import fetchMutations from '../../src/fetchMutations'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import Filter from './Filter'
 import storeContext from '../../storeContext'
-import dbContext from '../../dbContext'
 import Row from './Row'
 
 moment.locale('de')
@@ -97,8 +96,7 @@ const getValueToShow = value => {
 
 const Mutations = () => {
   const store = useContext(storeContext)
-  const db = useContext(dbContext)
-  const { mutations: rawMutations, setMutations } = store
+  const { mutations: rawMutations, db } = store
   const location = store.location.toJSON()
 
   const [zeitFilter, setZeitFilter] = useState(null)
@@ -143,8 +141,8 @@ const Mutations = () => {
   )
 
   useEffect(() => {
-    fetchMutations({ db, setMutations })
-  }, [db, setMutations])
+    fetchMutations({ store })
+  }, [db])
 
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const mutations = sortBy(rawMutations.slice(), 'id')

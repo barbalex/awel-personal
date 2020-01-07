@@ -39,7 +39,6 @@ import Mutation from './Mutation'
 import StatusWert from './StatusWert'
 import TagWert from './TagWert'
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
-//import fetchAnwesenheitstage from '../src/fetchAnwesenheitstage'
 import PersonPages from './PersonPages'
 import PersonVerzeichnisPages from './PersonVerzeichnisPages'
 import personenFiltered from './personenFiltered'
@@ -57,7 +56,7 @@ import sektionenFilteredSortedByHandelsbedarf from './sektionenFilteredSortedByH
 import revertMutation from './revertMutation'
 import addPerson from './addPerson'
 
-export default db =>
+export default () =>
   types
     .model({
       dirty: types.optional(types.boolean, false),
@@ -146,11 +145,10 @@ export default db =>
         building: false,
       }),
     })
-    // functions are not serializable
-    // so need to define this as volatile
     .volatile(() => ({
       deletionCallback: null,
       errors: [],
+      db: null,
     }))
     .views(self => ({
       get activeForm() {
@@ -217,7 +215,7 @@ export default db =>
         return personenSorted(self.personen)
       },
       get personenFiltered() {
-        return personenFiltered({ self, db })
+        return personenFiltered({ self })
       },
       get personenFilteredSorted() {
         return personenSorted(self.personenFiltered)
@@ -305,6 +303,9 @@ export default db =>
       setUndoManager(self)
 
       return {
+        setDb(val) {
+          self.db = val
+        },
         setDirty(val) {
           self.dirty = val
         },
@@ -456,16 +457,16 @@ export default db =>
           self.activePrintForm = val
         },
         revertMutation(mutationId) {
-          revertMutation({ self, db, mutationId })
+          revertMutation({ self, mutationId })
         },
         addPerson() {
-          addPerson({ self, db })
+          addPerson({ store: self })
         },
         addAmt() {
           // 1. create new Amt in db, returning id
           let info
           try {
-            info = db
+            info = self.db
               .prepare(
                 'insert into aemter (letzteMutationUser, letzteMutationZeit) values (@user, @zeit)',
               )
@@ -486,7 +487,7 @@ export default db =>
           // 1. create new Abteilung in db, returning id
           let info
           try {
-            info = db
+            info = self.db
               .prepare(
                 'insert into abteilungen (letzteMutationUser, letzteMutationZeit, amt) values (@user, @zeit, @amt)',
               )
@@ -507,7 +508,7 @@ export default db =>
           // 1. create new Bereich in db, returning id
           let info
           try {
-            info = db
+            info = self.db
               .prepare(
                 'insert into bereiche (letzteMutationUser, letzteMutationZeit) values (@user, @zeit)',
               )
@@ -528,7 +529,7 @@ export default db =>
           // 1. create new Sektion in db, returning id
           let info
           try {
-            info = db
+            info = self.db
               .prepare(
                 'insert into sektionen (letzteMutationUser, letzteMutationZeit) values (@user, @zeit)',
               )
@@ -601,7 +602,7 @@ export default db =>
               // do nothing
             }
             try {
-              info = db
+              info = self.db
                 .prepare(
                   'insert into mutations (time, user, op, tableName, rowId, field, value, previousValue, reverts) values (@time, @username, @op, @tableName, @rowId, @field, @value, @previousValue, @reverts)',
                 )
@@ -644,7 +645,7 @@ export default db =>
           // 1. create new value in db, returning id
           let info
           try {
-            info = db
+            info = self.db
               .prepare(
                 `insert into ${table} (letzteMutationUser,letzteMutationZeit) values (@letzteMutationUser,@letzteMutationZeit)`,
               )
@@ -667,7 +668,9 @@ export default db =>
         setWertDeleted({ id, table }) {
           // write to db
           try {
-            db.prepare(`update ${table} set deleted = 1 where id = ?;`).run(id)
+            self.db
+              .prepare(`update ${table} set deleted = 1 where id = ?;`)
+              .run(id)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -680,21 +683,26 @@ export default db =>
         deleteWert({ id, table }) {
           // write to db
           try {
-            db.prepare(`delete from ${table} where id = ${id}`).run()
+            self.db.prepare(`delete from ${table} where id = ${id}`).run()
           } catch (error) {
             self.addError(error)
             return console.log(error)
           }
           // write to store
-          self[table].splice(findIndex(self[table], p => p.id === id), 1)
+          self[table].splice(
+            findIndex(self[table], p => p.id === id),
+            1,
+          )
           self.setLocation([table])
         },
         setPersonDeleted(id) {
           // write to db
           try {
-            db.prepare(
-              `update personen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
-            ).run({ id, user: self.username, time: Date.now() })
+            self.db
+              .prepare(
+                `update personen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+              )
+              .run({ id, user: self.username, time: Date.now() })
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -709,7 +717,7 @@ export default db =>
         deletePerson(id) {
           // write to db
           try {
-            db.prepare('delete from personen where id = ?').run(id)
+            self.db.prepare('delete from personen where id = ?').run(id)
           } catch (error) {
             self.addError(error)
             // roll back update
@@ -721,15 +729,20 @@ export default db =>
            * rebuilds self.personen. Consequence:
            * all other personen are re-added and listet as mutations of op 'add'
            */
-          self.personen.splice(findIndex(self.personen, p => p.id === id), 1)
+          self.personen.splice(
+            findIndex(self.personen, p => p.id === id),
+            1,
+          )
           self.setLocation(['Personen'])
         },
         setAmtDeleted(id) {
           // write to db
           try {
-            db.prepare(
-              `update aemter set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
-            ).run({ id, user: self.username, time: Date.now() })
+            self.db
+              .prepare(
+                `update aemter set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+              )
+              .run({ id, user: self.username, time: Date.now() })
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -744,9 +757,11 @@ export default db =>
         setAbteilungDeleted(id) {
           // write to db
           try {
-            db.prepare(
-              `update abteilungen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
-            ).run({ id, user: self.username, time: Date.now() })
+            self.db
+              .prepare(
+                `update abteilungen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+              )
+              .run({ id, user: self.username, time: Date.now() })
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -761,7 +776,7 @@ export default db =>
         deleteAmt(id) {
           // write to db
           try {
-            db.prepare('delete from aemter where id = ?').run(id)
+            self.db.prepare('delete from aemter where id = ?').run(id)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -772,13 +787,16 @@ export default db =>
            * rebuilds self.aemter. Consequence:
            * all other aemter are re-added and listet as mutations of op 'add'
            */
-          self.aemter.splice(findIndex(self.aemter, p => p.id === id), 1)
+          self.aemter.splice(
+            findIndex(self.aemter, p => p.id === id),
+            1,
+          )
           self.setLocation(['Aemter'])
         },
         deleteAbteilung(id) {
           // write to db
           try {
-            db.prepare('delete from abteilungen where id = ?').run(id)
+            self.db.prepare('delete from abteilungen where id = ?').run(id)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -798,9 +816,11 @@ export default db =>
         setBereichDeleted(id) {
           // write to db
           try {
-            db.prepare(
-              `update bereiche set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
-            ).run({ id, user: self.username, time: Date.now() })
+            self.db
+              .prepare(
+                `update bereiche set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+              )
+              .run({ id, user: self.username, time: Date.now() })
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -815,7 +835,7 @@ export default db =>
         deleteBereich(id) {
           // write to db
           try {
-            db.prepare('delete from bereiche where id = ?').run(id)
+            self.db.prepare('delete from bereiche where id = ?').run(id)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -826,15 +846,20 @@ export default db =>
            * rebuilds self.bereiche. Consequence:
            * all other bereiche are re-added and listet as mutations of op 'add'
            */
-          self.bereiche.splice(findIndex(self.bereiche, p => p.id === id), 1)
+          self.bereiche.splice(
+            findIndex(self.bereiche, p => p.id === id),
+            1,
+          )
           self.setLocation(['Bereichen'])
         },
         setSektionDeleted(id) {
           // write to db
           try {
-            db.prepare(
-              `update sektionen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
-            ).run({ id, user: self.username, time: Date.now() })
+            self.db
+              .prepare(
+                `update sektionen set deleted = 1, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+              )
+              .run({ id, user: self.username, time: Date.now() })
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -849,7 +874,7 @@ export default db =>
         deleteSektion(id) {
           // write to db
           try {
-            db.prepare('delete from sektionen where id = ?').run(id)
+            self.db.prepare('delete from sektionen where id = ?').run(id)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -860,7 +885,10 @@ export default db =>
            * rebuilds self.sektionen. Consequence:
            * all other sektionen are re-added and listet as mutations of op 'add'
            */
-          self.sektionen.splice(findIndex(self.sektionen, p => p.id === id), 1)
+          self.sektionen.splice(
+            findIndex(self.sektionen, p => p.id === id),
+            1,
+          )
           self.setLocation(['Sektionen'])
         },
         addEtikett(etikett) {
@@ -870,7 +898,7 @@ export default db =>
           // 1. create new etikett in db, returning id
           let info
           try {
-            info = db
+            info = self.db
               .prepare(
                 'insert into etiketten (idPerson, etikett, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
               )
@@ -895,9 +923,11 @@ export default db =>
           const idPerson = ifIsNumericAsNumber(location[1])
           // write to db
           try {
-            db.prepare(
-              'delete from etiketten where idPerson = ? and etikett = ?',
-            ).run(idPerson, etikett)
+            self.db
+              .prepare(
+                'delete from etiketten where idPerson = ? and etikett = ?',
+              )
+              .run(idPerson, etikett)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -919,7 +949,7 @@ export default db =>
           // 1. create new anwesenheitstag in db, returning id
           let info
           try {
-            info = db
+            info = self.db
               .prepare(
                 'insert into anwesenheitstage (idPerson, tag, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
               )
@@ -944,9 +974,11 @@ export default db =>
           const idPerson = ifIsNumericAsNumber(location[1])
           // write to db
           try {
-            db.prepare(
-              'delete from anwesenheitstage where idPerson = ? and tag = ?',
-            ).run(idPerson, tag)
+            self.db
+              .prepare(
+                'delete from anwesenheitstage where idPerson = ? and tag = ?',
+              )
+              .run(idPerson, tag)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -968,7 +1000,7 @@ export default db =>
           // 1. create new link in db, returning id
           let info
           try {
-            info = db
+            info = self.db
               .prepare(
                 'insert into links (idPerson, url, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
               )
@@ -990,13 +1022,16 @@ export default db =>
         deleteLink(id) {
           // write to db
           try {
-            db.prepare('delete from links where id = ?').run(id)
+            self.db.prepare('delete from links where id = ?').run(id)
           } catch (error) {
             self.addError(error)
             return console.log(error)
           }
           // write to store
-          self.links.splice(findIndex(self.links, p => p.id === id), 1)
+          self.links.splice(
+            findIndex(self.links, p => p.id === id),
+            1,
+          )
           // set persons letzteMutation
           const { location } = self
           const idPerson = ifIsNumericAsNumber(location[1])
@@ -1009,7 +1044,7 @@ export default db =>
           // 1. create new link in db, returning id
           let info
           try {
-            info = db
+            info = self.db
               .prepare(
                 'insert into schluessel (idPerson, letzteMutationUser, letzteMutationZeit) values (?,?,?)',
               )
@@ -1030,7 +1065,7 @@ export default db =>
         deleteSchluessel(id) {
           // write to db
           try {
-            db.prepare('delete from schluessel where id = ?').run(id)
+            self.db.prepare('delete from schluessel where id = ?').run(id)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1052,7 +1087,7 @@ export default db =>
           // 1. create new link in db, returning id
           let info
           try {
-            info = db
+            info = self.db
               .prepare(
                 'insert into kostenstelle (idSektion, letzteMutationUser, letzteMutationZeit) values (?,?,?)',
               )
@@ -1073,7 +1108,7 @@ export default db =>
         deleteKostenstelle(id) {
           // write to db
           try {
-            db.prepare('delete from kostenstelle where id = ?').run(id)
+            self.db.prepare('delete from kostenstelle where id = ?').run(id)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1095,7 +1130,7 @@ export default db =>
           // 1. create new link in db, returning id
           let info
           try {
-            info = db
+            info = self.db
               .prepare(
                 'insert into mobileAbos (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)',
               )
@@ -1120,7 +1155,7 @@ export default db =>
           // 1. create new link in db, returning id
           let info
           try {
-            info = db
+            info = self.db
               .prepare(
                 'insert into telefones (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)',
               )
@@ -1141,7 +1176,7 @@ export default db =>
         deleteMobileAbo(id) {
           // write to db
           try {
-            db.prepare('delete from mobileAbos where id = ?').run(id)
+            self.db.prepare('delete from mobileAbos where id = ?').run(id)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1159,13 +1194,16 @@ export default db =>
         deleteTelefon(id) {
           // write to db
           try {
-            db.prepare('delete from telefones where id = ?').run(id)
+            self.db.prepare('delete from telefones where id = ?').run(id)
           } catch (error) {
             self.addError(error)
             return console.log(error)
           }
           // write to store
-          self.telefones.splice(findIndex(self.telefones, p => p.id === id), 1)
+          self.telefones.splice(
+            findIndex(self.telefones, p => p.id === id),
+            1,
+          )
           // set persons letzteMutation
           const { location } = self
           const idPerson = ifIsNumericAsNumber(location[1])
@@ -1178,7 +1216,7 @@ export default db =>
           // 1. create new funktion in db, returning id
           let info
           try {
-            info = db
+            info = self.db
               .prepare(
                 'insert into funktionen (idPerson, funktion, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
               )
@@ -1203,9 +1241,11 @@ export default db =>
           const idPerson = ifIsNumericAsNumber(location[1])
           // write to db
           try {
-            db.prepare(
-              'delete from funktionen where idPerson = ? and funktion = ?',
-            ).run(idPerson, funktion)
+            self.db
+              .prepare(
+                'delete from funktionen where idPerson = ? and funktion = ?',
+              )
+              .run(idPerson, funktion)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1227,7 +1267,7 @@ export default db =>
           // 1. create new kaderFunktion in db, returning id
           let info
           try {
-            info = db
+            info = self.db
               .prepare(
                 'insert into kaderFunktionen (idPerson, funktion, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
               )
@@ -1252,9 +1292,11 @@ export default db =>
           const idPerson = ifIsNumericAsNumber(location[1])
           // write to db
           try {
-            db.prepare(
-              'delete from kaderFunktionen where idPerson = ? and funktion = ?',
-            ).run(idPerson, funktion)
+            self.db
+              .prepare(
+                'delete from kaderFunktionen where idPerson = ? and funktion = ?',
+              )
+              .run(idPerson, funktion)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1272,14 +1314,16 @@ export default db =>
         updateField({ table, parentModel, field, value, id, setErrors }) {
           // 1. update in db
           try {
-            db.prepare(
-              `update ${table} set ${field} = @value, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
-            ).run({
-              value,
-              id,
-              user: self.username,
-              time: Date.now(),
-            })
+            self.db
+              .prepare(
+                `update ${table} set ${field} = @value, letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+              )
+              .run({
+                value,
+                id,
+                user: self.username,
+                time: Date.now(),
+              })
           } catch (error) {
             if (setErrors) {
               return setErrors({
@@ -1331,13 +1375,15 @@ export default db =>
         updatePersonsMutation(idPerson) {
           // in db
           try {
-            db.prepare(
-              `update personen set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
-            ).run({
-              user: self.username,
-              time: Date.now(),
-              id: idPerson,
-            })
+            self.db
+              .prepare(
+                `update personen set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+              )
+              .run({
+                user: self.username,
+                time: Date.now(),
+                id: idPerson,
+              })
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1350,13 +1396,15 @@ export default db =>
         updateAmtMutation(idAmt) {
           // in db
           try {
-            db.prepare(
-              `update aemter set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
-            ).run({
-              user: self.username,
-              time: Date.now(),
-              id: idAmt,
-            })
+            self.db
+              .prepare(
+                `update aemter set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+              )
+              .run({
+                user: self.username,
+                time: Date.now(),
+                id: idAmt,
+              })
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1369,13 +1417,15 @@ export default db =>
         updateAbteilungsMutation(idAbteilung) {
           // in db
           try {
-            db.prepare(
-              `update abteilungen set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
-            ).run({
-              user: self.username,
-              time: Date.now(),
-              id: idAbteilung,
-            })
+            self.db
+              .prepare(
+                `update abteilungen set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+              )
+              .run({
+                user: self.username,
+                time: Date.now(),
+                id: idAbteilung,
+              })
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1388,13 +1438,15 @@ export default db =>
         updateBereichsMutation(idBereich) {
           // in db
           try {
-            db.prepare(
-              `update bereiche set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
-            ).run({
-              user: self.username,
-              time: Date.now(),
-              id: idBereich,
-            })
+            self.db
+              .prepare(
+                `update bereiche set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+              )
+              .run({
+                user: self.username,
+                time: Date.now(),
+                id: idBereich,
+              })
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1407,13 +1459,15 @@ export default db =>
         updateSektionsMutation(idSektion) {
           // in db
           try {
-            db.prepare(
-              `update sektionen set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
-            ).run({
-              user: self.username,
-              time: Date.now(),
-              id: idSektion,
-            })
+            self.db
+              .prepare(
+                `update sektionen set letzteMutationUser = @user, letzteMutationZeit = @time where id = @id;`,
+              )
+              .run({
+                user: self.username,
+                time: Date.now(),
+                id: idSektion,
+              })
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1428,7 +1482,9 @@ export default db =>
         },
         setSettingsKey({ key, value }) {
           try {
-            db.prepare(`update settings set ${key} = ? where id = 1`).run(value)
+            self.db
+              .prepare(`update settings set ${key} = ? where id = 1`)
+              .run(value)
           } catch (error) {
             self.addError(error)
             return console.log(error)

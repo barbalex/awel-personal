@@ -10,7 +10,6 @@ import fetchAemter from '../../src/fetchAemter'
 import fetchWerte from '../../src/fetchWerte'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
-import dbContext from '../../dbContext'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
@@ -30,8 +29,7 @@ const StyledReflexElement = styled(ReflexElement)`
 
 const AmtContainer = () => {
   const store = useContext(storeContext)
-  const db = useContext(dbContext)
-  const { showFilter, aemter, setAemter, setWerte } = store
+  const { showFilter, aemter, db } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const amt = aemter.find(p => p.id === activeId)
@@ -39,9 +37,9 @@ const AmtContainer = () => {
   const amtJson = amt ? amt.toJSON() : {}
 
   useEffect(() => {
-    fetchAemter({ db, setAemter })
-    fetchWerte({ db, setWerte, table: 'kostenstelleWerte' })
-  }, [db, setAemter, setWerte])
+    fetchAemter({ store })
+    fetchWerte({ store, table: 'kostenstelleWerte' })
+  }, [db])
 
   const listRef = useRef(null)
 

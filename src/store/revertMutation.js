@@ -4,8 +4,8 @@ import findIndex from 'lodash/findIndex'
 
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 
-export default ({ self, db, mutationId }) => {
-  const { mutations } = self
+export default ({ self, mutationId }) => {
+  const { mutations, db } = self
   const mutation = mutations.find(m => m.id === mutationId)
   if (!mutation) {
     throw new Error(`Keine Mutation mit id ${mutationId} gefunden`)

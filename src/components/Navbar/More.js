@@ -12,7 +12,6 @@ import { FaTrashAlt } from 'react-icons/fa'
 import { FaRegEdit } from 'react-icons/fa'
 
 import storeContext from '../../storeContext'
-import dbContext from '../../dbContext'
 import chooseDbConnection from '../../src/chooseDbConnection'
 
 const DbPath = styled.span`
@@ -47,7 +46,6 @@ const onClickIssues = () => {
 
 const More = () => {
   const store = useContext(storeContext)
-  const db = useContext(dbContext)
   const {
     showDeleted,
     setShowDeleted,
@@ -55,6 +53,7 @@ const More = () => {
     setShowMutationNoetig,
     location,
     setLocation,
+    db
   } = store
   const activeLocation = location.toJSON()[0]
 

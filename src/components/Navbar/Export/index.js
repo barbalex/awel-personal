@@ -22,32 +22,22 @@ import fetchAemter from '../../../src/fetchAemter'
 import fetchAbteilungen from '../../../src/fetchAbteilungen'
 import fetchBereiche from '../../../src/fetchBereiche'
 import fetchSektionen from '../../../src/fetchSektionen'
-import dbContext from '../../../dbContext'
 
 const adressenFields = ['name', 'vorname', 'adresse', 'plz', 'ort', 'land']
 
 const Export = () => {
-  const db = useContext(dbContext)
   const store = useContext(storeContext)
-  const {
-    personenSorted,
-    personenFilteredSorted,
-    addError,
-    setAbteilungen,
-    setAemter,
-    setBereiche,
-    setSektionen,
-  } = store
+  const { personenSorted, personenFilteredSorted, addError, db } = store
 
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
 
   useEffect(() => {
-    fetchAemter({ db, setAemter })
-    fetchAbteilungen({ db, setAbteilungen })
-    fetchBereiche({ db, setBereiche })
-    fetchSektionen({ db, setSektionen })
-  }, [db, setAbteilungen, setAemter, setBereiche, setSektionen])
+    fetchAemter({ store })
+    fetchAbteilungen({ store })
+    fetchBereiche({ store })
+    fetchSektionen({ store })
+  }, [db])
 
   const onClickExportPersonen = useCallback(() => {
     const exportObjects = personenPrepareData({ store })

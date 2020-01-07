@@ -24,7 +24,6 @@ import fetchWerte from '../../src/fetchWerte'
 import fetchSettings from '../../src/fetchSettings'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
-import dbContext from '../../dbContext'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
@@ -44,26 +43,7 @@ const StyledReflexElement = styled(ReflexElement)`
 
 const PersonContainer = () => {
   const store = useContext(storeContext)
-  const db = useContext(dbContext)
-  const {
-    showFilter,
-    personen,
-    setAbteilungen,
-    setAemter,
-    setAnwesenheitstage,
-    setBereiche,
-    setEtiketten,
-    setFunktionen,
-    setKaderFunktionen,
-    setLinks,
-    setMobileAbos,
-    setPersonen,
-    setSchluessel,
-    setSektionen,
-    setSettings,
-    setTelefones,
-    setWerte,
-  } = store
+  const { showFilter, personen, db } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const person = personen.find(p => p.id === activeId)
@@ -74,52 +54,36 @@ const PersonContainer = () => {
   const listRef = useRef(null)
 
   useEffect(() => {
-    fetchPersonen({ db, setPersonen })
-    fetchAemter({ db, setAemter })
-    fetchAbteilungen({ db, setAbteilungen })
-    fetchBereiche({ db, setBereiche })
-    fetchSektionen({ db, setSektionen })
-    fetchWerte({ db, setWerte, table: 'statusWerte' })
-    fetchWerte({ db, setWerte, table: 'anredeWerte' })
-    fetchWerte({ db, setWerte, table: 'funktionWerte' })
-    fetchWerte({ db, setWerte, table: 'kaderFunktionWerte' })
-    fetchEtiketten({ db, setEtiketten })
-    fetchAnwesenheitstage({ db, setAnwesenheitstage })
-    fetchWerte({ db, setWerte, table: 'etikettWerte' })
-    fetchWerte({ db, setWerte, table: 'anwesenheitstagWerte' })
-    fetchWerte({ db, setWerte, table: 'landWerte' })
-    fetchWerte({ db, setWerte, table: 'mutationArtWerte' })
-    fetchWerte({ db, setWerte, table: 'standortWerte' })
-    fetchLinks({ db, setLinks })
-    fetchSchluessel({ db, setSchluessel })
-    fetchMobileAbos({ db, setMobileAbos })
-    fetchTelefones({ db, setTelefones })
-    fetchWerte({ db, setWerte, table: 'mobileAboKostenstelleWerte' })
-    fetchWerte({ db, setWerte, table: 'mobileAboTypWerte' })
-    fetchWerte({ db, setWerte, table: 'telefonTypWerte' })
-    fetchWerte({ db, setWerte, table: 'schluesselTypWerte' })
-    fetchWerte({ db, setWerte, table: 'schluesselAnlageWerte' })
-    fetchFunktionen({ db, setFunktionen })
-    fetchKaderFunktionen({ db, setKaderFunktionen })
-    fetchSettings({ db, setSettings })
-  }, [
-    db,
-    setAbteilungen,
-    setAemter,
-    setAnwesenheitstage,
-    setBereiche,
-    setEtiketten,
-    setFunktionen,
-    setKaderFunktionen,
-    setLinks,
-    setMobileAbos,
-    setPersonen,
-    setSchluessel,
-    setSektionen,
-    setSettings,
-    setTelefones,
-    setWerte,
-  ])
+    console.log('PersonContainer fetching data')
+    fetchPersonen({ store })
+    fetchAemter({ store })
+    fetchAbteilungen({ store })
+    fetchBereiche({ store })
+    fetchSektionen({ store })
+    fetchWerte({ store, table: 'statusWerte' })
+    fetchWerte({ store, table: 'anredeWerte' })
+    fetchWerte({ store, table: 'funktionWerte' })
+    fetchWerte({ store, table: 'kaderFunktionWerte' })
+    fetchEtiketten({ store })
+    fetchAnwesenheitstage({ store })
+    fetchWerte({ store, table: 'etikettWerte' })
+    fetchWerte({ store, table: 'anwesenheitstagWerte' })
+    fetchWerte({ store, table: 'landWerte' })
+    fetchWerte({ store, table: 'mutationArtWerte' })
+    fetchWerte({ store, table: 'standortWerte' })
+    fetchLinks({ store })
+    fetchSchluessel({ store })
+    fetchMobileAbos({ store })
+    fetchTelefones({ store })
+    fetchWerte({ store, table: 'mobileAboKostenstelleWerte' })
+    fetchWerte({ store, table: 'mobileAboTypWerte' })
+    fetchWerte({ store, table: 'telefonTypWerte' })
+    fetchWerte({ store, table: 'schluesselTypWerte' })
+    fetchWerte({ store, table: 'schluesselAnlageWerte' })
+    fetchFunktionen({ store })
+    fetchKaderFunktionen({ store })
+    fetchSettings({ store })
+  }, [db])
 
   return (
     <Container>
