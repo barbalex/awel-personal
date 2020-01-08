@@ -15,7 +15,8 @@ const browserWindowOptions = {
   width: 1800,
   height: 1024,
   icon: './src/etc/person.png',
-  //show: false,
+  // only show after it was sized
+  show: false,
   webPreferences: {
     nodeIntegration: true,
   },
@@ -24,13 +25,11 @@ const browserWindowOptions = {
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow(browserWindowOptions)
-
   mainWindow.maximize()
-
   Menu.setApplicationMenu(null)
-
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
+  mainWindow.show()
 
   // Open the DevTools
   if (!app.isPackaged) {
