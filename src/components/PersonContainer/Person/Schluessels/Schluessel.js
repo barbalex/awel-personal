@@ -7,6 +7,7 @@ import sortBy from 'lodash/sortBy'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import InputWithoutLabel from '../../../shared/InputWithoutLabel'
+import Textarea from '../../../shared/Textarea'
 import storeContext from '../../../../storeContext'
 import Select from '../Select'
 
@@ -180,14 +181,13 @@ const SchluesselComponent = ({ id }) => {
         />
       </Anlage>
       <Bezeichnung>
-        <InputWithoutLabel
+        <Textarea
           key={`${id}bezeichnung`}
           value={schluessel.bezeichnung}
           field="bezeichnung"
           saveToDb={onBlur}
-          type="textarea"
-          rows={1}
           error={errors.bezeichnung}
+          marginBottom={0}
         />
       </Bezeichnung>
       <Nr>
