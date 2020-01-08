@@ -15,7 +15,7 @@ const StyledButton = styled(Button)`
 const Row = styled.div`
   grid-column: 1;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 20px;
+  grid-template-columns: 180px 160px 1fr 20px;
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
   padding: 3px 0;
