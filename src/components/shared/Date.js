@@ -6,7 +6,12 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 const StyledFormGroup = styled(FormGroup)`
-  margin-bottom: ${props => (props.row ? '16px' : '8px !important')};
+  margin-bottom: ${props =>
+    props['data-margin-bottom'] !== undefined
+      ? `${props['data-margin-bottom']}px !important`
+      : props.row
+      ? '16px'
+      : '8px !important'};
   .react-datepicker-wrapper {
     width: 100%;
   }
@@ -15,11 +20,11 @@ const NonRowLabel = styled(Label)`
   margin-bottom: 3px;
 `
 const StyledDatePicker = styled(DatePicker)`
+  height: 38px;
   width: 100%;
-  height: calc(1.5em + 0.5rem + 2px);
   padding: 0.25rem 0.5rem;
   line-height: 1.5;
-  border-radius: 0.2rem;
+  border-radius: 0.25rem;
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
@@ -59,6 +64,7 @@ const DateField = ({
   error,
   row = true,
   popperPlacement = 'auto',
+  marginBottom = undefined,
 }) => {
   const onChangeDatePicker = useCallback(
     date =>
@@ -75,7 +81,7 @@ const DateField = ({
   // for popperPlacement see https://github.com/Hacker0x01/react-datepicker/issues/1246#issuecomment-361833919
   if (row) {
     return (
-      <StyledFormGroup row={row}>
+      <StyledFormGroup row={row} data-margin-bottom={marginBottom}>
         <Label for={field} sm={2}>
           {label}
         </Label>
@@ -93,8 +99,8 @@ const DateField = ({
     )
   }
   return (
-    <StyledFormGroup row={row}>
-      <NonRowLabel for={field}>{label}</NonRowLabel>
+    <StyledFormGroup row={row} data-margin-bottom={marginBottom}>
+      {label && <NonRowLabel for={field}>{label}</NonRowLabel>}
       <StyledDatePicker
         id={field}
         selected={selected}
