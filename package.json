@@ -24,7 +24,7 @@
     "better-sqlite3": "5.4.3",
     "bootstrap": "4.4.1",
     "classnames": "2.2.6",
-    "date-fns": "2.8.1",
+    "date-fns": "2.9.0",
     "electron-debug": "3.0.1",
     "electron-squirrel-startup": "1.0.0",
     "exceljs": "3.5.0",
