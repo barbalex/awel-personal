@@ -12,6 +12,7 @@ import moment from 'moment'
 import sortBy from 'lodash/sortBy'
 import Linkify from 'react-linkify'
 import { MdEdit } from 'react-icons/md'
+import { FaSave } from 'react-icons/fa'
 import { Button, InputGroup, ButtonGroup } from 'reactstrap'
 import ErrorBoundary from 'react-error-boundary'
 
@@ -73,7 +74,7 @@ const WRLeft = styled.div`
   flex-grow: 1;
   padding-right: 8px;
   > div {
-    flex-grow: 1; 
+    flex-grow: 1;
   }
 `
 const StyledButton = styled(Button)`
@@ -93,17 +94,24 @@ const EditText = styled.div`
 const EditIcon = styled(MdEdit)`
   margin-top: -4px;
 `
+const SaveIcon = styled(FaSave)`
+  margin-top: -4px;
+`
 const WRRight = styled.div`
   height: 34px;
   flex-grow: 1;
-  flex-grow: ${props => props['data-grow'] ? 1 : 0};
+  flex-grow: ${props => (props['data-grow'] ? 1 : 0)};
   > div {
     height: 34px;
-    flex-grow: 1; 
+    flex-grow: 1;
   }
   textarea {
     width: 570px !important;
   }
+`
+const WRRightEditing = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `
 
 const PersonMutation = ({ activeId, dimensions }) => {
@@ -154,6 +162,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
   const onSavePdfPath = useCallback(
     ({ value }) => {
       setSettingsKey({ key: 'mutationFormPath', value })
+      setEditPdfPath(false)
     },
     [setSettingsKey],
   )
@@ -594,43 +603,56 @@ const PersonMutation = ({ activeId, dimensions }) => {
               <AreaWeiterleiten>
                 <WRLeft>
                   {editWeiterleiten ? (
-                    <Textarea
-                      value={settings.personMutationWeiterleiten}
-                      saveToDb={onSaveWeiterleiten}
-                      row={false}
-                    />
+                    <>
+                      <Textarea
+                        value={settings.personMutationWeiterleiten}
+                        saveToDb={onSaveWeiterleiten}
+                        row={false}
+                      />
+                      <WLButton
+                        outline={true}
+                        onClick={onClickEditWeiterleiten}
+                        className="no-print"
+                        title="Speichern"
+                      >
+                        <SaveIcon />
+                      </WLButton>
+                    </>
                   ) : (
-                    <Linkify>
-                      <EditText>{settings.personMutationWeiterleiten}</EditText>
-                    </Linkify>
+                    <>
+                      <Linkify>
+                        <EditText>
+                          {settings.personMutationWeiterleiten}
+                        </EditText>
+                      </Linkify>
+                      <WLButton
+                        outline={true}
+                        onClick={onClickEditWeiterleiten}
+                        className="no-print"
+                        title="Weiterleiten-Text ändern"
+                      >
+                        <EditIcon />
+                      </WLButton>
+                    </>
                   )}
-                  <WLButton
-                    outline={true}
-                    onClick={onClickEditWeiterleiten}
-                    className="no-print"
-                    title="Weiterleiten-Text ändern"
-                  >
-                    <EditIcon />
-                  </WLButton>
                 </WRLeft>
                 <WRRight data-grow={editPdfPath}>
                   {editPdfPath ? (
-                    <InputGroup>
-                      <InputWithoutLabel
+                    <WRRightEditing>
+                      <Textarea
                         value={settings.mutationFormPath}
                         saveToDb={onSavePdfPath}
-                        callback={callbackPdfPath}
-                        type="textarea"
+                        row={false}
                       />
                       <StyledButton
                         outline={true}
                         onClick={onClickEditPdfPath}
                         className="no-print"
-                        title="Standard-Speicherort ändern"
+                        title="Speichern"
                       >
-                        <EditIcon />
+                        <SaveIcon />
                       </StyledButton>
-                    </InputGroup>
+                    </WRRightEditing>
                   ) : (
                     <ButtonGroup>
                       <StyledButton
