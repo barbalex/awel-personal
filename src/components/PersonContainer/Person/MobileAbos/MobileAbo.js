@@ -7,7 +7,7 @@ import { FaTimes } from 'react-icons/fa'
 
 import Select from '../Select'
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
-import InputWithoutLabel from '../../../shared/InputWithoutLabel'
+import Textarea from '../../../shared/Textarea'
 import storeContext from '../../../../storeContext'
 
 const Row = styled.div`
@@ -161,14 +161,13 @@ const MobileAbo = ({ id }) => {
         />
       </Kostenstelle>
       <Bemerkungen>
-        <InputWithoutLabel
+        <Textarea
           key={`${id}bemerkungen`}
           value={mobileAbo.bemerkungen}
           field="bemerkungen"
           saveToDb={onBlur}
-          type="textarea"
-          rows={1}
           error={errors.bemerkungen}
+          marginBottom={0}
         />
       </Bemerkungen>
       {!showFilter && (
