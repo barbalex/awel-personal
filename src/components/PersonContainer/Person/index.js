@@ -17,6 +17,7 @@ import Input from '../../shared/Input'
 import Date from '../../shared/Date'
 import Select from '../../shared/Select'
 import SelectMulti from '../../shared/SelectMulti'
+import Textarea from '../../shared/Textarea'
 import SharedCheckbox from '../../shared/Checkbox_01'
 import Handlungsbedarf from '../../shared/Handlungsbedarf'
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
@@ -665,7 +666,10 @@ const Person = ({ activeId, dimensions, listRef }) => {
   )
   const myEtiketten = useMemo(
     () =>
-      sortBy(etiketten.filter(e => e.idPerson === activeId), 'etikett')
+      sortBy(
+        etiketten.filter(e => e.idPerson === activeId),
+        'etikett',
+      )
         .filter(w => !!w.etikett)
         .filter(p => p.deleted === 0)
         .map(e => ({
@@ -677,11 +681,14 @@ const Person = ({ activeId, dimensions, listRef }) => {
   )
   const myAnwesenheitstage = useMemo(
     () =>
-      sortBy(anwesenheitstage.filter(e => e.idPerson === activeId), e => {
-        const awWert = anwesenheitstagWerte.find(w => w.value === e.tag)
-        if (awWert && awWert.sort) return awWert.sort
-        return 1
-      })
+      sortBy(
+        anwesenheitstage.filter(e => e.idPerson === activeId),
+        e => {
+          const awWert = anwesenheitstagWerte.find(w => w.value === e.tag)
+          if (awWert && awWert.sort) return awWert.sort
+          return 1
+        },
+      )
         .filter(w => !!w.tag)
         .filter(p => p.deleted === 0)
         .map(e => ({
@@ -693,7 +700,10 @@ const Person = ({ activeId, dimensions, listRef }) => {
   )
   const myFunktionen = useMemo(
     () =>
-      sortBy(funktionen.filter(e => e.idPerson === activeId), 'funktion')
+      sortBy(
+        funktionen.filter(e => e.idPerson === activeId),
+        'funktion',
+      )
         .filter(w => !!w.funktion)
         .filter(p => p.deleted === 0)
         .map(e => ({
@@ -705,7 +715,10 @@ const Person = ({ activeId, dimensions, listRef }) => {
   )
   const myKaderFunktionen = useMemo(
     () =>
-      sortBy(kaderFunktionen.filter(e => e.idPerson === activeId), 'funktion')
+      sortBy(
+        kaderFunktionen.filter(e => e.idPerson === activeId),
+        'funktion',
+      )
         .filter(w => !!w.funktion)
         .filter(p => p.deleted === 0)
         .map(e => ({
@@ -1088,15 +1101,13 @@ const Person = ({ activeId, dimensions, listRef }) => {
                   row={false}
                 />
               )}
-              <Input
+              <Textarea
                 key={`${personId}bemerkungen`}
                 value={person.bemerkungen}
                 field="bemerkungen"
                 label="Bemerkun&shy;gen"
                 saveToDb={saveToDb}
-                type="textarea"
                 error={errors.bemerkungen}
-                row={false}
               />
               {!showFilter && <Links row={false} />}
               <Schluessels row={false} />
