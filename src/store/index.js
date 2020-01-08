@@ -42,7 +42,6 @@ import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 import PersonPages from './PersonPages'
 import PersonVerzeichnisPages from './PersonVerzeichnisPages'
 import personenFiltered from './personenFiltered'
-import existsFilter from './existsFilter'
 import personenSorted from './personenSorted'
 import personenSortedByHandlungsbedarf from './personenSortedByHandlungsbedarf'
 import aemterFiltered from './aemterFiltered'
@@ -209,7 +208,48 @@ export default () =>
         }
       },
       get existsFilter() {
-        return existsFilter(self)
+        const {
+          filterPerson,
+          filterPersonKader,
+          filterPersonAktivJetzt,
+          filterPersonAktivJetztMitTel,
+          filterPersonAktivJetztMitMobiltel,
+          filterPersonAktivJetztMitKurzzeichen,
+          filterAmt,
+          filterAbteilung,
+          filterBereich,
+          filterSektion,
+          filterEtikett,
+          filterAnwesenheitstage,
+          filterLink,
+          filterSchluessel,
+          filterMobileAbo,
+          filterTelefon,
+          filterFunktion,
+          filterKaderFunktion,
+        } = self
+        return (
+          [
+            ...Object.values(filterPerson),
+            ...Object.values(filterAmt),
+            ...Object.values(filterAbteilung),
+            ...Object.values(filterBereich),
+            ...Object.values(filterSektion),
+            ...Object.values(filterEtikett),
+            ...Object.values(filterAnwesenheitstage),
+            ...Object.values(filterLink),
+            ...Object.values(filterSchluessel),
+            ...Object.values(filterMobileAbo),
+            ...Object.values(filterTelefon),
+            ...Object.values(filterFunktion),
+            ...Object.values(filterKaderFunktion),
+          ].filter(v => v).length > 0 ||
+          filterPersonKader ||
+          filterPersonAktivJetzt ||
+          filterPersonAktivJetztMitTel ||
+          filterPersonAktivJetztMitMobiltel ||
+          filterPersonAktivJetztMitKurzzeichen
+        )
       },
       get personenSorted() {
         return personenSorted(self.personen)
@@ -321,7 +361,8 @@ export default () =>
             self.location.pop()
           }
           self.filterFulltext = value
-          if (value && self.existsFilter) self.emptyFilter()
+          // remove other filters
+          if (value && self.existsFilter) self.emptyFilterButFulltext()
           if (self.showFilter) self.showFilter = false
         },
         emptyFilter() {
@@ -345,6 +386,27 @@ export default () =>
           self.filterFunktion = {}
           self.filterKaderFunktion = {}
           self.filterFulltext = null
+        },
+        emptyFilterButFulltext() {
+          self.filterPerson = {}
+          self.filterPersonKader = false
+          self.filterPersonAktivJetzt = false
+          self.filterPersonAktivJetztMitTel = false
+          self.filterPersonAktivJetztMitMobiltel = false
+          self.filterPersonAktivJetztMitKurzzeichen = false
+          self.filterAbteilung = {}
+          self.filterBereich = {}
+          self.filterSektion = {}
+          self.filterAmt = {}
+          self.filterEtikett = {}
+          self.filterAnwesenheitstage = {}
+          self.filterLink = {}
+          self.filterSchluessel = {}
+          self.filterKostenstelle = {}
+          self.filterMobileAbo = {}
+          self.filterTelefon = {}
+          self.filterFunktion = {}
+          self.filterKaderFunktion = {}
         },
         setShowFilter(value) {
           self.showFilter = value
