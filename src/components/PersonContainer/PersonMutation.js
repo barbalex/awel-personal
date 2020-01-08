@@ -19,6 +19,7 @@ import Input from '../shared/Input'
 import InputWithoutLabel from '../shared/InputWithoutLabel'
 import Date from '../shared/Date'
 import Select from '../shared/Select'
+import Textarea from '../shared/Textarea'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import isDateField from '../../src/isDateField'
 import storeContext from '../../storeContext'
@@ -69,7 +70,11 @@ const AreaWeiterleiten = styled(Area)`
 const WRLeft = styled.div`
   display: flex;
   height: 34px;
+  flex-grow: 1;
   padding-right: 8px;
+  > div {
+    flex-grow: 1; 
+  }
 `
 const StyledButton = styled(Button)`
   background-color: rgba(0, 0, 0, 0) !important;
@@ -90,8 +95,11 @@ const EditIcon = styled(MdEdit)`
 `
 const WRRight = styled.div`
   height: 34px;
+  flex-grow: 1;
+  flex-grow: ${props => props['data-grow'] ? 1 : 0};
   > div {
     height: 34px;
+    flex-grow: 1; 
   }
   textarea {
     width: 570px !important;
@@ -543,22 +551,20 @@ const PersonMutation = ({ activeId, dimensions }) => {
                 error={errors.arbeitsplatzeroeffnungPer}
                 row={true}
               />
-              <Input
+              <Textarea
                 key={`${personId}benoetigteSoftware`}
                 value={person.benoetigteSoftware}
                 field="benoetigteSoftware"
                 label="Benötigte Software"
-                type="textarea"
                 saveToDb={saveToDb}
                 error={errors.benoetigteSoftware}
                 row={true}
               />
-              <Input
+              <Textarea
                 key={`${personId}standardabweichendeHardware`}
                 value={person.standardabweichendeHardware}
                 field="standardabweichendeHardware"
                 label="Vom Standard abweichende Hardware"
-                type="textarea"
                 saveToDb={saveToDb}
                 error={errors.standardabweichendeHardware}
                 row={true}
@@ -574,12 +580,11 @@ const PersonMutation = ({ activeId, dimensions }) => {
                 error={errors.abmeldungArbeitsplatzPer}
                 row={true}
               />
-              <Input
+              <Textarea
                 key={`${personId}itMutationBemerkungen`}
                 value={person.itMutationBemerkungen}
                 field="itMutationBemerkungen"
                 label="Bemerkungen zur IT"
-                type="textarea"
                 saveToDb={saveToDb}
                 error={errors.itMutationBemerkungen}
                 row={true}
@@ -589,10 +594,10 @@ const PersonMutation = ({ activeId, dimensions }) => {
               <AreaWeiterleiten>
                 <WRLeft>
                   {editWeiterleiten ? (
-                    <InputWithoutLabel
+                    <Textarea
                       value={settings.personMutationWeiterleiten}
                       saveToDb={onSaveWeiterleiten}
-                      type="textarea"
+                      row={false}
                     />
                   ) : (
                     <Linkify>
@@ -608,7 +613,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
                     <EditIcon />
                   </WLButton>
                 </WRLeft>
-                <WRRight>
+                <WRRight data-grow={editPdfPath}>
                   {editPdfPath ? (
                     <InputGroup>
                       <InputWithoutLabel
@@ -617,6 +622,14 @@ const PersonMutation = ({ activeId, dimensions }) => {
                         callback={callbackPdfPath}
                         type="textarea"
                       />
+                      <StyledButton
+                        outline={true}
+                        onClick={onClickEditPdfPath}
+                        className="no-print"
+                        title="Standard-Speicherort ändern"
+                      >
+                        <EditIcon />
+                      </StyledButton>
                     </InputGroup>
                   ) : (
                     <ButtonGroup>
