@@ -6,6 +6,7 @@ import sortBy from 'lodash/sortBy'
 import { FaTimes } from 'react-icons/fa'
 
 import Select from '../Select'
+import Textarea from '../../../shared/Textarea'
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import InputWithoutLabel from '../../../shared/InputWithoutLabel'
 import storeContext from '../../../../storeContext'
@@ -13,7 +14,7 @@ import storeContext from '../../../../storeContext'
 const Row = styled.div`
   display: grid;
   grid-template-columns: ${props =>
-    props.nosymbol ? '1fr 1fr 1fr' : '1fr 1fr 1fr 20px'};
+    props.nosymbol ? '180px 160px 1fr' : '180px 160px 1fr 20px'};
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
   padding: 3px 0;
@@ -69,7 +70,9 @@ const Telefon = ({ id }) => {
   }
 
   const [errors, setErrors] = useState({})
-  useEffect(() => { setErrors({}) }, [telefon.id])
+  useEffect(() => {
+    setErrors({})
+  }, [telefon.id])
 
   const telefoneTypOptions = sortBy(telefonTypWerte, ['sort', 'value'])
     .filter(w => !!w.value)
@@ -149,14 +152,13 @@ const Telefon = ({ id }) => {
         />
       </Typ>
       <Bemerkungen>
-        <InputWithoutLabel
+        <Textarea
           key={`${id}bemerkungen`}
           value={telefon.bemerkungen}
           field="bemerkungen"
           saveToDb={onBlur}
-          type="textarea"
-          rows={1}
           error={errors.bemerkungen}
+          marginBottom={0}
         />
       </Bemerkungen>
       {!showFilter && (
