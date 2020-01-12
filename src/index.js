@@ -15,9 +15,10 @@ const run = async () => {
   const store = createStore().create()
   const {addError, setDb, setUsername} = store
   watchMutations({ store })
+
   let db
   try {
-    db = await getDb()
+    db = await getDb(store)
   } catch (error) {
     addError(error)
   }

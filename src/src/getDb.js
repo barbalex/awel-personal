@@ -4,7 +4,7 @@ import chooseDb from './chooseDb'
 import getConfig from './getConfig'
 import saveConfig from './saveConfig'
 
-export default async () => {
+export default async (store) => {
   const config = getConfig()
   //console.log('getDb, config:', config)
   let dbPath = config.dbPath || 'C:/Users/alexa/personal.db'
@@ -13,8 +13,6 @@ export default async () => {
   try {
     db = new Database(dbPath, { fileMustExist: true })
   } catch (error) {
-    //console.log('getDb, error', error)
-    console.log('getDb, error.code', error.message)
     if (
       (error.code && error.code === 'SQLITE_CANTOPEN') ||
       error.message.includes('directory does not exist')
@@ -23,13 +21,14 @@ export default async () => {
       try {
         dbPath = await chooseDb()
       } catch (chooseError) {
+        store.addError(chooseError)
         return console.log('Error after choosing db:', chooseError)
       }
-      //console.log('getDb, dbPath', dbPath)
       db = new Database(dbPath, { fileMustExist: true })
       config.dbPath = dbPath
       saveConfig(config)
     } else {
+      store.addError(error)
       return console.log('index.js, Error opening db file:', error)
     }
   }
