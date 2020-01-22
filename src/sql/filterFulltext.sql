@@ -12,8 +12,6 @@ select
   coalesce(personen.plz, '') || ' ' ||
   coalesce(lower(personen.ort), '') || ' ' ||
   coalesce(lower(personen.land), '') || ' ' ||
-  -- this leads to surprising results - remove?
-  --coalesce(lower(personen.bildUrl), '') || ' ' ||
   coalesce(lower(personen.email), '') || ' ' ||
   coalesce(personen.geburtDatum, '') || ' ' ||
   coalesce(lower(personen.bueroNr), '') || ' ' ||
@@ -43,8 +41,6 @@ select
   group_concat(lower(coalesce(telefones.nr, '') || ' ' || coalesce(telefones.typ, '') || ' ' || coalesce(telefones.bemerkungen, ''))) || ' ' ||
   group_concat(lower(coalesce(mobileAbos.kostenstelle, '') || ' ' || coalesce(mobileAbos.typ, '') || ' ' || coalesce(mobileAbos.bemerkungen, ''))) || ' ' ||
   group_concat(lower(coalesce(schluessel.typ, '') || ' ' || coalesce(schluessel.anlage, '') || ' ' || coalesce(schluessel.nr, '') || ' ' || coalesce(schluessel.bezeichnung, ''))) || ' ' ||
-  -- this leads to surprising results - remove?
-  --group_concat(lower(coalesce(links.url, ''))) || ' ' ||
   group_concat(lower(coalesce(etiketten.etikett, ''))) || ' ' ||
   group_concat(lower(coalesce(anwesenheitstage.tag, '')))
   as data
@@ -67,8 +63,6 @@ left join mobileAbos
   on mobileAbos.idPerson = personen.id
 left join schluessel
   on schluessel.idPerson = personen.id
-left join links
-  on links.idPerson = personen.id
 left join etiketten
   on etiketten.idPerson = personen.id
 left join anwesenheitstage
