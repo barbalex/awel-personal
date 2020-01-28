@@ -1,7 +1,7 @@
 {
   "name": "personal",
   "productName": "Personal",
-  "version": "1.2.9",
+  "version": "1.2.10",
   "description": "Damit verwaltet das AWEL Kt. ZH Personal-Daten",
   "main": ".webpack/main",
   "scripts": {

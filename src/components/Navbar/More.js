@@ -53,7 +53,7 @@ const More = () => {
     setShowMutationNoetig,
     location,
     setLocation,
-    db
+    db,
   } = store
   const activeLocation = location.toJSON()[0]
 
@@ -115,7 +115,7 @@ const More = () => {
           Fehler und Wünsche melden
         </DropdownItem>
         <DropdownItem divider />
-        <Version>Version: 1.2.9 vom 6.01.2020</Version>
+        <Version>Version: 1.2.10 vom 22.01.2020</Version>
       </DropdownMenu>
     </MoreMenu>
   )
