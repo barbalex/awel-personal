@@ -51,6 +51,10 @@ const Row = styled.div`
   page-break-inside: avoid !important;
   background-color: ${props =>
     props.type === 'title' ? 'rgba(0,0,0,0.1)' : 'unset'};
+  /* get background colors to show */
+  @media print {
+    -webkit-print-color-adjust: exact;
+  }
   border-top: ${props =>
     props.topborder === 'true' ? '1px rgba(0, 0, 0, 0.5) solid' : 'unset'};
   border-bottom: 1px rgba(0, 0, 0, 0.5) solid;
