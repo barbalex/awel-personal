@@ -3371,10 +3371,10 @@ electron-winstaller@^4.0.0:
     lodash.template "^4.2.2"
     temp "^0.9.0"
 
-electron@8.0.0-beta.7:
-  version "8.0.0-beta.7"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-8.0.0-beta.7.tgz#095216b9f95f82024ba2a23668a2de8a9c477871"
-  integrity sha512-iU+bHiz4wbjPFcc2WY3amR7dXWGoy0+UoH3fi1gCX/VGPuPfu/dZqNML6jC/fwhuy74vSP8mP0NPaPlKvNCR4g==
+electron@8.0.0-beta.9:
+  version "8.0.0-beta.9"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-8.0.0-beta.9.tgz#2ffb042398991d382656f51284839589fd1515ed"
+  integrity sha512-5aVB7ixySU5WF4p4NiGN/378idgOLSggEh80FfvKzbE5kKmegWA4m0mppkypwMWAVFzNcVubkI6vE0rerFQZKw==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^12.0.12"
@@ -4168,8 +4168,8 @@ fs.realpath@^1.0.0:
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
 
 fsevents@^1.2.7:
-  version "1.2.11"
-  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-1.2.11.tgz#67bf57f4758f02ede88fb2a1712fef4d15358be3"
+  version "1.2.12"
+  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-1.2.12.tgz#67bf57f4758f02ede88fb2a1712fef4d15358be3"
   integrity sha512-+ux3lx6peh0BpvY0JebGyZoiR4D+oYzdPZMKJwkZ+sFkNJzpL7tXc/wehS49gUAxg3tmMHPHZkA8JU2rhhgDHw==
   dependencies:
     bindings "^1.5.0"

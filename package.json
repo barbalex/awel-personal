@@ -1,7 +1,7 @@
 {
   "name": "personal",
   "productName": "Personal",
-  "version": "1.2.11",
+  "version": "1.2.12",
   "description": "Damit verwaltet das AWEL Kt. ZH Personal-Daten",
   "main": ".webpack/main",
   "scripts": {
@@ -86,7 +86,7 @@
     "babel-loader": "8.0.6",
     "copy-webpack-plugin": "5.1.1",
     "css-loader": "3.4.2",
-    "electron": "8.0.0-beta.7",
+    "electron": "8.0.0-beta.9",
     "eslint": "6.x",
     "eslint-config-react-app": "5.1.0",
     "eslint-plugin-import": "2.x",
