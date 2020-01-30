@@ -138,32 +138,36 @@ const PersonPrintVerzMobiltelColumn = ({ pageIndex, columnIndex }) => {
 
   return (
     <Container building={!columnIsFull} ref={containerEl}>
-      {data.map((r, i) => (
-        <Row
-          key={r.id || r.name}
-          type={r.type || 'row'}
-          topborder={(i === 0).toString()}
-        >
-          <StyledName>{r.name || ''}</StyledName>
-          <StyledVorname>{r.vorname || ''}</StyledVorname>
-          <StyledKurzzeichen>{r.kurzzeichen || ''}</StyledKurzzeichen>
-          <StyledTelefon>
-            {
-              telefones
-                .filter(f => f.idPerson === r.id)
-                .filter(f => f.typ === 'mobile')
-                .filter(f => f.deleted === 0)
-                .map(f => f.nr)[0]
-            }
-          </StyledTelefon>
-          <StyledBueroNr>{r.bueroNr || ''}</StyledBueroNr>
-          <StyledBereich>
-            {r.abteilung
-              ? abteilungen.find(a => a.id === r.abteilung).kurzzeichen || ''
-              : ''}
-          </StyledBereich>
-        </Row>
-      ))}
+      {data.map((r, i) => {
+        const abteilung = r.abteilung
+          ? abteilungen.find(a => a.id === r.abteilung)
+          : null
+        const abteilungKurzzeichen =
+          abteilung && abteilung.kurzzeichen ? abteilung.kurzzeichen : ''
+
+        return (
+          <Row
+            key={r.id || r.name}
+            type={r.type || 'row'}
+            topborder={(i === 0).toString()}
+          >
+            <StyledName>{r.name || ''}</StyledName>
+            <StyledVorname>{r.vorname || ''}</StyledVorname>
+            <StyledKurzzeichen>{r.kurzzeichen || ''}</StyledKurzzeichen>
+            <StyledTelefon>
+              {
+                telefones
+                  .filter(f => f.idPerson === r.id)
+                  .filter(f => f.typ === 'mobile')
+                  .filter(f => f.deleted === 0)
+                  .map(f => f.nr)[0]
+              }
+            </StyledTelefon>
+            <StyledBueroNr>{r.bueroNr || ''}</StyledBueroNr>
+            <StyledBereich>{abteilungKurzzeichen}</StyledBereich>
+          </Row>
+        )
+      })}
     </Container>
   )
 }

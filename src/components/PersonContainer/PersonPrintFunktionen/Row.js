@@ -29,20 +29,22 @@ function isOdd(num) {
 const PersonRow = ({ p, i }) => {
   const store = useContext(storeContext)
   const { abteilungen, sektionen, bereiche, funktionen } = store
+  const abteilung = p.abteilung
+    ? abteilungen.find(a => a.id === p.abteilung)
+    : null
+  const abteilungName = abteilung && abteilung.name ? abteilung.name : ''
+  const sektion = p.sektion ? sektionen.find(a => a.id === p.sektion) : null
+  const sektionName = sektion && sektion.name ? sektion.name : ''
+  const bereich = p.bereich ? bereiche.find(a => a.id === p.bereich) : null
+  const bereichName = bereich && bereich.name ? bereich.name : ''
 
   return (
     <Row key={p.id} shaded={!isOdd(i)}>
       <Field>{p.name || ''}</Field>
       <Field>{p.vorname || ''}</Field>
-      <Field>
-        {p.abteilung ? abteilungen.find(a => a.id === p.abteilung).name : ''}
-      </Field>
-      <Field>
-        {p.sektion ? sektionen.find(a => a.id === p.sektion).name : ''}
-      </Field>
-      <Field>
-        {p.bereich ? bereiche.find(a => a.id === p.bereich).name : ''}
-      </Field>
+      <Field>{abteilungName}</Field>
+      <Field>{sektionName}</Field>
+      <Field>{bereichName}</Field>
       <Field>
         {funktionen
           .filter(f => f.idPerson === p.id)
