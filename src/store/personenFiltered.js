@@ -18,23 +18,26 @@ export default ({ self }) => {
     filterPersonAktivJetzt,
     filterPersonAktivJetztMitTel,
     filterPersonAktivJetztMitMobiltel,
-    filterPersonAktivJetztMitKurzzeichen,db
+    filterPersonAktivJetztMitKurzzeichen,
+    db,
   } = self
   let { personen } = self
   if (filterPersonKader) {
-    personen = personen.filter(p => {
-      const kaderfunktionen = self.kaderFunktionen
-        .filter(f => f.idPerson === p.id)
-        .filter(f => f.deleted === 0)
-      const etiketten = self.etiketten
-        .filter(f => f.idPerson === p.id)
-        .filter(f =>
-          ['Kadertreffen', 'Sektionsleitertreffen'].includes(f.etikett),
-        )
+    personen = personen
+      .filter(p => {
+        const kaderfunktionen = self.kaderFunktionen
+          .filter(f => f.idPerson === p.id)
+          .filter(f => f.deleted === 0)
+        const etiketten = self.etiketten
+          .filter(f => f.idPerson === p.id)
+          .filter(f => f.deleted === 0)
+          .filter(f =>
+            ['Kadertreffen', 'Sektionsleitertreffen'].includes(f.etikett),
+          )
 
-      return [...kaderfunktionen, ...etiketten].length > 0
-    })
-    .filter(f=>f.status === 'aktiv')
+        return [...kaderfunktionen, ...etiketten].length > 0
+      })
+      .filter(f => f.status === 'aktiv')
   }
   if (filterPersonAktivJetzt) {
     personen = personen
