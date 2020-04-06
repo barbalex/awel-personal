@@ -105,6 +105,7 @@
   "devComments": {
     "react-transition-group": "required by reactstrap",
     "react-popper": "required by reactstrap",
-    "popper.js": "probably required by reactstrap"
+    "popper.js": "probably required by reactstrap",
+    "WARNING": "do not upate react-popper and popper.js (to @popper/core) before reactstrap has updated it's dependencies. See: https://github.com/reactstrap/reactstrap/issues/1737"
   }
 }

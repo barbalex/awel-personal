@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
 import username from 'username'
+//import 'mobx-react-lite/batchingForReactDom'
 
 import App from './components/App'
 import './styles.css'
@@ -11,9 +12,8 @@ import watchMutations from './src/watchMutations'
 import { StoreContextProvider } from './storeContext'
 
 const run = async () => {
-
   const store = createStore().create()
-  const {addError, setDb, setUsername} = store
+  const { addError, setDb, setUsername } = store
   watchMutations({ store })
 
   let db
@@ -35,9 +35,9 @@ const run = async () => {
   window.store = store
 
   render(
-      <StoreContextProvider value={store}>
-        <App />
-      </StoreContextProvider>,
+    <StoreContextProvider value={store}>
+      <App />
+    </StoreContextProvider>,
     document.getElementById('root'),
   )
 }
