@@ -5950,10 +5950,10 @@ mkdirp-classic@^0.5.2:
   dependencies:
     minimist "^1.2.5"
 
-mobx-react-lite@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/mobx-react-lite/-/mobx-react-lite-2.0.0.tgz#52ee837a81b4a4cd02fe4a2e6e9433da89b6f9a5"
-  integrity sha512-IrA0WR8f15hq1BLnNfgtQQ0Gp9zRASLZxXEVfiJv8uTwj1K/wN7vHAJtr9YJyBFia0W6QUAXFPP0PHdV0M/L9g==
+mobx-react-lite@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/mobx-react-lite/-/mobx-react-lite-2.0.1.tgz#8ce860767cd87715b177a1625292f2403e7dd3ac"
+  integrity sha512-yyTOFIDetCdnMiFMViEXoqqsywuvEK9zlwKBr6X/7+YpGTeF06PZzKEkCCqS30CZ3ubPMNTqYuRuzsMm2WQYug==
 
 mobx-state-tree@3.15.0:
   version "3.15.0"
