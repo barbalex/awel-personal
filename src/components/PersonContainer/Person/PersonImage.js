@@ -1,11 +1,4 @@
 import React, { useContext, useCallback, useEffect, useState } from 'react'
-/**
- * DANGER
- * DO NOT UPDATE REACT-DROPZONE TO 8.2 OR HIHGHER
- * There is a breaking change in 8.2 in that the path returned
- * is only the file name
- * see: https://github.com/react-dropzone/react-dropzone/issues/769
- */
 import Dropzone from 'react-dropzone'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
