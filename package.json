@@ -21,6 +21,7 @@
     "forge": "./forge.config.js"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.8.7",
     "better-sqlite3": "7.0.1",
     "bootstrap": "4.4.1",
     "classnames": "2.2.6",

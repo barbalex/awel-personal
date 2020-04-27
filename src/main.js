@@ -1,6 +1,10 @@
-const electron = require('electron')
 const { app, BrowserWindow, ipcMain, Menu } = require('electron')
 const fs = require('fs-extra')
+const findOpenSocket = require('./find-open-socket')
+const isDev = require('electron-is-dev')
+
+// this seems to be needed when working with server
+require('@babel/polyfill')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -76,7 +80,7 @@ const createBackgroundWindow = (socketName) => {
       nodeIntegration: true,
     },
   })
-  win.loadURL(`file://${__dirname}/server-dev.html`)
+  win.loadURL(`file://${__dirname}/server/dev.html`)
 
   win.webContents.on('did-finish-load', () => {
     win.webContents.send('set-socket', { name: socketName })
@@ -86,7 +90,7 @@ const createBackgroundWindow = (socketName) => {
 }
 
 const createBackgroundProcess = (socketName) => {
-  serverProcess = fork(__dirname + '/server.js', [
+  serverProcess = fork(__dirname + '/server/server.js', [
     '--subprocess',
     app.getVersion(),
     socketName,
