@@ -44,6 +44,7 @@ module.exports = {
               html: './src/index.html',
               js: './src/index.js',
               name: 'main_window',
+              preload: { js: './src/preload.js' },
             },
           ],
         },
