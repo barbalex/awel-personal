@@ -3,7 +3,7 @@ module.exports = {
   // this seems to be to ensure all deps of better-sqlite3 are copied
   packagerConfig: {
     icon: './src/etc/person.png',
-    ignore: file => {
+    ignore: (file) => {
       return false
     },
   },
@@ -16,7 +16,7 @@ module.exports = {
         copyright: 'AWEL Kt. Zürich, Schweiz',
         owners: 'AWEL Kt. Zürich, Schweiz',
         description: 'Damit verwaltet das AWEL Kt. ZH Personal-Daten',
-        authors: 'Alexander Gabriel, Gabriel-Software'
+        authors: 'Alexander Gabriel, Gabriel-Software',
       },
     },
     {
