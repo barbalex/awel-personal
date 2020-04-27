@@ -26,6 +26,7 @@
     "classnames": "2.2.6",
     "date-fns": "2.12.0",
     "electron-debug": "3.0.1",
+    "electron-is-dev": "^1.2.0",
     "electron-squirrel-startup": "1.0.0",
     "exceljs": "3.9.0",
     "history": "4.10.1",
@@ -35,6 +36,7 @@
     "mobx-state-tree": "3.16.0",
     "moment": "2.24.0",
     "mst-middlewares": "3.16.0",
+    "node-ipc": "^9.1.1",
     "popper.js": "1.16.1",
     "react": "16.13.1",
     "react-datepicker": "2.14.1",
@@ -53,7 +55,8 @@
     "source-map-support": "0.5.19",
     "styled-components": "5.1.0",
     "use-detect-print": "0.0.2",
-    "username": "5.1.0"
+    "username": "5.1.0",
+    "uuid": "^7.0.3"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",

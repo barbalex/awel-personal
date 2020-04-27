@@ -1,3 +1,4 @@
+const electron = require('electron')
 const { app, BrowserWindow, ipcMain, Menu } = require('electron')
 const fs = require('fs-extra')
 
@@ -9,7 +10,9 @@ if (require('electron-squirrel-startup')) {
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+let clientWindow
+let serverWindow
+let serverProcess
 
 const browserWindowOptions = {
   width: 1800,
@@ -18,47 +21,94 @@ const browserWindowOptions = {
   // only show after it was sized
   show: false,
   webPreferences: {
-    nodeIntegration: true,
+    nodeIntegration: true, // TODO: set false when all DB migrated to ipc
+    preload: __dirname + '/client-preload.js',
   },
 }
 
-const createWindow = () => {
+const createWindow = (socketName) => {
   // Create the browser window.
-  mainWindow = new BrowserWindow(browserWindowOptions)
-  mainWindow.maximize()
+  clientWindow = new BrowserWindow(browserWindowOptions)
+  clientWindow.maximize()
   Menu.setApplicationMenu(null)
   // and load the index.html of the app.
-  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
-  mainWindow.show()
+  clientWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
+  clientWindow.show()
 
   // Open the DevTools
   if (!app.isPackaged) {
-    mainWindow.webContents.openDevTools()
+    clientWindow.webContents.openDevTools()
   }
 
+  clientWindow.webContents.on('did-finish-load', () => {
+    clientWindow.webContents.send('set-socket', {
+      name: socketName,
+    })
+  })
+
   // Emitted when the window is closed.
-  mainWindow.on('closed', () => {
+  clientWindow.on('closed', () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    mainWindow = null
+    clientWindow = null
   })
 
   // save window state on close
-  mainWindow.on('close', e => {
+  clientWindow.on('close', (e) => {
     e.preventDefault()
 
     // in case user has changed data inside an input and not blured yet,
     // force bluring so data is saved
-    mainWindow.webContents.executeJavaScript('document.activeElement.blur()')
-    setTimeout(() => mainWindow.destroy(), 500)
+    clientWindow.webContents.executeJavaScript('document.activeElement.blur()')
+    setTimeout(() => clientWindow.destroy(), 500)
+  })
+}
+
+const createBackgroundWindow = (socketName) => {
+  const win = new BrowserWindow({
+    x: 500,
+    y: 300,
+    width: 700,
+    height: 500,
+    show: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  })
+  win.loadURL(`file://${__dirname}/server-dev.html`)
+
+  win.webContents.on('did-finish-load', () => {
+    win.webContents.send('set-socket', { name: socketName })
+  })
+
+  serverWindow = win
+}
+
+const createBackgroundProcess = (socketName) => {
+  serverProcess = fork(__dirname + '/server.js', [
+    '--subprocess',
+    app.getVersion(),
+    socketName,
+  ])
+
+  serverProcess.on('message', (msg) => {
+    console.log(msg)
   })
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', async () => {
+  serverSocket = await findOpenSocket()
+  createWindow(serverSocket)
+  if (isDev) {
+    createBackgroundWindow(serverSocket)
+  } else {
+    createBackgroundProcess(serverSocket)
+  }
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -69,11 +119,24 @@ app.on('window-all-closed', () => {
   }
 })
 
-app.on('activate', () => {
+app.on('activate', async () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow()
+  if (clientWindow === null) {
+    serverSocket = await findOpenSocket()
+    createWindow(serverSocket)
+    if (isDev) {
+      createBackgroundWindow(serverSocket)
+    } else {
+      createBackgroundProcess(serverSocket)
+    }
+  }
+})
+
+app.on('before-quit', () => {
+  if (serverProcess) {
+    serverProcess.kill()
+    serverProcess = null
   }
 })
 
@@ -82,7 +145,7 @@ app.on('activate', () => {
 ipcMain.on('SAVE_FILE', (event, path, data) => {
   fs.outputFile(path, data)
     .then(() => event.sender.send('SAVED_FILE'))
-    .catch(error => event.sender.send('ERROR', error.message))
+    .catch((error) => event.sender.send('ERROR', error.message))
 })
 
 // In this file you can include the rest of your app's specific main process
