@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, Menu } = require('electron')
 const fs = require('fs-extra')
+let { fork } = require('child_process')
 const findOpenSocket = require('./find-open-socket')
 const isDev = require('electron-is-dev')
 
@@ -26,7 +27,7 @@ const browserWindowOptions = {
   show: false,
   webPreferences: {
     nodeIntegration: true, // TODO: set false when all DB migrated to ipc
-    preload: __dirname + '/client-preload.js',
+    preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
   },
 }
 
@@ -105,11 +106,12 @@ const createBackgroundProcess = (socketName) => {
 app.on('ready', async () => {
   serverSocket = await findOpenSocket()
   createWindow(serverSocket)
-  if (isDev) {
-    createBackgroundWindow(serverSocket)
-  } else {
-    createBackgroundProcess(serverSocket)
-  }
+  // ISSUE: cant access files in window because of webpack
+  //if (isDev) {
+  //  createBackgroundWindow(serverSocket)
+  //} else {
+  createBackgroundProcess(serverSocket)
+  //}
 })
 
 // Quit when all windows are closed.
@@ -127,11 +129,12 @@ app.on('activate', async () => {
   if (clientWindow === null) {
     serverSocket = await findOpenSocket()
     createWindow(serverSocket)
-    if (isDev) {
-      createBackgroundWindow(serverSocket)
-    } else {
-      createBackgroundProcess(serverSocket)
-    }
+    // ISSUE: cant access files in window because of webpack
+    //if (isDev) {
+    //  createBackgroundWindow(serverSocket)
+    //} else {
+    createBackgroundProcess(serverSocket)
+    //}
   }
 })
 
