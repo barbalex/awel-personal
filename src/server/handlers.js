@@ -1,20 +1,18 @@
 // see: https://github.com/jlongster/electron-with-server-example
+const Database = require('better-sqlite3')
+
 let handlers = {}
 
 handlers._history = []
 
-handlers['make-factorial'] = async ({ num }) => {
-  handlers._history.push(num)
-
-  function fact(n) {
-    if (n === 1) {
-      return 1
-    }
-    return n * fact(n - 1)
+handlers['getDb'] = async ({ dbPath }) => {
+  let db
+  try {
+    db = new Database(dbPath, { fileMustExist: true })
+  } catch (error) {
+    return { error }
   }
-
-  console.log('making factorial')
-  return fact(num)
+  return { result: db }
 }
 
 handlers['ring-ring'] = async () => {
