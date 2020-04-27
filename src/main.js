@@ -34,7 +34,7 @@ const createWindow = (socketName) => {
   // Create the browser window.
   clientWindow = new BrowserWindow(browserWindowOptions)
   clientWindow.maximize()
-  Menu.setApplicationMenu(null)
+  !isDev && Menu.setApplicationMenu(null)
   // and load the index.html of the app.
   clientWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
   clientWindow.show()
@@ -71,10 +71,8 @@ const createWindow = (socketName) => {
 
 const createBackgroundWindow = (socketName) => {
   const win = new BrowserWindow({
-    x: 500,
-    y: 300,
-    width: 700,
-    height: 500,
+    width: 1800,
+    height: 1024,
     show: true,
     webPreferences: {
       nodeIntegration: true,
