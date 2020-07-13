@@ -10,13 +10,6 @@ module.exports = {
   module: {
     rules: require('./webpack.rules'),
   },
-  // declare better-sqlite3 external and copy all of it
-  // see https://github.com/electron-userland/electron-forge/issues/1224#issuecomment-544294836
-  // and https://github.com/electron-userland/electron-forge/issues/1224#issuecomment-544204354
-  // and https://github.com/electron-userland/electron-forge/issues/1224#issuecomment-544294836
-  externals: {
-    'better-sqlite3': 'commonjs better-sqlite3',
-  },
   plugins: [
     // dont know why but now have to copy image
     new CopyPlugin({
