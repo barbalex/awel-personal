@@ -4,8 +4,8 @@ import Linkify from 'react-linkify'
 import styled from 'styled-components'
 import moment from 'moment'
 import get from 'lodash/get'
-import ErrorBoundary from 'react-error-boundary'
 
+import ErrorBoundary from '../shared/ErrorBoundary'
 import storeContext from '../../storeContext'
 import LogoAwel from '../../etc/LogoAwel.jpg'
 
@@ -176,7 +176,7 @@ const PersonMutationPrint = ({ activeId }) => {
     settings,
   } = store
 
-  const person = personen.find(p => p.id === activeId)
+  const person = personen.find((p) => p.id === activeId)
   const personId = person.id
 
   if (!showFilter && !activeId) return null
@@ -184,19 +184,32 @@ const PersonMutationPrint = ({ activeId }) => {
   const viewIsNarrow = true
   const Wrapper = viewIsNarrow ? WrapperNarrow : WrapperWide
 
-  const v = personen.find(p => p.id === person.vorgesetztId)
+  const v = personen.find((p) => p.id === person.vorgesetztId)
   const vorgesetzt = v ? `${v.name} ${v.vorname}` : ''
 
-  const tv = personen.find(p => p.id === person.telefonUebernommenVon)
+  const tv = personen.find((p) => p.id === person.telefonUebernommenVon)
   const telefonUebernommenVon = tv ? `${tv.name} ${tv.vorname}` : ''
 
-  const amtName = get(aemter.find(a => a.id === person.amt), 'name') || ''
+  const amtName =
+    get(
+      aemter.find((a) => a.id === person.amt),
+      'name',
+    ) || ''
   const abteilungName =
-    get(abteilungen.find(a => a.id === person.abteilung), 'name') || ''
+    get(
+      abteilungen.find((a) => a.id === person.abteilung),
+      'name',
+    ) || ''
   const sektionName =
-    get(sektionen.find(a => a.id === person.sektion), 'name') || ''
+    get(
+      sektionen.find((a) => a.id === person.sektion),
+      'name',
+    ) || ''
   const bereichName =
-    get(bereiche.find(a => a.id === person.bereich), 'name') || ''
+    get(
+      bereiche.find((a) => a.id === person.bereich),
+      'name',
+    ) || ''
 
   return (
     <ErrorBoundary>

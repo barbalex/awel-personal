@@ -11,8 +11,8 @@ import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
-import ErrorBoundary from 'react-error-boundary'
 
+import ErrorBoundary from '../../shared/ErrorBoundary'
 import Input from '../../shared/Input'
 import Date from '../../shared/Date'
 import Select from '../../shared/Select'
@@ -83,10 +83,10 @@ const AreaPersonalien = styled.div`
     'p_email p_email'
     'p_geburtsdatum p_geburtsdatum'
     'p_telefon p_telefon';
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.isPdf ? 'white' : 'rgba(249, 230, 0, .3)'};
   padding: 8px;
-  border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
+  border: ${(props) => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
   border-bottom: none;
 `
 const AreaPAreaTitle = styled.div`
@@ -134,32 +134,34 @@ const AreaPTelefon = styled.div`
 `
 const AreaAnstellung = styled.div`
   grid-area: anstellung;
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.isPdf ? 'white' : 'rgba(0, 103, 249, .3)'};
   padding: 8px;
-  border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
+  border: ${(props) => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
   border-bottom: none;
 `
 const AreaFunktionen = styled.div`
   grid-area: funktionen;
-  background-color: ${props => (props.isPdf ? 'white' : 'rgba(61, 0, 247,.3)')};
+  background-color: ${(props) =>
+    props.isPdf ? 'white' : 'rgba(61, 0, 247,.3)'};
   padding: 8px;
-  border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
+  border: ${(props) => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
   border-bottom: none;
 `
 const AreaVerzeichnis = styled.div`
   grid-area: verzeichnis;
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.isPdf ? 'white' : 'rgba(249, 115, 0, .3)'};
   padding: 8px;
-  border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
+  border: ${(props) => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
   border-bottom: none;
 `
 const AreaZuletzt = styled.div`
   grid-area: zuletzt;
-  background-color: ${props => (props.isPdf ? 'white' : 'rgb(227, 232, 255)')};
+  background-color: ${(props) =>
+    props.isPdf ? 'white' : 'rgb(227, 232, 255)'};
   padding: 8px;
-  border: ${props => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
+  border: ${(props) => (props['data-ispdf'] ? '1px solid #ccc' : 'none')};
   border-bottom: none;
 `
 const Title = styled.div`
@@ -205,7 +207,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
   if (showFilter) {
     person = filterPerson
   } else {
-    person = personen.find(p => p.id === activeId) || {}
+    person = personen.find((p) => p.id === activeId) || {}
   }
   const personId = showFilter ? '' : person.id
 
@@ -317,7 +319,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
         if (['name', 'vorname'].includes(field)) {
           const index = findIndex(
             store.personenFilteredSortedByHandlungsbedarf,
-            p => p.id === person.id,
+            (p) => p.id === person.id,
           )
           listRef.current.scrollToItem(index)
         }
@@ -335,7 +337,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
     ],
   )
   const addEtikett = useCallback(
-    etikett => {
+    (etikett) => {
       if (showFilter) {
         setFilter({
           model: 'filterEtikett',
@@ -348,7 +350,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
     [showFilter, setFilter, filterEtikett, store],
   )
   const deleteEtikett = useCallback(
-    etikett => {
+    (etikett) => {
       if (showFilter) {
         setFilter({
           model: 'filterEtikett',
@@ -377,7 +379,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
   )
 
   const addAnwesenheitstag = useCallback(
-    tag => {
+    (tag) => {
       if (showFilter) {
         setFilter({
           model: 'filterAnwesenheitstage',
@@ -390,7 +392,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
     [showFilter, setFilter, filterAnwesenheitstage, store],
   )
   const deleteAnwesenheitstag = useCallback(
-    tag => {
+    (tag) => {
       if (showFilter) {
         setFilter({
           model: 'filterAnwesenheitstage',
@@ -419,7 +421,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
   )
 
   const addFunktion = useCallback(
-    funktion => {
+    (funktion) => {
       if (showFilter) {
         setFilter({
           model: 'filterFunktion',
@@ -432,7 +434,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
     [showFilter, setFilter, filterFunktion, store],
   )
   const deleteFunktion = useCallback(
-    funktion => {
+    (funktion) => {
       if (showFilter) {
         setFilter({
           model: 'filterFunktion',
@@ -461,7 +463,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
   )
 
   const addKaderFunktion = useCallback(
-    funktion => {
+    (funktion) => {
       if (showFilter) {
         setFilter({
           model: 'filterKaderFunktion',
@@ -474,7 +476,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
     [showFilter, setFilter, filterKaderFunktion, store],
   )
   const deleteKaderFunktion = useCallback(
-    funktion => {
+    (funktion) => {
       if (showFilter) {
         setFilter({
           model: 'filterKaderFunktion',
@@ -506,9 +508,9 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const personOptions = useMemo(
     () =>
       sortBy(personen, ['name', 'vorname'])
-        .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-        .filter(w => showFilter || (!showFilter && w.id !== person.id))
-        .map(w => ({
+        .filter((w) => !!w.name && !!w.vorname && w.deleted === 0)
+        .filter((w) => showFilter || (!showFilter && w.id !== person.id))
+        .map((w) => ({
           label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
@@ -517,8 +519,8 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const amtOptions = useMemo(
     () =>
       sortBy(aemter, ['name'])
-        .filter(w => !!w.name && w.deleted === 0)
-        .map(w => ({
+        .filter((w) => !!w.name && w.deleted === 0)
+        .map((w) => ({
           label: w.name,
           value: w.id,
         })),
@@ -527,14 +529,14 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const abteilungOptions = useMemo(
     () =>
       sortBy(abteilungen, ['name'])
-        .filter(w => !!w.name && w.deleted === 0)
-        .filter(w => {
+        .filter((w) => !!w.name && w.deleted === 0)
+        .filter((w) => {
           if (person.amt) {
             return w.amt === person.amt
           }
           return true
         })
-        .map(w => ({
+        .map((w) => ({
           label: w.name,
           value: w.id,
         })),
@@ -543,14 +545,14 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const sektionOptions = useMemo(
     () =>
       sortBy(sektionen, ['name'])
-        .filter(w => !!w.name && w.deleted === 0)
-        .filter(w => {
+        .filter((w) => !!w.name && w.deleted === 0)
+        .filter((w) => {
           if (person.abteilung) {
             return w.abteilung === person.abteilung
           }
           return true
         })
-        .map(w => ({
+        .map((w) => ({
           label: w.name,
           value: w.id,
         })),
@@ -559,26 +561,26 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const bereichOptions = useMemo(
     () =>
       sortBy(bereiche, ['name'])
-        .filter(b => !!b.name && b.deleted === 0)
-        .filter(b => {
+        .filter((b) => !!b.name && b.deleted === 0)
+        .filter((b) => {
           if (person.sektion) {
             return !b.sektion || b.sektion === person.sektion
           }
           return true
         })
-        .filter(b => {
+        .filter((b) => {
           if (person.abteilung) {
             return !b.abteilung || b.abteilung === person.abteilung
           }
           return true
         })
-        .filter(b => {
+        .filter((b) => {
           if (person.amt) {
             return !b.amt || b.amt === person.amt
           }
           return true
         })
-        .map(b => ({
+        .map((b) => ({
           label: b.name,
           value: b.id,
         })),
@@ -587,8 +589,8 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const statusOptions = useMemo(
     () =>
       sortBy(statusWerte, ['sort', 'value'])
-        .filter(p => p.deleted === 0)
-        .map(w => ({
+        .filter((p) => p.deleted === 0)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),
@@ -597,8 +599,8 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const anredeOptions = useMemo(
     () =>
       sortBy(anredeWerte, ['sort', 'value'])
-        .filter(p => p.deleted === 0)
-        .map(w => ({
+        .filter((p) => p.deleted === 0)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),
@@ -607,8 +609,8 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const etikettenOptions = useMemo(
     () =>
       sortBy(etikettWerte, ['sort', 'value'])
-        .filter(p => p.deleted === 0)
-        .map(w => ({
+        .filter((p) => p.deleted === 0)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),
@@ -617,8 +619,8 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const anwesenheitstageOptions = useMemo(
     () =>
       sortBy(anwesenheitstagWerte, ['sort', 'value'])
-        .filter(p => p.deleted === 0)
-        .map(w => ({
+        .filter((p) => p.deleted === 0)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),
@@ -627,8 +629,8 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const funktionenOptions = useMemo(
     () =>
       sortBy(funktionWerte, ['sort', 'value'])
-        .filter(p => p.deleted === 0)
-        .map(w => ({
+        .filter((p) => p.deleted === 0)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),
@@ -637,8 +639,8 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const kaderFunktionenOptions = useMemo(
     () =>
       sortBy(kaderFunktionWerte, ['sort', 'value'])
-        .filter(p => p.deleted === 0)
-        .map(w => ({
+        .filter((p) => p.deleted === 0)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),
@@ -647,8 +649,8 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const landOptions = useMemo(
     () =>
       sortBy(landWerte, ['sort', 'value'])
-        .filter(p => p.deleted === 0)
-        .map(w => ({
+        .filter((p) => p.deleted === 0)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),
@@ -657,8 +659,8 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const standortOptions = useMemo(
     () =>
       sortBy(standortWerte, ['sort', 'value'])
-        .filter(p => p.deleted === 0)
-        .map(w => ({
+        .filter((p) => p.deleted === 0)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),
@@ -667,12 +669,12 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const myEtiketten = useMemo(
     () =>
       sortBy(
-        etiketten.filter(e => e.idPerson === activeId),
+        etiketten.filter((e) => e.idPerson === activeId),
         'etikett',
       )
-        .filter(w => !!w.etikett)
-        .filter(p => p.deleted === 0)
-        .map(e => ({
+        .filter((w) => !!w.etikett)
+        .filter((p) => p.deleted === 0)
+        .map((e) => ({
           label: e.etikett,
           value: e.etikett,
         })),
@@ -682,16 +684,16 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const myAnwesenheitstage = useMemo(
     () =>
       sortBy(
-        anwesenheitstage.filter(e => e.idPerson === activeId),
-        e => {
-          const awWert = anwesenheitstagWerte.find(w => w.value === e.tag)
+        anwesenheitstage.filter((e) => e.idPerson === activeId),
+        (e) => {
+          const awWert = anwesenheitstagWerte.find((w) => w.value === e.tag)
           if (awWert && awWert.sort) return awWert.sort
           return 1
         },
       )
-        .filter(w => !!w.tag)
-        .filter(p => p.deleted === 0)
-        .map(e => ({
+        .filter((w) => !!w.tag)
+        .filter((p) => p.deleted === 0)
+        .map((e) => ({
           label: e.tag,
           value: e.tag,
         })),
@@ -701,12 +703,12 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const myFunktionen = useMemo(
     () =>
       sortBy(
-        funktionen.filter(e => e.idPerson === activeId),
+        funktionen.filter((e) => e.idPerson === activeId),
         'funktion',
       )
-        .filter(w => !!w.funktion)
-        .filter(p => p.deleted === 0)
-        .map(e => ({
+        .filter((w) => !!w.funktion)
+        .filter((p) => p.deleted === 0)
+        .map((e) => ({
           label: e.funktion,
           value: e.funktion,
         })),
@@ -716,12 +718,12 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const myKaderFunktionen = useMemo(
     () =>
       sortBy(
-        kaderFunktionen.filter(e => e.idPerson === activeId),
+        kaderFunktionen.filter((e) => e.idPerson === activeId),
         'funktion',
       )
-        .filter(w => !!w.funktion)
-        .filter(p => p.deleted === 0)
-        .map(e => ({
+        .filter((w) => !!w.funktion)
+        .filter((p) => p.deleted === 0)
+        .map((e) => ({
           label: e.funktion,
           value: e.funktion,
         })),

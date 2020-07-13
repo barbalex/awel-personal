@@ -13,11 +13,10 @@ import sortBy from 'lodash/sortBy'
 import Linkify from 'react-linkify'
 import { MdEdit } from 'react-icons/md'
 import { FaSave } from 'react-icons/fa'
-import { Button, InputGroup, ButtonGroup } from 'reactstrap'
-import ErrorBoundary from 'react-error-boundary'
+import { Button, ButtonGroup } from 'reactstrap'
 
+import ErrorBoundary from '../shared/ErrorBoundary'
 import Input from '../shared/Input'
-import InputWithoutLabel from '../shared/InputWithoutLabel'
 import Date from '../shared/Date'
 import Select from '../shared/Select'
 import Textarea from '../shared/Textarea'
@@ -100,7 +99,7 @@ const SaveIcon = styled(FaSave)`
 const WRRight = styled.div`
   height: 34px;
   flex-grow: 1;
-  flex-grow: ${props => (props['data-grow'] ? 1 : 0)};
+  flex-grow: ${(props) => (props['data-grow'] ? 1 : 0)};
   > div {
     height: 34px;
     flex-grow: 1;
@@ -138,7 +137,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
   if (showFilter) {
     person = filterPerson
   } else {
-    person = personen.find(p => p.id === activeId)
+    person = personen.find((p) => p.id === activeId)
     if (!person) person = {}
   }
   const personId = showFilter ? '' : person.id
@@ -166,7 +165,6 @@ const PersonMutation = ({ activeId, dimensions }) => {
     },
     [setSettingsKey],
   )
-  const callbackPdfPath = useCallback(() => setEditPdfPath(false), [])
 
   const [errors, setErrors] = useState({})
   useEffect(() => {
@@ -260,9 +258,9 @@ const PersonMutation = ({ activeId, dimensions }) => {
   const personOptions = useMemo(
     () =>
       sortBy(personen, ['name', 'vorname'])
-        .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-        .filter(w => showFilter || (!showFilter && w.id !== person.id))
-        .map(w => ({
+        .filter((w) => !!w.name && !!w.vorname && w.deleted === 0)
+        .filter((w) => showFilter || (!showFilter && w.id !== person.id))
+        .map((w) => ({
           label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
@@ -271,8 +269,8 @@ const PersonMutation = ({ activeId, dimensions }) => {
   const mutationArtOptions = useMemo(
     () =>
       sortBy(mutationArtWerte, ['sort', 'value'])
-        .filter(p => p.deleted === 0)
-        .map(w => ({
+        .filter((p) => p.deleted === 0)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),
@@ -281,8 +279,8 @@ const PersonMutation = ({ activeId, dimensions }) => {
   const amtOptions = useMemo(
     () =>
       sortBy(aemter, ['name'])
-        .filter(w => !!w.name && w.deleted === 0)
-        .map(w => ({
+        .filter((w) => !!w.name && w.deleted === 0)
+        .map((w) => ({
           label: w.name,
           value: w.id,
         })),
@@ -291,14 +289,14 @@ const PersonMutation = ({ activeId, dimensions }) => {
   const abteilungOptions = useMemo(
     () =>
       sortBy(abteilungen, ['name'])
-        .filter(w => !!w.name && w.deleted === 0)
-        .filter(w => {
+        .filter((w) => !!w.name && w.deleted === 0)
+        .filter((w) => {
           if (person.amt) {
             return w.amt === person.amt
           }
           return true
         })
-        .map(w => ({
+        .map((w) => ({
           label: w.name,
           value: w.id,
         })),
@@ -307,14 +305,14 @@ const PersonMutation = ({ activeId, dimensions }) => {
   const sektionOptions = useMemo(
     () =>
       sortBy(sektionen, ['name'])
-        .filter(w => !!w.name && w.deleted === 0)
-        .filter(w => {
+        .filter((w) => !!w.name && w.deleted === 0)
+        .filter((w) => {
           if (person.abteilung) {
             return w.abteilung === person.abteilung
           }
           return true
         })
-        .map(w => ({
+        .map((w) => ({
           label: w.name,
           value: w.id,
         })),
@@ -323,8 +321,8 @@ const PersonMutation = ({ activeId, dimensions }) => {
   const bereichOptions = useMemo(
     () =>
       sortBy(bereiche, ['name'])
-        .filter(w => !!w.name && w.deleted === 0)
-        .map(w => ({
+        .filter((w) => !!w.name && w.deleted === 0)
+        .map((w) => ({
           label: w.name,
           value: w.id,
         })),
@@ -333,8 +331,8 @@ const PersonMutation = ({ activeId, dimensions }) => {
   const standortOptions = useMemo(
     () =>
       sortBy(standortWerte, ['sort', 'value'])
-        .filter(p => p.deleted === 0)
-        .map(w => ({
+        .filter((p) => p.deleted === 0)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),

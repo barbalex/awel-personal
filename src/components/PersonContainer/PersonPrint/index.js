@@ -2,8 +2,8 @@ import React, { useContext, useMemo } from 'react'
 import moment from 'moment'
 import styled from 'styled-components'
 import get from 'lodash/get'
-import ErrorBoundary from 'react-error-boundary'
 
+import ErrorBoundary from '../../shared/ErrorBoundary'
 import storeContext from '../../../storeContext'
 import InputValue from './InputValue'
 import Telefones from './Telefones'
@@ -216,46 +216,46 @@ const PersonPrint = ({ activeId }) => {
     kaderFunktionen,
   } = store
 
-  const person = personen.find(p => p.id === activeId) || {}
+  const person = personen.find((p) => p.id === activeId) || {}
 
   const myEtiketten = useMemo(
     () =>
       etiketten
-        .filter(e => e.idPerson === activeId)
-        .filter(w => !!w.etikett)
-        .filter(p => p.deleted === 0)
-        .map(e => e.etikett),
+        .filter((e) => e.idPerson === activeId)
+        .filter((w) => !!w.etikett)
+        .filter((p) => p.deleted === 0)
+        .map((e) => e.etikett),
     [activeId, etiketten],
   )
   const myAnwesenheitstage = useMemo(
     () =>
       anwesenheitstage
-        .filter(e => e.idPerson === activeId)
-        .filter(w => !!w.tag)
-        .filter(p => p.deleted === 0)
-        .map(e => e.tag),
+        .filter((e) => e.idPerson === activeId)
+        .filter((w) => !!w.tag)
+        .filter((p) => p.deleted === 0)
+        .map((e) => e.tag),
     [activeId, anwesenheitstage],
   )
   const myFunktionen = useMemo(
     () =>
       funktionen
-        .filter(e => e.idPerson === activeId)
-        .filter(w => !!w.funktion)
-        .filter(p => p.deleted === 0)
-        .map(e => e.funktion),
+        .filter((e) => e.idPerson === activeId)
+        .filter((w) => !!w.funktion)
+        .filter((p) => p.deleted === 0)
+        .map((e) => e.funktion),
     [activeId, funktionen],
   )
   const myKaderFunktionen = useMemo(
     () =>
       kaderFunktionen
-        .filter(e => e.idPerson === activeId)
-        .filter(w => !!w.funktion)
-        .filter(p => p.deleted === 0)
-        .map(e => e.funktion),
+        .filter((e) => e.idPerson === activeId)
+        .filter((w) => !!w.funktion)
+        .filter((p) => p.deleted === 0)
+        .map((e) => e.funktion),
     [activeId, kaderFunktionen],
   )
 
-  const personVorgesetzt = personen.find(a => a.id === person.vorgesetztId)
+  const personVorgesetzt = personen.find((a) => a.id === person.vorgesetztId)
 
   return (
     <ErrorBoundary>
@@ -341,7 +341,10 @@ const PersonPrint = ({ activeId }) => {
                     <Title>Funktionen</Title>
                     <InputValue
                       value={
-                        get(aemter.find(a => a.id === person.amt), 'name') || ''
+                        get(
+                          aemter.find((a) => a.id === person.amt),
+                          'name',
+                        ) || ''
                       }
                       label="Amt"
                     />
@@ -349,7 +352,7 @@ const PersonPrint = ({ activeId }) => {
                       label="Abteilung"
                       value={
                         get(
-                          abteilungen.find(a => a.id === person.abteilung),
+                          abteilungen.find((a) => a.id === person.abteilung),
                           'name',
                         ) || ''
                       }
@@ -358,7 +361,7 @@ const PersonPrint = ({ activeId }) => {
                       label="Sektion"
                       value={
                         get(
-                          sektionen.find(a => a.id === person.sektion),
+                          sektionen.find((a) => a.id === person.sektion),
                           'name',
                         ) || ''
                       }
@@ -367,7 +370,7 @@ const PersonPrint = ({ activeId }) => {
                       label="Bereich"
                       value={
                         get(
-                          bereiche.find(a => a.id === person.bereich),
+                          bereiche.find((a) => a.id === person.bereich),
                           'name',
                         ) || ''
                       }
