@@ -3,8 +3,8 @@ import { Collapse, Navbar, NavbarToggler, Nav, Button } from 'reactstrap'
 import { observer } from 'mobx-react-lite'
 import { FaUndo, FaSave } from 'react-icons/fa'
 import styled from 'styled-components'
-import ErrorBoundary from 'react-error-boundary'
 
+import ErrorBoundary from '../shared/ErrorBoundary'
 import Filter from './Filter'
 import Stammdaten from './Stammdaten'
 import Personen from './Personen'
@@ -27,7 +27,7 @@ const UndoButton = styled(Button)`
   background-color: transparent !important;
   border: none !important;
   &:hover {
-    background-color: ${props =>
+    background-color: ${(props) =>
       props.disabled ? 'transparent !important' : '#6c757d !important'};
   }
 `
@@ -35,7 +35,7 @@ const SaveButton = styled(Button)`
   background-color: transparent !important;
   border: none !important;
   &:hover {
-    background-color: ${props =>
+    background-color: ${(props) =>
       props.disabled ? 'transparent !important' : '#6c757d !important'};
   }
 `

@@ -13,22 +13,24 @@ import {
   DropdownItem,
 } from 'reactstrap'
 import { FaTimes, FaEdit, FaFilter } from 'react-icons/fa'
-import ErrorBoundary from 'react-error-boundary'
+
+import ErrorBoundary from '../shared/ErrorBoundary'
 import storeContext from '../../storeContext'
 
 const StyledDropdownItem = styled(DropdownItem)`
-  background-color: ${props => (props.active ? '#f7f791 !important' : 'unset')};
-  color: ${props => (props.active ? '#212529 !important' : 'unset')};
+  background-color: ${(props) =>
+    props.active ? '#f7f791 !important' : 'unset'};
+  color: ${(props) => (props.active ? '#212529 !important' : 'unset')};
 `
 const VolltextInput = styled(Input)`
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.existsfilter === 'true' ? '#f7f791 !important' : '#e9ecef'};
 `
 const VolltextFilterRemoveAddon = styled(InputGroupText)`
   background-color: #f7f791 !important;
 `
 const StyledInputGroupText = styled(InputGroupText)`
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.existsfilter === 'true' ? '#f7f791 !important' : '#e9ecef'};
 `
 const FilterIconContainer = styled.div`
@@ -79,13 +81,13 @@ const Filter = () => {
     showFilter,
   ])
   const onChangeFilterFulltext = useCallback(
-    e => {
+    (e) => {
       setFilterFulltext(e.target.value)
     },
     [setFilterFulltext],
   )
   const onBlurFilterFulltext = useCallback(
-    e => {
+    (e) => {
       if (
         [
           'personFunktionen',
@@ -102,7 +104,7 @@ const Filter = () => {
     [activePrintForm, personPages],
   )
   const onKeyPressFilterFulltext = useCallback(
-    e => {
+    (e) => {
       if (e.key === 'Enter') {
         onBlurFilterFulltext(e)
       }
@@ -125,7 +127,7 @@ const Filter = () => {
     }
   }, [activePrintForm, personPages, setFilterFulltext])
   const toggleFilterDropdown = useCallback(
-    e => {
+    (e) => {
       setFilterDropdownIsOpen(!filterDropdownIsOpen)
       e.stopPropagation()
     },
