@@ -21,22 +21,6 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: './node_modules/better-sqlite3/',
-          to: './renderer/node_modules/better-sqlite3', // still under node_modules directory so it could find this module
-        },
-      ],
-    }),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: './node_modules/better-sqlite3/',
-          to: './node_modules/better-sqlite3', // still under node_modules directory so it could find this module
-        },
-      ],
-    }),
-    new CopyPlugin({
-      patterns: [
-        {
           from: './src/etc/person.png',
           to: './src/etc/person.png', // still under node_modules directory so it could find this module
         },
