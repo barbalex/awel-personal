@@ -5,8 +5,8 @@ import { observer } from 'mobx-react-lite'
 import { VariableSizeList as List } from 'react-window'
 import sortBy from 'lodash/sortBy'
 import moment from 'moment'
-import ErrorBoundary from 'react-error-boundary'
 
+import ErrorBoundary from '../shared/ErrorBoundary'
 import fetchMutations from '../../src/fetchMutations'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import Filter from './Filter'
@@ -23,8 +23,9 @@ const Container = styled.div`
 `
 const RowDiv = styled.div`
   border-bottom: 1px solid rgba(46, 125, 50, 0.5);
-  background-color: ${props => (props.active ? 'rgb(255, 250, 198)' : 'unset')};
-  border-top: ${props =>
+  background-color: ${(props) =>
+    props.active ? 'rgb(255, 250, 198)' : 'unset'};
+  border-top: ${(props) =>
     props.active ? '1px solid rgba(46, 125, 50, 0.5)' : 'unset'};
   padding: 15px 8px;
   display: grid;
@@ -74,7 +75,7 @@ const PreviousValue = styled(Field)`
   overflow: auto;
 `
 
-const getValueToShow = value => {
+const getValueToShow = (value) => {
   let valueToShow = value
   if (!value && value !== 0) {
     valueToShow = ''
@@ -108,31 +109,37 @@ const Mutations = () => {
   const [valueFilter, setValueFilter] = useState(null)
   const [previousValueFilter, setPreviousValueFilter] = useState(null)
 
-  const onChangeZeitFilter = useCallback(e => setZeitFilter(e.target.value), [])
+  const onChangeZeitFilter = useCallback(
+    (e) => setZeitFilter(e.target.value),
+    [],
+  )
   const emptyZeitFilter = useCallback(() => setZeitFilter(null), [])
-  const onChangeUserFilter = useCallback(e => setUserFilter(e.target.value), [])
+  const onChangeUserFilter = useCallback(
+    (e) => setUserFilter(e.target.value),
+    [],
+  )
   const emptyUserFilter = useCallback(() => setUserFilter(null), [])
-  const onChangeOpFilter = useCallback(e => setOpFilter(e.target.value), [])
+  const onChangeOpFilter = useCallback((e) => setOpFilter(e.target.value), [])
   const emptyOpFilter = useCallback(() => setOpFilter(null), [])
   const onChangeTableFilter = useCallback(
-    e => setTableFilter(e.target.value),
+    (e) => setTableFilter(e.target.value),
     [],
   )
   const emptyTableFilter = useCallback(() => setTableFilter(null), [])
-  const onChangeIdFilter = useCallback(e => setIdFilter(e.target.value), [])
+  const onChangeIdFilter = useCallback((e) => setIdFilter(e.target.value), [])
   const emptyIdFilter = useCallback(() => setIdFilter(null), [])
   const onChangeFieldFilter = useCallback(
-    e => setFieldFilter(e.target.value),
+    (e) => setFieldFilter(e.target.value),
     [],
   )
   const emptyFieldFilter = useCallback(() => setFieldFilter(null), [])
   const onChangeValueFilter = useCallback(
-    e => setValueFilter(e.target.value),
+    (e) => setValueFilter(e.target.value),
     [],
   )
   const emptyValueFilter = useCallback(() => setValueFilter(null), [])
   const onChangePreviousValueFilter = useCallback(
-    e => setPreviousValueFilter(e.target.value),
+    (e) => setPreviousValueFilter(e.target.value),
     [],
   )
   const emptyPreviousValueFilter = useCallback(
@@ -170,32 +177,32 @@ const Mutations = () => {
         previousValue: getValueToShow(previousValue),
       }),
     )
-    .filter(r => !zeitFilter || (r.time && r.time.includes(zeitFilter)))
+    .filter((r) => !zeitFilter || (r.time && r.time.includes(zeitFilter)))
     .filter(
-      r =>
+      (r) =>
         !userFilter ||
         (r.user && r.user.toLowerCase().includes(userFilter.toLowerCase())),
     )
     .filter(
-      r =>
+      (r) =>
         !opFilter ||
         (r.op && r.op.toLowerCase().includes(opFilter.toLowerCase())),
     )
     .filter(
-      r =>
+      (r) =>
         !tableFilter ||
         (r.tableName &&
           r.tableName.toLowerCase().includes(tableFilter.toLowerCase())),
     )
     .filter(
-      r => !idFilter || (r.rowId && r.rowId.toString().includes(idFilter)),
+      (r) => !idFilter || (r.rowId && r.rowId.toString().includes(idFilter)),
     )
     .filter(
-      r =>
+      (r) =>
         !fieldFilter ||
         (r.field && r.field.toLowerCase().includes(fieldFilter.toLowerCase())),
     )
-    .filter(r => {
+    .filter((r) => {
       if (!valueFilter) return true
       if (!r.value) return false
       if (!isNaN(r.value)) return r.value.toString().includes(valueFilter)
@@ -203,7 +210,7 @@ const Mutations = () => {
         r.value && r.value.toLowerCase().includes(valueFilter.toLowerCase())
       )
     })
-    .filter(r => {
+    .filter((r) => {
       if (!previousValueFilter) return true
       if (!r.previousValue) return false
       if (!isNaN(r.previousValue))
@@ -215,7 +222,7 @@ const Mutations = () => {
           .includes(previousValueFilter.toLowerCase())
       )
     })
-  const rowHeights = mutations.map(m => {
+  const rowHeights = mutations.map((m) => {
     if (m.value && m.value[0] === '{') return 176
     if (m.previousValue && m.previousValue[0] === '{') return 176
     return 50
@@ -294,7 +301,7 @@ const Mutations = () => {
           <List
             height={window.innerHeight - 56 - 65}
             itemCount={mutations.length}
-            itemSize={index => rowHeights[index] || 50}
+            itemSize={(index) => rowHeights[index] || 50}
             width={window.innerWidth}
           >
             {({ index, style }) => (

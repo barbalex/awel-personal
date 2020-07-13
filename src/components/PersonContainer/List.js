@@ -5,8 +5,8 @@ import { observer } from 'mobx-react-lite'
 import { UncontrolledTooltip } from 'reactstrap'
 import { FaTrashAlt } from 'react-icons/fa'
 import { FaRegEdit } from 'react-icons/fa'
-import ErrorBoundary from 'react-error-boundary'
 
+import ErrorBoundary from '../shared/ErrorBoundary'
 import storeContext from '../../storeContext'
 
 const Container = styled.div`
@@ -21,8 +21,9 @@ const Row = styled.div`
   justify-content: center;
   border-bottom: 1px solid rgba(46, 125, 50, 0.5);
   cursor: pointer;
-  background-color: ${props => (props.active ? 'rgb(255, 250, 198)' : 'unset')};
-  border-top: ${props =>
+  background-color: ${(props) =>
+    props.active ? 'rgb(255, 250, 198)' : 'unset'};
+  border-top: ${(props) =>
     props.active ? '1px solid rgba(46, 125, 50, 0.5)' : 'unset'};
   height: 50px;
   padding: 15px;

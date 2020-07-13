@@ -4,8 +4,8 @@ import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
 import findIndex from 'lodash/findIndex'
 import sortBy from 'lodash/sortBy'
-import ErrorBoundary from 'react-error-boundary'
 
+import ErrorBoundary from '../shared/ErrorBoundary'
 import Input from '../shared/Input'
 import SharedCheckbox from '../shared/Checkbox_01'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
@@ -21,7 +21,7 @@ const Data = ({ activeId, activeTable, listRef }) => {
   const store = useContext(storeContext)
   const { showDeleted, updateField, setDirty } = store
 
-  const dat = activeId ? store[activeTable].find(p => p.id === activeId) : []
+  const dat = activeId ? store[activeTable].find((p) => p.id === activeId) : []
 
   const [errors, setErrors] = useState({})
   useEffect(() => {
@@ -35,7 +35,7 @@ const Data = ({ activeId, activeTable, listRef }) => {
   const saveToDb = useCallback(
     ({ field, value }) => {
       const newValue = ifIsNumericAsNumber(value)
-      const { parentModel } = tables.find(t => t.table === activeTable)
+      const { parentModel } = tables.find((t) => t.table === activeTable)
 
       updateField({
         table: activeTable,
@@ -46,12 +46,12 @@ const Data = ({ activeId, activeTable, listRef }) => {
         setErrors,
       })
       if (field === 'value') {
-        let data = store[activeTable].slice().filter(p => {
+        let data = store[activeTable].slice().filter((p) => {
           if (!showDeleted) return p.deleted === 0
           return true
         })
         data = sortBy(data, ['sort', 'value'])
-        const index = findIndex(data, p => p.id === dat.id)
+        const index = findIndex(data, (p) => p.id === dat.id)
         listRef.current.scrollToItem(index)
       }
     },
