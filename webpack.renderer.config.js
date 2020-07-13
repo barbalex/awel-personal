@@ -36,6 +36,14 @@ module.exports = {
         },
       ],
     }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: './src/etc/person.png',
+          to: './src/etc/person.png', // still under node_modules directory so it could find this module
+        },
+      ],
+    }),
   ],
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],

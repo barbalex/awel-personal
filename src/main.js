@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, Menu } = require('electron')
 const fs = require('fs-extra')
+const path = require('path')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -14,11 +15,12 @@ let mainWindow
 const browserWindowOptions = {
   width: 1800,
   height: 1024,
-  icon: './src/etc/person.png',
+  icon: path.join(__dirname, 'src/etc/person.png'),
   // only show after it was sized
   show: false,
   webPreferences: {
     nodeIntegration: true,
+    enableRemoteModule: true,
   },
 }
 
@@ -45,7 +47,7 @@ const createWindow = () => {
   })
 
   // save window state on close
-  mainWindow.on('close', e => {
+  mainWindow.on('close', (e) => {
     e.preventDefault()
 
     // in case user has changed data inside an input and not blured yet,
@@ -82,7 +84,7 @@ app.on('activate', () => {
 ipcMain.on('SAVE_FILE', (event, path, data) => {
   fs.outputFile(path, data)
     .then(() => event.sender.send('SAVED_FILE'))
-    .catch(error => event.sender.send('ERROR', error.message))
+    .catch((error) => event.sender.send('ERROR', error.message))
 })
 
 // In this file you can include the rest of your app's specific main process
