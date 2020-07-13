@@ -11,8 +11,8 @@ import { Form } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
 import moment from 'moment'
-import ErrorBoundary from 'react-error-boundary'
 
+import ErrorBoundary from '../../shared/ErrorBoundary'
 import Input from '../../shared/Input'
 import Select from '../../shared/Select'
 import SharedCheckbox from '../../shared/Checkbox_01'
@@ -48,7 +48,7 @@ const Amt = ({ activeId, listRef }) => {
   if (showFilter) {
     amt = filterAmt
   } else {
-    amt = aemter.find(p => p.id === activeId)
+    amt = aemter.find((p) => p.id === activeId)
     if (!amt) amt = {}
   }
   const amtId = showFilter ? '' : amt.id
@@ -105,7 +105,7 @@ const Amt = ({ activeId, listRef }) => {
         if (field === 'name') {
           const index = findIndex(
             store.aemterFilteredSortedByHandlungsbedarf,
-            p => p.id === amt.id,
+            (p) => p.id === amt.id,
           )
           listRef.current.scrollToItem(index)
         }
@@ -127,9 +127,9 @@ const Amt = ({ activeId, listRef }) => {
   const personOptions = useMemo(
     () =>
       sortBy(personen, ['name', 'vorname'])
-        .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-        .filter(w => !showFilter)
-        .map(w => ({
+        .filter((w) => !!w.name && !!w.vorname && w.deleted === 0)
+        .filter((w) => !showFilter)
+        .map((w) => ({
           label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
@@ -138,8 +138,8 @@ const Amt = ({ activeId, listRef }) => {
   const kostenstelleOptions = useMemo(
     () =>
       sortBy(kostenstelleWerte, ['sort', 'value'])
-        .filter(w => !!w.value)
-        .map(w => ({
+        .filter((w) => !!w.value)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),
@@ -148,8 +148,8 @@ const Amt = ({ activeId, listRef }) => {
   const standortOptions = useMemo(
     () =>
       sortBy(standortWerte, ['sort', 'value'])
-        .filter(p => p.deleted === 0)
-        .map(w => ({
+        .filter((p) => p.deleted === 0)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),

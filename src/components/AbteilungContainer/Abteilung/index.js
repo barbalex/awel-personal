@@ -11,8 +11,8 @@ import { Form } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
 import moment from 'moment'
-import ErrorBoundary from 'react-error-boundary'
 
+import ErrorBoundary from '../../shared/ErrorBoundary'
 import Input from '../../shared/Input'
 import Select from '../../shared/Select'
 import Handlungsbedarf from '../../shared/Handlungsbedarf'
@@ -49,7 +49,7 @@ const Abteilung = ({ activeId, listRef }) => {
   if (showFilter) {
     abteilung = filterAbteilung
   } else {
-    abteilung = abteilungen.find(p => p.id === activeId)
+    abteilung = abteilungen.find((p) => p.id === activeId)
     if (!abteilung) abteilung = {}
   }
   const abteilungId = showFilter ? '' : abteilung.id
@@ -115,7 +115,7 @@ const Abteilung = ({ activeId, listRef }) => {
         if (field === 'name') {
           const index = findIndex(
             store.abteilungenFilteredSortedByHandlungsbedarf,
-            p => p.id === abteilung.id,
+            (p) => p.id === abteilung.id,
           )
           listRef.current.scrollToItem(index)
         }
@@ -137,9 +137,9 @@ const Abteilung = ({ activeId, listRef }) => {
   const personOptions = useMemo(
     () =>
       sortBy(personen, ['name', 'vorname'])
-        .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-        .filter(w => !showFilter)
-        .map(w => ({
+        .filter((w) => !!w.name && !!w.vorname && w.deleted === 0)
+        .filter((w) => !showFilter)
+        .map((w) => ({
           label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
@@ -148,8 +148,8 @@ const Abteilung = ({ activeId, listRef }) => {
   const amtOptions = useMemo(
     () =>
       sortBy(aemter, ['name'])
-        .filter(w => !!w.name && w.deleted === 0)
-        .map(w => ({
+        .filter((w) => !!w.name && w.deleted === 0)
+        .map((w) => ({
           label: w.name,
           value: w.id,
         })),
@@ -158,8 +158,8 @@ const Abteilung = ({ activeId, listRef }) => {
   const kostenstelleOptions = useMemo(
     () =>
       sortBy(kostenstelleWerte, ['sort', 'value'])
-        .filter(w => !!w.value)
-        .map(w => ({
+        .filter((w) => !!w.value)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),
@@ -168,8 +168,8 @@ const Abteilung = ({ activeId, listRef }) => {
   const standortOptions = useMemo(
     () =>
       sortBy(standortWerte, ['sort', 'value'])
-        .filter(p => p.deleted === 0)
-        .map(w => ({
+        .filter((p) => p.deleted === 0)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),

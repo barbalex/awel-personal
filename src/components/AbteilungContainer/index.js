@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useRef } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
-import ErrorBoundary from 'react-error-boundary'
 
+import ErrorBoundary from '../shared/ErrorBoundary'
 import Abteilung from './Abteilung'
 import List from './List'
 import fetchAemter from '../../src/fetchAemter'
@@ -20,7 +20,7 @@ const Container = styled.div`
 `
 // seems needed to prevent unnessecary scrollbars
 const StyledReflexElement = styled(ReflexElement)`
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.showfilter ? '#f7f791' : 'rgba(0,0,0,0)'};
   overflow-x: hidden !important;
   > div {
@@ -33,7 +33,7 @@ const AbteilungContainer = () => {
   const { showFilter, abteilungen, db } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-  const abteilung = abteilungen.find(p => p.id === activeId)
+  const abteilung = abteilungen.find((p) => p.id === activeId)
   // pass list the active abteilung's props to enable instant updates
   const abteilungJson = abteilung ? abteilung.toJSON() : {}
 

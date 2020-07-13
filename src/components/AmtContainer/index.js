@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useRef } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
-import ErrorBoundary from 'react-error-boundary'
 
+import ErrorBoundary from '../shared/ErrorBoundary'
 import Amt from './Amt'
 import List from './List'
 import fetchAemter from '../../src/fetchAemter'
@@ -19,7 +19,7 @@ const Container = styled.div`
 `
 // seems needed to prevent unnessecary scrollbars
 const StyledReflexElement = styled(ReflexElement)`
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.showfilter ? '#f7f791' : 'rgba(0,0,0,0)'};
   overflow-x: hidden !important;
   > div {
@@ -32,7 +32,7 @@ const AmtContainer = () => {
   const { showFilter, aemter, db } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-  const amt = aemter.find(p => p.id === activeId)
+  const amt = aemter.find((p) => p.id === activeId)
   // pass list the active amt's props to enable instant updates
   const amtJson = amt ? amt.toJSON() : {}
 
