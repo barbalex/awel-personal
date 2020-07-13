@@ -18,18 +18,22 @@ module.exports = {
     'better-sqlite3': 'commonjs better-sqlite3',
   },
   plugins: [
-    new CopyPlugin([
-      {
-        from: './node_modules/better-sqlite3/',
-        to: './renderer/node_modules/better-sqlite3', // still under node_modules directory so it could find this module
-      },
-    ]),
-    new CopyPlugin([
-      {
-        from: './node_modules/better-sqlite3/',
-        to: './node_modules/better-sqlite3', // still under node_modules directory so it could find this module
-      },
-    ]),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: './node_modules/better-sqlite3/',
+          to: './renderer/node_modules/better-sqlite3', // still under node_modules directory so it could find this module
+        },
+      ],
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: './node_modules/better-sqlite3/',
+          to: './node_modules/better-sqlite3', // still under node_modules directory so it could find this module
+        },
+      ],
+    }),
   ],
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
