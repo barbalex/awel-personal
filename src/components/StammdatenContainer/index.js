@@ -2,8 +2,8 @@ import React, { useEffect, useContext, useRef } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
-import ErrorBoundary from 'react-error-boundary'
 
+import ErrorBoundary from '../shared/ErrorBoundary'
 import Data from './Data'
 import List from './List'
 import fetchWerte from '../../src/fetchWerte'
@@ -31,7 +31,7 @@ const StammdatenContainer = () => {
   const activeTable = location[0]
   const activeId = ifIsNumericAsNumber(location[1])
   const data = store[activeTable]
-  const dat = data.find(d => d.id === activeId)
+  const dat = data.find((d) => d.id === activeId)
 
   // pass list the active dat's props to enable instant updates
   const datJson = dat || {}

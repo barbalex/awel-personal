@@ -11,8 +11,8 @@ import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
-import ErrorBoundary from 'react-error-boundary'
 
+import ErrorBoundary from '../../shared/ErrorBoundary'
 import Input from '../../shared/Input'
 import Select from '../../shared/Select'
 import SharedCheckbox from '../../shared/Checkbox_01'
@@ -49,7 +49,7 @@ const Sektion = ({ activeId, listRef }) => {
   if (showFilter) {
     sektion = filterSektion
   } else {
-    sektion = sektionen.find(p => p.id === activeId)
+    sektion = sektionen.find((p) => p.id === activeId)
     if (!sektion) sektion = {}
   }
   const sektionId = showFilter ? '' : sektion.id
@@ -101,7 +101,7 @@ const Sektion = ({ activeId, listRef }) => {
         if (field === 'name') {
           const index = findIndex(
             store.sektionenFilteredSortedByHandelsbedarf,
-            p => p.id === sektion.id,
+            (p) => p.id === sektion.id,
           )
           listRef.current.scrollToItem(index)
         }
@@ -123,9 +123,9 @@ const Sektion = ({ activeId, listRef }) => {
   const personOptions = useMemo(
     () =>
       sortBy(personen, ['name', 'vorname'])
-        .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-        .filter(w => !showFilter)
-        .map(w => ({
+        .filter((w) => !!w.name && !!w.vorname && w.deleted === 0)
+        .filter((w) => !showFilter)
+        .map((w) => ({
           label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
@@ -134,8 +134,8 @@ const Sektion = ({ activeId, listRef }) => {
   const kostenstelleOptions = useMemo(
     () =>
       sortBy(kostenstelleWerte, ['sort', 'value'])
-        .filter(w => !!w.value)
-        .map(w => ({
+        .filter((w) => !!w.value)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),
@@ -144,8 +144,8 @@ const Sektion = ({ activeId, listRef }) => {
   const standortOptions = useMemo(
     () =>
       sortBy(standortWerte, ['sort', 'value'])
-        .filter(p => p.deleted === 0)
-        .map(w => ({
+        .filter((p) => p.deleted === 0)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),
@@ -154,8 +154,8 @@ const Sektion = ({ activeId, listRef }) => {
   const abteilungOptions = useMemo(
     () =>
       sortBy(abteilungen, ['name'])
-        .filter(w => !!w.name && w.deleted === 0)
-        .map(w => ({
+        .filter((w) => !!w.name && w.deleted === 0)
+        .map((w) => ({
           label: w.name,
           value: w.id,
         })),
