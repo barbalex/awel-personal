@@ -1,8 +1,8 @@
 import React, { useContext, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
-import ErrorBoundary from 'react-error-boundary'
 
+import ErrorBoundary from './shared/ErrorBoundary'
 import storeContext from '../storeContext'
 
 const DeletionModal = () => {

@@ -11,8 +11,8 @@ import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
-import ErrorBoundary from 'react-error-boundary'
 
+import ErrorBoundary from '../../shared/ErrorBoundary'
 import Input from '../../shared/Input'
 import Select from '../../shared/Select'
 import SharedCheckbox from '../../shared/Checkbox_01'
@@ -51,7 +51,7 @@ const Bereich = ({ activeId, listRef }) => {
   if (showFilter) {
     bereich = filterBereich
   } else {
-    bereich = bereiche.find(p => p.id === activeId)
+    bereich = bereiche.find((p) => p.id === activeId)
     if (!bereich) bereich = {}
   }
   const bereichId = showFilter ? '' : bereich.id
@@ -105,7 +105,7 @@ const Bereich = ({ activeId, listRef }) => {
         if (field === 'name') {
           const index = findIndex(
             store.bereicheFilteredSortedByHandelsbedarf,
-            p => p.id === bereich.id,
+            (p) => p.id === bereich.id,
           )
           listRef.current.scrollToItem(index)
         }
@@ -127,9 +127,9 @@ const Bereich = ({ activeId, listRef }) => {
   const personOptions = useMemo(
     () =>
       sortBy(personen, ['name', 'vorname'])
-        .filter(w => !!w.name && !!w.vorname && w.deleted === 0)
-        .filter(w => !showFilter)
-        .map(w => ({
+        .filter((w) => !!w.name && !!w.vorname && w.deleted === 0)
+        .filter((w) => !showFilter)
+        .map((w) => ({
           label: `${w.name} ${w.vorname}`,
           value: w.id,
         })),
@@ -138,8 +138,8 @@ const Bereich = ({ activeId, listRef }) => {
   const kostenstelleOptions = useMemo(
     () =>
       sortBy(kostenstelleWerte, ['sort', 'value'])
-        .filter(w => !!w.value)
-        .map(w => ({
+        .filter((w) => !!w.value)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),
@@ -148,8 +148,8 @@ const Bereich = ({ activeId, listRef }) => {
   const standortOptions = useMemo(
     () =>
       sortBy(standortWerte, ['sort', 'value'])
-        .filter(p => p.deleted === 0)
-        .map(w => ({
+        .filter((p) => p.deleted === 0)
+        .map((w) => ({
           label: w.value,
           value: w.value,
         })),
@@ -158,8 +158,8 @@ const Bereich = ({ activeId, listRef }) => {
   const abteilungOptions = useMemo(
     () =>
       sortBy(abteilungen, ['name'])
-        .filter(w => !!w.name && w.deleted === 0)
-        .map(w => ({
+        .filter((w) => !!w.name && w.deleted === 0)
+        .map((w) => ({
           label: w.name,
           value: w.id,
         })),
@@ -168,8 +168,8 @@ const Bereich = ({ activeId, listRef }) => {
   const sektionOptions = useMemo(
     () =>
       sortBy(sektionen, ['name'])
-        .filter(w => !!w.name && w.deleted === 0)
-        .map(w => ({
+        .filter((w) => !!w.name && w.deleted === 0)
+        .map((w) => ({
           label: w.name,
           value: w.id,
         })),
@@ -178,8 +178,8 @@ const Bereich = ({ activeId, listRef }) => {
   const amtOptions = useMemo(
     () =>
       sortBy(aemter, ['name'])
-        .filter(w => !!w.name && w.deleted === 0)
-        .map(w => ({
+        .filter((w) => !!w.name && w.deleted === 0)
+        .map((w) => ({
           label: w.name,
           value: w.id,
         })),
