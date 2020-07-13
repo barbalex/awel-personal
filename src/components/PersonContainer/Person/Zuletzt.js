@@ -8,7 +8,10 @@ import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
 import storeContext from '../../../storeContext'
 
 const StyledFormGroup = styled(FormGroup)`
-  margin-bottom: ${props => (props.row ? 'unset' : '2px !important')};
+  margin-bottom: ${(props) => (props.row ? 'unset' : '2px !important')};
+`
+const Value = styled.div`
+  padding-top: 7px;
 `
 
 moment.locale('de')
@@ -19,11 +22,7 @@ const Zuletzt = ({ row = true }) => {
   const location = store.location.toJSON()
   if (!location[1]) throw new Error(`no id found`)
   const activeId = ifIsNumericAsNumber(location[1])
-  const person = personen.find(p => p.id === activeId)
-
-  const Value = styled.div`
-    padding-top: 7px;
-  `
+  const person = personen.find((p) => p.id === activeId)
 
   return (
     <StyledFormGroup row={row}>
