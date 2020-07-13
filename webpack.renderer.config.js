@@ -26,11 +26,12 @@ module.exports = {
     },
   ],
   plugins: [
+    // dont know why but now have to copy image
     new CopyPlugin({
       patterns: [
         {
           from: './src/etc/person.png',
-          to: './src/etc/person.png', // still under node_modules directory so it could find this module
+          to: './src/etc/person.png',
         },
       ],
     }),
