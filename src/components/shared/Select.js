@@ -24,7 +24,7 @@ const NonRowLabel = styled(Label)`
   margin-bottom: 3px;
 `
 const StyledFormGroup = styled(FormGroup)`
-  margin-bottom: ${props => (props.row ? '16px' : '8px !important')};
+  margin-bottom: ${(props) => (props.row ? '16px' : '8px !important')};
 `
 
 const noOptionsMessage = () => '(keine)'
@@ -39,15 +39,17 @@ const SharedSelect = ({
   row = true,
 }) => {
   const onChange = useCallback(
-    option => saveToDb({ value: option ? option.value : null, field }),
+    (option) => saveToDb({ value: option ? option.value : null, field }),
     [field, saveToDb],
   )
   // need to return null instead of undefined if no option is found
   // otherwise field does not update
-  const option = useMemo(() => options.find(o => o.value === value) || null, [
-    options,
-    value,
-  ])
+  const option = useMemo(() => {
+    let option = options.find((o) => o.value === value) || null
+    // allow historic data to be schown
+    if (!option && value) option = { label: value, value }
+    return option
+  }, [options, value])
 
   return (
     <StyledFormGroup row={row}>

@@ -6,5 +6,9 @@ export default ({ table, store }) => {
   } catch (error) {
     addError(error)
   }
+  values = values.filter((v) => {
+    if (v.historic) return v.historic === 0
+    return true
+  })
   setWerte({ table, values })
 }

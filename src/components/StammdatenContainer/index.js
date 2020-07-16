@@ -52,7 +52,7 @@ const StammdatenContainer = () => {
     fetchWerte({ store, table: 'landWerte' })
     fetchWerte({ store, table: 'mutationArtWerte' })
     fetchWerte({ store, table: 'standortWerte' })
-  }, [db])
+  }, [db, store])
 
   const listRef = useRef(null)
 
