@@ -41,7 +41,7 @@ const AbteilungContainer = () => {
     fetchAbteilungen({ store })
     fetchAemter({ store })
     fetchWerte({ store, table: 'kostenstelleWerte' })
-  }, [db])
+  }, [db, store])
 
   const listRef = useRef(null)
 
