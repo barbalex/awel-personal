@@ -43,7 +43,11 @@ const BereichContainer = () => {
     fetchAbteilungen({ store })
     fetchPersonen({ store })
     fetchWerte({ store, table: 'kostenstelleWerte' })
-  }, [db])
+  }, [db, store])
+
+  useEffect(() => {
+    bereich?.fetch()
+  }, [bereich])
 
   const listRef = useRef(null)
 
