@@ -1,5 +1,7 @@
 import { types, getParent } from 'mobx-state-tree'
 
+import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
+
 export default types
   .model('Abteilung', {
     id: types.maybe(types.integer),
@@ -45,7 +47,7 @@ export default types
       setWatchMutations(false)
       Object.keys(bereich).forEach((field) => {
         if (self[field] !== bereich[field]) {
-          self[field] = bereich[field]
+          self[field] = ifIsNumericAsNumber(bereich[field])
         }
       })
       setWatchMutations(true)
