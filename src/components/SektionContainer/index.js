@@ -45,6 +45,10 @@ const SektionContainer = () => {
     fetchWerte({ store, table: 'kostenstelleWerte' })
   }, [db, store])
 
+  useEffect(() => {
+    sektion?.fetch()
+  }, [sektion])
+
   const listRef = useRef(null)
 
   return (
