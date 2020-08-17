@@ -83,7 +83,11 @@ const PersonContainer = () => {
     fetchFunktionen({ store })
     fetchKaderFunktionen({ store })
     fetchSettings({ store })
-  }, [db])
+  }, [db, store])
+
+  useEffect(() => {
+    person?.fetch()
+  }, [person])
 
   return (
     <Container>

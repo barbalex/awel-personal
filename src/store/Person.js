@@ -81,30 +81,50 @@ export default types
       types.union(types.string, types.integer, types.null),
     ),
   })
-  .views(self => ({
+  .actions((self) => ({
+    fetch() {
+      // ensure data is always fresh
+      const store = getParent(self, 2)
+      const { db, addError, setWatchMutations } = store
+      let person = []
+      try {
+        person = db.prepare('SELECT * from personen where id = ?').get(self.id)
+      } catch (error) {
+        addError(error)
+      }
+      setWatchMutations(false)
+      Object.keys(person).forEach((field) => {
+        if (self[field] !== person[field]) {
+          self[field] = person[field]
+        }
+      })
+      setWatchMutations(true)
+    },
+  }))
+  .views((self) => ({
     get kostenstelle() {
       const store = getParent(self, 2)
       const { bereiche, sektionen, abteilungen, aemter } = store
       if (self.bereich) {
-        const bereich = bereiche.find(b => b.id === self.bereich)
+        const bereich = bereiche.find((b) => b.id === self.bereich)
         if (bereich && bereich.kostenstelle) {
           return `${bereich.kostenstelle} (von Bereich ${bereich.name})`
         }
       }
       if (self.sektion) {
-        const sektion = sektionen.find(b => b.id === self.sektion)
+        const sektion = sektionen.find((b) => b.id === self.sektion)
         if (sektion && sektion.kostenstelle) {
           return `${sektion.kostenstelle} (von Sektion ${sektion.name})`
         }
       }
       if (self.abteilung) {
-        const abteilung = abteilungen.find(b => b.id === self.abteilung)
+        const abteilung = abteilungen.find((b) => b.id === self.abteilung)
         if (abteilung && abteilung.kostenstelle) {
           return `${abteilung.kostenstelle} (von Abteilung ${abteilung.name})`
         }
       }
       if (self.amt) {
-        const amt = aemter.find(b => b.id === self.amt)
+        const amt = aemter.find((b) => b.id === self.amt)
         if (amt && amt.kostenstelle) {
           return `${amt.kostenstelle} (von Amt ${amt.name})`
         }

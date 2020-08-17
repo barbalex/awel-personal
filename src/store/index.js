@@ -149,7 +149,7 @@ export default () =>
       errors: [],
       db: null,
     }))
-    .views(self => ({
+    .views((self) => ({
       get activeForm() {
         const location = self.location.toJSON()
         const activeLocation = location[0]
@@ -243,7 +243,7 @@ export default () =>
             ...Object.values(filterTelefon),
             ...Object.values(filterFunktion),
             ...Object.values(filterKaderFunktion),
-          ].filter(v => v).length > 0 ||
+          ].filter((v) => v).length > 0 ||
           filterPersonKader ||
           filterPersonAktivJetzt ||
           filterPersonAktivJetztMitTel ||
@@ -308,13 +308,13 @@ export default () =>
         return sektionenFilteredSortedByHandelsbedarf(self)
       },
       get revertedMutationIds() {
-        return self.mutations.filter(m => !!m.reverts).map(m => m.reverts)
+        return self.mutations.filter((m) => !!m.reverts).map((m) => m.reverts)
       },
       get userRevertions() {
         return sortBy(
           self.mutations
-            .filter(m => m.user === self.username)
-            .filter(m => self.revertedMutationIds.includes(m.id)),
+            .filter((m) => m.user === self.username)
+            .filter((m) => self.revertedMutationIds.includes(m.id)),
           'time',
         )
       },
@@ -324,9 +324,9 @@ export default () =>
         // and are themselves not revertions
         return sortBy(
           self.mutations
-            .filter(m => m.user === self.username)
-            .filter(m => !m.reverts)
-            .filter(m => !self.revertedMutationIds.includes(m.id)),
+            .filter((m) => m.user === self.username)
+            .filter((m) => !m.reverts)
+            .filter((m) => !self.revertedMutationIds.includes(m.id)),
           'time',
         )
       },
@@ -339,7 +339,7 @@ export default () =>
         return last(self.userRevertions)
       },
     }))
-    .actions(self => {
+    .actions((self) => {
       setUndoManager(self)
 
       return {
@@ -426,6 +426,9 @@ export default () =>
         },
         setLocation(location) {
           self.location = location
+        },
+        setWatchMutations(val) {
+          self.watchMutations = val
         },
         setPersonen(personen) {
           self.watchMutations = false
@@ -643,12 +646,13 @@ export default () =>
                  */
                 const historyChanges = undoManager.history
                 const historyInversePatches = flatten(
-                  historyChanges.map(c => c.inversePatches),
+                  historyChanges.map((c) => c.inversePatches),
                 )
                 const historyInversePatch =
                   findLast(
                     historyInversePatches,
-                    p => p.op === 'add' && p.path === `/${tableName}/${index}`,
+                    (p) =>
+                      p.op === 'add' && p.path === `/${tableName}/${index}`,
                   ) || {}
                 previousValue = JSON.stringify(historyInversePatch.value)
                 rowId = historyInversePatch.value.id
@@ -738,7 +742,7 @@ export default () =>
             return console.log(error)
           }
           // write to store
-          const dat = self[table].find(p => p.id === id)
+          const dat = self[table].find((p) => p.id === id)
           dat.deleted = 1
           if (!self.showDeleted) self.setLocation([table])
         },
@@ -752,7 +756,7 @@ export default () =>
           }
           // write to store
           self[table].splice(
-            findIndex(self[table], p => p.id === id),
+            findIndex(self[table], (p) => p.id === id),
             1,
           )
           self.setLocation([table])
@@ -770,7 +774,7 @@ export default () =>
             return console.log(error)
           }
           // write to store
-          const person = self.personen.find(p => p.id === id)
+          const person = self.personen.find((p) => p.id === id)
           person.deleted = 1
           person.letzteMutationUser = self.username
           person.letzteMutationZeit = Date.now()
@@ -792,7 +796,7 @@ export default () =>
            * all other personen are re-added and listet as mutations of op 'add'
            */
           self.personen.splice(
-            findIndex(self.personen, p => p.id === id),
+            findIndex(self.personen, (p) => p.id === id),
             1,
           )
           self.setLocation(['Personen'])
@@ -810,7 +814,7 @@ export default () =>
             return console.log(error)
           }
           // write to store
-          const amt = self.aemter.find(p => p.id === id)
+          const amt = self.aemter.find((p) => p.id === id)
           amt.deleted = 1
           amt.letzteMutationUser = self.username
           amt.letzteMutationZeit = Date.now()
@@ -829,7 +833,7 @@ export default () =>
             return console.log(error)
           }
           // write to store
-          const abteilung = self.abteilungen.find(p => p.id === id)
+          const abteilung = self.abteilungen.find((p) => p.id === id)
           abteilung.deleted = 1
           abteilung.letzteMutationUser = self.username
           abteilung.letzteMutationZeit = Date.now()
@@ -850,7 +854,7 @@ export default () =>
            * all other aemter are re-added and listet as mutations of op 'add'
            */
           self.aemter.splice(
-            findIndex(self.aemter, p => p.id === id),
+            findIndex(self.aemter, (p) => p.id === id),
             1,
           )
           self.setLocation(['Aemter'])
@@ -870,7 +874,7 @@ export default () =>
            * all other abteilungen are re-added and listet as mutations of op 'add'
            */
           self.abteilungen.splice(
-            findIndex(self.abteilungen, p => p.id === id),
+            findIndex(self.abteilungen, (p) => p.id === id),
             1,
           )
           self.setLocation(['Abteilungen'])
@@ -888,7 +892,7 @@ export default () =>
             return console.log(error)
           }
           // write to store
-          const bereich = self.bereiche.find(p => p.id === id)
+          const bereich = self.bereiche.find((p) => p.id === id)
           bereich.deleted = 1
           bereich.letzteMutationUser = self.username
           bereich.letzteMutationZeit = Date.now()
@@ -909,7 +913,7 @@ export default () =>
            * all other bereiche are re-added and listet as mutations of op 'add'
            */
           self.bereiche.splice(
-            findIndex(self.bereiche, p => p.id === id),
+            findIndex(self.bereiche, (p) => p.id === id),
             1,
           )
           self.setLocation(['Bereichen'])
@@ -927,7 +931,7 @@ export default () =>
             return console.log(error)
           }
           // write to store
-          const sektion = self.sektionen.find(p => p.id === id)
+          const sektion = self.sektionen.find((p) => p.id === id)
           sektion.deleted = 1
           sektion.letzteMutationUser = self.username
           sektion.letzteMutationZeit = Date.now()
@@ -948,7 +952,7 @@ export default () =>
            * all other sektionen are re-added and listet as mutations of op 'add'
            */
           self.sektionen.splice(
-            findIndex(self.sektionen, p => p.id === id),
+            findIndex(self.sektionen, (p) => p.id === id),
             1,
           )
           self.setLocation(['Sektionen'])
@@ -998,7 +1002,7 @@ export default () =>
           self.etiketten.splice(
             findIndex(
               self.etiketten,
-              e => e.idPerson === idPerson && e.etikett === etikett,
+              (e) => e.idPerson === idPerson && e.etikett === etikett,
             ),
             1,
           )
@@ -1049,7 +1053,7 @@ export default () =>
           self.anwesenheitstage.splice(
             findIndex(
               self.anwesenheitstage,
-              e => e.idPerson === idPerson && e.tag === tag,
+              (e) => e.idPerson === idPerson && e.tag === tag,
             ),
             1,
           )
@@ -1091,7 +1095,7 @@ export default () =>
           }
           // write to store
           self.links.splice(
-            findIndex(self.links, p => p.id === id),
+            findIndex(self.links, (p) => p.id === id),
             1,
           )
           // set persons letzteMutation
@@ -1134,7 +1138,7 @@ export default () =>
           }
           // write to store
           self.schluessel.splice(
-            findIndex(self.schluessel, p => p.id === id),
+            findIndex(self.schluessel, (p) => p.id === id),
             1,
           )
           // set persons letzteMutation
@@ -1177,7 +1181,7 @@ export default () =>
           }
           // write to store
           self.kostenstelle.splice(
-            findIndex(self.kostenstelle, p => p.id === id),
+            findIndex(self.kostenstelle, (p) => p.id === id),
             1,
           )
           // set persons letzteMutation
@@ -1245,7 +1249,7 @@ export default () =>
           }
           // write to store
           self.mobileAbos.splice(
-            findIndex(self.mobileAbos, p => p.id === id),
+            findIndex(self.mobileAbos, (p) => p.id === id),
             1,
           )
           // set persons letzteMutation
@@ -1263,7 +1267,7 @@ export default () =>
           }
           // write to store
           self.telefones.splice(
-            findIndex(self.telefones, p => p.id === id),
+            findIndex(self.telefones, (p) => p.id === id),
             1,
           )
           // set persons letzteMutation
@@ -1316,7 +1320,7 @@ export default () =>
           self.funktionen.splice(
             findIndex(
               self.funktionen,
-              e => e.idPerson === idPerson && e.funktion === funktion,
+              (e) => e.idPerson === idPerson && e.funktion === funktion,
             ),
             1,
           )
@@ -1367,7 +1371,7 @@ export default () =>
           self.kaderFunktionen.splice(
             findIndex(
               self.kaderFunktionen,
-              e => e.idPerson === idPerson && e.funktion === funktion,
+              (e) => e.idPerson === idPerson && e.funktion === funktion,
             ),
             1,
           )
@@ -1396,7 +1400,7 @@ export default () =>
             return
           }
           // 2. update in store
-          const storeObject = self[parentModel].find(o => o.id === id)
+          const storeObject = self[parentModel].find((o) => o.id === id)
           if (!storeObject) {
             if (setErrors) {
               return setErrors({
@@ -1451,7 +1455,7 @@ export default () =>
             return console.log(error)
           }
           // in store
-          const person = self.personen.find(p => p.id === idPerson)
+          const person = self.personen.find((p) => p.id === idPerson)
           person.letzteMutationUser = self.username
           person.letzteMutationZeit = Date.now()
         },
@@ -1472,7 +1476,7 @@ export default () =>
             return console.log(error)
           }
           // in store
-          const amt = self.aemter.find(p => p.id === idAmt)
+          const amt = self.aemter.find((p) => p.id === idAmt)
           amt.letzteMutationUser = self.username
           amt.letzteMutationZeit = Date.now()
         },
@@ -1493,7 +1497,7 @@ export default () =>
             return console.log(error)
           }
           // in store
-          const abteilung = self.abteilungen.find(p => p.id === idAbteilung)
+          const abteilung = self.abteilungen.find((p) => p.id === idAbteilung)
           abteilung.letzteMutationUser = self.username
           abteilung.letzteMutationZeit = Date.now()
         },
@@ -1514,7 +1518,7 @@ export default () =>
             return console.log(error)
           }
           // in store
-          const person = self.bereiche.find(p => p.id === idBereich)
+          const person = self.bereiche.find((p) => p.id === idBereich)
           person.letzteMutationUser = self.username
           person.letzteMutationZeit = Date.now()
         },
@@ -1535,7 +1539,7 @@ export default () =>
             return console.log(error)
           }
           // in store
-          const person = self.sektionen.find(p => p.id === idSektion)
+          const person = self.sektionen.find((p) => p.id === idSektion)
           person.letzteMutationUser = self.username
           person.letzteMutationZeit = Date.now()
         },
@@ -1595,6 +1599,6 @@ export default () =>
     })
 
 export let undoManager = {}
-export const setUndoManager = targetStore => {
+export const setUndoManager = (targetStore) => {
   undoManager = targetStore.history
 }
