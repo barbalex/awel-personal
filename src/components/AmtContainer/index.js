@@ -39,7 +39,11 @@ const AmtContainer = () => {
   useEffect(() => {
     fetchAemter({ store })
     fetchWerte({ store, table: 'kostenstelleWerte' })
-  }, [db])
+  }, [db, store])
+
+  useEffect(() => {
+    amt?.fetch()
+  }, [amt])
 
   const listRef = useRef(null)
 
