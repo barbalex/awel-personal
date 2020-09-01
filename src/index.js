@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
 import username from 'username'
-import 'mobx-react-lite/batchingForReactDom'
 
 import App from './components/App'
 import './styles.css'
