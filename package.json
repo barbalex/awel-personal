@@ -108,6 +108,7 @@
     "react-transition-group": "required by reactstrap",
     "react-popper": "required by reactstrap",
     "popper.js": "probably required by reactstrap",
-    "WARNING": "do not upate react-popper and popper.js (to @popper/core) before reactstrap has updated it's dependencies. See: https://github.com/reactstrap/reactstrap/issues/1737"
+    "WARNING": "do not upate react-popper and popper.js (to @popper/core) before reactstrap has updated it's dependencies. See: https://github.com/reactstrap/reactstrap/issues/1737",
+    "@electron-forge": "Do not update beyond 6.0.0-beta.50 (53 tested): https://github.com/electron-userland/electron-forge/issues/1929"
   }
 }
