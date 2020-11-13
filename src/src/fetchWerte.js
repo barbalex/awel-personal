@@ -1,4 +1,4 @@
-export default ({ table, store }) => {
+const fetchWerte = ({ table, store }) => {
   const { db, setWerte, addError } = store
   let values = []
   try {
@@ -13,3 +13,5 @@ export default ({ table, store }) => {
   })
   setWerte({ table, values })
 }
+
+export default fetchWerte

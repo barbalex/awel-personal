@@ -1,4 +1,4 @@
-export default ({ store }) => {
+const fetchSchluessel = ({ store }) => {
   const { db, setSchluessel, addError } = store
   let schluessel = []
   try {
@@ -8,3 +8,5 @@ export default ({ store }) => {
   }
   setSchluessel(schluessel)
 }
+
+export default fetchSchluessel
