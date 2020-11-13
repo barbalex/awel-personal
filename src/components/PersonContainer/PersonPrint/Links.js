@@ -13,13 +13,13 @@ const Value = styled.p`
 `
 const Row = styled.div`
   border-bottom: thin solid #dedede;
-  border-top: ${props => (props.index === 0 ? 'thin solid #dedede' : 'none')};
+  border-top: ${(props) => (props.index === 0 ? 'thin solid #dedede' : 'none')};
 `
 
-export default ({ activeId }) => {
+const Links = ({ activeId }) => {
   const store = useContext(storeContext)
   const { links } = store
-  const myLinks = links.filter(l => l.idPerson === activeId)
+  const myLinks = links.filter((l) => l.idPerson === activeId)
 
   if (myLinks.length === 0) return null
 
@@ -34,3 +34,5 @@ export default ({ activeId }) => {
     </>
   )
 }
+
+export default Links

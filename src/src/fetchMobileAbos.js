@@ -1,4 +1,4 @@
-export default ({ store }) => {
+const fetchMobileAbos = ({ store }) => {
   const { db, setMobileAbos, addError } = store
   let mobileAbos = []
   try {
@@ -8,3 +8,5 @@ export default ({ store }) => {
   }
   setMobileAbos(mobileAbos)
 }
+
+export default fetchMobileAbos

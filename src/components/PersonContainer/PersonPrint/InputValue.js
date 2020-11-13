@@ -11,7 +11,7 @@ const Value = styled.p`
   margin-bottom: 2px;
 `
 
-export default ({ label, value }) => {
+const InputValue = ({ label, value }) => {
   if (!value && value !== 0) return null
   return (
     <Content>
@@ -20,3 +20,5 @@ export default ({ label, value }) => {
     </Content>
   )
 }
+
+export default InputValue
