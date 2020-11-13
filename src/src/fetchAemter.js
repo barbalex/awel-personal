@@ -1,4 +1,4 @@
-export default ({ store }) => {
+const fetchAemter = ({ store }) => {
   const { db, setAemter, addError } = store
   let aemter = []
   try {
@@ -8,3 +8,5 @@ export default ({ store }) => {
   }
   setAemter(aemter)
 }
+
+export default fetchAemter

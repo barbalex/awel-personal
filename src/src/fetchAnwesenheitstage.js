@@ -1,4 +1,4 @@
-export default ({ store }) => {
+const fetchAnwesenheitstage = ({ store }) => {
   const { db, setAnwesenheitstage, addError } = store
   let anwesenheitstage = []
   try {
@@ -8,3 +8,5 @@ export default ({ store }) => {
   }
   setAnwesenheitstage(anwesenheitstage)
 }
+
+export default fetchAnwesenheitstage

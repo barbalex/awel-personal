@@ -1,4 +1,4 @@
-export default ({ store }) => {
+const fetchAbteilungen = ({ store }) => {
   const { db, setAbteilungen, addError } = store
   let abteilungen = []
   try {
@@ -8,3 +8,5 @@ export default ({ store }) => {
   }
   setAbteilungen(abteilungen)
 }
+
+export default fetchAbteilungen

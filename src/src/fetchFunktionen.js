@@ -1,4 +1,4 @@
-export default ({ store }) => {
+const fetchFunktionen = ({ store }) => {
   const { db, setFunktionen, addError } = store
   let funktionen = []
   try {
@@ -8,3 +8,5 @@ export default ({ store }) => {
   }
   setFunktionen(funktionen)
 }
+
+export default fetchFunktionen
