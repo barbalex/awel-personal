@@ -4,7 +4,7 @@ import chooseDb from './chooseDb'
 import getConfig from './getConfig'
 import saveConfig from './saveConfig'
 
-export default async () => {
+const chooseDbConnection = async () => {
   const config = getConfig()
   let dbPath
   try {
@@ -16,3 +16,5 @@ export default async () => {
   saveConfig(config)
   remote.getCurrentWindow().reload()
 }
+
+export default chooseDbConnection

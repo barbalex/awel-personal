@@ -1,4 +1,4 @@
-export default ({ store }) => {
+const fetchKaderFunktionen = ({ store }) => {
   const { db, setKaderFunktionen, addError } = store
   let funktionen = []
   try {
@@ -8,3 +8,5 @@ export default ({ store }) => {
   }
   setKaderFunktionen(funktionen)
 }
+
+export default fetchKaderFunktionen

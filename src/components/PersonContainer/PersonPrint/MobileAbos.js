@@ -16,16 +16,16 @@ const Row = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 5px;
-  border-bottom: ${props =>
+  border-bottom: ${(props) =>
     props.index === 0 || props.index ? 'thin solid #dedede' : 'none'};
-  border-top: ${props => (props.index === 0 ? 'thin solid #dedede' : 'none')};
+  border-top: ${(props) => (props.index === 0 ? 'thin solid #dedede' : 'none')};
 `
 const TitleRow = styled.div`
   grid-column: 1;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 5px;
-  border-top: ${props => (props.index === 0 ? 'thin solid #dedede' : 'none')};
+  border-top: ${(props) => (props.index === 0 ? 'thin solid #dedede' : 'none')};
   color: rgba(146, 146, 146, 1);
 `
 const Typ = styled.div`
@@ -41,9 +41,9 @@ const Bemerkungen = styled.div`
   font-size: smaller;
 `
 
-export default ({ activeId }) => {
+const MobileAbos = ({ activeId }) => {
   const store = useContext(storeContext)
-  const mobileAbos = store.mobileAbos.filter(s => s.idPerson === activeId)
+  const mobileAbos = store.mobileAbos.filter((s) => s.idPerson === activeId)
 
   if (mobileAbos.length === 0) return null
 
@@ -71,3 +71,5 @@ export default ({ activeId }) => {
     </>
   )
 }
+
+export default MobileAbos
