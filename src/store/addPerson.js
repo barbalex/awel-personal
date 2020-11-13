@@ -1,6 +1,6 @@
 import fetchAnwesenheitstage from '../src/fetchAnwesenheitstage'
 
-export default ({ store }) => {
+const addPerson = ({ store }) => {
   const { db, username, personen, addError, setLocation } = store
   // 1. create new Person in db, returning id
   let info
@@ -27,3 +27,5 @@ export default ({ store }) => {
     store,
   })
 }
+
+export default addPerson

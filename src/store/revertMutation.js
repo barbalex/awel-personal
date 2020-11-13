@@ -4,9 +4,9 @@ import findIndex from 'lodash/findIndex'
 
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 
-export default ({ self, mutationId }) => {
+const revertMutation = ({ self, mutationId }) => {
   const { mutations, db } = self
-  const mutation = mutations.find(m => m.id === mutationId)
+  const mutation = mutations.find((m) => m.id === mutationId)
   if (!mutation) {
     throw new Error(`Keine Mutation mit id ${mutationId} gefunden`)
   }
@@ -15,7 +15,7 @@ export default ({ self, mutationId }) => {
   switch (op) {
     case 'replace': {
       // 1. check if dataset still exists, warn and exit if not
-      const dataset = self[tableName].find(d => d.id === rowId)
+      const dataset = self[tableName].find((d) => d.id === rowId)
       if (!dataset) {
         throw new Error(
           `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr. Daher wird er nicht aktualisiert`,
@@ -36,7 +36,7 @@ export default ({ self, mutationId }) => {
     case 'add': {
       // not in use
       // 1. check if dataset still exists, warn and exit if not
-      const dataset = self[tableName].find(d => d.id === rowId)
+      const dataset = self[tableName].find((d) => d.id === rowId)
       if (!dataset) {
         throw new Error(
           `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert nicht mehr. Daher wird er nicht gelöscht`,
@@ -51,13 +51,16 @@ export default ({ self, mutationId }) => {
         return console.log(error)
       }
       // write to store
-      self[tableName].splice(findIndex(self[tableName], p => p.id === rowId), 1)
+      self[tableName].splice(
+        findIndex(self[tableName], (p) => p.id === rowId),
+        1,
+      )
       break
     }
     case 'remove': {
       // not in use
       // 1. check if dataset exists, warn and exit if does
-      const dataset = self[tableName].find(d => d.id === rowId)
+      const dataset = self[tableName].find((d) => d.id === rowId)
       if (dataset) {
         throw new Error(
           `Der Datensatz aus Tabelle ${tableName} mit id ${rowId} existiert. Daher wird er nicht wiederhergestellt`,
@@ -68,7 +71,7 @@ export default ({ self, mutationId }) => {
       const previousObject = JSON.parse(previousValue)
       // need to remove keys with value null
       Object.keys(previousObject).forEach(
-        key => previousObject[key] == null && delete previousObject[key],
+        (key) => previousObject[key] == null && delete previousObject[key],
       )
       const objectKeys = keys(previousObject).join()
       const objectValues = lValues(previousObject)
@@ -89,3 +92,5 @@ export default ({ self, mutationId }) => {
     // do nothing
   }
 }
+
+export default revertMutation
