@@ -1,6 +1,6 @@
 import sortBy from 'lodash/sortBy'
 
-export default ({ personen, field = 'name' }) => {
+const idWithCapitalMapFromPers = ({ personen, field = 'name' }) => {
   const alphabet = [
     'A',
     'B',
@@ -37,9 +37,9 @@ export default ({ personen, field = 'name' }) => {
    */
   let personenToUse =
     field === 'kurzzeichen'
-      ? sortBy(personen, p => p.kurzzeichen.toLowerCase())
+      ? sortBy(personen, (p) => p.kurzzeichen.toLowerCase())
       : personen
-  personenToUse.forEach(p => {
+  personenToUse.forEach((p) => {
     const firstChar = (p[field] || '').charAt(0).toLowerCase()
     while (
       !!alphabet.length &&
@@ -52,3 +52,5 @@ export default ({ personen, field = 'name' }) => {
   // add unused from alphabet
   return [...res, ...alphabet]
 }
+
+export default idWithCapitalMapFromPers

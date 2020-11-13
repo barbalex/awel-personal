@@ -9,10 +9,12 @@ const dataFilePath = path.join(
   'awelPersonalConfig.json',
 )
 
-export default () => {
+const getConfig = () => {
   //console.log('getConfig', { dataFilePath })
   if (!fs.existsSync(dataFilePath)) return {}
   const configFile = fs.readFileSync(dataFilePath, 'utf-8') || {}
   if (!configFile) return {}
   return JSON.parse(configFile)
 }
+
+export default getConfig

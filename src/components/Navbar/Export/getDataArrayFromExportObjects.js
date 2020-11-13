@@ -1,12 +1,12 @@
 import sortBy from 'lodash/sortBy'
 
-export default ({ exportObjects, sorting }) => {
+const getDataArrayFromExportObjects = ({ exportObjects, sorting }) => {
   const dataArray = []
   // catch if no data was passed
   if (!exportObjects || exportObjects.length === 0) return dataArray
   // first the field names:
   dataArray.push(
-    sortBy(Object.keys(exportObjects[0]), key => {
+    sortBy(Object.keys(exportObjects[0]), (key) => {
       if (sorting) {
         return sorting[key]
       }
@@ -14,9 +14,9 @@ export default ({ exportObjects, sorting }) => {
     }),
   )
   // then the field values
-  exportObjects.forEach(object => {
+  exportObjects.forEach((object) => {
     return dataArray.push(
-      sortBy(Object.keys(object), key => {
+      sortBy(Object.keys(object), (key) => {
         if (sorting) {
           return sorting[key]
         }
@@ -35,3 +35,5 @@ export default ({ exportObjects, sorting }) => {
   })
   return dataArray
 }
+
+export default getDataArrayFromExportObjects
