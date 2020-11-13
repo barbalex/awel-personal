@@ -1,4 +1,4 @@
-export default ({ store }) => {
+const fetchMutations = ({ store }) => {
   const { db, setMutations, addError } = store
   let mutations = []
   try {
@@ -8,3 +8,5 @@ export default ({ store }) => {
   }
   setMutations(mutations)
 }
+
+export default fetchMutations

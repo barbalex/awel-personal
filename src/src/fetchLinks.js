@@ -1,4 +1,4 @@
-export default ({ store }) => {
+const fetchLinks = ({ store }) => {
   const { db, setLinks, addError } = store
   let links = []
   try {
@@ -8,3 +8,5 @@ export default ({ store }) => {
   }
   setLinks(links)
 }
+
+export default fetchLinks
