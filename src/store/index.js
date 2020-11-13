@@ -55,7 +55,7 @@ import sektionenFilteredSortedByHandelsbedarf from './sektionenFilteredSortedByH
 import revertMutation from './revertMutation'
 import addPerson from './addPerson'
 
-export default () =>
+const store = () =>
   types
     .model({
       dirty: types.optional(types.boolean, false),
@@ -1602,3 +1602,5 @@ export let undoManager = {}
 export const setUndoManager = (targetStore) => {
   undoManager = targetStore.history
 }
+
+export default store
