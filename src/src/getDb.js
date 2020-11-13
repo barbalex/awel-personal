@@ -4,7 +4,7 @@ import chooseDb from './chooseDb'
 import getConfig from './getConfig'
 import saveConfig from './saveConfig'
 
-export default async (store) => {
+const getDb = async (store) => {
   const config = getConfig()
   //console.log('getDb, config:', config)
   let dbPath = config.dbPath || 'C:/Users/alexa/personal.db'
@@ -34,3 +34,5 @@ export default async (store) => {
   }
   return db
 }
+
+export default getDb

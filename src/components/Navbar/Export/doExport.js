@@ -9,7 +9,7 @@ import getDataArrayFromExportObjects from './getDataArrayFromExportObjects'
 
 const { dialog } = remote
 
-export default async ({
+const doExport = async ({
   exportObjects,
   setModalOpen,
   setModalMessage,
@@ -50,3 +50,5 @@ export default async ({
     }, 0)
   }
 }
+
+export default doExport
