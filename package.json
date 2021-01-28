@@ -109,6 +109,7 @@
     "react-popper": "required by reactstrap",
     "popper.js": "probably required by reactstrap",
     "WARNING": "do not upate react-popper and popper.js (to @popper/core) before reactstrap has updated it's dependencies. See: https://github.com/reactstrap/reactstrap/issues/1972, https://github.com/reactstrap/reactstrap/pull/1977",
-    "@electron-forge": "Do not update beyond 6.0.0-beta.50 (53 tested): https://github.com/electron-userland/electron-forge/issues/1929"
+    "@electron-forge": "Do not update beyond 6.0.0-beta.50 (53 tested): https://github.com/electron-userland/electron-forge/issues/1929",
+    "mobx": "6.0.5: do not upgrade to 6.1.0 or higher until this issue is solved: https://github.com/mobxjs/mobx-state-tree/issues/1653"
   }
 }
