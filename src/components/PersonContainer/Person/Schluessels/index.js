@@ -49,7 +49,7 @@ const NonRowLabel = styled(Label)`
   margin-bottom: 3px;
 `
 const StyledFormGroup = styled(FormGroup)`
-  margin-bottom: ${props => (props.row ? '16px' : '8px !important')};
+  margin-bottom: ${(props) => (props.row ? '16px' : '8px !important')};
 `
 
 const SchluesselsComponent = ({ row = true }) => {
@@ -70,28 +70,33 @@ const SchluesselsComponent = ({ row = true }) => {
   if (showFilter) {
     schluessels = [filterSchluessel]
   } else {
-    schluessels = store.schluessel.filter(s => s.idPerson === activePersonenId)
+    schluessels = store.schluessel.filter(
+      (s) => s.idPerson === activePersonenId,
+    )
   }
   const mayAddNew =
     !showFilter &&
     (schluessels.length === 0 ||
-      !schluessels.map(s => s.name).some(n => n === null))
+      !schluessels.map((s) => s.name).some((n) => n === null))
 
   const onClickChangePath = useCallback(() => uploader.current.click(), [])
-  const onChangeFormPath = useCallback(event => {
-    event.stopPropagation()
-    event.preventDefault()
-    const file = event.target.files[0]
-    if (file && file.path) {
-      setSettingsKey({ key: 'schluesselFormPath', value: file.path })
-    } else {
-      console.log('Path not set')
-    }
-  }, [setSettingsKey])
+  const onChangeFormPath = useCallback(
+    (event) => {
+      event.stopPropagation()
+      event.preventDefault()
+      const file = event.target.files[0]
+      if (file && file.path) {
+        setSettingsKey({ key: 'schluesselFormPath', value: file.path })
+      } else {
+        console.log('Path not set')
+      }
+    },
+    [setSettingsKey],
+  )
   const onClickForm = useCallback(() => {
     let success = false
     if (settings.schluesselFormPath) {
-      success = shell.openItem(settings.schluesselFormPath)
+      success = shell.openPath(settings.schluesselFormPath)
       if (!success) console.log('File could not be opened')
       return
     }
@@ -108,7 +113,7 @@ const SchluesselsComponent = ({ row = true }) => {
           <div />
         </Row>
       )}
-      {schluessels.map(schluessel => (
+      {schluessels.map((schluessel) => (
         <Schluessel
           key={schluessel.id || 'filter'}
           id={schluessel.id || 'filter'}

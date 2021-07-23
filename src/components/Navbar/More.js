@@ -41,7 +41,7 @@ const Svg = styled.div`
 `
 
 const onClickIssues = () => {
-  shell.openItem('https://github.com/barbalex/awel-personal/issues')
+  shell.openPath('https://github.com/barbalex/awel-personal/issues')
 }
 
 const More = () => {

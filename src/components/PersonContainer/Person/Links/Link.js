@@ -43,16 +43,19 @@ const LinkComponent = ({ link }) => {
   const store = useContext(storeContext)
   const { deleteLink } = store
 
-  const onClickRemove = useCallback(() => deleteLink(link.id), [deleteLink, link.id])
+  const onClickRemove = useCallback(() => deleteLink(link.id), [
+    deleteLink,
+    link.id,
+  ])
 
   return (
     <Field>
       <UrlDiv>
         <StyledA
           href={link.url}
-          onClick={event => {
+          onClick={(event) => {
             event.preventDefault()
-            shell.openItem(link.url)
+            shell.openPath(link.url)
           }}
         >
           {link.url}

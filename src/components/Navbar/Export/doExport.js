@@ -38,7 +38,7 @@ const doExport = async ({
       })
       const callback = () => {
         setModalOpen(false)
-        shell.openItem(path)
+        shell.openPath(path)
       }
       try {
         writeExport(path, dataArray, callback)

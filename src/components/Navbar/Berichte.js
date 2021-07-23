@@ -105,7 +105,7 @@ const Berichte = () => {
       if (filePath) {
         ipcRenderer.send('SAVE_FILE', filePath, data)
         ipcRenderer.once('SAVED_FILE', () => {
-          shell.openItem(filePath)
+          shell.openPath(filePath)
         })
         ipcRenderer.once('ERROR', error => {
           throw new Error(error)
