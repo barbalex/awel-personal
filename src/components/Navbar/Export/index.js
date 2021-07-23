@@ -37,7 +37,7 @@ const Export = () => {
     fetchAbteilungen({ store })
     fetchBereiche({ store })
     fetchSektionen({ store })
-  }, [db])
+  }, [db, store])
 
   const onClickExportPersonen = useCallback(() => {
     const exportObjects = personenPrepareData({ store })
@@ -54,7 +54,7 @@ const Export = () => {
   const onClickExportAdressen = useCallback(() => {
     const exportObjects = personenFilteredSorted
       .slice()
-      .map(p => pick(p, adressenFields))
+      .map((p) => pick(p, adressenFields))
     if (!exportObjects.length) {
       return addError(new Error('Es gibt keine Daten zu exportieren'))
     }
@@ -69,8 +69,10 @@ const Export = () => {
   const onClickExportAdressenAktive = useCallback(() => {
     const exportObjects = personenSorted
       .slice()
-      .filter(p => p.status === 'aktiv')
-      .map(p => pick(p, adressenFields))
+      .filter((p) => p.status === 'aktiv')
+      // no deleted
+      .filter((p) => p.deleted === 0)
+      .map((p) => pick(p, adressenFields))
     if (!exportObjects.length) {
       return addError(new Error('Es gibt keine Daten zu exportieren'))
     }
@@ -85,8 +87,10 @@ const Export = () => {
   const onClickExportAdressenPensionierte = useCallback(() => {
     const exportObjects = personenSorted
       .slice()
-      .filter(p => p.status === 'pensioniert')
-      .map(p => pick(p, adressenFields))
+      .filter((p) => p.status === 'pensioniert')
+      // no deleted
+      .filter((p) => p.deleted === 0)
+      .map((p) => pick(p, adressenFields))
     if (!exportObjects.length) {
       return addError(new Error('Es gibt keine Daten zu exportieren'))
     }
