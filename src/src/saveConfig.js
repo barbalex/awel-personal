@@ -12,5 +12,7 @@ const dataFilePath = path.join(
 
 //console.log('saveConfig, dataFilePath:', dataFilePath)
 
-export default data =>
+const saveConfig = (data) =>
   fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2))
+
+export default saveConfig
