@@ -151,7 +151,7 @@ ipcMain.handle('get-username', async () => {
   return user
 })
 ipcMain.handle('open-url', (event, url) => {
-  shell.openPath(url)
+  return shell.openPath(url)
 })
 ipcMain.handle('quit', () => {
   app.quit()

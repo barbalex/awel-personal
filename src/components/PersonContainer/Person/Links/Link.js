@@ -1,5 +1,5 @@
 import React, { useContext, useCallback } from 'react'
-import { shell } from 'electron'
+import { ipcRenderer } from 'electron'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { UncontrolledTooltip } from 'reactstrap'
@@ -43,10 +43,10 @@ const LinkComponent = ({ link }) => {
   const store = useContext(storeContext)
   const { deleteLink } = store
 
-  const onClickRemove = useCallback(() => deleteLink(link.id), [
-    deleteLink,
-    link.id,
-  ])
+  const onClickRemove = useCallback(
+    () => deleteLink(link.id),
+    [deleteLink, link.id],
+  )
 
   return (
     <Field>
@@ -55,7 +55,7 @@ const LinkComponent = ({ link }) => {
           href={link.url}
           onClick={(event) => {
             event.preventDefault()
-            shell.openPath(link.url)
+            ipcRenderer.invoke('open-url', link.url)
           }}
         >
           {link.url}

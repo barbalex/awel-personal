@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Col, FormGroup, Label, Button, ButtonGroup } from 'reactstrap'
 import { MdEdit } from 'react-icons/md'
 import { FaPlus } from 'react-icons/fa'
-import { shell } from 'electron'
+import { ipcRenderer } from 'electron'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import Schluessel from './Schluessel'
@@ -96,7 +96,7 @@ const SchluesselsComponent = ({ row = true }) => {
   const onClickForm = useCallback(() => {
     let success = false
     if (settings.schluesselFormPath) {
-      success = shell.openPath(settings.schluesselFormPath)
+      success = ipcRenderer.invoke('open-url', settings.schluesselFormPath)
       if (!success) console.log('File could not be opened')
       return
     }
