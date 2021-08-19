@@ -25,9 +25,6 @@ const browserWindowOptions = {
     // this should be respected but warning remains in console
     // see: https://github.com/electron/electron/issues/24950
     worldSafeExecuteJavaScript: true,
-    // this needs to be explicitly set in electron v10
-    // see: https://github.com/electron/electron/issues/21408
-    //enableRemoteModule: true,
     // contextIsolation: true, errors :-(
   },
 }
@@ -98,6 +95,22 @@ ipcMain.on('SAVE_FILE', (event, path, data) => {
 ipcMain.handle('get-user-data-path', async () => {
   const path = app.getPath('userData')
   return path
+})
+
+ipcMain.handle('save-config', async () => {
+  const path = app.getPath('userData')
+  const dataFilePath = path.join(userPath, 'awelPersonalConfig.json')
+  fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2))
+  return null
+})
+
+ipcMain.handle('get-config', async () => {
+  const userPath = app.getPath('userData')
+  const dataFilePath = path.join(userPath, 'awelPersonalConfig.json')
+  if (!fs.existsSync(dataFilePath)) return {}
+  const configFile = fs.readFileSync(dataFilePath, 'utf-8') || {}
+  if (!configFile) return {}
+  return JSON.parse(configFile)
 })
 
 ipcMain.handle('reload-main-window', () => {
