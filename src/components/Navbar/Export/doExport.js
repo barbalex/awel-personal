@@ -1,13 +1,11 @@
 /**
  * gets save path
  */
-
-import { remote, shell } from 'electron'
+import { shell } from 'electron'
+import { ipcRenderer } from 'electron'
 
 import writeExport from './writeExport'
 import getDataArrayFromExportObjects from './getDataArrayFromExportObjects'
-
-const { dialog } = remote
 
 const doExport = async ({
   exportObjects,
@@ -25,7 +23,7 @@ const doExport = async ({
       },
     ],
   }
-  const { filePath: path } = await dialog.showSaveDialog(dialogOptions)
+  const path = await ipcRenderer.invoke('save-dialog-get-path', dialogOptions)
   if (path) {
     setModalMessage('Der Export wird aufgebaut...')
     setModalOpen(true)

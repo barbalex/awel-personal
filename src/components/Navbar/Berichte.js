@@ -9,15 +9,13 @@ import {
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { FaPrint, FaRegFilePdf } from 'react-icons/fa'
-import { remote, shell, ipcRenderer } from 'electron'
+import { ipcRenderer } from 'electron'
 
 import storeContext from '../../storeContext'
 
-const { dialog } = remote
-
 const StyledUncontrolledDropdown = styled(UncontrolledDropdown)`
   display: flex;
-  border: ${props =>
+  border: ${(props) =>
     props.active ? '1px solid rgb(255, 255, 255, .5)' : 'unset'};
   border-radius: 0.25rem;
   margin-right: 5px;
@@ -45,27 +43,25 @@ const Berichte = () => {
   const location = store.location.toJSON()
   const showPD = location[0] === 'Personen' && location[1]
 
-  const onClickPD = useCallback(() => setActivePrintForm('personalblatt'), [
-    setActivePrintForm,
-  ])
+  const onClickPD = useCallback(
+    () => setActivePrintForm('personalblatt'),
+    [setActivePrintForm],
+  )
   const onClickMutationsFormular = useCallback(
     () => setActivePrintForm('personMutation'),
     [setActivePrintForm],
   )
   const onClickPrint = useCallback(() => {
     setPrinting(true)
-    setTimeout(() => {
+    setTimeout(async () => {
       //window.print()
-      const win = remote.getCurrentWindow()
-      win.webContents.print(
-        {
-          silent: false,
-          // TODO: true does not work!!!???
-          printBackground: true,
-          deviceName: '',
-        },
-        () => setPrinting(false),
-      )
+      await ipcRenderer.invoke('print', {
+        silent: false,
+        // TODO: true does not work!!!???
+        printBackground: true,
+        deviceName: '',
+      })
+      setPrinting(false)
     })
   }, [setPrinting])
   const onClickCreatePdf = useCallback(() => {
@@ -77,7 +73,6 @@ const Berichte = () => {
       location[0] === 'Personen' &&
       location[1] &&
       activePrintForm === 'personMutation'
-    const win = remote.getCurrentWindow()
     const dialogOptions = {
       title: 'pdf speichern',
       filters: [
@@ -93,24 +88,11 @@ const Berichte = () => {
 
     setPrinting(true)
     setTimeout(async () => {
-      let data
-      try {
-        data = await win.webContents.printToPDF(printToPDFOptions)
-      } catch (error) {
-        setPrinting(false)
-        throw error
-      }
+      await ipcRenderer.invoke('print-to-pdf', printToPDFOptions, dialogOptions)
+      ipcRenderer.once('ERROR', (error) => {
+        throw new Error(error)
+      })
       setPrinting(false)
-      const { filePath } = await dialog.showSaveDialog(dialogOptions)
-      if (filePath) {
-        ipcRenderer.send('SAVE_FILE', filePath, data)
-        ipcRenderer.once('SAVED_FILE', () => {
-          shell.openPath(filePath)
-        })
-        ipcRenderer.once('ERROR', error => {
-          throw new Error(error)
-        })
-      }
     })
   }, [activePrintForm, location, setPrinting, settings.mutationFormPath])
 

@@ -1,11 +1,10 @@
 import Database from 'better-sqlite3'
-
 import chooseDb from './chooseDb'
 import getConfig from './getConfig'
 import saveConfig from './saveConfig'
 
 const getDb = async (store) => {
-  const config = getConfig()
+  const config = await getConfig()
   //console.log('getDb, config:', config)
   let dbPath = config.dbPath || 'C:/Users/alexa/personal.db'
 

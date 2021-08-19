@@ -1,6 +1,7 @@
-const { app, BrowserWindow, ipcMain, Menu } = require('electron')
+const { app, BrowserWindow, ipcMain, Menu, dialog, shell } = require('electron')
 const fs = require('fs-extra')
 const path = require('path')
+require('@babel/polyfill')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -92,6 +93,40 @@ ipcMain.on('SAVE_FILE', (event, path, data) => {
   fs.outputFile(path, data)
     .then(() => event.sender.send('SAVED_FILE'))
     .catch((error) => event.sender.send('ERROR', error.message))
+})
+
+ipcMain.handle('get-user-data-path', async () => {
+  const path = app.getPath('userData')
+  return path
+})
+
+ipcMain.handle('reload-main-window', () => {
+  mainWindow.reload()
+})
+
+ipcMain.handle(
+  'print-to-pdf',
+  async (event, printToPDFOptions, dialogOptions) => {
+    const data = await mainWindow.webContents.printToPDF(printToPDFOptions)
+    const { filePath } = await dialog.showSaveDialog(dialogOptions)
+    fs.outputFile(filePath, data)
+      .then(() => shell.openPath(filePath))
+      .catch((error) => event.sender.send('ERROR', error.message))
+    return data
+  },
+)
+
+ipcMain.handle('print', async (event, options) => {
+  await mainWindow.webContents.print(options)
+  return null
+})
+ipcMain.handle('save-dialog-get-path', async (event, dialogOptions) => {
+  const { filePath } = await dialog.showSaveDialog(dialogOptions)
+  return filePath
+})
+ipcMain.handle('open-dialog-get-path', async (event, dialogOptions) => {
+  const { filePath } = await dialog.showOpenDialog(dialogOptions)
+  return filePath
 })
 
 // In this file you can include the rest of your app's specific main process
