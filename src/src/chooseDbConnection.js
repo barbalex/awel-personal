@@ -1,11 +1,9 @@
 import { ipcRenderer } from 'electron'
 
 import chooseDb from './chooseDb'
-import getConfig from './getConfig'
-import saveConfig from './saveConfig'
 
 const chooseDbConnection = async () => {
-  const config = await getConfig()
+  const config = await ipcRenderer.invoke('get-config')
   let dbPath
   try {
     dbPath = await chooseDb()
@@ -13,7 +11,7 @@ const chooseDbConnection = async () => {
     return console.log('Error after choosing db:', chooseError)
   }
   config.dbPath = dbPath
-  await saveConfig(config)
+  await ipcRenderer.invoke('save-config')
   ipcRenderer.invoke('reload-main-window')
 }
 

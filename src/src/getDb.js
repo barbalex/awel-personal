@@ -1,11 +1,10 @@
+import { ipcRenderer } from 'electron'
+
 import Database from 'better-sqlite3'
 import chooseDb from './chooseDb'
-import getConfig from './getConfig'
-import saveConfig from './saveConfig'
 
 const getDb = async (store) => {
-  const config = await getConfig()
-  //console.log('getDb, config:', config)
+  const config = await ipcRenderer.invoke('get-config')
   let dbPath = config.dbPath || 'C:/Users/alexa/personal.db'
 
   let db
@@ -25,7 +24,7 @@ const getDb = async (store) => {
       }
       db = new Database(dbPath, { fileMustExist: true })
       config.dbPath = dbPath
-      saveConfig(config)
+      await ipcRenderer.invoke('save-config')
     } else {
       store.addError(error)
       return console.log('index.js, Error opening db file:', error)
