@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, Menu, dialog, shell } = require('electron')
 const fs = require('fs-extra')
 const path = require('path')
+// needed to prevent error:
 require('@babel/polyfill')
 const username = require('username')
 
@@ -23,10 +24,8 @@ const browserWindowOptions = {
   webPreferences: {
     // will not work from electron 12 on, see: https://github.com/electron/electron/issues/23506
     nodeIntegration: true,
-    // this should be respected but warning remains in console
-    // see: https://github.com/electron/electron/issues/24950
-    worldSafeExecuteJavaScript: true,
-    // contextIsolation: true, errors :-(
+    // needs to be false, see: https://github.com/electron/electron-quick-start/issues/463#issuecomment-869219170
+    contextIsolation: false,
   },
 }
 
