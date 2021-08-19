@@ -1,4 +1,4 @@
-export default fieldName => {
+const isDateField = (fieldName) => {
   const dateFieldNames = [
     'geburtDatum',
     'eintrittDatum',
@@ -11,3 +11,5 @@ export default fieldName => {
   ]
   return dateFieldNames.includes(fieldName)
 }
+
+export default isDateField

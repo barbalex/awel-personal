@@ -1,3 +1,5 @@
 import isNumeric from './isNumeric'
 
-export default value => (isNumeric(value) ? +value : value)
+const ifIsNumericAsNumber = (value) => (isNumeric(value) ? +value : value)
+
+export default ifIsNumericAsNumber

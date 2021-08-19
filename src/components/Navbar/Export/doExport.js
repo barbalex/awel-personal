@@ -1,7 +1,6 @@
 /**
  * gets save path
  */
-import { shell } from 'electron'
 import { ipcRenderer } from 'electron'
 
 import writeExport from './writeExport'
@@ -36,7 +35,7 @@ const doExport = async ({
       })
       const callback = () => {
         setModalOpen(false)
-        shell.openPath(path)
+        ipcRenderer.invoke('open-url', path)
       }
       try {
         writeExport(path, dataArray, callback)

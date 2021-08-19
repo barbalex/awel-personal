@@ -1,4 +1,4 @@
-export default [
+const tables = [
   {
     table: 'personen',
     model: 'Person',
@@ -115,3 +115,5 @@ export default [
     parentModel: 'standortWerte',
   },
 ]
+
+export default tables

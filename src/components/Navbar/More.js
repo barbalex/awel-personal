@@ -7,7 +7,7 @@ import {
 } from 'reactstrap'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
-import { shell } from 'electron'
+import { ipcRenderer } from 'electron'
 import { FaTrashAlt } from 'react-icons/fa'
 import { FaRegEdit } from 'react-icons/fa'
 
@@ -41,7 +41,10 @@ const Svg = styled.div`
 `
 
 const onClickIssues = () => {
-  shell.openPath('https://github.com/barbalex/awel-personal/issues')
+  ipcRenderer.invoke(
+    'open-url',
+    'https://github.com/barbalex/awel-personal/issues',
+  )
 }
 
 const More = () => {
@@ -57,17 +60,18 @@ const More = () => {
   } = store
   const activeLocation = location.toJSON()[0]
 
-  const toggleShowDeleted = useCallback(() => setShowDeleted(!showDeleted), [
-    setShowDeleted,
-    showDeleted,
-  ])
+  const toggleShowDeleted = useCallback(
+    () => setShowDeleted(!showDeleted),
+    [setShowDeleted, showDeleted],
+  )
   const toggleShowMutationNoetig = useCallback(
     () => setShowMutationNoetig(!showMutationNoetig),
     [setShowMutationNoetig, showMutationNoetig],
   )
-  const showMutations = useCallback(() => setLocation(['mutations']), [
-    setLocation,
-  ])
+  const showMutations = useCallback(
+    () => setLocation(['mutations']),
+    [setLocation],
+  )
 
   return (
     <MoreMenu nav inNavbar>
