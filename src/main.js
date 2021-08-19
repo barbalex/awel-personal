@@ -19,6 +19,7 @@ const browserWindowOptions = {
   // only show after it was sized
   show: false,
   webPreferences: {
+    // will not work from electron 12 on, see: https://github.com/electron/electron/issues/23506
     nodeIntegration: true,
     // this should be respected but warning remains in console
     // see: https://github.com/electron/electron/issues/24950
