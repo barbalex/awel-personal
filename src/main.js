@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, Menu, dialog, shell } = require('electron')
 const fs = require('fs-extra')
 const path = require('path')
 require('@babel/polyfill')
+const username = require('username')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -140,6 +141,15 @@ ipcMain.handle('save-dialog-get-path', async (event, dialogOptions) => {
 ipcMain.handle('open-dialog-get-path', async (event, dialogOptions) => {
   const { filePath } = await dialog.showOpenDialog(dialogOptions)
   return filePath
+})
+ipcMain.handle('get-username', async () => {
+  let user
+  try {
+    user = await username()
+  } catch (error) {
+    return null
+  }
+  return user
 })
 
 // In this file you can include the rest of your app's specific main process

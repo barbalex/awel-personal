@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import username from 'username'
+import { ipcRenderer } from 'electron'
 
 import App from './components/App'
 import './styles.css'
@@ -23,12 +23,7 @@ const run = async () => {
   }
   setDb(db)
 
-  let user
-  try {
-    user = await username()
-  } catch (error) {
-    addError(error)
-  }
+  const user = await ipcRenderer.invoke('get-username')
   if (user) setUsername(user)
 
   window.store = store
