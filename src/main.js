@@ -27,7 +27,7 @@ const browserWindowOptions = {
     worldSafeExecuteJavaScript: true,
     // this needs to be explicitly set in electron v10
     // see: https://github.com/electron/electron/issues/21408
-    enableRemoteModule: true,
+    //enableRemoteModule: true,
     // contextIsolation: true, errors :-(
   },
 }
