@@ -69,7 +69,7 @@ const PersonImage = () => {
   const { showFilter, updateField, personen } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-  const person = personen.find(p => p.id === activeId) || {}
+  const person = personen.find((p) => p.id === activeId) || {}
 
   // eslint-disable-next-line no-unused-vars
   const [errors, setErrors] = useState({})
@@ -80,13 +80,11 @@ const PersonImage = () => {
   const [image, setImage] = useState(null)
 
   useEffect(() => {
-    setImage(person.bildUrl)
+    setImage(person.bildUrl ? `secure-protocol://${person.bildUrl}` : null)
   }, [person.bildUrl])
 
-  //console.log('PersonImage', { image, personBildUrl: person.bildUrl })
-
   const onDrop = useCallback(
-    files => {
+    (files) => {
       //console.log({ files })
       updateField({
         table: 'personen',
@@ -100,7 +98,7 @@ const PersonImage = () => {
     [person.id, updateField],
   )
   const onClickRemove = useCallback(
-    e => {
+    (e) => {
       updateField({
         table: 'personen',
         parentModel: 'personen',

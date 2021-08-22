@@ -1,4 +1,12 @@
-const { app, BrowserWindow, ipcMain, Menu, dialog, shell } = require('electron')
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  Menu,
+  dialog,
+  shell,
+  protocol,
+} = require('electron')
 const fs = require('fs-extra')
 const path = require('path')
 // needed to prevent error:
@@ -26,6 +34,7 @@ const browserWindowOptions = {
     nodeIntegration: true,
     // needs to be false, see: https://github.com/electron/electron-quick-start/issues/463#issuecomment-869219170
     contextIsolation: false,
+    //webSecurity: false,
   },
 }
 
@@ -65,7 +74,20 @@ const createWindow = () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', () => {
+  createWindow()
+  // creating a secure protocol is necessary to enable loading local files
+  // see: https://github.com/electron/electron/issues/23393#issuecomment-623759531
+  protocol.registerFileProtocol('secure-protocol', (request, callback) => {
+    const url = request.url.replace('secure-protocol://', '')
+    try {
+      return callback(url)
+    } catch (error) {
+      console.error(error)
+      return callback(404)
+    }
+  })
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

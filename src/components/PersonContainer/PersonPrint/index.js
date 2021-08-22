@@ -273,7 +273,7 @@ const PersonPrint = ({ activeId }) => {
                     <AreaPBild>
                       {person.bildUrl && (
                         <Img
-                          src={person.bildUrl}
+                          src={`secure-protocol://${person.bildUrl}`}
                           alt={`${person.vorname} ${person.name}`}
                         />
                       )}
