@@ -34,7 +34,6 @@ const browserWindowOptions = {
     nodeIntegration: true,
     // needs to be false, see: https://github.com/electron/electron-quick-start/issues/463#issuecomment-869219170
     contextIsolation: false,
-    //webSecurity: false,
   },
 }
 
