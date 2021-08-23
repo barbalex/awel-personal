@@ -1,4 +1,5 @@
 import omit from 'lodash/omit'
+import { toJS } from 'mobx'
 
 const mutationFields = [
   'mutationArt',
@@ -16,7 +17,7 @@ const mutationFields = [
 
 const personenPrepareData = ({ store }) =>
   store.personenFilteredSorted
-    .slice()
+    .map((p) => toJS(p))
     .map((p) => {
       const amt = store.aemter.find((a) => a.id === p.amt) || {}
       p.amt_id = amt.id || ''

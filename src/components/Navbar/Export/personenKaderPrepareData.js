@@ -1,5 +1,6 @@
 import pick from 'lodash/pick'
 import uniq from 'lodash/uniq'
+import { toJS } from 'mobx'
 
 const fields = [
   'name',
@@ -28,7 +29,6 @@ const personenKaderPrepareData = ({ store }) => {
 
   return (
     personenSorted
-      .slice()
       // no deleted
       .filter((p) => p.deleted === 0)
       // only active
@@ -36,6 +36,7 @@ const personenKaderPrepareData = ({ store }) => {
       .filter(
         (p) => kaderIds.includes(p.id) || etikettenKaderIds.includes(p.id),
       )
+      .map((p) => toJS(p))
       .map((p) => {
         const amt = store.aemter.find((a) => a.id === p.amt) || {}
         delete p.amt
