@@ -90,9 +90,12 @@ const Berichte = () => {
     setTimeout(async () => {
       await ipcRenderer.invoke('print-to-pdf', printToPDFOptions, dialogOptions)
       ipcRenderer.once('ERROR', (error) => {
+        setPrinting(false)
         throw new Error(error)
       })
-      setPrinting(false)
+      ipcRenderer.once('PRINTED-TO-PDF', () => {
+        setPrinting(false)
+      })
     })
   }, [activePrintForm, location, setPrinting, settings.mutationFormPath])
 

@@ -1,4 +1,4 @@
-import { types, getParent } from 'mobx-state-tree'
+import { types, getParent, isAlive } from 'mobx-state-tree'
 
 import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 
@@ -86,21 +86,32 @@ export default types
   .actions((self) => ({
     fetch() {
       // ensure data is always fresh
-      const store = getParent(self, 2)
-      const { db, addError, setWatchMutations } = store
-      let person = []
-      try {
-        person = db.prepare('SELECT * from personen where id = ?').get(self.id)
-      } catch (error) {
-        addError(error)
+      // when printing there seems to be a situation when self is not alive any more
+      if (!isAlive(self)) {
+        console.log('I am dead')
+        return
       }
-      setWatchMutations(false)
-      Object.keys(person).forEach((field) => {
-        if (self[field] !== person[field]) {
-          self[field] = ifIsNumericAsNumber(person[field])
+      try {
+        const store = getParent(self, 2)
+        const { db, addError, setWatchMutations } = store
+        let person = []
+        try {
+          person = db
+            .prepare('SELECT * from personen where id = ?')
+            .get(self.id)
+        } catch (error) {
+          addError(error)
         }
-      })
-      setWatchMutations(true)
+        setWatchMutations(false)
+        Object.keys(person).forEach((field) => {
+          if (self[field] !== person[field]) {
+            self[field] = ifIsNumericAsNumber(person[field])
+          }
+        })
+        setWatchMutations(true)
+      } catch (error) {
+        console.log(error)
+      }
     },
   }))
   .views((self) => ({

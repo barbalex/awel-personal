@@ -141,12 +141,16 @@ ipcMain.handle('reload-main-window', () => {
 ipcMain.handle(
   'print-to-pdf',
   async (event, printToPDFOptions, dialogOptions) => {
-    const data = await mainWindow.webContents.printToPDF(printToPDFOptions)
-    const { filePath } = await dialog.showSaveDialog(dialogOptions)
-    fs.outputFile(filePath, data)
-      .then(() => shell.openPath(filePath))
-      .catch((error) => event.sender.send('ERROR', error.message))
-    return data
+    try {
+      const data = await mainWindow.webContents.printToPDF(printToPDFOptions)
+      const { filePath } = await dialog.showSaveDialog(dialogOptions)
+      await fs.outputFile(filePath, data)
+      shell.openPath(filePath)
+    } catch (error) {
+      event.sender.send('ERROR', error.message)
+    }
+    event.sender.send('PRINTED-TO-PDF')
+    return null
   },
 )
 

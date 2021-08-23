@@ -20,9 +20,9 @@ import storeContext from '../../storeContext'
 const StyledNavItem = styled(NavItem)`
   cursor: default;
   a {
-    background-color: ${props =>
+    background-color: ${(props) =>
       props.tab === 'datenblatt' ? 'rgba(249,230,0,.3) !important' : 'unset'};
-    border-bottom: ${props =>
+    border-bottom: ${(props) =>
       props.tab === 'datenblatt'
         ? '1px solid #fff9ad !important'
         : '1px solid #dee2e6'};
