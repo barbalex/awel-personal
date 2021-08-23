@@ -4,7 +4,7 @@ import Database from 'better-sqlite3'
 import chooseDb from './chooseDb'
 
 const getDb = async (store) => {
-  const config = await ipcRenderer.invoke('get-config')
+  const config = ipcRenderer.invoke('get-config')
   let dbPath = config.dbPath || 'C:/Users/alexa/personal.db'
 
   let db
@@ -24,7 +24,7 @@ const getDb = async (store) => {
       }
       db = new Database(dbPath, { fileMustExist: true })
       config.dbPath = dbPath
-      await ipcRenderer.invoke('save-config')
+      ipcRenderer.invoke('save-config')
     } else {
       store.addError(error)
       return console.log('index.js, Error opening db file:', error)
