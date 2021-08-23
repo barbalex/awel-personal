@@ -118,7 +118,7 @@ ipcMain.handle('get-user-data-path', async () => {
   return path
 })
 
-ipcMain.handle('save-config', () => {
+ipcMain.handle('save-config', (event, data) => {
   const path = app.getPath('userData')
   const dataFilePath = path.join(userPath, 'awelPersonalConfig.json')
   fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2))

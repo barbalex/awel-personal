@@ -24,7 +24,7 @@ const getDb = async (store) => {
       }
       db = new Database(dbPath, { fileMustExist: true })
       config.dbPath = dbPath
-      ipcRenderer.invoke('save-config')
+      ipcRenderer.invoke('save-config', config)
     } else {
       store.addError(error)
       return console.log('index.js, Error opening db file:', error)

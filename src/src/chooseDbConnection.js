@@ -11,7 +11,7 @@ const chooseDbConnection = async () => {
     return console.log('Error after choosing db:', chooseError)
   }
   config.dbPath = dbPath
-  ipcRenderer.invoke('save-config')
+  ipcRenderer.invoke('save-config', config)
   ipcRenderer.invoke('reload-main-window')
 }
 
