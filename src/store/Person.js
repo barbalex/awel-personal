@@ -87,8 +87,9 @@ export default types
     fetch() {
       // ensure data is always fresh
       // when printing there seems to be a situation when self is not alive any more
+      // probably solved by loading data in index.js instead of effect in Person.js
       if (!isAlive(self)) {
-        console.log('I am dead')
+        console.log('This persons model is dead')
         return
       }
       try {
