@@ -54,7 +54,7 @@ const PersonContainer = () => {
   const listRef = useRef(null)
 
   useEffect(() => {
-    console.log('PersonContainer useEffect, fetching data')
+    //console.log('PersonContainer useEffect, fetching data')
     fetchPersonen({ store })
     fetchAemter({ store })
     fetchAbteilungen({ store })
