@@ -154,6 +154,7 @@ ipcMain.handle(
   },
 )
 
+// 2021.08.27: not in use becaus printed too small
 ipcMain.handle('print', async (event, options) => {
   await mainWindow.webContents.print(options)
   return null
