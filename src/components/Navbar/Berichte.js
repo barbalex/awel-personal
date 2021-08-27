@@ -54,13 +54,15 @@ const Berichte = () => {
   const onClickPrint = useCallback(() => {
     setPrinting(true)
     setTimeout(async () => {
-      //window.print()
-      await ipcRenderer.invoke('print', {
-        silent: false,
-        // TODO: true does not work!!!???
-        printBackground: true,
-        deviceName: '',
-      })
+      window.print()
+      // 2021.08.27: turned this method off
+      // because printed too small
+      // await ipcRenderer.invoke('print', {
+      //   silent: false,
+      //   // TODO: true does not work!!!???
+      //   printBackground: true,
+      //   deviceName: '',
+      // })
       setPrinting(false)
     })
   }, [setPrinting])

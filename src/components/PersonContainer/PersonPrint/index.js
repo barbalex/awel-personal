@@ -216,8 +216,6 @@ const PersonPrint = ({ activeId }) => {
     kaderFunktionen,
   } = store
 
-  const person = personen.find((p) => p.id === activeId) || {}
-
   const myEtiketten = useMemo(
     () =>
       etiketten
@@ -254,6 +252,10 @@ const PersonPrint = ({ activeId }) => {
         .map((e) => e.funktion),
     [activeId, kaderFunktionen],
   )
+
+  if (!activeId) return null
+
+  const person = personen.find((p) => p.id === activeId) || {}
 
   const personVorgesetzt = personen.find((a) => a.id === person.vorgesetztId)
 

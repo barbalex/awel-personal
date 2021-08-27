@@ -176,10 +176,10 @@ const PersonMutationPrint = ({ activeId }) => {
     settings,
   } = store
 
+  if (!showFilter && !activeId) return null
+
   const person = personen.find((p) => p.id === activeId)
   const personId = person.id
-
-  if (!showFilter && !activeId) return null
 
   const viewIsNarrow = true
   const Wrapper = viewIsNarrow ? WrapperNarrow : WrapperWide
