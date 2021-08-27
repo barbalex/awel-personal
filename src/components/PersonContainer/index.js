@@ -7,21 +7,6 @@ import useDetectPrint from 'use-detect-print'
 import ErrorBoundary from '../shared/ErrorBoundary'
 import List from './List'
 import PersonTab from './PersonTab'
-import fetchPersonen from '../../src/fetchPersonen'
-import fetchAemter from '../../src/fetchAemter'
-import fetchAbteilungen from '../../src/fetchAbteilungen'
-import fetchBereiche from '../../src/fetchBereiche'
-import fetchSektionen from '../../src/fetchSektionen'
-import fetchEtiketten from '../../src/fetchEtiketten'
-import fetchAnwesenheitstage from '../../src/fetchAnwesenheitstage'
-import fetchLinks from '../../src/fetchLinks'
-import fetchSchluessel from '../../src/fetchSchluessel'
-import fetchMobileAbos from '../../src/fetchMobileAbos'
-import fetchTelefones from '../../src/fetchTelefones'
-import fetchFunktionen from '../../src/fetchFunktionen'
-import fetchKaderFunktionen from '../../src/fetchKaderFunktionen'
-import fetchWerte from '../../src/fetchWerte'
-import fetchSettings from '../../src/fetchSettings'
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 
@@ -43,7 +28,7 @@ const StyledReflexElement = styled(ReflexElement)`
 
 const PersonContainer = () => {
   const store = useContext(storeContext)
-  const { showFilter, personen, db } = store
+  const { showFilter, personen } = store
   const location = store.location.toJSON()
   const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const person = personen.find((p) => p.id === activeId)
@@ -53,37 +38,37 @@ const PersonContainer = () => {
 
   const listRef = useRef(null)
 
-  useEffect(() => {
-    //console.log('PersonContainer useEffect, fetching data')
-    fetchPersonen({ store })
-    fetchAemter({ store })
-    fetchAbteilungen({ store })
-    fetchBereiche({ store })
-    fetchSektionen({ store })
-    fetchWerte({ store, table: 'statusWerte' })
-    fetchWerte({ store, table: 'anredeWerte' })
-    fetchWerte({ store, table: 'funktionWerte' })
-    fetchWerte({ store, table: 'kaderFunktionWerte' })
-    fetchEtiketten({ store })
-    fetchAnwesenheitstage({ store })
-    fetchWerte({ store, table: 'etikettWerte' })
-    fetchWerte({ store, table: 'anwesenheitstagWerte' })
-    fetchWerte({ store, table: 'landWerte' })
-    fetchWerte({ store, table: 'mutationArtWerte' })
-    fetchWerte({ store, table: 'standortWerte' })
-    fetchLinks({ store })
-    fetchSchluessel({ store })
-    fetchMobileAbos({ store })
-    fetchTelefones({ store })
-    fetchWerte({ store, table: 'mobileAboKostenstelleWerte' })
-    fetchWerte({ store, table: 'mobileAboTypWerte' })
-    fetchWerte({ store, table: 'telefonTypWerte' })
-    fetchWerte({ store, table: 'schluesselTypWerte' })
-    fetchWerte({ store, table: 'schluesselAnlageWerte' })
-    fetchFunktionen({ store })
-    fetchKaderFunktionen({ store })
-    fetchSettings({ store })
-  }, [db, store])
+  // useEffect(() => {
+  //   console.log('PersonContainer useEffect, fetching data')
+  //   fetchPersonen({ store })
+  //   fetchAemter({ store })
+  //   fetchAbteilungen({ store })
+  //   fetchBereiche({ store })
+  //   fetchSektionen({ store })
+  //   fetchWerte({ store, table: 'statusWerte' })
+  //   fetchWerte({ store, table: 'anredeWerte' })
+  //   fetchWerte({ store, table: 'funktionWerte' })
+  //   fetchWerte({ store, table: 'kaderFunktionWerte' })
+  //   fetchEtiketten({ store })
+  //   fetchAnwesenheitstage({ store })
+  //   fetchWerte({ store, table: 'etikettWerte' })
+  //   fetchWerte({ store, table: 'anwesenheitstagWerte' })
+  //   fetchWerte({ store, table: 'landWerte' })
+  //   fetchWerte({ store, table: 'mutationArtWerte' })
+  //   fetchWerte({ store, table: 'standortWerte' })
+  //   fetchLinks({ store })
+  //   fetchSchluessel({ store })
+  //   fetchMobileAbos({ store })
+  //   fetchTelefones({ store })
+  //   fetchWerte({ store, table: 'mobileAboKostenstelleWerte' })
+  //   fetchWerte({ store, table: 'mobileAboTypWerte' })
+  //   fetchWerte({ store, table: 'telefonTypWerte' })
+  //   fetchWerte({ store, table: 'schluesselTypWerte' })
+  //   fetchWerte({ store, table: 'schluesselAnlageWerte' })
+  //   fetchFunktionen({ store })
+  //   fetchKaderFunktionen({ store })
+  //   fetchSettings({ store })
+  // }, [db, store])
 
   useEffect(() => {
     person?.fetch()
