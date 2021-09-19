@@ -30,12 +30,11 @@ const browserWindowOptions = {
   // only show after it was sized
   show: false,
   webPreferences: {
-    // will not work from electron 12 on, see: https://github.com/electron/electron/issues/23506
     nodeIntegration: true,
     // needs to be false, see: https://github.com/electron/electron-quick-start/issues/463#issuecomment-869219170
     contextIsolation: false,
-    // https://github.com/electron/electron/issues/28511
     nativeWindowOpen: true,
+    preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
   },
 }
 
