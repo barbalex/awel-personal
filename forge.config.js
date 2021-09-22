@@ -3,6 +3,7 @@ module.exports = {
   // this seems to be to ensure all deps of better-sqlite3 are copied
   packagerConfig: {
     icon: './src/etc/person.png',
+    asar: true,
   },
   makers: [
     {
@@ -48,5 +49,6 @@ module.exports = {
         devContentSecurityPolicy: `default-src 'self' 'unsafe-inline' data:; script-src 'self' 'unsafe-eval' 'unsafe-inline' data:`,
       },
     ],
+    ['@electron-forge/plugin-auto-unpack-natives'],
   ],
 }
