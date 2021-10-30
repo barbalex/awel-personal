@@ -11,7 +11,7 @@ const fs = require('fs-extra')
 const path = require('path')
 // needed to prevent error:
 require('@babel/polyfill')
-const username = require('username')
+const { username } = require('username')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
