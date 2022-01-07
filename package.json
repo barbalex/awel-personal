@@ -62,7 +62,7 @@
     "exceljs": "4.3.0",
     "file-loader": "6.2.0",
     "jquery": "3.6.0",
-    "mobx": "6.3.10",
+    "mobx": "6.3.12",
     "mobx-react-lite": "3.2.3",
     "mobx-state-tree": "5.1.0",
     "moment": "2.29.1",

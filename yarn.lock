@@ -9610,10 +9610,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mobx@npm:6.3.10":
-  version: 6.3.10
-  resolution: "mobx@npm:6.3.10"
-  checksum: d632c656f740ce67eef00c4c73be15acfc8fc057ab08492cba58ef904d617a1df465e059edaf4b2c02659c8d286be88a57eef4544b879ed6092faabf08b7e4ac
+"mobx@npm:6.3.12":
+  version: 6.3.12
+  resolution: "mobx@npm:6.3.12"
+  checksum: 1f1e414ffa1ed1efa92ff91e470d08e2a602d07dcf316ea12dc48d1077adb291643148badee4a052170260e3b0161842ddeae3cf3fdedd13599fee72cdf85c38
   languageName: node
   linkType: hard
 
@@ -10508,7 +10508,7 @@ __metadata:
     exceljs: 4.3.0
     file-loader: 6.2.0
     jquery: 3.6.0
-    mobx: 6.3.10
+    mobx: 6.3.12
     mobx-react-lite: 3.2.3
     mobx-state-tree: 5.1.0
     moment: 2.29.1
