@@ -49,16 +49,18 @@ const LinksComponent = ({ row = true }) => {
 
   const onDrop = useCallback(
     (files) => {
-      //console.log('files:', files)
+      console.log('files:', files)
       addLink(files[0].path)
     },
     [addLink],
   )
 
+  // Need useFsAccessApi false when using react-dropzone v12 in electron
+  // https://github.com/react-dropzone/file-selector/issues/52#issuecomment-1030834961
   const Drop = () => (
     <Container name="links">
       <DropzoneContainer>
-        <StyledDropzone onDrop={onDrop}>
+        <StyledDropzone onDrop={onDrop} useFsAccessApi={false}>
           {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
             if (isDragActive) {
               return (

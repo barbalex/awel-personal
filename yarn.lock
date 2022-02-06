@@ -10727,7 +10727,7 @@ __metadata:
     react: 17.0.2
     react-datepicker: 4.6.0
     react-dom: 17.0.2
-    react-dropzone: 11.7.1
+    react-dropzone: 12.0.0
     react-error-boundary: 3.1.4
     react-icons: 4.3.1
     react-json-view: 1.21.3
@@ -11263,16 +11263,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dropzone@npm:11.7.1":
-  version: 11.7.1
-  resolution: "react-dropzone@npm:11.7.1"
+"react-dropzone@npm:12.0.0":
+  version: 12.0.0
+  resolution: "react-dropzone@npm:12.0.0"
   dependencies:
     attr-accept: ^2.2.2
     file-selector: ^0.4.0
     prop-types: ^15.8.1
   peerDependencies:
     react: ">= 16.8"
-  checksum: 7549bb67da5222dfbb7b79d9df84a4f2bd417e53396df8b0772a95fd7621ec967b87a17ff7f1e54eb5597d73c51c2a0d16328c792b11e751c73e18e2f7160207
+  checksum: 7830170f7d91f940797dc2add852a58e76f0e9a52341b327b641562209230dfec83e6a31a1df1d1e70d4cfd876ec04ddedf1ef1c0e6328021d29286049721171
   languageName: node
   linkType: hard
 
