@@ -45,10 +45,11 @@ const LinksComponent = ({ row = true }) => {
   const location = store.location.toJSON()
   if (!location[1] && !showFilter) throw new Error(`no id found`)
   const activePersonenId = ifIsNumericAsNumber(location[1])
-  const myLinks = links.filter(l => l.idPerson === activePersonenId)
+  const myLinks = links.filter((l) => l.idPerson === activePersonenId)
 
   const onDrop = useCallback(
-    files => {
+    (files) => {
+      //console.log('files:', files)
       addLink(files[0].path)
     },
     [addLink],
@@ -84,7 +85,7 @@ const LinksComponent = ({ row = true }) => {
         </StyledDropzone>
       </DropzoneContainer>
       <Links>
-        {myLinks.map(link => (
+        {myLinks.map((link) => (
           <Link key={`${link.idPerson}${link.url}`} link={link} />
         ))}
       </Links>

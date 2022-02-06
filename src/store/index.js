@@ -1060,6 +1060,7 @@ const store = () =>
           self.updatePersonsMutation(idPerson)
         },
         addLink(url) {
+          //console.log('store, addLink, url:', url)
           // grab idPerson from location
           const { location } = self
           const idPerson = ifIsNumericAsNumber(location[1])
