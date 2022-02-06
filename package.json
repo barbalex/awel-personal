@@ -73,7 +73,7 @@
     "react": "17.0.2",
     "react-datepicker": "4.6.0",
     "react-dom": "17.0.2",
-    "react-dropzone": "11.5.1",
+    "react-dropzone": "11.7.1",
     "react-error-boundary": "3.1.4",
     "react-icons": "4.3.1",
     "react-json-view": "1.21.3",
@@ -97,7 +97,8 @@
     "WARNING": "do not upate react-popper and popper.js (to @popper/core) before reactstrap has updated it's dependencies. See: https://github.com/reactstrap/reactstrap/issues/1972, https://github.com/reactstrap/reactstrap/pull/1977",
     "better-sqlite3": "when upgrading from 7.4.5 to 7.4.6 got node version mismatch error",
     "node-abi": "need to enforce 3.8.0 as 3.5.0 was not good enough when upgrading to electron 17",
-    "file-selector": "tried to enforce version 0.2.4 when using react-dropzone v12, see: https://github.com/react-dropzone/file-selector/issues/52"
+    "file-selector": "tried to enforce version 0.2.4 when using react-dropzone v12, see: https://github.com/react-dropzone/file-selector/issues/52",
+    "react-dropzone": "see above for why remaining on 11.7.1"
   },
   "resolutions": {
     "node-abi": "3.8.0"
