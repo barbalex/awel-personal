@@ -1,4 +1,5 @@
 import React from 'react'
+import { createRoot } from 'react-dom/client'
 import { render } from 'react-dom'
 import { ipcRenderer } from 'electron'
 
@@ -25,6 +26,9 @@ import fetchWerte from './src/fetchWerte'
 import fetchSettings from './src/fetchSettings'
 
 import { StoreContextProvider } from './storeContext'
+
+const container = document.getElementById('root')
+const root = createRoot(container)
 
 const run = async () => {
   const store = createStore().create()
@@ -73,11 +77,10 @@ const run = async () => {
   fetchKaderFunktionen({ store })
   fetchSettings({ store })
 
-  render(
+  root.render(
     <StoreContextProvider value={store}>
       <App />
     </StoreContextProvider>,
-    document.getElementById('root'),
   )
 }
 
