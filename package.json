@@ -94,11 +94,7 @@
     "react-transition-group": "is peer, required by reactstrap",
     "react-popper": "required by reactstrap",
     "popper.js": "is peer, probably required by reactstrap",
-    "WARNING": "do not upate react-popper and popper.js (to @popper/core) before reactstrap has updated it's dependencies. See: https://github.com/reactstrap/reactstrap/issues/1972, https://github.com/reactstrap/reactstrap/pull/1977",
-    "node-abi": "need to enforce 3.8.0 as 3.5.0 was not good enough when upgrading to electron 17"
-  },
-  "resolutions": {
-    "node-abi": "3.15.0"
+    "WARNING": "do not upate react-popper and popper.js (to @popper/core) before reactstrap has updated it's dependencies. See: https://github.com/reactstrap/reactstrap/issues/1972, https://github.com/reactstrap/reactstrap/pull/1977"
   },
   "packageManager": "yarn@3.1.0"
 }
