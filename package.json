@@ -52,7 +52,7 @@
     "electron": "18.2.3",
     "electron-debug": "3.2.0",
     "electron-squirrel-startup": "1.0.0",
-    "eslint": "8.15.0",
+    "eslint": "8.14.0",
     "eslint-config-react-app": "7.0.1",
     "eslint-plugin-flowtype": "8.0.3",
     "eslint-plugin-import": "2.26.0",
@@ -94,7 +94,9 @@
     "react-transition-group": "is peer, required by reactstrap",
     "react-popper": "required by reactstrap",
     "popper.js": "is peer, probably required by reactstrap",
-    "WARNING": "do not upate react-popper and popper.js (to @popper/core) before reactstrap has updated it's dependencies. See: https://github.com/reactstrap/reactstrap/issues/1972, https://github.com/reactstrap/reactstrap/pull/1977"
+    "WARNING": "do not upate react-popper and popper.js (to @popper/core) before reactstrap has updated it's dependencies. See: https://github.com/reactstrap/reactstrap/issues/1972, https://github.com/reactstrap/reactstrap/pull/1977",
+    "eslint": "Do not upgrade from 8.14.0 to 8.15.0 due to: https://stackoverflow.com/questions/70449712/create-react-app-error-in-plugin-react-was-conflicted-between-eslintrc-jso",
+    "react-dropzone": "do not upgrade from 12.1.0 to 14.1.0, due to accept filter not working (in electron?)"
   },
   "packageManager": "yarn@3.1.0"
 }
