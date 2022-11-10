@@ -23,7 +23,7 @@
   "dependencies": {
     "better-sqlite3": "7.6.2",
     "popper.js": "1.16.1",
-    "react-transition-group": "4.4.2"
+    "react-transition-group": "4.4.5"
   },
   "devDependencies": {
     "@babel/core": "7.20.2",
@@ -67,7 +67,7 @@
     "mobx-state-tree": "5.1.5",
     "moment": "2.29.4",
     "mst-middlewares": "5.1.5",
-    "node-abi": "3.22.0",
+    "node-abi": "3.28.0",
     "node-loader": "2.0.0",
     "prettier": "2.7.1",
     "react": "18.2.0",
@@ -75,16 +75,16 @@
     "react-dom": "18.2.0",
     "react-dropzone": "12.1.0",
     "react-error-boundary": "3.1.4",
-    "react-icons": "4.4.0",
+    "react-icons": "4.6.0",
     "react-json-view": "1.21.3",
     "react-linkify": "0.x",
     "react-reflex": "4.0.9",
-    "react-select": "5.4.0",
-    "react-window": "1.8.7",
+    "react-select": "5.6.0",
+    "react-window": "1.8.8",
     "reactstrap": "8.10.1",
     "source-map-support": "0.5.21",
     "style-loader": "3.3.1",
-    "styled-components": "5.3.5",
+    "styled-components": "5.3.6",
     "url-loader": "4.1.1",
     "use-detect-print": "0.0.2",
     "username": "6.0.0"
