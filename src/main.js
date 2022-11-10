@@ -34,6 +34,7 @@ const browserWindowOptions = {
     // needs to be false, see: https://github.com/electron/electron-quick-start/issues/463#issuecomment-869219170
     contextIsolation: false,
     nativeWindowOpen: true,
+    enableRemoteModule: true,
     preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
   },
 }
