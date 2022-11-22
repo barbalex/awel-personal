@@ -4266,18 +4266,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"concat-stream@npm:^1.6.2":
-  version: 1.6.2
-  resolution: "concat-stream@npm:1.6.2"
-  dependencies:
-    buffer-from: ^1.0.0
-    inherits: ^2.0.3
-    readable-stream: ^2.2.2
-    typedarray: ^0.0.6
-  checksum: 1ef77032cb4459dcd5187bd710d6fc962b067b64ec6a505810de3d2b8cc0605638551b42f8ec91edf6fcd26141b32ef19ad749239b58fae3aba99187adc32285
-  languageName: node
-  linkType: hard
-
 "config-chain@npm:^1.1.11":
   version: 1.1.13
   resolution: "config-chain@npm:1.1.13"
@@ -5048,16 +5036,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:19.1.6":
-  version: 19.1.6
-  resolution: "electron@npm:19.1.6"
+"electron@npm:21.3.0":
+  version: 21.3.0
+  resolution: "electron@npm:21.3.0"
   dependencies:
     "@electron/get": ^1.14.1
     "@types/node": ^16.11.26
-    extract-zip: ^1.0.3
+    extract-zip: ^2.0.1
   bin:
     electron: cli.js
-  checksum: 453a279ffc1a9818b18fce16133fdd672a2535f1737594b5a963dc2408b941010d1d394fb85d0337191b666fa5ced6f5f5491688e060881346b499faacb299c6
+  checksum: c0f170299609410a4aeb2daa9bf4d6ac2872ca226a6ba16b0c97d9dfcfbfa27e0d3339c3b71c66b59dd333d471f813ca16933e7b4e7ce10342799dc60cbdf066
   languageName: node
   linkType: hard
 
@@ -5688,21 +5676,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"extract-zip@npm:^1.0.3":
-  version: 1.7.0
-  resolution: "extract-zip@npm:1.7.0"
-  dependencies:
-    concat-stream: ^1.6.2
-    debug: ^2.6.9
-    mkdirp: ^0.5.4
-    yauzl: ^2.10.0
-  bin:
-    extract-zip: cli.js
-  checksum: 011bab660d738614555773d381a6ba4815d98c1cfcdcdf027e154ebcc9fc8c9ef637b3ea5c9b2144013100071ee41722ed041fc9aacc60f6198ef747cac0c073
-  languageName: node
-  linkType: hard
-
-"extract-zip@npm:^2.0.0":
+"extract-zip@npm:^2.0.0, extract-zip@npm:^2.0.1":
   version: 2.0.1
   resolution: "extract-zip@npm:2.0.1"
   dependencies:
@@ -8156,7 +8130,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mkdirp@npm:>=0.5 0, mkdirp@npm:^0.5.1, mkdirp@npm:^0.5.4":
+"mkdirp@npm:>=0.5 0, mkdirp@npm:^0.5.1":
   version: 0.5.6
   resolution: "mkdirp@npm:0.5.6"
   dependencies:
@@ -8978,7 +8952,7 @@ __metadata:
     copy-webpack-plugin: 11.0.0
     css-loader: 6.7.2
     date-fns: 2.29.3
-    electron: 19.1.6
+    electron: 21.3.0
     electron-debug: 3.2.0
     electron-squirrel-startup: 1.0.0
     eslint: 8.28.0
@@ -9682,7 +9656,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:^2.0.0, readable-stream@npm:^2.0.1, readable-stream@npm:^2.0.2, readable-stream@npm:^2.0.5, readable-stream@npm:^2.2.2, readable-stream@npm:~2.3.6":
+"readable-stream@npm:^2.0.0, readable-stream@npm:^2.0.1, readable-stream@npm:^2.0.2, readable-stream@npm:^2.0.5, readable-stream@npm:~2.3.6":
   version: 2.3.7
   resolution: "readable-stream@npm:2.3.7"
   dependencies:
@@ -11090,13 +11064,6 @@ __metadata:
   version: 0.0.7
   resolution: "typed-styles@npm:0.0.7"
   checksum: 36a6ad6bee008c15ddb8c2425eaf9aee37d2841985b4c44406ea4cf57080a9c30b6f9f3feb842ac952354733ac53299ee44f68d83f734486e8344d413f8c8c0d
-  languageName: node
-  linkType: hard
-
-"typedarray@npm:^0.0.6":
-  version: 0.0.6
-  resolution: "typedarray@npm:0.0.6"
-  checksum: 33b39f3d0e8463985eeaeeacc3cb2e28bc3dfaf2a5ed219628c0b629d5d7b810b0eb2165f9f607c34871d5daa92ba1dc69f49051cf7d578b4cbd26c340b9d1b1
   languageName: node
   linkType: hard
 
