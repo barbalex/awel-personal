@@ -5036,16 +5036,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:21.3.0":
-  version: 21.3.0
-  resolution: "electron@npm:21.3.0"
+"electron@npm:21.3.1":
+  version: 21.3.1
+  resolution: "electron@npm:21.3.1"
   dependencies:
     "@electron/get": ^1.14.1
     "@types/node": ^16.11.26
     extract-zip: ^2.0.1
   bin:
     electron: cli.js
-  checksum: c0f170299609410a4aeb2daa9bf4d6ac2872ca226a6ba16b0c97d9dfcfbfa27e0d3339c3b71c66b59dd333d471f813ca16933e7b4e7ce10342799dc60cbdf066
+  checksum: b3886ec848c3494fa634ea67771a9a12bd8ff021005253bf796a1341e26379e45dc239bef4996d501f7a8dea1a85f06fc9a6ab63608dfb05eae3b51f32552506
   languageName: node
   linkType: hard
 
@@ -8952,7 +8952,7 @@ __metadata:
     copy-webpack-plugin: 11.0.0
     css-loader: 6.7.2
     date-fns: 2.29.3
-    electron: 21.3.0
+    electron: 21.3.1
     electron-debug: 3.2.0
     electron-squirrel-startup: 1.0.0
     eslint: 8.28.0
@@ -8973,7 +8973,7 @@ __metadata:
     node-abi: 3.28.0
     node-loader: 2.0.0
     popper.js: 1.16.1
-    prettier: 2.7.1
+    prettier: 2.8.0
     react: 18.2.0
     react-datepicker: 4.8.0
     react-dom: 18.2.0
@@ -9158,12 +9158,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:2.7.1":
-  version: 2.7.1
-  resolution: "prettier@npm:2.7.1"
+"prettier@npm:2.8.0":
+  version: 2.8.0
+  resolution: "prettier@npm:2.8.0"
   bin:
     prettier: bin-prettier.js
-  checksum: 55a4409182260866ab31284d929b3cb961e5fdb91fe0d2e099dac92eaecec890f36e524b4c19e6ceae839c99c6d7195817579cdffc8e2c80da0cb794463a748b
+  checksum: 72004ce0cc9bb097daf3e3833f62495768724392c1d5b178dd47372337616e9e50ecbb0804f236596223f7b5eb1bbe69cefc8957dca21112c5777e77ef73a564
   languageName: node
   linkType: hard
 
