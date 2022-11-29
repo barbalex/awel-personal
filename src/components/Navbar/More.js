@@ -82,7 +82,7 @@ const More = () => {
         <DropdownItem onClick={chooseDbConnection}>
           Datenbank wählen
           <br />
-          <DbPath>{`Aktuell: ${db.name}`}</DbPath>
+          <DbPath>{`Aktuell: ${db?.name}`}</DbPath>
         </DropdownItem>
         {!activeLocation !== 'mutations' && (
           <div>
