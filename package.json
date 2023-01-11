@@ -9,7 +9,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "rebuild": "./node_modules/.bin/electron-rebuild  --update-binary"
+    "rebuild": "./node_modules/.bin/electron-rebuild --runtime=electron --target=21.0.1 --dist-url=https://electronjs.org/headers"
   },
   "keywords": [],
   "author": {
@@ -39,19 +39,19 @@
     "@electron-forge/maker-zip": "6.0.4",
     "@electron-forge/plugin-auto-unpack-natives": "6.0.4",
     "@electron-forge/plugin-webpack": "6.0.4",
-    "@typescript-eslint/eslint-plugin": "5.45.0",
-    "@typescript-eslint/parser": "5.45.0",
+    "@typescript-eslint/eslint-plugin": "5.48.1",
+    "@typescript-eslint/parser": "5.48.1",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
     "babel-loader": "9.1.0",
     "bootstrap": "4.6.2",
     "classnames": "2.3.2",
     "copy-webpack-plugin": "11.0.0",
-    "css-loader": "6.7.2",
+    "css-loader": "6.7.3",
     "date-fns": "2.29.3",
-    "electron": "21.3.3",
+    "electron": "21.0.1",
     "electron-debug": "3.2.0",
     "electron-squirrel-startup": "1.0.0",
-    "eslint": "8.28.0",
+    "eslint": "8.31.0",
     "eslint-config-react-app": "7.0.1",
     "eslint-plugin-flowtype": "8.0.3",
     "eslint-plugin-import": "2.26.0",
@@ -60,15 +60,15 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "exceljs": "4.3.0",
     "file-loader": "6.2.0",
-    "jquery": "3.6.1",
+    "jquery": "3.6.3",
     "mobx": "6.7.0",
     "mobx-react-lite": "3.4.0",
-    "mobx-state-tree": "5.1.6",
+    "mobx-state-tree": "5.1.7",
     "moment": "2.29.4",
-    "mst-middlewares": "5.1.6",
+    "mst-middlewares": "5.1.7",
     "node-abi": "3.31.0",
     "node-loader": "2.0.0",
-    "prettier": "2.8.0",
+    "prettier": "2.8.2",
     "react": "18.2.0",
     "react-datepicker": "4.8.0",
     "react-dom": "18.2.0",
@@ -91,7 +91,8 @@
   "devComments": {
     "depsVsDevDeps": "only placing sqlite in deps makes webpack bundle the right deps while ommitting sqlite, see: https://github.com/electron-userland/electron-forge/issues/1451#issuecomment-606039498",
     "popper.js": "is peer, probably required by reactstrap",
-    "react-dropzone": "do not upgrade from 12.1.0 to 14.1.0, due to accept filter not working (in electron?)"
-  },
-  "packageManager": "yarn@3.1.0"
+    "react-dropzone": "do not upgrade from 12.1.0 to 14.1.0, due to accept filter not working (in electron?)",
+    "versions": "node on pc: 18.12.1, better-sqlite: 8.0.1. electron: 21.0.1",
+    "command": "npm install better-sqlite3 --build-from-source --runtime=electron --target=21.0.1 --dist-url=https://electronjs.org/headers --force"
+  }
 }
