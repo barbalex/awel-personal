@@ -35,7 +35,6 @@ const browserWindowOptions = {
     contextIsolation: false,
     nativeWindowOpen: true,
     enableRemoteModule: true,
-    // preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
   },
 }
 
