@@ -21,7 +21,7 @@
     "forge": "./forge.config.js"
   },
   "dependencies": {
-    "better-sqlite3": "8.0.1",
+    "better-sqlite3": "^8.0.1",
     "popper.js": "1.16.1"
   },
   "devDependencies": {
@@ -48,7 +48,7 @@
     "copy-webpack-plugin": "11.0.0",
     "css-loader": "6.7.3",
     "date-fns": "2.29.3",
-    "electron": "21.0.1",
+    "electron": "22.0.1",
     "electron-debug": "3.2.0",
     "electron-squirrel-startup": "1.0.0",
     "eslint": "8.31.0",
@@ -93,6 +93,6 @@
     "popper.js": "is peer, probably required by reactstrap",
     "react-dropzone": "do not upgrade from 12.1.0 to 14.1.0, due to accept filter not working (in electron?)",
     "versions": "node on pc: 18.12.1, better-sqlite: 8.0.1. electron: 21.0.1",
-    "command": "npm install better-sqlite3 --build-from-source --runtime=electron --target=21.0.1 --dist-url=https://electronjs.org/headers --force"
+    "command": "npm install better-sqlite3 --build-from-source --runtime=electron --target=22.0.1 --dist-url=https://electronjs.org/headers --force"
   }
 }
