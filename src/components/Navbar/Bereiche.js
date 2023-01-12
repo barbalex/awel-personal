@@ -3,6 +3,7 @@ import { NavItem, NavLink, Button, UncontrolledTooltip } from 'reactstrap'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { FaPlus, FaTrashAlt } from 'react-icons/fa'
+import { useNavigate, useLocation, useParams } from 'react-router-dom'
 
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
@@ -23,12 +24,13 @@ const StyledButton = styled(Button)`
 `
 
 const Bereich = () => {
+  const navigate = useNavigate()
+
   const store = useContext(storeContext)
   const {
     showDeleted,
     bereicheFiltered,
     bereiche,
-    setLocation,
     addBereich,
     setDeletionMessage,
     setDeletionTitle,
@@ -42,9 +44,9 @@ const Bereich = () => {
   const showTab = useCallback(
     e => {
       e.preventDefault()
-      setLocation([e.target.id])
+      navigate(`/Bereiche`)
     },
-    [setLocation],
+    [navigate],
   )
   // const addBereich = useCallback(() => addBereich())
   const deleteBereich = useCallback(() => {

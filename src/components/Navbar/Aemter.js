@@ -3,8 +3,8 @@ import { NavItem, NavLink, Button, UncontrolledTooltip } from 'reactstrap'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { FaPlus, FaTrashAlt } from 'react-icons/fa'
+import { useNavigate, useLocation, useParams } from 'react-router-dom'
 
-import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 
 const Sup = styled.sup`
@@ -12,7 +12,7 @@ const Sup = styled.sup`
 `
 const StyledNavItem = styled(NavItem)`
   display: flex;
-  border: ${props =>
+  border: ${(props) =>
     props.active ? '1px solid rgb(255, 255, 255, .5)' : 'unset'};
   border-radius: 0.25rem;
   margin-right: 5px;
@@ -23,37 +23,37 @@ const StyledButton = styled(Button)`
 `
 
 const Amt = () => {
+  const navigate = useNavigate()
+  const { amtId } = useParams()
+  const { pathname } = useLocation()
+
   const store = useContext(storeContext)
   const {
     showDeleted,
     aemterFiltered,
     aemter,
-    setLocation,
     addAmt,
     setDeletionMessage,
     setDeletionTitle,
     setDeletionCallback,
     activePrintForm,
   } = store
-  const location = store.location.toJSON()
-  const activeLocation = location[0]
-  const activeId = ifIsNumericAsNumber(location[1])
 
   const showTab = useCallback(
-    e => {
+    (e) => {
       e.preventDefault()
-      setLocation([e.target.id])
+      navigate(`/Aemter`)
     },
-    [setLocation],
+    [navigate],
   )
   // const addAmt = useCallback(() => addAmt())
   const deleteAmt = useCallback(() => {
-    const activeAmt = aemter.find(p => p.id === activeId)
+    const activeAmt = aemter.find((p) => p.id === amtId)
     if (activeAmt.deleted === 1) {
       // amt.deleted is already = 1
       // prepare true deletion
       setDeletionCallback(() => {
-        store.deleteAmt(activeId)
+        store.deleteAmt(amtId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -68,7 +68,7 @@ const Amt = () => {
       // do not true delete yet
       // only set amt.deleted = 1
       setDeletionCallback(() => {
-        store.setAmtDeleted(activeId)
+        store.setAmtDeleted(amtId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -80,7 +80,7 @@ const Amt = () => {
       setDeletionTitle('Amt löschen')
     }
   }, [
-    activeId,
+    amtId,
     aemter,
     setDeletionCallback,
     setDeletionMessage,
@@ -90,13 +90,13 @@ const Amt = () => {
 
   const aemterSum = showDeleted
     ? aemter.length
-    : aemter.filter(p => p.deleted === 0).length
+    : aemter.filter((p) => p.deleted === 0).length
   const aemterSumSup =
     aemterFiltered.length !== aemterSum
       ? `${aemterFiltered.length}/${aemterSum}`
       : aemterFiltered.length
-  const active = activeLocation === 'Aemter' && !activePrintForm
-  const existsActiveAmt = active && location[1]
+  const active = pathname.startsWith('/Aemter') && !activePrintForm
+  const existsActiveAmt = active && amtId
 
   return (
     <StyledNavItem active={active}>
@@ -104,7 +104,7 @@ const Amt = () => {
         Ämter
         {active && <Sup>{aemterSumSup}</Sup>}
       </NavLink>
-      {activeLocation !== 'Aemter' && (
+      {!pathname.startsWith('/Aemter') && (
         <UncontrolledTooltip placement="bottom" target="Aemter">
           Ämter anzeigen
         </UncontrolledTooltip>

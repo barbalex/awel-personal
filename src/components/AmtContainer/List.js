@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { UncontrolledTooltip } from 'reactstrap'
 import { FaTrashAlt } from 'react-icons/fa'
 import { FaRegEdit } from 'react-icons/fa'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import storeContext from '../../storeContext'
@@ -59,9 +60,12 @@ const MutationFrist = styled.div`
   font-size: 1rem;
 `
 
-const AmtList = ({ dimensions, activeId, listRef }) => {
+const AmtList = ({ dimensions, listRef }) => {
+  const { amtId } = useParams()
+  const navigate = useNavigate()
+
   const store = useContext(storeContext)
-  const { setLocation, showFilter, setShowFilter, showMutationNoetig } = store
+  const { showFilter, setShowFilter, showMutationNoetig } = store
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
   const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
   const aemter = store.aemterFilteredSortedByHandlungsbedarf
@@ -86,10 +90,10 @@ const AmtList = ({ dimensions, activeId, listRef }) => {
               <Row
                 style={style}
                 onClick={() => {
-                  setLocation(['Aemter', row.id.toString()])
+                  navigate(`/Aemter/${row.id}`)
                   if (showFilter) setShowFilter(false)
                 }}
-                active={!showFilter && activeId === row.id}
+                active={!showFilter && amtId === row.id}
               >
                 <RowContainer>
                   <Text>{`${row.name || ''}`}</Text>

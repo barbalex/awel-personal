@@ -2,13 +2,12 @@ import React, { useContext, useEffect, useRef } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
+import { Outlet, useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
-import Amt from './Amt'
 import List from './List'
 import fetchAemter from '../../src/fetchAemter'
 import fetchWerte from '../../src/fetchWerte'
-import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
@@ -28,11 +27,10 @@ const StyledReflexElement = styled(ReflexElement)`
 `
 
 const AmtContainer = () => {
+  const { amtId } = useParams()
   const store = useContext(storeContext)
   const { showFilter, aemter, db } = store
-  const location = store.location.toJSON()
-  const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-  const amt = aemter.find((p) => p.id === activeId)
+  const amt = aemter.find((p) => p.id === amtId)
   // pass list the active amt's props to enable instant updates
   const amtJson = amt ? amt.toJSON() : {}
 
@@ -57,11 +55,11 @@ const AmtContainer = () => {
             renderOnResizeRate={100}
             renderOnResize
           >
-            <List activeId={activeId} {...amtJson} listRef={listRef} />
+            <List {...amtJson} listRef={listRef} />
           </ReflexElement>
           <ReflexSplitter />
           <StyledReflexElement showfilter={showFilter}>
-            {activeId && <Amt activeId={activeId} listRef={listRef} />}
+            {!!amtId && <Outlet listRef={listRef} />}
           </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>

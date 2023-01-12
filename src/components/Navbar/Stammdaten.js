@@ -10,8 +10,8 @@ import {
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { FaPlus, FaTrashAlt } from 'react-icons/fa'
+import { useNavigate, useParams } from 'react-router-dom'
 
-import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 
 const Sup = styled.sup`
@@ -19,7 +19,7 @@ const Sup = styled.sup`
 `
 const StamdatenContainer = styled.div`
   display: flex;
-  border: ${props =>
+  border: ${(props) =>
     props.active ? '1px solid rgb(255, 255, 255, .5)' : 'unset'};
   border-radius: 0.25rem;
 `
@@ -29,27 +29,27 @@ const StyledButton = styled(Button)`
 `
 
 const Stammdaten = () => {
+  const navigate = useNavigate()
+  const { tableName, tableId } = useParams()
+
   const store = useContext(storeContext)
   const { setDeletionMessage, setDeletionTitle, setDeletionCallback } = store
-  const location = store.location.toJSON()
-  const activeTable = location[0]
-  const activeId = ifIsNumericAsNumber(location[1])
   let stammdatenCount = 0
-  if (activeTable.includes('Werte')) {
-    stammdatenCount = store[activeTable].length
+  if (tableName.includes('Werte')) {
+    stammdatenCount = store[tableName].length
   }
-  const existsActiveWert = activeTable.includes('Werte') && location[1]
+  const existsActiveWert = tableName.includes('Werte') && !!tableId
 
   const addWert = useCallback(() => {
-    store.addWert(activeTable)
-  }, [activeTable, store])
+    store.addWert(tableName)
+  }, [tableName, store])
   const deleteWert = useCallback(() => {
-    const activeWert = store[activeTable].find(p => p.id === activeId)
+    const activeWert = store[tableName].find((p) => p.id === tableId)
     if (activeWert.deleted === 1) {
       // deleted is already = 1
       // prepare true deletion
       setDeletionCallback(() => {
-        store.deleteWert({ id: activeId, table: activeTable })
+        store.deleteWert({ id: tableId, table: tableName })
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -59,12 +59,12 @@ const Stammdaten = () => {
       setDeletionMessage(
         `${name} war schon gelöscht. Wenn Sie ihn nochmals löschen, ist das endgültig und unwiederbringlich. Möchten Sie das?`,
       )
-      setDeletionTitle(`${activeTable} unwiederbringlich löschen`)
+      setDeletionTitle(`${tableName} unwiederbringlich löschen`)
     } else {
       // do not true delete yet
       // only set deleted = 1
       setDeletionCallback(() => {
-        store.setWertDeleted({ id: activeId, table: activeTable })
+        store.setWertDeleted({ id: tableId, table: tableName })
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -73,28 +73,28 @@ const Stammdaten = () => {
           activeWert.value ? `"${activeWert.value}"` : 'Diesen Datensatz'
         } wirklich löschen?`,
       )
-      setDeletionTitle(`${activeTable} löschen`)
+      setDeletionTitle(`${tableName} löschen`)
     }
   }, [
     store,
-    activeTable,
-    activeId,
+    tableName,
+    tableId,
     setDeletionCallback,
     setDeletionMessage,
     setDeletionTitle,
   ])
   const onClickStatusTable = useCallback(
-    e => store.setLocation([e.target.name]),
-    [store],
+    (e) => navigate(`/Werte/${e.target.name}`),
+    [navigate],
   )
 
   return (
-    <StamdatenContainer active={activeTable.includes('Werte')}>
-      <UncontrolledDropdown nav inNavbar active={activeTable.includes('Werte')}>
+    <StamdatenContainer active={tableName.includes('Werte')}>
+      <UncontrolledDropdown nav inNavbar active={tableName.includes('Werte')}>
         <DropdownToggle nav caret>
-          {activeTable.includes('Werte') ? (
+          {tableName.includes('Werte') ? (
             <span>
-              {activeTable}
+              {tableName}
               <Sup>{stammdatenCount}</Sup>
             </span>
           ) : (
@@ -158,7 +158,7 @@ const Stammdaten = () => {
           </DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
-      {activeTable.includes('Werte') && (
+      {tableName.includes('Werte') && (
         <>
           <StyledButton id="newStammdatenButton" onClick={addWert}>
             <FaPlus />

@@ -2,14 +2,13 @@ import React, { useContext, useEffect, useRef } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
+import { useParams, Outlet } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
-import Abteilung from './Abteilung'
 import List from './List'
 import fetchAemter from '../../src/fetchAemter'
 import fetchAbteilungen from '../../src/fetchAbteilungen'
 import fetchWerte from '../../src/fetchWerte'
-import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
@@ -29,11 +28,11 @@ const StyledReflexElement = styled(ReflexElement)`
 `
 
 const AbteilungContainer = () => {
+  const { abteilungId } = useParams()
+
   const store = useContext(storeContext)
   const { showFilter, abteilungen, db } = store
-  const location = store.location.toJSON()
-  const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-  const abteilung = abteilungen.find((p) => p.id === activeId)
+  const abteilung = abteilungen.find((p) => p.id === abteilungId)
   // pass list the active abteilung's props to enable instant updates
   const abteilungJson = abteilung ? abteilung.toJSON() : {}
 
@@ -59,11 +58,11 @@ const AbteilungContainer = () => {
             renderOnResizeRate={100}
             renderOnResize
           >
-            <List activeId={activeId} {...abteilungJson} listRef={listRef} />
+            <List {...abteilungJson} listRef={listRef} />
           </ReflexElement>
           <ReflexSplitter />
           <StyledReflexElement showfilter={showFilter}>
-            {activeId && <Abteilung activeId={activeId} listRef={listRef} />}
+            {abteilungId && <Outlet listRef={listRef} />}
           </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>
