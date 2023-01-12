@@ -2,15 +2,14 @@ import React, { useContext, useEffect, useRef } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
+import { Outlet, useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
-import Bereich from './Bereich'
 import List from './List'
 import fetchPersonen from '../../src/fetchPersonen'
 import fetchBereiche from '../../src/fetchBereiche'
 import fetchAbteilungen from '../../src/fetchAbteilungen'
 import fetchWerte from '../../src/fetchWerte'
-import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
@@ -30,11 +29,11 @@ const StyledReflexElement = styled(ReflexElement)`
 `
 
 const BereichContainer = () => {
+  const { bereichId } = useParams()
+
   const store = useContext(storeContext)
   const { showFilter, bereiche, db } = store
-  const location = store.location.toJSON()
-  const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-  const bereich = bereiche.find((p) => p.id === activeId)
+  const bereich = bereiche.find((p) => p.id === bereichId)
   // pass list the active bereich's props to enable instant updates
   const bereichJson = bereich ? bereich.toJSON() : {}
 
@@ -61,11 +60,11 @@ const BereichContainer = () => {
             renderOnResizeRate={100}
             renderOnResize
           >
-            <List activeId={activeId} {...bereichJson} listRef={listRef} />
+            <List activeId={bereichId} {...bereichJson} listRef={listRef} />
           </ReflexElement>
           <ReflexSplitter />
           <StyledReflexElement showfilter={showFilter}>
-            {activeId && <Bereich activeId={activeId} listRef={listRef} />}
+            {bereichId && <Outlet activeId={bereichId} listRef={listRef} />}
           </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>

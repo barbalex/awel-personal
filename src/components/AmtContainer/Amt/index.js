@@ -11,6 +11,7 @@ import { Form } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
 import moment from 'moment'
+import { useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../../shared/ErrorBoundary'
 import Input from '../../shared/Input'
@@ -27,7 +28,9 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Amt = ({ activeId, listRef }) => {
+const Amt = ({ listRef }) => {
+  const { amtId: amtIdInUrl } = useParams()
+
   const store = useContext(storeContext)
   const {
     personen,
@@ -48,7 +51,7 @@ const Amt = ({ activeId, listRef }) => {
   if (showFilter) {
     amt = filterAmt
   } else {
-    amt = aemter.find((p) => p.id === activeId)
+    amt = aemter.find((p) => p.id === amtIdInUrl)
     if (!amt) amt = {}
   }
   const amtId = showFilter ? '' : amt.id
@@ -64,8 +67,7 @@ const Amt = ({ activeId, listRef }) => {
 
   const saveToDb = useCallback(
     ({ field, value }) => {
-      if (!amt && !showFilter)
-        throw new Error(`Amt with id ${activeId} not found`)
+      if (!amt && !showFilter) throw new Error(`Amt with id ${amtId} not found`)
 
       let newValue
       if (isDateField(field)) {
@@ -112,7 +114,7 @@ const Amt = ({ activeId, listRef }) => {
       }
     },
     [
-      activeId,
+      amtId,
       amt,
       filterAmt,
       listRef,
@@ -156,7 +158,7 @@ const Amt = ({ activeId, listRef }) => {
     [standortWerte],
   )
 
-  if (!showFilter && !activeId) return null
+  if (!showFilter && !amtId) return null
 
   return (
     <ErrorBoundary>

@@ -6,6 +6,7 @@ import moment from 'moment'
 import { Button, UncontrolledTooltip } from 'reactstrap'
 import ReactJson from 'react-json-view'
 import { FaUndo } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 
 import storeContext from '../../storeContext'
 
@@ -13,8 +14,9 @@ moment.locale('de')
 
 const Row = styled.div`
   border-bottom: 1px solid rgba(46, 125, 50, 0.5);
-  background-color: ${props => (props.active ? 'rgb(255, 250, 198)' : 'unset')};
-  border-top: ${props =>
+  background-color: ${(props) =>
+    props.active ? 'rgb(255, 250, 198)' : 'unset'};
+  border-top: ${(props) =>
     props.active ? '1px solid rgba(46, 125, 50, 0.5)' : 'unset'};
   padding: 15px 8px;
   display: grid;
@@ -58,25 +60,21 @@ const RevertButton = styled(Button)`
 `
 
 const MutationsRow = ({ style, listIndex, mutations, activeId }) => {
-  const store = useContext(storeContext)
-  const { setLocation, revertMutation } = store
-  const row = mutations[listIndex]
-  const {
-    id,
-    time,
-    user,
-    tableName,
-    rowId,
-    field,
-    op,
-    value,
-    previousValue,
-  } = row
+  const navigate = useNavigate()
 
-  const revert = useCallback(() => revertMutation(row.id), [revertMutation, row.id])
+  const store = useContext(storeContext)
+  const { revertMutation } = store
+  const row = mutations[listIndex]
+  const { id, time, user, tableName, rowId, field, op, value, previousValue } =
+    row
+
+  const revert = useCallback(
+    () => revertMutation(row.id),
+    [revertMutation, row.id],
+  )
   const onClickRow = useCallback(() => {
-    setLocation(['mutations', row.id.toString()])
-  }, [row.id, setLocation])
+    navigate(`/mutations/${row.id}`)
+  }, [navigate, row.id])
 
   return (
     <Row style={style} onClick={onClickRow} active={activeId === id}>

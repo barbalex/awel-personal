@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { UncontrolledTooltip } from 'reactstrap'
 import { FaTrashAlt } from 'react-icons/fa'
 import { FaRegEdit } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import storeContext from '../../storeContext'
@@ -60,8 +61,10 @@ const MutationFrist = styled.div`
 `
 
 const BereichList = ({ dimensions, activeId, listRef }) => {
+  const navigate = useNavigate()
+
   const store = useContext(storeContext)
-  const { setLocation, showFilter, setShowFilter, showMutationNoetig } = store
+  const { showFilter, setShowFilter, showMutationNoetig } = store
   // eslint-disable-next-line no-restricted-globals
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
   // eslint-disable-next-line no-restricted-globals
@@ -88,7 +91,7 @@ const BereichList = ({ dimensions, activeId, listRef }) => {
               <Row
                 style={style}
                 onClick={() => {
-                  setLocation(['Bereiche', row.id.toString()])
+                  navigate(`/Bereiche/${row.id}`)
                   if (showFilter) setShowFilter(false)
                 }}
                 active={!showFilter && activeId === row.id}

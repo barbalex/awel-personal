@@ -11,6 +11,7 @@ import { Form } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
 import moment from 'moment'
+import { useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../../shared/ErrorBoundary'
 import Input from '../../shared/Input'
@@ -27,7 +28,9 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Abteilung = ({ activeId, listRef }) => {
+const Abteilung = ({ listRef }) => {
+  const { abteilungId: abteilungIdInUrl } = useParams()
+
   const store = useContext(storeContext)
   const {
     personen,
@@ -49,7 +52,7 @@ const Abteilung = ({ activeId, listRef }) => {
   if (showFilter) {
     abteilung = filterAbteilung
   } else {
-    abteilung = abteilungen.find((p) => p.id === activeId)
+    abteilung = abteilungen.find((p) => p.id === abteilungIdInUrl)
     if (!abteilung) abteilung = {}
   }
   const abteilungId = showFilter ? '' : abteilung.id
@@ -66,7 +69,7 @@ const Abteilung = ({ activeId, listRef }) => {
   const saveToDb = useCallback(
     ({ field, value }) => {
       if (!abteilung && !showFilter)
-        throw new Error(`Abteilung with id ${activeId} not found`)
+        throw new Error(`Abteilung with id ${abteilungId} not found`)
 
       let newValue
       if (isDateField(field)) {
@@ -124,7 +127,7 @@ const Abteilung = ({ activeId, listRef }) => {
     [
       abteilung,
       showFilter,
-      activeId,
+      abteilungId,
       setFilter,
       filterAbteilung,
       updateField,
@@ -176,7 +179,7 @@ const Abteilung = ({ activeId, listRef }) => {
     [standortWerte],
   )
 
-  if (!showFilter && !activeId) return null
+  if (!showFilter && !abteilungId) return null
 
   return (
     <ErrorBoundary>
