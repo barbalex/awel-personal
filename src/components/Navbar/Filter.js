@@ -76,10 +76,10 @@ const Filter = () => {
 
   const [filterDropdownIsOpen, setFilterDropdownIsOpen] = useState(false)
 
-  const toggleShowFilter = useCallback(() => setShowFilter(!showFilter), [
-    setShowFilter,
-    showFilter,
-  ])
+  const toggleShowFilter = useCallback(
+    () => setShowFilter(!showFilter),
+    [setShowFilter, showFilter],
+  )
   const onChangeFilterFulltext = useCallback(
     (e) => {
       setFilterFulltext(e.target.value)
@@ -163,7 +163,7 @@ const Filter = () => {
             onBlur={onBlurFilterFulltext}
             value={filterFulltext || ''}
             onKeyPress={onKeyPressFilterFulltext}
-            existsfilter={!!filterFulltext ? 'true' : 'false'}
+            existsfilter={filterFulltext ? 'true' : 'false'}
           />
           <InputGroupAddon addonType="append">
             {filterFulltext && (
