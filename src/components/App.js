@@ -24,7 +24,7 @@ import PersonPrintKader from './PersonContainer/PersonPrintKader'
 import PersonPrintVerzTel from './PersonContainer/PersonPrintVerzTel'
 import PersonPrintVerzMobiltel from './PersonContainer/PersonPrintVerzMobiltel'
 import PersonPrintVerzKurzzeichen from './PersonContainer/PersonPrintVerzKurzzeichen'
-import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
+import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber' 
 
 registerLocale('de', de)
 setDefaultLocale('de')
