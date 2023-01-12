@@ -3,8 +3,8 @@ import { NavItem, NavLink, Button, UncontrolledTooltip } from 'reactstrap'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { FaPlus, FaTrashAlt } from 'react-icons/fa'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 
-import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 
 const Sup = styled.sup`
@@ -12,7 +12,7 @@ const Sup = styled.sup`
 `
 const StyledNavItem = styled(NavItem)`
   display: flex;
-  border: ${props =>
+  border: ${(props) =>
     props.active ? '1px solid rgb(255, 255, 255, .5)' : 'unset'};
   border-radius: 0.25rem;
   margin-right: 5px;
@@ -23,37 +23,37 @@ const StyledButton = styled(Button)`
 `
 
 const Abteilung = () => {
+  const { abteilungId } = useParams()
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+
   const store = useContext(storeContext)
   const {
     showDeleted,
     abteilungenFiltered,
     abteilungen,
-    setLocation,
     addAbteilung,
     setDeletionMessage,
     setDeletionTitle,
     setDeletionCallback,
     activePrintForm,
   } = store
-  const location = store.location.toJSON()
-  const activeLocation = location[0]
-  const activeId = ifIsNumericAsNumber(location[1])
 
   const showTab = useCallback(
-    e => {
+    (e) => {
       e.preventDefault()
-      setLocation([e.target.id])
+      navigate(`/Abteilungen`)
     },
-    [setLocation],
+    [navigate],
   )
   // const addAbteilung = useCallback(() => addAbteilung())
   const deleteAbteilung = useCallback(() => {
-    const activeAbteilung = abteilungen.find(p => p.id === activeId)
+    const activeAbteilung = abteilungen.find((p) => p.id === abteilungId)
     if (activeAbteilung.deleted === 1) {
       // abteilung.deleted is already = 1
       // prepare true deletion
       setDeletionCallback(() => {
-        store.deleteAbteilung(activeId)
+        store.deleteAbteilung(abteilungId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -70,7 +70,7 @@ const Abteilung = () => {
       // do not true delete yet
       // only set abteilung.deleted = 1
       setDeletionCallback(() => {
-        store.setAbteilungDeleted(activeId)
+        store.setAbteilungDeleted(abteilungId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -85,7 +85,7 @@ const Abteilung = () => {
     }
   }, [
     abteilungen,
-    activeId,
+    abteilungId,
     setDeletionCallback,
     setDeletionMessage,
     setDeletionTitle,
@@ -94,13 +94,13 @@ const Abteilung = () => {
 
   const abteilungenSum = showDeleted
     ? abteilungen.length
-    : abteilungen.filter(p => p.deleted === 0).length
+    : abteilungen.filter((p) => p.deleted === 0).length
   const abteilungenSumSup =
     abteilungenFiltered.length !== abteilungenSum
       ? `${abteilungenFiltered.length}/${abteilungenSum}`
       : abteilungenFiltered.length
-  const active = activeLocation === 'Abteilungen' && !activePrintForm
-  const existsActiveAbteilung = active && location[1]
+  const active = pathname.startsWith('/Abteilungen') && !activePrintForm
+  const existsActiveAbteilung = active && !!abteilungId
 
   return (
     <StyledNavItem active={active}>
@@ -108,7 +108,7 @@ const Abteilung = () => {
         Abteilungen
         {active && <Sup>{abteilungenSumSup}</Sup>}
       </NavLink>
-      {activeLocation !== 'Abteilungen' && (
+      {!pathname.startsWith('/Abteilungen') && (
         <UncontrolledTooltip placement="bottom" target="Abteilungen">
           Abteilungen anzeigen
         </UncontrolledTooltip>

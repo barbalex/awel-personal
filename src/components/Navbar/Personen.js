@@ -1,5 +1,6 @@
 import React, { useContext, useCallback } from 'react'
 import { NavItem, NavLink, Button, UncontrolledTooltip } from 'reactstrap'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { FaPlus, FaTrashAlt } from 'react-icons/fa'
@@ -12,7 +13,7 @@ const Sup = styled.sup`
 `
 const StyledNavItem = styled(NavItem)`
   display: flex;
-  border: ${props =>
+  border: ${(props) =>
     props.active ? '1px solid rgb(255, 255, 255, .5)' : 'unset'};
   border-radius: 0.25rem;
   margin-right: 5px;
@@ -23,12 +24,13 @@ const StyledButton = styled(Button)`
 `
 
 const Person = () => {
+  const navigate = useNavigate()
+
   const store = useContext(storeContext)
   const {
     showDeleted,
     personenFiltered,
     personen,
-    setLocation,
     addPerson,
     setDeletionMessage,
     setDeletionTitle,
@@ -41,15 +43,15 @@ const Person = () => {
   const activeId = ifIsNumericAsNumber(location[1])
 
   const showTab = useCallback(
-    e => {
+    (e) => {
       e.preventDefault()
       setActivePrintForm(null)
-      setLocation([e.target.id])
+      navigate('/Personen')
     },
-    [setActivePrintForm, setLocation],
+    [navigate, setActivePrintForm],
   )
   const deletePerson = useCallback(() => {
-    const activePerson = personen.find(p => p.id === activeId)
+    const activePerson = personen.find((p) => p.id === activeId)
     if (activePerson.deleted === 1) {
       // person.deleted is already = 1
       // prepare true deletion
@@ -96,7 +98,7 @@ const Person = () => {
   const existsActivePerson = activeLocation === 'Personen' && location[1]
   const personenSum = showDeleted
     ? personen.length
-    : personen.filter(p => p.deleted === 0).length
+    : personen.filter((p) => p.deleted === 0).length
   const personenSumSup =
     personenFiltered.length !== personenSum
       ? `${personenFiltered.length}/${personenSum}`

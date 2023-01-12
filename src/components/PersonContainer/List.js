@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { UncontrolledTooltip } from 'reactstrap'
 import { FaTrashAlt } from 'react-icons/fa'
 import { FaRegEdit } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import storeContext from '../../storeContext'
@@ -63,9 +64,10 @@ const MutationFrist = styled.div`
 `
 
 const PersonList = ({ dimensions, activeId, listRef }) => {
+  const navigate = useNavigate()
+
   const store = useContext(storeContext)
   const {
-    setLocation,
     showFilter,
     setShowFilter,
     showMutationNoetig,
@@ -98,7 +100,7 @@ const PersonList = ({ dimensions, activeId, listRef }) => {
               <Row
                 style={style}
                 onClick={() => {
-                  setLocation(['Personen', row.id.toString()])
+                  navigate(`/Personen/${row.id}`)
                   if (showFilter) setShowFilter(false)
                   if (activePrintForm) setActivePrintForm(null)
                 }}

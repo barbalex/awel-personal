@@ -3,8 +3,8 @@ import { NavItem, NavLink, Button, UncontrolledTooltip } from 'reactstrap'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { FaPlus, FaTrashAlt } from 'react-icons/fa'
+import { useNavigate, useLocation, useParams } from 'react-router-dom'
 
-import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 
 const Sup = styled.sup`
@@ -12,7 +12,7 @@ const Sup = styled.sup`
 `
 const StyledNavItem = styled(NavItem)`
   display: flex;
-  border: ${props =>
+  border: ${(props) =>
     props.active ? '1px solid rgb(255, 255, 255, .5)' : 'unset'};
   border-radius: 0.25rem;
   margin-right: 5px;
@@ -23,31 +23,33 @@ const StyledButton = styled(Button)`
 `
 
 const Bereich = () => {
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const { bereichId } = useParams()
+
   const store = useContext(storeContext)
   const {
     showDeleted,
     bereicheFilteredSorted,
     bereiche,
-    setLocation,
     addBereich,
     setDeletionMessage,
     setDeletionTitle,
     setDeletionCallback,
   } = store
-  const location = store.location.toJSON()
-  const activeLocation = location[0]
-  const activeId = ifIsNumericAsNumber(location[1])
+  const active = pathname.startsWith('/Bereiche')
+  const activeId = bereichId
 
   const showTab = useCallback(
-    e => {
+    (e) => {
       e.preventDefault()
-      setLocation([e.target.id])
+      navigate(`/Bereiche`)
     },
-    [setLocation],
+    [navigate],
   )
   // const addBereich = useCallback(() => addBereich())
   const deleteBereich = useCallback(() => {
-    const activeBereich = bereiche.find(p => p.id === activeId)
+    const activeBereich = bereiche.find((p) => p.id === activeId)
     if (activeBereich.deleted === 1) {
       // bereich.deleted is already = 1
       // prepare true deletion
@@ -89,27 +91,27 @@ const Bereich = () => {
     store,
   ])
 
-  const existsActiveBereich = activeLocation === 'Bereiche' && location[1]
+  const existsActiveBereich = active && !!bereichId
   const bereicheSum = showDeleted
     ? bereiche.length
-    : bereiche.filter(p => p.deleted === 0).length
+    : bereiche.filter((p) => p.deleted === 0).length
   const bereicheSumSup =
     bereicheFilteredSorted.length !== bereicheSum
       ? `${bereicheFilteredSorted.length}/${bereicheSum}`
       : bereicheFilteredSorted.length
 
   return (
-    <StyledNavItem active={activeLocation === 'Bereiche'}>
+    <StyledNavItem active={active}>
       <NavLink id="Bereiche" onClick={showTab}>
         Bereiche
-        {activeLocation === 'Bereiche' && <Sup>{bereicheSumSup}</Sup>}
+        {active && <Sup>{bereicheSumSup}</Sup>}
       </NavLink>
-      {activeLocation !== 'Bereiche' && (
+      {!active && (
         <UncontrolledTooltip placement="bottom" target="Bereiche">
           Bereiche anzeigen
         </UncontrolledTooltip>
       )}
-      {activeLocation === 'Bereiche' && (
+      {active && (
         <>
           <StyledButton id="newBereichButton" onClick={addBereich}>
             <FaPlus />
