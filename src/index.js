@@ -1,6 +1,5 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { render } from 'react-dom'
 import { ipcRenderer } from 'electron'
 
 import App from './components/App'
