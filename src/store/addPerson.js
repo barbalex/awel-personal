@@ -1,7 +1,7 @@
 import fetchAnwesenheitstage from '../src/fetchAnwesenheitstage'
 
 const addPerson = ({ store }) => {
-  const { db, username, personen, addError, setLocation } = store
+  const { db, username, personen, addError, navigate } = store
   // 1. create new Person in db, returning id
   let info
   try {
@@ -21,7 +21,7 @@ const addPerson = ({ store }) => {
     letzteMutationZeit: Date.now(),
     land: 'Schweiz',
   })
-  setLocation(['Personen', info.lastInsertRowid.toString()])
+  navigate(`/Personen/${info.lastInsertRowid}`)
   // 3 requery anwesenheitstage (are added in db by trigger)
   fetchAnwesenheitstage({
     store,

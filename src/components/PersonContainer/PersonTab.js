@@ -3,6 +3,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 import { observer } from 'mobx-react-lite'
 import classnames from 'classnames'
 import styled from 'styled-components'
+import { useParams } from 'react-router-dom'
 
 import Person from './Person'
 import PersonPrint from './PersonPrint'
@@ -14,7 +15,6 @@ import PersonPrintVerzTel from './PersonPrintVerzTel'
 import PersonPrintVerzMobiltel from './PersonPrintVerzMobiltel'
 import PersonPrintVerzKurzzeichen from './PersonPrintVerzKurzzeichen'
 import PersonMutation from './PersonMutation'
-import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 
 const StyledNavItem = styled(NavItem)`
@@ -36,10 +36,10 @@ const StyledTabPane = styled(TabPane)`
 `
 
 const PersonTab = ({ dimensions, listRef }) => {
+  const { personId } = useParams()
   const store = useContext(storeContext)
   const { showFilter, activePrintForm } = store
-  const location = store.location.toJSON()
-  const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
+  const activeId = personId
 
   const [tab, setTab] = useState('datenblatt')
 
