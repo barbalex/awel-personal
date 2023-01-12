@@ -2,12 +2,12 @@ import React, { useEffect, useContext, useRef } from 'react'
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
+import { useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Data from './Data'
 import List from './List'
 import fetchWerte from '../../src/fetchWerte'
-import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
@@ -24,14 +24,13 @@ const StyledReflexElement = styled(ReflexElement)`
 `
 
 const StammdatenContainer = () => {
+  const { tableName, tableId } = useParams()
+
   const store = useContext(storeContext)
   const { db } = store
 
-  const location = store.location.toJSON()
-  const activeTable = location[0]
-  const activeId = ifIsNumericAsNumber(location[1])
-  const data = store[activeTable]
-  const dat = data.find((d) => d.id === activeId)
+  const data = store[tableName]
+  const dat = data.find((d) => d.id === tableId)
 
   // pass list the active dat's props to enable instant updates
   const datJson = dat || {}
@@ -67,18 +66,18 @@ const StammdatenContainer = () => {
             renderOnResize
           >
             <List
-              activeId={activeId}
-              activeTable={activeTable}
+              activeId={tableId}
+              activeTable={tableName}
               {...datJson}
               listRef={listRef}
             />
           </ReflexElement>
           <ReflexSplitter />
           <StyledReflexElement>
-            {activeId && (
+            {tableId && (
               <Data
-                activeId={activeId}
-                activeTable={activeTable}
+                activeId={tableId}
+                activeTable={tableName}
                 listRef={listRef}
               />
             )}

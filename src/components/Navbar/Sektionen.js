@@ -3,6 +3,7 @@ import { NavItem, NavLink, Button, UncontrolledTooltip } from 'reactstrap'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { FaPlus, FaTrashAlt } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 
 import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
@@ -12,7 +13,7 @@ const Sup = styled.sup`
 `
 const StyledNavItem = styled(NavItem)`
   display: flex;
-  border: ${props =>
+  border: ${(props) =>
     props.active ? '1px solid rgb(255, 255, 255, .5)' : 'unset'};
   border-radius: 0.25rem;
   margin-right: 5px;
@@ -23,12 +24,13 @@ const StyledButton = styled(Button)`
 `
 
 const Sektion = () => {
+  const navigate = useNavigate()
+
   const store = useContext(storeContext)
   const {
     showDeleted,
     sektionenFiltered,
     sektionen,
-    setLocation,
     addSektion,
     setDeletionMessage,
     setDeletionTitle,
@@ -40,15 +42,15 @@ const Sektion = () => {
   const activeId = ifIsNumericAsNumber(location[1])
 
   const showTab = useCallback(
-    e => {
+    (e) => {
       e.preventDefault()
-      setLocation([e.target.id])
+      navigate('/Sektionen')
     },
-    [setLocation],
+    [navigate],
   )
   // const addSektion = useCallback(() => addSektion())
   const deleteSektion = useCallback(() => {
-    const activeSektion = sektionen.find(p => p.id === activeId)
+    const activeSektion = sektionen.find((p) => p.id === activeId)
     if (activeSektion.deleted === 1) {
       // sektion.deleted is already = 1
       // prepare true deletion
@@ -92,7 +94,7 @@ const Sektion = () => {
 
   const sektionenSum = showDeleted
     ? sektionen.length
-    : sektionen.filter(p => p.deleted === 0).length
+    : sektionen.filter((p) => p.deleted === 0).length
   const sektionenSumSup =
     sektionenFiltered.length !== sektionenSum
       ? `${sektionenFiltered.length}/${sektionenSum}`

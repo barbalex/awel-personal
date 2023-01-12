@@ -3,6 +3,7 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import useDetectPrint from 'use-detect-print'
+import { Outlet } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import List from './List'
@@ -92,7 +93,7 @@ const PersonContainer = () => {
             propagateDimensionsRate={1000}
             resizeHeight={false}
           >
-            <PersonTab listRef={listRef} />
+            <Outlet listRef={listRef} />
           </StyledReflexElement>
         </ReflexContainer>
       </ErrorBoundary>

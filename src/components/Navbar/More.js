@@ -10,6 +10,7 @@ import { observer } from 'mobx-react-lite'
 import { ipcRenderer } from 'electron'
 import { FaTrashAlt } from 'react-icons/fa'
 import { FaRegEdit } from 'react-icons/fa'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 import storeContext from '../../storeContext'
 import chooseDbConnection from '../../src/chooseDbConnection'
@@ -48,17 +49,17 @@ const onClickIssues = () => {
 }
 
 const More = () => {
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+
   const store = useContext(storeContext)
   const {
     showDeleted,
     setShowDeleted,
     showMutationNoetig,
     setShowMutationNoetig,
-    location,
-    setLocation,
     db,
   } = store
-  const activeLocation = location.toJSON()[0]
 
   const toggleShowDeleted = useCallback(
     () => setShowDeleted(!showDeleted),
@@ -68,10 +69,7 @@ const More = () => {
     () => setShowMutationNoetig(!showMutationNoetig),
     [setShowMutationNoetig, showMutationNoetig],
   )
-  const showMutations = useCallback(
-    () => setLocation(['mutations']),
-    [setLocation],
-  )
+  const showMutations = useCallback(() => navigate('mutations'), [navigate])
 
   return (
     <MoreMenu nav inNavbar>
@@ -84,7 +82,7 @@ const More = () => {
           <br />
           <DbPath>{`Aktuell: ${db?.name}`}</DbPath>
         </DropdownItem>
-        {!activeLocation !== 'mutations' && (
+        {!pathname.startsWith('/mutations') && (
           <div>
             <DropdownItem divider />
             <DropdownItem onClick={showMutations}>

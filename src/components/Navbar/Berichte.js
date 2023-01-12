@@ -10,6 +10,7 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { FaPrint, FaRegFilePdf } from 'react-icons/fa'
 import { ipcRenderer } from 'electron'
+import { useNavigate } from 'react-router-dom'
 
 import storeContext from '../../storeContext'
 
@@ -26,6 +27,8 @@ const StyledButton = styled(Button)`
 `
 
 const Berichte = () => {
+  const navigate = useNavigate()
+
   const store = useContext(storeContext)
   const {
     setPrinting,
@@ -33,7 +36,6 @@ const Berichte = () => {
     setActivePrintForm,
     setFilter,
     emptyFilter,
-    setLocation,
     setFilterPersonKader,
     setFilterPersonAktivJetztMitTel,
     setFilterPersonAktivJetztMitMobiltel,
@@ -110,7 +112,7 @@ const Berichte = () => {
         <DropdownItem header>Vorlagen: übernehmen Filter</DropdownItem>
         <DropdownItem
           onClick={() => {
-            setLocation(['Personen'])
+            navigate('/Personen')
             setActivePrintForm('personFunktionen')
             store.personPages.initiate()
           }}
@@ -121,7 +123,7 @@ const Berichte = () => {
         <DropdownItem header>Vorbereitete: setzen eigenen Filter</DropdownItem>
         <DropdownItem
           onClick={() => {
-            setLocation(['Personen'])
+            navigate('/Personen')
             emptyFilter()
             setFilterPersonKader(true)
             setTimeout(() => {
@@ -134,7 +136,7 @@ const Berichte = () => {
         </DropdownItem>
         <DropdownItem
           onClick={() => {
-            setLocation(['Personen'])
+            navigate('/Personen')
             emptyFilter()
             setFilter({
               model: 'filterPerson',
@@ -150,7 +152,7 @@ const Berichte = () => {
         </DropdownItem>
         <DropdownItem
           onClick={() => {
-            setLocation(['Personen'])
+            navigate('/Personen')
             emptyFilter()
             setFilterPersonAktivJetztMitKurzzeichen(true)
             setTimeout(() => {
@@ -163,7 +165,7 @@ const Berichte = () => {
         </DropdownItem>
         <DropdownItem
           onClick={() => {
-            setLocation(['Personen'])
+            navigate('/Personen')
             emptyFilter()
             setFilterPersonAktivJetztMitTel(true)
             setTimeout(() => {
@@ -176,7 +178,7 @@ const Berichte = () => {
         </DropdownItem>
         <DropdownItem
           onClick={() => {
-            setLocation(['Personen'])
+            navigate('/Personen')
             emptyFilter()
             setFilterPersonAktivJetztMitMobiltel(true)
             setTimeout(() => {
