@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { UncontrolledTooltip } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 import { FaTrashAlt } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 
 import tables from '../../../src/tables'
 import storeContext from '../../../storeContext'
@@ -11,8 +12,9 @@ import storeContext from '../../../storeContext'
 const Row = styled.div`
   border-bottom: 1px solid rgba(46, 125, 50, 0.5);
   cursor: pointer;
-  background-color: ${props => (props.active ? 'rgb(255, 250, 198)' : 'unset')};
-  border-top: ${props =>
+  background-color: ${(props) =>
+    props.active ? 'rgb(255, 250, 198)' : 'unset'};
+  border-top: ${(props) =>
     props.active ? '1px solid rgba(46, 125, 50, 0.5)' : 'unset'};
   height: 50px;
   padding: 15px;
@@ -30,20 +32,22 @@ const Row = styled.div`
 `
 
 const StammdatenRow = ({ index, style, activeId, activeTable }) => {
-  const store = useContext(storeContext)
-  const { showDeleted, setLocation } = store
+  const navigate = useNavigate()
 
-  let data = store[activeTable].slice().filter(p => {
+  const store = useContext(storeContext)
+  const { showDeleted } = store
+
+  let data = store[activeTable].slice().filter((p) => {
     if (!showDeleted) return p.deleted === 0
     return true
   })
   data = sortBy(data, ['sort', 'value'])
-  const table = tables.find(t => t.table === activeTable)
+  const table = tables.find((t) => t.table === activeTable)
   const row = data[index]
 
   const onClickRow = useCallback(
-    () => setLocation([activeTable, row.id.toString()]),
-    [activeTable, row.id, setLocation],
+    () => navigate(`/Stammdaten/${activeTable}/${row.id}`),
+    [activeTable, navigate, row.id],
   )
 
   return (

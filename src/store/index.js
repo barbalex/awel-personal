@@ -143,11 +143,13 @@ const store = () =>
         remainingRows: [],
         building: false,
       }),
+      pathname: types.optional(types.string, ''),
     })
     .volatile(() => ({
       deletionCallback: null,
       errors: [],
       db: null,
+      navigate: undefined,
     }))
     .views((self) => ({
       get activeForm() {
@@ -343,6 +345,12 @@ const store = () =>
       setUndoManager(self)
 
       return {
+        setNavigate(val) {
+          self.navigate = val
+        },
+        setPathname(val) {
+          self.pathname = val
+        },
         setDb(val) {
           self.db = val
         },
@@ -423,9 +431,6 @@ const store = () =>
         },
         setDeletionMessage(message) {
           self.deletionMessage = message
-        },
-        setLocation(location) {
-          self.location = location
         },
         setWatchMutations(val) {
           self.watchMutations = val
@@ -546,7 +551,7 @@ const store = () =>
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
           })
-          self.setLocation(['Aemter', info.lastInsertRowid.toString()])
+          self.navigate(`/Aemter/${info.lastInsertRowid}`)
         },
         addAbteilung() {
           // 1. create new Abteilung in db, returning id
@@ -567,7 +572,7 @@ const store = () =>
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
           })
-          self.setLocation(['Abteilungen', info.lastInsertRowid.toString()])
+          self.navigate(`/Abteilungen/${info.lastInsertRowid}`)
         },
         addBereich() {
           // 1. create new Bereich in db, returning id
@@ -588,7 +593,7 @@ const store = () =>
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
           })
-          self.setLocation(['Bereiche', info.lastInsertRowid.toString()])
+          self.navigate(`/Bereiche/${info.lastInsertRowid}`)
         },
         addSektion() {
           // 1. create new Sektion in db, returning id
@@ -609,7 +614,7 @@ const store = () =>
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
           })
-          self.setLocation(['Sektionen', info.lastInsertRowid.toString()])
+          self.navigate(`/Sektionen/${info.lastInsertRowid}`)
         },
         addMutation({ tableName, patch, inversePatch }) {
           // watchMutations is false while data is loaded from server
@@ -729,7 +734,7 @@ const store = () =>
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
           })
-          self.setLocation([table, info.lastInsertRowid.toString()])
+          self.navigate(`/Werte/${table}/${info.lastInsertRowid}`)
         },
         setWertDeleted({ id, table }) {
           // write to db
@@ -744,7 +749,7 @@ const store = () =>
           // write to store
           const dat = self[table].find((p) => p.id === id)
           dat.deleted = 1
-          if (!self.showDeleted) self.setLocation([table])
+          if (!self.showDeleted) self.navigate(`/Werte/${table}`)
         },
         deleteWert({ id, table }) {
           // write to db
@@ -759,7 +764,7 @@ const store = () =>
             findIndex(self[table], (p) => p.id === id),
             1,
           )
-          self.setLocation([table])
+          self.navigate(`/Werte/${table}`)
         },
         setPersonDeleted(id) {
           // write to db
@@ -778,7 +783,7 @@ const store = () =>
           person.deleted = 1
           person.letzteMutationUser = self.username
           person.letzteMutationZeit = Date.now()
-          if (!self.showDeleted) self.setLocation(['Personen'])
+          if (!self.showDeleted) self.navigate(`/Personen`)
         },
         deletePerson(id) {
           // write to db
@@ -799,7 +804,7 @@ const store = () =>
             findIndex(self.personen, (p) => p.id === id),
             1,
           )
-          self.setLocation(['Personen'])
+          self.navigate(`/Personen`)
         },
         setAmtDeleted(id) {
           // write to db
@@ -818,7 +823,7 @@ const store = () =>
           amt.deleted = 1
           amt.letzteMutationUser = self.username
           amt.letzteMutationZeit = Date.now()
-          if (!self.showDeleted) self.setLocation(['Aemter'])
+          if (!self.showDeleted) self.navigate(`/Aemter`)
         },
         setAbteilungDeleted(id) {
           // write to db
@@ -837,7 +842,7 @@ const store = () =>
           abteilung.deleted = 1
           abteilung.letzteMutationUser = self.username
           abteilung.letzteMutationZeit = Date.now()
-          if (!self.showDeleted) self.setLocation(['Abteilungen'])
+          if (!self.showDeleted) self.navigate(`/Abteilungen`)
         },
         deleteAmt(id) {
           // write to db
@@ -857,7 +862,7 @@ const store = () =>
             findIndex(self.aemter, (p) => p.id === id),
             1,
           )
-          self.setLocation(['Aemter'])
+          self.navigate(`/Aemter`)
         },
         deleteAbteilung(id) {
           // write to db
@@ -877,7 +882,7 @@ const store = () =>
             findIndex(self.abteilungen, (p) => p.id === id),
             1,
           )
-          self.setLocation(['Abteilungen'])
+          self.navigate(`/Abteilungen`)
         },
         setBereichDeleted(id) {
           // write to db
@@ -896,7 +901,7 @@ const store = () =>
           bereich.deleted = 1
           bereich.letzteMutationUser = self.username
           bereich.letzteMutationZeit = Date.now()
-          if (!self.showDeleted) self.setLocation(['Bereichen'])
+          if (!self.showDeleted) self.navigate(`/Bereiche`)
         },
         deleteBereich(id) {
           // write to db
@@ -916,7 +921,7 @@ const store = () =>
             findIndex(self.bereiche, (p) => p.id === id),
             1,
           )
-          self.setLocation(['Bereichen'])
+          self.navigate(`/Bereiche`)
         },
         setSektionDeleted(id) {
           // write to db
@@ -935,7 +940,7 @@ const store = () =>
           sektion.deleted = 1
           sektion.letzteMutationUser = self.username
           sektion.letzteMutationZeit = Date.now()
-          if (!self.showDeleted) self.setLocation(['Sektionen'])
+          if (!self.showDeleted) self.navigate(`/Sektionen`)
         },
         deleteSektion(id) {
           // write to db
@@ -955,7 +960,7 @@ const store = () =>
             findIndex(self.sektionen, (p) => p.id === id),
             1,
           )
-          self.setLocation(['Sektionen'])
+          self.navigate(`/Sektionen`)
         },
         addEtikett(etikett) {
           // grab idPerson from location
