@@ -59,7 +59,7 @@ const PersonContainer = () => {
     person?.fetch()
   }, [person])
 
-  if (printing || isPrinting) {
+  if (printing || isPrinting) { 
     if (personId) {
       if (activePrintForm === 'personalblatt') {
         return (

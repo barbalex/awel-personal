@@ -84,6 +84,7 @@ const Bereich = ({ listRef }) => {
 
       if (showFilter) {
         setFilter({
+          model: 'filterBereich',
           value: { ...filterBereich, ...{ [field]: newValue } },
         })
       } else {

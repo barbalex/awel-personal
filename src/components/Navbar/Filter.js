@@ -134,7 +134,7 @@ const Filter = () => {
     [filterDropdownIsOpen],
   )
   const onClickAnstehendeMutationen = useCallback(() => {
-    setFilter({ value: { mutationNoetig: 1 } })
+    setFilter({ model: 'filterPerson', value: { mutationNoetig: 1 } })
     setShowMutationNoetig(true)
   }, [setFilter, setShowMutationNoetig])
   const onClickKader = useCallback(() => {
