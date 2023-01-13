@@ -28,7 +28,7 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Bereich = ({ activeId, listRef }) => {
+const Bereich = ({ listRef }) => {
   const { bereichId: bereichIdInUrl } = useParams()
 
   const store = useContext(storeContext)
@@ -71,7 +71,7 @@ const Bereich = ({ activeId, listRef }) => {
   const saveToDb = useCallback(
     ({ field, value }) => {
       if (!bereich && !showFilter)
-        throw new Error(`Bereich with id ${activeId} not found`)
+        throw new Error(`Bereich with id ${bereichId} not found`)
       let newValue
       if (isDateField(field)) {
         if (value) newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
@@ -115,7 +115,7 @@ const Bereich = ({ activeId, listRef }) => {
       }
     },
     [
-      activeId,
+      bereichId,
       bereich,
       filterBereich,
       listRef,
@@ -189,7 +189,7 @@ const Bereich = ({ activeId, listRef }) => {
     [aemter],
   )
 
-  if (!showFilter && !activeId) return null
+  if (!showFilter && !bereichId) return null
 
   return (
     <ErrorBoundary>

@@ -63,11 +63,11 @@ const BereichContainer = () => {
               renderOnResizeRate={100}
               renderOnResize
             >
-              <List activeId={bereichId} {...bereichJson} listRef={listRef} />
+              <List {...bereichJson} listRef={listRef} />
             </ReflexElement>
             <ReflexSplitter />
             <StyledReflexElement showfilter={showFilter}>
-              {bereichId && <Outlet activeId={bereichId} listRef={listRef} />}
+              {bereichId && <Outlet listRef={listRef} />}
             </StyledReflexElement>
           </ReflexContainer>
         </ErrorBoundary>
