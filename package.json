@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "popper.js": "1.16.1",
-    "react-router-dom": "^6.6.2"
+    "react-router-dom": "6.6.2"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",
