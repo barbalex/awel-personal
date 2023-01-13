@@ -49,9 +49,9 @@ const LinksComponent = ({ row = true }) => {
   const onDrop = useCallback(
     (files) => {
       console.log('files:', files)
-      addLink(files[0].path)
+      addLink({ url: files[0].path, personId })
     },
-    [addLink],
+    [addLink, personId],
   )
 
   // Need useFsAccessApi false when using react-dropzone v12 in electron

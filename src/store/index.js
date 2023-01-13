@@ -990,10 +990,7 @@ const store = () =>
           )
           self.updatePersonsMutation(idPerson)
         },
-        addAnwesenheitstag(tag) {
-          // grab idPerson from location
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
+        addAnwesenheitstag({ tag, personId }) {
           // 1. create new anwesenheitstag in db, returning id
           let info
           try {
@@ -1001,7 +998,7 @@ const store = () =>
               .prepare(
                 'insert into anwesenheitstage (idPerson, tag, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
               )
-              .run(idPerson, tag, self.username, Date.now())
+              .run(personId, tag, self.username, Date.now())
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1010,23 +1007,20 @@ const store = () =>
           self.anwesenheitstage.push({
             id: info.lastInsertRowid,
             tag,
-            idPerson,
+            idPerson: personId,
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
           })
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
-        deleteAnwesenheitstag(tag) {
-          // grab idPerson from location
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
+        deleteAnwesenheitstag({ tag, personId }) {
           // write to db
           try {
             self.db
               .prepare(
                 'delete from anwesenheitstage where idPerson = ? and tag = ?',
               )
-              .run(idPerson, tag)
+              .run(personId, tag)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1035,17 +1029,13 @@ const store = () =>
           self.anwesenheitstage.splice(
             findIndex(
               self.anwesenheitstage,
-              (e) => e.idPerson === idPerson && e.tag === tag,
+              (e) => e.idPerson === personId && e.tag === tag,
             ),
             1,
           )
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
-        addLink(url) {
-          //console.log('store, addLink, url:', url)
-          // grab idPerson from location
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
+        addLink({url, personId}) {
           // 1. create new link in db, returning id
           let info
           try {
@@ -1053,7 +1043,7 @@ const store = () =>
               .prepare(
                 'insert into links (idPerson, url, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
               )
-              .run(idPerson, url, self.username, Date.now())
+              .run(personId, url, self.username, Date.now())
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1062,11 +1052,11 @@ const store = () =>
           self.links.push({
             id: info.lastInsertRowid,
             url,
-            idPerson,
+            idPerson: personId,
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
           })
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
         deleteLink(id) {
           // write to db

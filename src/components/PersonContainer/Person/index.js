@@ -392,10 +392,10 @@ const Person = ({ dimensions, listRef }) => {
           value: { ...filterAnwesenheitstage, ...{ tag } },
         })
       } else {
-        store.addAnwesenheitstag(tag)
+        store.addAnwesenheitstag({ tag, personId })
       }
     },
-    [showFilter, setFilter, filterAnwesenheitstage, store],
+    [showFilter, setFilter, filterAnwesenheitstage, store, personId],
   )
   const deleteAnwesenheitstag = useCallback(
     (tag) => {
@@ -405,10 +405,10 @@ const Person = ({ dimensions, listRef }) => {
           value: { ...filterAnwesenheitstage, ...{ tag: null } },
         })
       } else {
-        store.deleteAnwesenheitstag(tag)
+        store.deleteAnwesenheitstag({ tag, personId })
       }
     },
-    [filterAnwesenheitstage, setFilter, showFilter, store],
+    [filterAnwesenheitstage, personId, setFilter, showFilter, store],
   )
   const setFilterAnwesenheitstage = useCallback(
     ({ value }) => {
