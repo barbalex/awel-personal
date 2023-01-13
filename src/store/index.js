@@ -152,26 +152,6 @@ const store = () =>
       navigate: undefined,
     }))
     .views((self) => ({
-      get activeForm() {
-        const location = self.location.toJSON()
-        const activeLocation = location[0]
-        const activeId = ifIsNumericAsNumber(location[1])
-        if (!activeId) return null
-
-        switch (activeLocation) {
-          case 'Aemter':
-            return 'amt'
-          case 'Abteilungen':
-            return 'abteilung'
-          case 'Sektionen':
-            return 'sektion'
-          case 'Bereiche':
-            return 'bereich'
-          case 'Personen':
-          default:
-            return 'person'
-        }
-      },
       get activeFilterModel() {
         const location = self.location.toJSON()
         const activeLocation = location[0]

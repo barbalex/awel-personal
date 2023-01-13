@@ -3,6 +3,7 @@ import { FixedSizeList as List } from 'react-window'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import sortBy from 'lodash/sortBy'
+import { useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../../shared/ErrorBoundary'
 import storeContext from '../../../storeContext'
@@ -12,13 +13,15 @@ const Container = styled.div`
   border-right: 1px solid rgb(46, 125, 50);
 `
 
-const DataList = ({ dimensions, activeId, activeTable, listRef }) => {
+const DataList = ({ dimensions, listRef }) => {
+  const { tableName } = useParams()
+
   const store = useContext(storeContext)
   const { showDeleted } = store
 
   const height = isNaN(dimensions.height) ? 250 : dimensions.height
   const width = isNaN(dimensions.width) ? 250 : dimensions.width - 1
-  let data = store[activeTable].slice().filter((p) => {
+  let data = store[tableName].slice().filter((p) => {
     if (!showDeleted) return p.deleted === 0
     return true
   })
@@ -34,14 +37,7 @@ const DataList = ({ dimensions, activeId, activeTable, listRef }) => {
           width={width}
           ref={listRef}
         >
-          {({ index, style }) => (
-            <Row
-              style={style}
-              activeId={activeId}
-              index={index}
-              activeTable={activeTable}
-            />
-          )}
+          {({ index, style }) => <Row style={style} index={index} />}
         </List>
       </Container>
     </ErrorBoundary>

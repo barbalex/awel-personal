@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { UncontrolledTooltip } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 import { FaTrashAlt } from 'react-icons/fa'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import tables from '../../../src/tables'
 import storeContext from '../../../storeContext'
@@ -31,27 +31,28 @@ const Row = styled.div`
   }
 `
 
-const StammdatenRow = ({ index, style, activeId, activeTable }) => {
+const StammdatenRow = ({ index, style }) => {
   const navigate = useNavigate()
+  const { tableId, tableName } = useParams()
 
   const store = useContext(storeContext)
   const { showDeleted } = store
 
-  let data = store[activeTable].slice().filter((p) => {
+  let data = store[tableName].slice().filter((p) => {
     if (!showDeleted) return p.deleted === 0
     return true
   })
   data = sortBy(data, ['sort', 'value'])
-  const table = tables.find((t) => t.table === activeTable)
+  const table = tables.find((t) => t.table === tableName)
   const row = data[index]
 
   const onClickRow = useCallback(
-    () => navigate(`/Stammdaten/${activeTable}/${row.id}`),
-    [activeTable, navigate, row.id],
+    () => navigate(`/Stammdaten/${tableName}/${row.id}`),
+    [tableName, navigate, row.id],
   )
 
   return (
-    <Row style={style} onClick={onClickRow} active={activeId === row.id}>
+    <Row style={style} onClick={onClickRow} active={tableId === row.id}>
       {row.value || '(kein Wert)'}
       {row.deleted === 1 && (
         <>

@@ -68,22 +68,11 @@ const StammdatenContainer = () => {
               renderOnResizeRate={100}
               renderOnResize
             >
-              <List
-                activeId={tableId}
-                activeTable={tableName}
-                {...datJson}
-                listRef={listRef}
-              />
+              <List {...datJson} listRef={listRef} />
             </ReflexElement>
             <ReflexSplitter />
             <StyledReflexElement>
-              {tableId && (
-                <Data
-                  activeId={tableId}
-                  activeTable={tableName}
-                  listRef={listRef}
-                />
-              )}
+              {tableId && <Data listRef={listRef} />}
             </StyledReflexElement>
           </ReflexContainer>
         </ErrorBoundary>
