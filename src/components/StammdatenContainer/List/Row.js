@@ -47,7 +47,7 @@ const StammdatenRow = ({ index, style }) => {
   const row = data[index]
 
   const onClickRow = useCallback(
-    () => navigate(`/Stammdaten/${tableName}/${row.id}`),
+    () => navigate(`/Werte/${tableName}/${row.id}`),
     [tableName, navigate, row.id],
   )
 
