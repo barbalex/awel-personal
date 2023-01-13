@@ -9,6 +9,7 @@ import List from './List'
 import fetchAemter from '../../src/fetchAemter'
 import fetchWerte from '../../src/fetchWerte'
 import storeContext from '../../storeContext'
+import Navbar from '../Navbar'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
@@ -46,24 +47,27 @@ const AmtContainer = () => {
   const listRef = useRef(null)
 
   return (
-    <Container>
-      <ErrorBoundary>
-        <ReflexContainer orientation="vertical">
-          <ReflexElement
-            flex={0.25}
-            propagateDimensions
-            renderOnResizeRate={100}
-            renderOnResize
-          >
-            <List {...amtJson} listRef={listRef} />
-          </ReflexElement>
-          <ReflexSplitter />
-          <StyledReflexElement showfilter={showFilter}>
-            {!!amtId && <Outlet listRef={listRef} />}
-          </StyledReflexElement>
-        </ReflexContainer>
-      </ErrorBoundary>
-    </Container>
+    <>
+      <Navbar />
+      <Container>
+        <ErrorBoundary>
+          <ReflexContainer orientation="vertical">
+            <ReflexElement
+              flex={0.25}
+              propagateDimensions
+              renderOnResizeRate={100}
+              renderOnResize
+            >
+              <List {...amtJson} listRef={listRef} />
+            </ReflexElement>
+            <ReflexSplitter />
+            <StyledReflexElement showfilter={showFilter}>
+              {!!amtId && <Outlet listRef={listRef} />}
+            </StyledReflexElement>
+          </ReflexContainer>
+        </ErrorBoundary>
+      </Container>
+    </>
   )
 }
 

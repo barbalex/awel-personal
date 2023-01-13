@@ -32,13 +32,15 @@ const Stammdaten = () => {
   const navigate = useNavigate()
   const { tableName, tableId } = useParams()
 
+  console.log('Stammdaten', { tableName, tableId })
+
   const store = useContext(storeContext)
   const { setDeletionMessage, setDeletionTitle, setDeletionCallback } = store
   let stammdatenCount = 0
-  if (tableName.includes('Werte')) {
+  if (tableName?.includes('Werte')) {
     stammdatenCount = store[tableName].length
   }
-  const existsActiveWert = tableName.includes('Werte') && !!tableId
+  const existsActiveWert = tableName?.includes('Werte') && !!tableId
 
   const addWert = useCallback(() => {
     store.addWert(tableName)
@@ -89,10 +91,10 @@ const Stammdaten = () => {
   )
 
   return (
-    <StamdatenContainer active={tableName.includes('Werte')}>
-      <UncontrolledDropdown nav inNavbar active={tableName.includes('Werte')}>
+    <StamdatenContainer active={tableName?.includes('Werte')}>
+      <UncontrolledDropdown nav inNavbar active={tableName?.includes('Werte')}>
         <DropdownToggle nav caret>
-          {tableName.includes('Werte') ? (
+          {tableName?.includes('Werte') ? (
             <span>
               {tableName}
               <Sup>{stammdatenCount}</Sup>
@@ -158,7 +160,7 @@ const Stammdaten = () => {
           </DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
-      {tableName.includes('Werte') && (
+      {tableName?.includes('Werte') && (
         <>
           <StyledButton id="newStammdatenButton" onClick={addWert}>
             <FaPlus />
