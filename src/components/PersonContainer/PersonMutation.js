@@ -14,6 +14,7 @@ import Linkify from 'react-linkify'
 import { MdEdit } from 'react-icons/md'
 import { FaSave } from 'react-icons/fa'
 import { Button, ButtonGroup } from 'reactstrap'
+import { useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Input from '../shared/Input'
@@ -113,7 +114,9 @@ const WRRightEditing = styled.div`
   justify-content: flex-end;
 `
 
-const PersonMutation = ({ activeId, dimensions }) => {
+const PersonMutation = ({ dimensions }) => {
+  const { personId: personIdInUrl } = useParams()
+
   const store = useContext(storeContext)
   const {
     personen,
@@ -137,7 +140,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
   if (showFilter) {
     person = filterPerson
   } else {
-    person = personen.find((p) => p.id === activeId)
+    person = personen.find((p) => p.id === personIdInUrl)
     if (!person) person = {}
   }
   const personId = showFilter ? '' : person.id
@@ -148,9 +151,10 @@ const PersonMutation = ({ activeId, dimensions }) => {
     [editWeiterleiten],
   )
   const [editPdfPath, setEditPdfPath] = useState(false)
-  const onClickEditPdfPath = useCallback(() => setEditPdfPath(!editPdfPath), [
-    editPdfPath,
-  ])
+  const onClickEditPdfPath = useCallback(
+    () => setEditPdfPath(!editPdfPath),
+    [editPdfPath],
+  )
   const onSaveWeiterleiten = useCallback(
     ({ value }) => {
       setSettingsKey({ key: 'personMutationWeiterleiten', value })
@@ -175,7 +179,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
     ({ field, value }) => {
       // const person = personen.find(p => p.id === activeId)
       if (!person && !showFilter) {
-        throw new Error(`Person with id ${activeId} not found`)
+        throw new Error(`Person with id ${personId} not found`)
       }
       let newValue
       if (isDateField(field)) {
@@ -251,7 +255,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
         }
       }
     },
-    [person, showFilter, activeId, setFilter, filterPerson, updateField],
+    [person, showFilter, personId, setFilter, filterPerson, updateField],
   )
 
   // filter out options with empty values - makes no sense and errors
@@ -339,7 +343,7 @@ const PersonMutation = ({ activeId, dimensions }) => {
     [standortWerte],
   )
 
-  if (!showFilter && !activeId) return null
+  if (!showFilter && !personId) return null
 
   const { width } = dimensions
   const viewIsNarrow = width < 1500

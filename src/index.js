@@ -1,7 +1,6 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { ipcRenderer } from 'electron'
-import { BrowserRouter } from 'react-router-dom'
 
 import App from './components/App'
 import './styles.css'
@@ -79,9 +78,7 @@ const run = async () => {
 
   root.render(
     <StoreContextProvider value={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <App />
     </StoreContextProvider>,
   )
 }
