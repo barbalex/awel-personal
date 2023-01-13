@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
+import { useParams } from 'react-router-dom'
 
 import storeContext from '../../../storeContext'
 
@@ -16,10 +17,12 @@ const Row = styled.div`
   border-top: ${(props) => (props.index === 0 ? 'thin solid #dedede' : 'none')};
 `
 
-const Links = ({ activeId }) => {
+const Links = () => {
+  const { personId } = useParams()
+
   const store = useContext(storeContext)
   const { links } = store
-  const myLinks = links.filter((l) => l.idPerson === activeId)
+  const myLinks = links.filter((l) => l.idPerson === personId)
 
   if (myLinks.length === 0) return null
 

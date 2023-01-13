@@ -323,7 +323,7 @@ const PersonPrint = () => {
                       />
                     </AreaPGeburtsdatum>
                     <AreaPTelefon>
-                      <Telefones activeId={personId} />
+                      <Telefones />
                     </AreaPTelefon>
                   </AreaPersonalien>
                   <AreaAnstellung>
@@ -411,9 +411,9 @@ const PersonPrint = () => {
                       value={person.bemerkungen}
                       label="Bemerkun&shy;gen"
                     />
-                    <Links activeId={personId} />
-                    <Schluessels activeId={personId} />
-                    <MobileAbos activeId={personId} />
+                    <Links />
+                    <Schluessels />
+                    <MobileAbos />
                   </AreaVerzeichnis>
                   <AreaZuletzt>
                     {`Zuletzt geändert: ${

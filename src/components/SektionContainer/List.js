@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { UncontrolledTooltip } from 'reactstrap'
 import { FaTrashAlt } from 'react-icons/fa'
 import { FaRegEdit } from 'react-icons/fa'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import storeContext from '../../storeContext'
@@ -60,8 +60,9 @@ const MutationFrist = styled.div`
   font-size: 1rem;
 `
 
-const SektionList = ({ dimensions, activeId, listRef }) => {
+const SektionList = ({ dimensions, listRef }) => {
   const navigate = useNavigate()
+  const { sektionId } = useParams()
 
   const store = useContext(storeContext)
   const { showFilter, setShowFilter, showMutationNoetig } = store
@@ -94,7 +95,7 @@ const SektionList = ({ dimensions, activeId, listRef }) => {
                   navigate(`/Sektionen/${row.id}`)
                   if (showFilter) setShowFilter(false)
                 }}
-                active={!showFilter && activeId === row.id}
+                active={!showFilter && sektionId === row.id}
               >
                 <RowContainer>
                   <Text>{`${row.name || ''}`}</Text>
