@@ -3,6 +3,7 @@ import { Collapse, Navbar, NavbarToggler, Nav, Button } from 'reactstrap'
 import { observer } from 'mobx-react-lite'
 import { FaUndo, FaSave } from 'react-icons/fa'
 import styled from 'styled-components'
+import { useLocation } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Filter from './Filter'
@@ -41,6 +42,8 @@ const SaveButton = styled(Button)`
 `
 
 const MyNavbar = () => {
+  const { pathname } = useLocation()
+
   const store = useContext(storeContext)
   const { lastUserMutation, revertMutation, addError, dirty } = store
 
@@ -58,8 +61,12 @@ const MyNavbar = () => {
     revertMutation(lastUserMutation.id)
   }, [addError, lastUserMutation, revertMutation])
 
-  const location = store.location.toJSON()
-  const activeLocation = location[0]
+  const showFilter =
+    pathname.startsWith('/Personen') ||
+    pathname.startsWith('/Aemter') ||
+    pathname.startsWith('/Abteilungen') ||
+    pathname.startsWith('/Sektionen') ||
+    pathname.startsWith('/Bereiche')
 
   return (
     <ErrorBoundary>
@@ -94,13 +101,7 @@ const MyNavbar = () => {
             >
               <FaUndo />
             </UndoButton>
-            {[
-              'Personen',
-              'Aemter',
-              'Abteilungen',
-              'Sektionen',
-              'Bereiche',
-            ].includes(activeLocation) && <Filter />}
+            {showFilter && <Filter />}
             <More />
           </Nav>
         </Collapse>

@@ -10,7 +10,7 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { FaPrint, FaRegFilePdf } from 'react-icons/fa'
 import { ipcRenderer } from 'electron'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import storeContext from '../../storeContext'
 
@@ -28,6 +28,7 @@ const StyledButton = styled(Button)`
 
 const Berichte = () => {
   const navigate = useNavigate()
+  const { personId } = useParams()
 
   const store = useContext(storeContext)
   const {
@@ -42,8 +43,7 @@ const Berichte = () => {
     setFilterPersonAktivJetztMitKurzzeichen,
     settings,
   } = store
-  const location = store.location.toJSON()
-  const showPD = location[0] === 'Personen' && location[1]
+  const showPD = !!personId
 
   const onClickPD = useCallback(
     () => setActivePrintForm('personalblatt'),
@@ -73,10 +73,7 @@ const Berichte = () => {
       marginsType: 0,
       printBackground: true,
     }
-    const isPersonMutation =
-      location[0] === 'Personen' &&
-      location[1] &&
-      activePrintForm === 'personMutation'
+    const isPersonMutation = !!personId && activePrintForm === 'personMutation'
     const dialogOptions = {
       title: 'pdf speichern',
       filters: [
@@ -101,7 +98,7 @@ const Berichte = () => {
         setPrinting(false)
       })
     })
-  }, [activePrintForm, location, setPrinting, settings.mutationFormPath])
+  }, [activePrintForm, personId, setPrinting, settings.mutationFormPath])
 
   return (
     <StyledUncontrolledDropdown nav inNavbar active={!!activePrintForm}>

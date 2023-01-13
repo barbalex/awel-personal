@@ -3,8 +3,8 @@ import Dropzone from 'react-dropzone'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { Col, FormGroup, Label } from 'reactstrap'
+import { useParams } from 'react-router-dom'
 
-import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import storeContext from '../../../../storeContext'
 import Link from './Link'
 
@@ -40,12 +40,11 @@ const DropzoneInnerDiv = styled.div`
 `
 
 const LinksComponent = ({ row = true }) => {
+  const { personId } = useParams()
+
   const store = useContext(storeContext)
-  const { showFilter, links, addLink } = store
-  const location = store.location.toJSON()
-  if (!location[1] && !showFilter) throw new Error(`no id found`)
-  const activePersonenId = ifIsNumericAsNumber(location[1])
-  const myLinks = links.filter((l) => l.idPerson === activePersonenId)
+  const { links, addLink } = store
+  const myLinks = links.filter((l) => l.idPerson === personId)
 
   const onDrop = useCallback(
     (files) => {

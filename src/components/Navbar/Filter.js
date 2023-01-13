@@ -13,6 +13,7 @@ import {
   DropdownItem,
 } from 'reactstrap'
 import { FaTimes, FaEdit, FaFilter } from 'react-icons/fa'
+import { useLocation } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import storeContext from '../../storeContext'
@@ -52,6 +53,8 @@ const StyledDropdown = styled(Dropdown)`
 `
 
 const Filter = () => {
+  const { pathname } = useLocation()
+
   const store = useContext(storeContext)
   const {
     activeFilter,
@@ -70,9 +73,6 @@ const Filter = () => {
     setFilterPersonAktivJetztMitMobiltel,
     setFilterPersonAktivJetztMitKurzzeichen,
   } = store
-
-  const location = store.location.toJSON()
-  const activeLocation = location[0]
 
   const [filterDropdownIsOpen, setFilterDropdownIsOpen] = useState(false)
 
@@ -213,7 +213,7 @@ const Filter = () => {
                   >
                     Anstehende Mutationen
                   </StyledDropdownItem>
-                  {activeLocation === 'Personen' && (
+                  {pathname.startsWith('/Personen') && (
                     <>
                       <StyledDropdownItem
                         active={store.filterPersonAktivJetzt}
