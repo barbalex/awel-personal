@@ -11,6 +11,7 @@ import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
+import { useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../../shared/ErrorBoundary'
 import Input from '../../shared/Input'
@@ -27,7 +28,9 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Sektion = ({ activeId, listRef }) => {
+const Sektion = ({ listRef }) => {
+  const { sektionId: sektionIdInUrl } = useParams()
+
   const store = useContext(storeContext)
   const {
     personen,
@@ -49,10 +52,10 @@ const Sektion = ({ activeId, listRef }) => {
   if (showFilter) {
     sektion = filterSektion
   } else {
-    sektion = sektionen.find((p) => p.id === activeId)
+    sektion = sektionen.find((p) => p.id === sektionIdInUrl)
     if (!sektion) sektion = {}
   }
-  const sektionId = showFilter ? '' : sektion.id
+  const sektionId = showFilter ? '' : sektionIdInUrl
 
   const [errors, setErrors] = useState({})
   useEffect(() => {
@@ -66,7 +69,7 @@ const Sektion = ({ activeId, listRef }) => {
   const saveToDb = useCallback(
     ({ field, value }) => {
       if (!sektion && !showFilter)
-        throw new Error(`Sektion with id ${activeId} not found`)
+        throw new Error(`Sektion with id ${sektionId} not found`)
       let newValue
       if (isDateField(field)) {
         if (value) newValue = moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY')
@@ -110,7 +113,7 @@ const Sektion = ({ activeId, listRef }) => {
     [
       sektion,
       showFilter,
-      activeId,
+      sektionId,
       setFilter,
       filterSektion,
       updateField,
@@ -162,7 +165,7 @@ const Sektion = ({ activeId, listRef }) => {
     [abteilungen],
   )
 
-  if (!showFilter && !activeId) return null
+  if (!showFilter && !sektionId) return null
 
   return (
     <ErrorBoundary>

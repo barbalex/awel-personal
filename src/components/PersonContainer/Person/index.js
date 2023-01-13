@@ -212,7 +212,7 @@ const Person = ({ dimensions, listRef }) => {
   } else {
     person = personen.find((p) => p.id === personIdInUrl) || {}
   }
-  const personId = showFilter ? '' : person.id
+  const personId = showFilter ? '' : personIdInUrl
 
   const [errors, setErrors] = useState({})
   useEffect(() => {

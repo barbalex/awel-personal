@@ -63,11 +63,11 @@ const SektionContainer = () => {
               renderOnResizeRate={100}
               renderOnResize
             >
-              <List activeId={sektionId} {...sektionJson} listRef={listRef} />
+              <List {...sektionJson} listRef={listRef} />
             </ReflexElement>
             <ReflexSplitter />
             <StyledReflexElement showfilter={showFilter}>
-              {sektionId && <Outlet activeId={sektionId} listRef={listRef} />}
+              {sektionId && <Outlet listRef={listRef} />}
             </StyledReflexElement>
           </ReflexContainer>
         </ErrorBoundary>
