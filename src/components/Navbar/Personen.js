@@ -1,11 +1,10 @@
 import React, { useContext, useCallback } from 'react'
 import { NavItem, NavLink, Button, UncontrolledTooltip } from 'reactstrap'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { FaPlus, FaTrashAlt } from 'react-icons/fa'
 
-import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 
 const Sup = styled.sup`
@@ -25,6 +24,8 @@ const StyledButton = styled(Button)`
 
 const Person = () => {
   const navigate = useNavigate()
+  const { personId } = useParams()
+  const { pathname } = useLocation()
 
   const store = useContext(storeContext)
   const {
@@ -38,9 +39,6 @@ const Person = () => {
     setActivePrintForm,
     activePrintForm,
   } = store
-  const location = store.location.toJSON()
-  const activeLocation = location[0]
-  const activeId = ifIsNumericAsNumber(location[1])
 
   const showTab = useCallback(
     (e) => {
@@ -51,12 +49,12 @@ const Person = () => {
     [navigate, setActivePrintForm],
   )
   const deletePerson = useCallback(() => {
-    const activePerson = personen.find((p) => p.id === activeId)
+    const activePerson = personen.find((p) => p.id === personId)
     if (activePerson.deleted === 1) {
       // person.deleted is already = 1
       // prepare true deletion
       setDeletionCallback(() => {
-        store.deletePerson(activeId)
+        store.deletePerson(personId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -73,7 +71,7 @@ const Person = () => {
       // do not true delete yet
       // only set person.deleted = 1
       setDeletionCallback(() => {
-        store.setPersonDeleted(activeId)
+        store.setPersonDeleted(personId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -88,14 +86,14 @@ const Person = () => {
     }
   }, [
     personen,
-    activeId,
+    personId,
     setDeletionCallback,
     setDeletionMessage,
     setDeletionTitle,
     store,
   ])
 
-  const existsActivePerson = activeLocation === 'Personen' && location[1]
+  const existsActivePerson = pathname.startsWith('/Personen') && personId
   const personenSum = showDeleted
     ? personen.length
     : personen.filter((p) => p.deleted === 0).length
@@ -103,7 +101,7 @@ const Person = () => {
     personenFiltered.length !== personenSum
       ? `${personenFiltered.length}/${personenSum}`
       : personenFiltered.length
-  const active = activeLocation === 'Personen' && !activePrintForm
+  const active = pathname.startsWith('/Personen') && !activePrintForm
 
   return (
     <StyledNavItem active={active}>
@@ -111,7 +109,7 @@ const Person = () => {
         Personen
         {active && <Sup>{personenSumSup}</Sup>}
       </NavLink>
-      {activeLocation !== 'Personen' && (
+      {!pathname.startsWith('/Personen') && (
         <UncontrolledTooltip placement="bottom" target="Personen">
           Personen anzeigen
         </UncontrolledTooltip>

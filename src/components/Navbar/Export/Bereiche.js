@@ -38,7 +38,6 @@ const Bereich = () => {
     setDeletionCallback,
   } = store
   const active = pathname.startsWith('/Bereiche')
-  const activeId = bereichId
 
   const showTab = useCallback(
     (e) => {
@@ -49,12 +48,12 @@ const Bereich = () => {
   )
   // const addBereich = useCallback(() => addBereich())
   const deleteBereich = useCallback(() => {
-    const activeBereich = bereiche.find((p) => p.id === activeId)
+    const activeBereich = bereiche.find((p) => p.id === bereichId)
     if (activeBereich.deleted === 1) {
       // bereich.deleted is already = 1
       // prepare true deletion
       setDeletionCallback(() => {
-        store.deleteBereich(activeId)
+        store.deleteBereich(bereichId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -71,7 +70,7 @@ const Bereich = () => {
       // do not true delete yet
       // only set bereich.deleted = 1
       setDeletionCallback(() => {
-        store.setBereichDeleted(activeId)
+        store.setBereichDeleted(bereichId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -83,7 +82,7 @@ const Bereich = () => {
       setDeletionTitle('Bereich löschen')
     }
   }, [
-    activeId,
+    bereichId,
     bereiche,
     setDeletionCallback,
     setDeletionMessage,

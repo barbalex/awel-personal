@@ -4,9 +4,9 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { FaTimes } from 'react-icons/fa'
 import { UncontrolledTooltip } from 'reactstrap'
+import { useParams } from 'react-router-dom'
 
 import storeContext from '../../../storeContext'
-import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
 
 const Container = styled.div`
   grid-area: areaLinks;
@@ -65,11 +65,11 @@ const RemoveIcon = styled(FaTimes)`
 `
 
 const PersonImage = () => {
+  const { personId } = useParams()
+
   const store = useContext(storeContext)
   const { showFilter, updateField, personen } = store
-  const location = store.location.toJSON()
-  const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
-  const person = personen.find((p) => p.id === activeId) || {}
+  const person = personen.find((p) => p.id === personId) || {}
 
   // eslint-disable-next-line no-unused-vars
   const [errors, setErrors] = useState({})

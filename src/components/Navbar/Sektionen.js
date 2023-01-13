@@ -3,9 +3,8 @@ import { NavItem, NavLink, Button, UncontrolledTooltip } from 'reactstrap'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { FaPlus, FaTrashAlt } from 'react-icons/fa'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 
-import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 
 const Sup = styled.sup`
@@ -25,6 +24,8 @@ const StyledButton = styled(Button)`
 
 const Sektion = () => {
   const navigate = useNavigate()
+  const { sektionId } = useParams()
+  const { pathname } = useLocation()
 
   const store = useContext(storeContext)
   const {
@@ -37,9 +38,6 @@ const Sektion = () => {
     setDeletionCallback,
     activePrintForm,
   } = store
-  const location = store.location.toJSON()
-  const activeLocation = location[0]
-  const activeId = ifIsNumericAsNumber(location[1])
 
   const showTab = useCallback(
     (e) => {
@@ -50,12 +48,12 @@ const Sektion = () => {
   )
   // const addSektion = useCallback(() => addSektion())
   const deleteSektion = useCallback(() => {
-    const activeSektion = sektionen.find((p) => p.id === activeId)
+    const activeSektion = sektionen.find((p) => p.id === sektionId)
     if (activeSektion.deleted === 1) {
       // sektion.deleted is already = 1
       // prepare true deletion
       setDeletionCallback(() => {
-        store.deleteSektion(activeId)
+        store.deleteSektion(sektionId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -72,7 +70,7 @@ const Sektion = () => {
       // do not true delete yet
       // only set sektion.deleted = 1
       setDeletionCallback(() => {
-        store.setSektionDeleted(activeId)
+        store.setSektionDeleted(sektionId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -85,7 +83,7 @@ const Sektion = () => {
     }
   }, [
     sektionen,
-    activeId,
+    sektionId,
     setDeletionCallback,
     setDeletionMessage,
     setDeletionTitle,
@@ -99,8 +97,8 @@ const Sektion = () => {
     sektionenFiltered.length !== sektionenSum
       ? `${sektionenFiltered.length}/${sektionenSum}`
       : sektionenFiltered.length
-  const active = activeLocation === 'Sektionen' && !activePrintForm
-  const existsActiveSektion = active && location[1]
+  const active = pathname.startsWith('/Sektionen') && !activePrintForm
+  const existsActiveSektion = active && sektionId
 
   return (
     <StyledNavItem active={active}>
@@ -108,7 +106,7 @@ const Sektion = () => {
         Sektionen
         {active && <Sup>{sektionenSumSup}</Sup>}
       </NavLink>
-      {activeLocation !== 'Sektionen' && (
+      {!pathname.startsWith('/Sektionen') && (
         <UncontrolledTooltip placement="bottom" target="Sektionen">
           Sektionen anzeigen
         </UncontrolledTooltip>
