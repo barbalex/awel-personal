@@ -37,7 +37,7 @@ const Container = styled.div`
   container-type: size;
 `
 // ISSUE
-// styled-components do not allow container queries
+// styled-components do not allow container queries (yet?)
 // so css depending on width and showFilter is set in styles.css
 // and id is set depending on showFilter
 const Wrapper = styled.div`
