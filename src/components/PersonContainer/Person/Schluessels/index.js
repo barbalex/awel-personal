@@ -5,8 +5,8 @@ import { Col, FormGroup, Label, Button, ButtonGroup } from 'reactstrap'
 import { MdEdit } from 'react-icons/md'
 import { FaPlus } from 'react-icons/fa'
 import { ipcRenderer } from 'electron'
+import { useParams } from 'react-router-dom'
 
-import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import Schluessel from './Schluessel'
 import storeContext from '../../../../storeContext'
 
@@ -53,6 +53,8 @@ const StyledFormGroup = styled(FormGroup)`
 `
 
 const SchluesselsComponent = ({ row = true }) => {
+  const { personId } = useParams()
+
   const store = useContext(storeContext)
   const {
     showFilter,
@@ -63,16 +65,11 @@ const SchluesselsComponent = ({ row = true }) => {
   } = store
   const uploader = useRef(null)
 
-  const location = store.location.toJSON()
-  if (!location[1] && !showFilter) throw new Error(`no id found`)
-  const activePersonenId = ifIsNumericAsNumber(location[1])
   let schluessels
   if (showFilter) {
     schluessels = [filterSchluessel]
   } else {
-    schluessels = store.schluessel.filter(
-      (s) => s.idPerson === activePersonenId,
-    )
+    schluessels = store.schluessel.filter((s) => s.idPerson === personId)
   }
   const mayAddNew =
     !showFilter &&
@@ -121,7 +118,7 @@ const SchluesselsComponent = ({ row = true }) => {
       ))}
       {mayAddNew && (
         <StyledButton title="neuer Schlüssel" onClick={addSchluessel} outline>
-          <PlusIcon id={`plusIconSchluessel${activePersonenId}`} />
+          <PlusIcon id={`plusIconSchluessel${personId}`} />
         </StyledButton>
       )}
       {!showFilter && (
@@ -134,7 +131,7 @@ const SchluesselsComponent = ({ row = true }) => {
             Empfangsformular
           </Button>
           <Button title="Pfad ändern" outline onClick={onClickChangePath}>
-            <EditIcon size="22" id={`editIcon${activePersonenId}`} />
+            <EditIcon size="22" id={`editIcon${personId}`} />
             <input
               type="file"
               id="file"

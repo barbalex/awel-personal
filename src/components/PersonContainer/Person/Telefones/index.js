@@ -3,8 +3,8 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { Col, FormGroup, Label, Button } from 'reactstrap'
 import { FaPlus } from 'react-icons/fa'
+import { useParams } from 'react-router-dom'
 
-import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import Telefon from './Telefon'
 import storeContext from '../../../../storeContext'
 
@@ -34,28 +34,27 @@ const NonRowLabel = styled(Label)`
   margin-bottom: 3px;
 `
 const StyledFormGroup = styled(FormGroup)`
-  margin-bottom: ${props => (props.row ? '16px' : '8px !important')};
+  margin-bottom: ${(props) => (props.row ? '16px' : '8px !important')};
 `
 const PlusIcon = styled(FaPlus)`
   margin-top: -4px;
 `
 
 const TelefonesComponent = ({ row = true }) => {
+  const { personId } = useParams()
+
   const store = useContext(storeContext)
   const { showFilter, filterTelefon, addTelefon } = store
-  const location = store.location.toJSON()
-  if (!location[1] && !showFilter) throw new Error(`no id found`)
-  const activePersonenId = ifIsNumericAsNumber(location[1])
   let telefones
   if (showFilter) {
     telefones = [filterTelefon]
   } else {
-    telefones = store.telefones.filter(s => s.idPerson === activePersonenId)
+    telefones = store.telefones.filter((s) => s.idPerson === personId)
   }
   const mayAddNew =
     !showFilter &&
     (telefones.length === 0 ||
-      !telefones.map(s => s.name).some(n => n === null))
+      !telefones.map((s) => s.name).some((n) => n === null))
   const Content = () => (
     <Container name="telefone">
       {telefones.length > 0 && (
@@ -66,12 +65,12 @@ const TelefonesComponent = ({ row = true }) => {
           <div />
         </Row>
       )}
-      {telefones.map(telefone => (
+      {telefones.map((telefone) => (
         <Telefon key={telefone.id || 'filter'} id={telefone.id || 'filter'} />
       ))}
       {mayAddNew && (
         <StyledButton title="neues Telefon" onClick={addTelefon} outline>
-          <PlusIcon id={`plusIconTelefon${activePersonenId}`} />
+          <PlusIcon id={`plusIconTelefon${personId}`} />
         </StyledButton>
       )}
     </Container>

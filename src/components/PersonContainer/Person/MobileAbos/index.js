@@ -3,8 +3,8 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { Col, FormGroup, Label, Button } from 'reactstrap'
 import { FaPlus } from 'react-icons/fa'
+import { useParams } from 'react-router-dom'
 
-import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import MobileAbo from './MobileAbo'
 import storeContext from '../../../../storeContext'
 
@@ -36,28 +36,27 @@ const NonRowLabel = styled(Label)`
   margin-bottom: 3px;
 `
 const StyledFormGroup = styled(FormGroup)`
-  margin-bottom: ${props => (props.row ? '16px' : '8px !important')};
+  margin-bottom: ${(props) => (props.row ? '16px' : '8px !important')};
 `
 const PlusIcon = styled(FaPlus)`
   margin-top: -4px;
 `
 
 const MobileAbosComponent = ({ row = true }) => {
+  const { personId } = useParams()
+
   const store = useContext(storeContext)
   const { showFilter, filterMobileAbo, addMobileAbo } = store
-  const location = store.location.toJSON()
-  if (!location[1] && !showFilter) throw new Error(`no id found`)
-  const activePersonenId = ifIsNumericAsNumber(location[1])
   let mobileAbos
   if (showFilter) {
     mobileAbos = [filterMobileAbo]
   } else {
-    mobileAbos = store.mobileAbos.filter(s => s.idPerson === activePersonenId)
+    mobileAbos = store.mobileAbos.filter((s) => s.idPerson === personId)
   }
   const mayAddNew =
     !showFilter &&
     (mobileAbos.length === 0 ||
-      !mobileAbos.map(s => s.name).some(n => n === null))
+      !mobileAbos.map((s) => s.name).some((n) => n === null))
 
   const Content = () => (
     <Container name="mobileAbo">
@@ -69,7 +68,7 @@ const MobileAbosComponent = ({ row = true }) => {
           <div />
         </Row>
       )}
-      {mobileAbos.map(mobileAbo => (
+      {mobileAbos.map((mobileAbo) => (
         <MobileAbo
           key={mobileAbo.id || 'filter'}
           id={mobileAbo.id || 'filter'}
@@ -77,7 +76,7 @@ const MobileAbosComponent = ({ row = true }) => {
       ))}
       {mayAddNew && (
         <StyledButton title="neues mobile Abo" onClick={addMobileAbo} outline>
-          <PlusIcon id={`plusIconMobileAbo${activePersonenId}`} />
+          <PlusIcon id={`plusIconMobileAbo${personId}`} />
         </StyledButton>
       )}
     </Container>
