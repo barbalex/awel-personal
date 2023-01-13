@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "electron-forge start",
     "package": "electron-forge package",
-    "preinstall": "npm install better-sqlite3 --build-from-source --runtime=electron --target=22.0.1 --dist-url=https://electronjs.org/headers --force",
+    "preinstall": "npm install better-sqlite3 --no-save --build-from-source --runtime=electron --target=22.0.1 --dist-url=https://electronjs.org/headers --force",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "rebuild": "./node_modules/.bin/electron-rebuild"
@@ -22,7 +22,6 @@
     "forge": "./forge.config.js"
   },
   "dependencies": {
-    "better-sqlite3": "^8.0.1",
     "popper.js": "1.16.1",
     "react-router-dom": "^6.6.2"
   },
