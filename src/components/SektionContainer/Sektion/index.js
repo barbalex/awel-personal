@@ -263,7 +263,7 @@ const Sektion = ({ listRef }) => {
               error={errors.deleted}
             />
           )}
-          {!showFilter && <Zuletzt />}
+          {!showFilter && <Zuletzt sektion={sektion}/>}
         </StyledForm>
       </Container>
     </ErrorBoundary>

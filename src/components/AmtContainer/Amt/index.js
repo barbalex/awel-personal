@@ -245,7 +245,7 @@ const Amt = ({ listRef }) => {
               error={errors.deleted}
             />
           )}
-          {!showFilter && <Zuletzt />}
+          {!showFilter && <Zuletzt amt={amt} />}
         </StyledForm>
       </Container>
     </ErrorBoundary>

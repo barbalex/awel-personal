@@ -275,7 +275,7 @@ const Abteilung = ({ listRef }) => {
               error={errors.deleted}
             />
           )}
-          {!showFilter && <Zuletzt />}
+          {!showFilter && <Zuletzt abteilung={abteilung}/>}
         </StyledForm>
       </Container>
     </ErrorBoundary>
