@@ -1272,7 +1272,15 @@ const store = () =>
           )
           self.updatePersonsMutation(personId)
         },
-        updateField({ table, parentModel, field, value, id, setErrors, personId }) {
+        updateField({
+          table,
+          parentModel,
+          field,
+          value,
+          id,
+          setErrors,
+          personId,
+        }) {
           // 1. update in db
           try {
             self.db
@@ -1318,16 +1326,11 @@ const store = () =>
               'kaderFunktionen',
               'etiketten',
               'anwesenheitstage',
-            ].includes(parentModel) && personId
+            ].includes(parentModel) &&
+            personId
           ) {
             // set persons letzteMutation
             self.updatePersonsMutation(personId)
-          }
-          if (['kostenstellen'].includes(parentModel)) {
-            // set sektions letzteMutation
-            const { location } = self
-            const idSektion = ifIsNumericAsNumber(location[1])
-            self.updateSektionsMutation(idSektion)
           }
           if (setErrors) setErrors({})
         },
