@@ -29,7 +29,7 @@ const StyledForm = styled(Form)`
 `
 
 const Bereich = ({ listRef }) => {
-  const { bereichId: bereichIdInUrl } = useParams()
+  const { bereichId: bereichIdInUrl = 0 } = useParams()
 
   const store = useContext(storeContext)
   const {
@@ -54,10 +54,10 @@ const Bereich = ({ listRef }) => {
   if (showFilter) {
     bereich = filterBereich
   } else {
-    bereich = bereiche.find((p) => p.id === bereichIdInUrl)
+    bereich = bereiche.find((p) => p.id === +bereichIdInUrl)
     if (!bereich) bereich = {}
   }
-  const bereichId = showFilter ? '' : bereichIdInUrl
+  const bereichId = showFilter ? '' : +bereichIdInUrl
 
   const [errors, setErrors] = useState({})
   useEffect(() => {
@@ -303,7 +303,7 @@ const Bereich = ({ listRef }) => {
               error={errors.deleted}
             />
           )}
-          {!showFilter && <Zuletzt />}
+          {!showFilter && <Zuletzt bereich={bereich} />}
         </StyledForm>
       </Container>
     </ErrorBoundary>

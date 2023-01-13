@@ -30,7 +30,8 @@ const StyledReflexElement = styled(ReflexElement)`
 `
 
 const BereichContainer = () => {
-  const { bereichId } = useParams()
+  const { bereichId: bereichIdInUrl = 0 } = useParams()
+  const bereichId = +bereichIdInUrl
 
   const store = useContext(storeContext)
   const { showFilter, bereiche, db } = store
@@ -67,7 +68,7 @@ const BereichContainer = () => {
             </ReflexElement>
             <ReflexSplitter />
             <StyledReflexElement showfilter={showFilter}>
-              {bereichId && <Outlet listRef={listRef} />}
+              {!!bereichId && <Outlet listRef={listRef} />}
             </StyledReflexElement>
           </ReflexContainer>
         </ErrorBoundary>

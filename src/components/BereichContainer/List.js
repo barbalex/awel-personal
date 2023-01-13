@@ -62,7 +62,8 @@ const MutationFrist = styled.div`
 
 const BereichList = ({ dimensions, listRef }) => {
   const navigate = useNavigate()
-  const { bereichId } = useParams()
+  const { bereichId: bereichIdInUrl = 0 } = useParams()
+  const bereichId = +bereichIdInUrl
 
   const store = useContext(storeContext)
   const { showFilter, setShowFilter, showMutationNoetig } = store
