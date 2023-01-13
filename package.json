@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "electron-forge start",
     "package": "electron-forge package",
-    "preinstall": "npm install better-sqlite3 --no-save --build-from-source --runtime=electron --target=22.0.1 --dist-url=https://electronjs.org/headers --force",
+    "preinstall": "npm install better-sqlite3 --no-save --build-from-source --runtime=electron --target=22.0.2 --dist-url=https://electronjs.org/headers --force",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "rebuild": "./node_modules/.bin/electron-rebuild"
@@ -21,8 +21,7 @@
   "config": {
     "forge": "./forge.config.js"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "7.20.12",
     "@babel/eslint-parser": "7.19.1",
@@ -47,13 +46,13 @@
     "copy-webpack-plugin": "11.0.0",
     "css-loader": "6.7.3",
     "date-fns": "2.29.3",
-    "electron": "22.0.1",
+    "electron": "22.0.2",
     "electron-debug": "3.2.0",
     "electron-squirrel-startup": "1.0.0",
     "eslint": "8.31.0",
     "eslint-config-react-app": "7.0.1",
     "eslint-plugin-flowtype": "8.0.3",
-    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-import": "2.27.4",
     "eslint-plugin-jsx-a11y": "6.x",
     "eslint-plugin-react": "7.x",
     "eslint-plugin-react-hooks": "4.6.0",
