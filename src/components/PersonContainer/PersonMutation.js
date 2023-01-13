@@ -104,7 +104,7 @@ const WRRightEditing = styled.div`
 `
 
 const PersonMutation = () => {
-  const { personId: personIdInUrl } = useParams()
+  const { personId: personIdInUrl = 0 } = useParams()
 
   const store = useContext(storeContext)
   const {
@@ -129,10 +129,10 @@ const PersonMutation = () => {
   if (showFilter) {
     person = filterPerson
   } else {
-    person = personen.find((p) => p.id === personIdInUrl)
+    person = personen.find((p) => p.id === +personIdInUrl)
     if (!person) person = {}
   }
-  const personId = showFilter ? '' : personIdInUrl
+  const personId = showFilter ? '' : +personIdInUrl
 
   const [editWeiterleiten, setEditWeiterleiten] = useState(false)
   const onClickEditWeiterleiten = useCallback(
@@ -347,7 +347,6 @@ const PersonMutation = () => {
     [standortWerte],
   )
 
-  console.log('PersonMutation', { personId, showFilter, person })
   if (!showFilter && !personId) return null
 
   return (

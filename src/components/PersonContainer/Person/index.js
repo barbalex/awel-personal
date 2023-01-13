@@ -150,7 +150,7 @@ const Title = styled.div`
 `
 
 const Person = ({ listRef }) => {
-  const { personId: personIdInUrl } = useParams()
+  const { personId: personIdInUrl = 0 } = useParams()
 
   const store = useContext(storeContext)
   const {
@@ -189,9 +189,9 @@ const Person = ({ listRef }) => {
   if (showFilter) {
     person = filterPerson
   } else {
-    person = personen.find((p) => p.id === personIdInUrl) || {}
+    person = personen.find((p) => p.id === +personIdInUrl) || {}
   }
-  const personId = showFilter ? '' : personIdInUrl
+  const personId = showFilter ? '' : +personIdInUrl
 
   const [errors, setErrors] = useState({})
   useEffect(() => {
