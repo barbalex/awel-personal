@@ -177,7 +177,6 @@ const PersonMutation = ({ dimensions }) => {
 
   const saveToDb = useCallback(
     ({ field, value }) => {
-      // const person = personen.find(p => p.id === activeId)
       if (!person && !showFilter) {
         throw new Error(`Person with id ${personId} not found`)
       }

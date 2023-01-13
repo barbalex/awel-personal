@@ -139,7 +139,7 @@ const PersonContainer = () => {
               propagateDimensions
               propagateDimensionsRate={100}
             >
-              <List activeId={personId} {...personJson} listRef={listRef} />
+              <List {...personJson} listRef={listRef} />
             </ReflexElement>
             <ReflexSplitter />
             <StyledReflexElement

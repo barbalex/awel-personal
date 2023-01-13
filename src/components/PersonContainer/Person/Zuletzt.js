@@ -3,8 +3,8 @@ import moment from 'moment'
 import { Col, FormGroup, Label } from 'reactstrap'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+import { useParams } from 'react-router-dom'
 
-import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
 import storeContext from '../../../storeContext'
 
 const StyledFormGroup = styled(FormGroup)`
@@ -17,12 +17,11 @@ const Value = styled.div`
 moment.locale('de')
 
 const Zuletzt = ({ row = true }) => {
+  const { personId } = useParams()
+
   const store = useContext(storeContext)
   const { personen } = store
-  const location = store.location.toJSON()
-  if (!location[1]) throw new Error(`no id found`)
-  const activeId = ifIsNumericAsNumber(location[1])
-  const person = personen.find((p) => p.id === activeId)
+  const person = personen.find((p) => p.id === personId)
 
   return (
     <StyledFormGroup row={row}>

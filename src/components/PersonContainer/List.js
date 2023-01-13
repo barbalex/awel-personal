@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { UncontrolledTooltip } from 'reactstrap'
 import { FaTrashAlt } from 'react-icons/fa'
 import { FaRegEdit } from 'react-icons/fa'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import storeContext from '../../storeContext'
@@ -63,8 +63,9 @@ const MutationFrist = styled.div`
   font-size: 1rem;
 `
 
-const PersonList = ({ dimensions, activeId, listRef }) => {
+const PersonList = ({ dimensions, listRef }) => {
   const navigate = useNavigate()
+  const { personId } = useParams()
 
   const store = useContext(storeContext)
   const {
@@ -104,7 +105,7 @@ const PersonList = ({ dimensions, activeId, listRef }) => {
                   if (showFilter) setShowFilter(false)
                   if (activePrintForm) setActivePrintForm(null)
                 }}
-                active={!showFilter && activeId === row.id}
+                active={!showFilter && personId === row.id}
               >
                 <RowContainer>
                   <Text>{`${row.name || ''} ${row.vorname || ''}`}</Text>
