@@ -11,6 +11,7 @@ import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
+import { useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../../shared/ErrorBoundary'
 import Input from '../../shared/Input'
@@ -28,6 +29,8 @@ const StyledForm = styled(Form)`
 `
 
 const Bereich = ({ activeId, listRef }) => {
+  const { bereichId: bereichIdInUrl } = useParams()
+
   const store = useContext(storeContext)
   const {
     personen,
@@ -51,10 +54,10 @@ const Bereich = ({ activeId, listRef }) => {
   if (showFilter) {
     bereich = filterBereich
   } else {
-    bereich = bereiche.find((p) => p.id === activeId)
+    bereich = bereiche.find((p) => p.id === bereichIdInUrl)
     if (!bereich) bereich = {}
   }
-  const bereichId = showFilter ? '' : bereich.id
+  const bereichId = showFilter ? '' : bereichIdInUrl
 
   const [errors, setErrors] = useState({})
   useEffect(() => {

@@ -55,7 +55,7 @@ const Abteilung = ({ listRef }) => {
     abteilung = abteilungen.find((p) => p.id === abteilungIdInUrl)
     if (!abteilung) abteilung = {}
   }
-  const abteilungId = showFilter ? '' : abteilung.id
+  const abteilungId = showFilter ? '' : abteilungIdInUrl
 
   const [errors, setErrors] = useState({})
   useEffect(() => {

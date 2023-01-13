@@ -54,7 +54,7 @@ const Amt = ({ listRef }) => {
     amt = aemter.find((p) => p.id === amtIdInUrl)
     if (!amt) amt = {}
   }
-  const amtId = showFilter ? '' : amt.id
+  const amtId = showFilter ? '' : amtIdInUrl
 
   const [errors, setErrors] = useState({})
   useEffect(() => {

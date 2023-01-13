@@ -143,7 +143,7 @@ const PersonMutation = ({ dimensions }) => {
     person = personen.find((p) => p.id === personIdInUrl)
     if (!person) person = {}
   }
-  const personId = showFilter ? '' : person.id
+  const personId = showFilter ? '' : personIdInUrl
 
   const [editWeiterleiten, setEditWeiterleiten] = useState(false)
   const onClickEditWeiterleiten = useCallback(
@@ -343,6 +343,7 @@ const PersonMutation = ({ dimensions }) => {
     [standortWerte],
   )
 
+  console.log('PersonMutation', { personId, showFilter, person })
   if (!showFilter && !personId) return null
 
   const { width } = dimensions
