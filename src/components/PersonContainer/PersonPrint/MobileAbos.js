@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
+import { useParams } from 'react-router-dom'
 
 import storeContext from '../../../storeContext'
 
@@ -41,9 +42,11 @@ const Bemerkungen = styled.div`
   font-size: smaller;
 `
 
-const MobileAbos = ({ activeId }) => {
+const MobileAbos = () => {
+  const { personId } = useParams()
+
   const store = useContext(storeContext)
-  const mobileAbos = store.mobileAbos.filter((s) => s.idPerson === activeId)
+  const mobileAbos = store.mobileAbos.filter((s) => s.idPerson === personId)
 
   if (mobileAbos.length === 0) return null
 

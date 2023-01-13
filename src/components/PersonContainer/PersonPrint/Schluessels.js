@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
+import { useParams } from 'react-router-dom'
 
 import storeContext from '../../../storeContext'
 
@@ -45,9 +46,11 @@ const Nr = styled.div`
   font-size: smaller;
 `
 
-const Schluessels = ({ activeId }) => {
+const Schluessels = () => {
+  const { personId } = useParams()
+
   const store = useContext(storeContext)
-  const schluessels = store.schluessel.filter((s) => s.idPerson === activeId)
+  const schluessels = store.schluessel.filter((s) => s.idPerson === personId)
 
   if (schluessels.length === 0) return null
 

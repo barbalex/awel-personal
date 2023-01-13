@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { Form } from 'reactstrap'
 import findIndex from 'lodash/findIndex'
 import sortBy from 'lodash/sortBy'
+import { useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import Input from '../shared/Input'
@@ -17,11 +18,13 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Data = ({ activeId, activeTable, listRef }) => {
+const Data = ({ listRef }) => {
+  const { tableId, tableName } = useParams()
+
   const store = useContext(storeContext)
   const { showDeleted, updateField, setDirty } = store
 
-  const dat = activeId ? store[activeTable].find((p) => p.id === activeId) : []
+  const dat = tableId ? store[tableName].find((p) => p.id === tableId) : []
 
   const [errors, setErrors] = useState({})
   useEffect(() => {
@@ -35,10 +38,10 @@ const Data = ({ activeId, activeTable, listRef }) => {
   const saveToDb = useCallback(
     ({ field, value }) => {
       const newValue = ifIsNumericAsNumber(value)
-      const { parentModel } = tables.find((t) => t.table === activeTable)
+      const { parentModel } = tables.find((t) => t.table === tableName)
 
       updateField({
-        table: activeTable,
+        table: tableName,
         parentModel,
         field,
         value: newValue,
@@ -46,7 +49,7 @@ const Data = ({ activeId, activeTable, listRef }) => {
         setErrors,
       })
       if (field === 'value') {
-        let data = store[activeTable].slice().filter((p) => {
+        let data = store[tableName].slice().filter((p) => {
           if (!showDeleted) return p.deleted === 0
           return true
         })
@@ -55,14 +58,14 @@ const Data = ({ activeId, activeTable, listRef }) => {
         listRef.current.scrollToItem(index)
       }
     },
-    [updateField, activeTable, dat.id, store, listRef, showDeleted],
+    [updateField, tableName, dat.id, store, listRef, showDeleted],
   )
 
-  if (!activeId) return null
+  if (!tableId) return null
   if (!dat) {
     return (
       <Container>
-        {`Sorry: keinen Datensatz in Tabelle "${activeTable}" mit id "${activeId}" gefunden.`}
+        {`Sorry: keinen Datensatz in Tabelle "${tableName}" mit id "${tableId}" gefunden.`}
       </Container>
     )
   }
