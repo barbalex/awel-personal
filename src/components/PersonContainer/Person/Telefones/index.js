@@ -69,7 +69,11 @@ const TelefonesComponent = ({ row = true }) => {
         <Telefon key={telefone.id || 'filter'} id={telefone.id || 'filter'} />
       ))}
       {mayAddNew && (
-        <StyledButton title="neues Telefon" onClick={addTelefon} outline>
+        <StyledButton
+          title="neues Telefon"
+          onClick={() => addTelefon(personId)}
+          outline
+        >
           <PlusIcon id={`plusIconTelefon${personId}`} />
         </StyledButton>
       )}

@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { UncontrolledTooltip } from 'reactstrap'
 import { FaTimes } from 'react-icons/fa'
+import { useParams } from 'react-router-dom'
 
 import storeContext from '../../../../storeContext'
 
@@ -40,12 +41,14 @@ const StyledA = styled.a`
 `
 
 const LinkComponent = ({ link }) => {
+  const { personId } = useParams()
+
   const store = useContext(storeContext)
   const { deleteLink } = store
 
   const onClickRemove = useCallback(
-    () => deleteLink(link.id),
-    [deleteLink, link.id],
+    () => deleteLink({ id: link.id, personId }),
+    [deleteLink, link.id, personId],
   )
 
   return (

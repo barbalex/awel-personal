@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { UncontrolledTooltip } from 'reactstrap'
 import { FaTimes } from 'react-icons/fa'
 import sortBy from 'lodash/sortBy'
+import { useParams } from 'react-router-dom'
 
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
 import InputWithoutLabel from '../../../shared/InputWithoutLabel'
@@ -14,7 +15,7 @@ import Select from '../Select'
 const Row = styled.div`
   grid-column: 1;
   display: grid;
-  grid-template-columns: ${props =>
+  grid-template-columns: ${(props) =>
     props.nosymbol ? '2fr 2fr 2fr 1fr' : '2fr 2fr 2fr 1fr 20px'};
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
@@ -52,6 +53,8 @@ const Delete = styled.div`
 `
 
 const SchluesselComponent = ({ id }) => {
+  const { personId } = useParams()
+
   const store = useContext(storeContext)
   const {
     showFilter,
@@ -66,15 +69,17 @@ const SchluesselComponent = ({ id }) => {
   if (showFilter) {
     schluessel = filterSchluessel
   } else {
-    schluessel = store.schluessel.find(s => s.id === id)
+    schluessel = store.schluessel.find((s) => s.id === id)
   }
 
   const [errors, setErrors] = useState({})
-  useEffect(() => { setErrors({}) }, [schluessel.id])
+  useEffect(() => {
+    setErrors({})
+  }, [schluessel.id])
 
   const schluesselTypOptions = sortBy(schluesselTypWerte, ['sort', 'value'])
-    .filter(w => !!w.value)
-    .map(w => ({
+    .filter((w) => !!w.value)
+    .map((w) => ({
       label: w.value,
       value: w.value,
     }))
@@ -82,8 +87,8 @@ const SchluesselComponent = ({ id }) => {
     'sort',
     'value',
   ])
-    .filter(w => !!w.value)
-    .map(w => ({
+    .filter((w) => !!w.value)
+    .map((w) => ({
       label: w.value,
       value: w.value,
     }))
@@ -151,10 +156,10 @@ const SchluesselComponent = ({ id }) => {
     },
     [filterSchluessel, id, setFilter, showFilter, updateField],
   )
-  const onClickDelete = useCallback(() => deleteSchluessel(id), [
-    deleteSchluessel,
-    id,
-  ])
+  const onClickDelete = useCallback(
+    () => deleteSchluessel({ id, personId }),
+    [deleteSchluessel, id, personId],
+  )
 
   return (
     <Row key={`${id}`} nosymbol={showFilter}>

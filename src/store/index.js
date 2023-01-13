@@ -1052,7 +1052,7 @@ const store = () =>
           })
           self.updatePersonsMutation(personId)
         },
-        deleteLink(id) {
+        deleteLink({ id, personId }) {
           // write to db
           try {
             self.db.prepare('delete from links where id = ?').run(id)
@@ -1066,9 +1066,7 @@ const store = () =>
             1,
           )
           // set persons letzteMutation
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
         addSchluessel(personId) {
           // 1. create new link in db, returning id
@@ -1092,7 +1090,7 @@ const store = () =>
           })
           self.updatePersonsMutation(personId)
         },
-        deleteSchluessel(id) {
+        deleteSchluessel({ id, personId }) {
           // write to db
           try {
             self.db.prepare('delete from schluessel where id = ?').run(id)
@@ -1106,57 +1104,9 @@ const store = () =>
             1,
           )
           // set persons letzteMutation
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
-        addKostenstelle() {
-          // grab idSektion from location
-          const { location } = self
-          const idSektion = ifIsNumericAsNumber(location[1])
-          // 1. create new link in db, returning id
-          let info
-          try {
-            info = self.db
-              .prepare(
-                'insert into kostenstelle (idSektion, letzteMutationUser, letzteMutationZeit) values (?,?,?)',
-              )
-              .run(idSektion, self.username, Date.now())
-          } catch (error) {
-            self.addError(error)
-            return console.log(error)
-          }
-          // 2. add to store
-          self.kostenstelle.push({
-            id: info.lastInsertRowid,
-            idSektion,
-            letzteMutationUser: self.username,
-            letzteMutationZeit: Date.now(),
-          })
-          self.updateSektionsMutation(idSektion)
-        },
-        deleteKostenstelle(id) {
-          // write to db
-          try {
-            self.db.prepare('delete from kostenstelle where id = ?').run(id)
-          } catch (error) {
-            self.addError(error)
-            return console.log(error)
-          }
-          // write to store
-          self.kostenstelle.splice(
-            findIndex(self.kostenstelle, (p) => p.id === id),
-            1,
-          )
-          // set persons letzteMutation
-          const { location } = self
-          const idSektion = ifIsNumericAsNumber(location[1])
-          self.updateSektionsMutation(idSektion)
-        },
-        addMobileAbo() {
-          // grab idPerson from location
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
+        addMobileAbo(personId) {
           // 1. create new link in db, returning id
           let info
           try {
@@ -1164,7 +1114,7 @@ const store = () =>
               .prepare(
                 'insert into mobileAbos (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)',
               )
-              .run(idPerson, self.username, Date.now())
+              .run(personId, self.username, Date.now())
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1172,16 +1122,13 @@ const store = () =>
           // 2. add to store
           self.mobileAbos.push({
             id: info.lastInsertRowid,
-            idPerson,
+            idPerson: personId,
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
           })
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
-        addTelefon() {
-          // grab idPerson from location
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
+        addTelefon(personId) {
           // 1. create new link in db, returning id
           let info
           try {
@@ -1189,7 +1136,7 @@ const store = () =>
               .prepare(
                 'insert into telefones (idPerson,letzteMutationUser, letzteMutationZeit) values (?,?,?)',
               )
-              .run(idPerson, self.username, Date.now())
+              .run(personId, self.username, Date.now())
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1197,11 +1144,11 @@ const store = () =>
           // 2. add to store
           self.telefones.push({
             id: info.lastInsertRowid,
-            idPerson,
+            idPerson: personId,
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
           })
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
         deleteMobileAbo(id) {
           // write to db

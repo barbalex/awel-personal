@@ -75,7 +75,11 @@ const MobileAbosComponent = ({ row = true }) => {
         />
       ))}
       {mayAddNew && (
-        <StyledButton title="neues mobile Abo" onClick={addMobileAbo} outline>
+        <StyledButton
+          title="neues mobile Abo"
+          onClick={() => addMobileAbo(personId)}
+          outline
+        >
           <PlusIcon id={`plusIconMobileAbo${personId}`} />
         </StyledButton>
       )}
