@@ -338,10 +338,7 @@ const store = () =>
           self.dirty = val
         },
         setFilter({ model, value }) {
-          // usually model can be deduced from location[0]
-          // but if a n-side table is filtered, model needs to be passed
-          const modelToUse = model || self.activeFilterModel
-          self[modelToUse] = value
+          self[model] = value
           if (self.filterFulltext) self.filterFulltext = null
         },
         setFilterFulltext(value) {

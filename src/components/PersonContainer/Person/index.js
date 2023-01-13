@@ -242,18 +242,21 @@ const Person = ({ dimensions, listRef }) => {
 
       if (showFilter) {
         setFilter({
+          model: 'filterPerson',
           value: { ...filterPerson, ...{ [field]: newValue } },
         })
         if (field === 'amt') {
           if (person.abteilung) {
             // reset abteilung
             setFilter({
+              model: 'filterPerson',
               value: { ...filterPerson, ...{ abteilung: null } },
             })
           }
           if (person.sektion) {
             // reset sektion
             setFilter({
+              model: 'filterPerson',
               value: { ...filterPerson, ...{ sektion: null } },
             })
           }
@@ -261,6 +264,7 @@ const Person = ({ dimensions, listRef }) => {
         if (field === 'abteilung' && person.sektion) {
           // reset sektion
           setFilter({
+            model: 'filterPerson',
             value: { ...filterPerson, ...{ sektion: null } },
           })
         }

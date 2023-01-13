@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { Col, FormGroup, Label, FormFeedback } from 'reactstrap'
 import Textarea from 'react-textarea-autosize'
 import styled from 'styled-components'
+import useDetectPrint from 'use-detect-print'
 
 import storeContext from '../../storeContext'
 
@@ -10,7 +11,7 @@ const NonRowLabel = styled(Label)`
   margin-bottom: 3px;
 `
 const StyledFormGroup = styled(FormGroup)`
-  margin-bottom: ${props =>
+  margin-bottom: ${(props) =>
     props['data-margin-bottom'] !== undefined
       ? `${props['data-margin-bottom']}px !important`
       : props.row
@@ -21,13 +22,13 @@ const StyledTextarea = styled(Textarea)`
   display: block;
   width: 100%;
   min-height: 38px;
-  padding: ${props =>
+  padding: ${(props) =>
     props['data-ispdf'] ? '6px 12px 6px 0 !important' : '6px 12px'};
   line-height: 1.42857143;
   color: #555;
   border: 1px solid #ccc;
   border-radius: 4px;
-  ${props => props['data-ispdf'] && 'border-bottom-width: thin !important;'}
+  ${(props) => props['data-ispdf'] && 'border-bottom-width: thin !important;'}
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   &:focus {
     border-color: #66afe9;
@@ -54,16 +55,17 @@ const SharedTextarea = ({
   row = false,
 }) => {
   const store = useContext(storeContext)
-  const { showFilter, setDirty } = store
+  const { showFilter, setDirty, printing } = store
+  const isPrinting = useDetectPrint()
+
   const [stateValue, setStateValue] = useState(
     value || value === 0 ? value : '',
   )
-  const location = store.location.toJSON()
-  const activeLocation = location[0]
-  const isPdf = activeLocation === 'geschaeftPdf'
+  // TODO: test if correct
+  const isPdf = printing || isPrinting
 
   const onBlur = useCallback(
-    event => {
+    (event) => {
       let newValue = event.target.value
       // save nulls if empty
       if (newValue === '') newValue = null
@@ -77,7 +79,7 @@ const SharedTextarea = ({
     [field, saveToDb, setDirty, showFilter, value],
   )
   const onChange = useCallback(
-    event => {
+    (event) => {
       setStateValue(event.target.value)
       if (event.target.value !== value) setDirty(true)
       if (showFilter) {
