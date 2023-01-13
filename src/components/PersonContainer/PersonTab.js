@@ -34,9 +34,11 @@ const StyledTabPane = styled(TabPane)`
   height: calc(100vh - 100px);
 `
 
-const PersonTab = ({ dimensions, listRef }) => {
+const PersonTab = ({ listRef, dimensions = {} }) => {
   const store = useContext(storeContext)
   const { activePrintForm } = store
+
+  console.log('PersonTab', { dimensions, listRef })
 
   const [tab, setTab] = useState('datenblatt')
 
@@ -91,7 +93,7 @@ const PersonTab = ({ dimensions, listRef }) => {
       </Nav>
       <TabContent activeTab={tab}>
         <StyledTabPane tabId="datenblatt">
-          <Person dimensions={dimensions} listRef={listRef} />
+          <Person listRef={listRef} />
         </StyledTabPane>
         <StyledTabPane tabId="mutation">
           <PersonMutation dimensions={dimensions} />

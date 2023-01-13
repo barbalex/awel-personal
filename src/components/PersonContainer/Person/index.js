@@ -34,36 +34,15 @@ import PersonImage from './PersonImage'
 const Container = styled.div`
   hyphens: auto;
   word-wrap: break-word;
+  container-type: size;
 `
-const StyledForm = styled(Form)``
-const WrapperNarrow = styled.div`
+// ISSUE
+// styled-components do not allow container queries
+// so css depending on width and showFilter is set in styles.css
+// and id is set depending on showFilter
+const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(1, 100%);
   grid-template-rows: auto;
-  grid-template-areas: 'personalien' 'verzeichnis' 'anstellung' 'funktionen' 'zuletzt';
-`
-const WrapperNarrowShowFilter = styled.div`
-  display: grid;
-  grid-template-columns: repeat(1, 100%);
-  grid-template-rows: auto;
-  grid-template-areas: 'personalien' 'verzeichnis' 'anstellung' 'funktionen';
-`
-const WrapperWide = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 50%);
-  grid-template-rows: auto;
-  grid-template-areas:
-    'personalien verzeichnis'
-    'anstellung funktionen'
-    'zuletzt zuletzt';
-`
-const WrapperWideShowFilter = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 50%);
-  grid-template-rows: auto;
-  grid-template-areas:
-    'personalien verzeichnis'
-    'anstellung funktionen';
 `
 
 const AreaPersonalien = styled.div`
@@ -170,7 +149,7 @@ const Title = styled.div`
   font-size: 18px;
 `
 
-const Person = ({ dimensions, listRef }) => {
+const Person = ({ listRef }) => {
   const { personId: personIdInUrl } = useParams()
 
   const store = useContext(storeContext)
@@ -744,21 +723,14 @@ const Person = ({ dimensions, listRef }) => {
 
   if (!showFilter && !personId) return null
 
-  const { width } = dimensions
-  const viewIsNarrow = width < 860
-  let Wrapper = viewIsNarrow
-    ? showFilter
-      ? WrapperNarrowShowFilter
-      : WrapperNarrow
-    : showFilter
-    ? WrapperWideShowFilter
-    : WrapperWide
-
   return (
     <ErrorBoundary>
-      <Container showfilter={showFilter}>
-        <StyledForm>
-          <Wrapper>
+      <Container data-showfilter={showFilter}>
+        <Form>
+          <Wrapper
+            data-showfilter={showFilter}
+            id={`person-form-wrapper${showFilter ? '-filter' : ''}`}
+          >
             <AreaPersonalien>
               <AreaPAreaTitle>
                 <Title>Personalien</Title>
@@ -1152,11 +1124,11 @@ const Person = ({ dimensions, listRef }) => {
                     row={true}
                   />
                 )}
-                <Zuletzt row={true} />
+                <Zuletzt row={true} person={person} />
               </AreaZuletzt>
             )}
           </Wrapper>
-        </StyledForm>
+        </Form>
       </Container>
     </ErrorBoundary>
   )

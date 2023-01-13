@@ -15,8 +15,33 @@ body {
   margin: 0;
 }
 
-@media print {
+@container (max-width: 860px) {
+  #person-form-wrapper {
+    grid-template-columns: repeat(1, 100%);
+    grid-template-areas: 'personalien' 'verzeichnis' 'anstellung' 'funktionen' 'zuletzt';
+  }
+  #person-form-wrapper-filter {
+    grid-template-columns: repeat(1, 100%);
+    grid-template-areas: 'personalien' 'verzeichnis' 'anstellung' 'funktionen';
+  }
+}
+@container (min-width: 861px) {
+  #person-form-wrapper {
+    grid-template-columns: repeat(2, 50%);
+    grid-template-areas:
+      'personalien verzeichnis'
+      'anstellung funktionen'
+      'zuletzt zuletzt';
+  }
+  #person-form-wrapper-filter {
+    grid-template-columns: repeat(2, 50%);
+    grid-template-areas:
+      'personalien verzeichnis'
+      'anstellung funktionen';
+  }
+}
 
+@media print {
   /*
    * hide everything BUT what shall be printed
    */
