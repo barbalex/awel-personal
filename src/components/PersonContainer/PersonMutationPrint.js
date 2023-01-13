@@ -4,6 +4,7 @@ import Linkify from 'react-linkify'
 import styled from 'styled-components'
 import moment from 'moment'
 import get from 'lodash/get'
+import { useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import storeContext from '../../storeContext'
@@ -163,7 +164,9 @@ const Field = ({ label, value }) => (
   </Row>
 )
 
-const PersonMutationPrint = ({ activeId }) => {
+const PersonMutationPrint = () => {
+  const { personId } = useParams()
+
   const store = useContext(storeContext)
   const {
     personen,
@@ -176,10 +179,9 @@ const PersonMutationPrint = ({ activeId }) => {
     settings,
   } = store
 
-  if (!showFilter && !activeId) return null
+  if (!showFilter && !personId) return null
 
-  const person = personen.find((p) => p.id === activeId)
-  const personId = person.id
+  const person = personen.find((p) => p.id === personId)
 
   const viewIsNarrow = true
   const Wrapper = viewIsNarrow ? WrapperNarrow : WrapperWide

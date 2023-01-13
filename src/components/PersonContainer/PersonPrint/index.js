@@ -2,6 +2,7 @@ import React, { useContext, useMemo } from 'react'
 import moment from 'moment'
 import styled from 'styled-components'
 import get from 'lodash/get'
+import { useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../../shared/ErrorBoundary'
 import storeContext from '../../../storeContext'
@@ -202,7 +203,9 @@ const LogoImg = styled.img`
   margin-left: -10px;
 `
 
-const PersonPrint = ({ activeId }) => {
+const PersonPrint = () => {
+  const { personId } = useParams()
+
   const store = useContext(storeContext)
   const {
     personen,
@@ -219,43 +222,43 @@ const PersonPrint = ({ activeId }) => {
   const myEtiketten = useMemo(
     () =>
       etiketten
-        .filter((e) => e.idPerson === activeId)
+        .filter((e) => e.idPerson === personId)
         .filter((w) => !!w.etikett)
         .filter((p) => p.deleted === 0)
         .map((e) => e.etikett),
-    [activeId, etiketten],
+    [personId, etiketten],
   )
   const myAnwesenheitstage = useMemo(
     () =>
       anwesenheitstage
-        .filter((e) => e.idPerson === activeId)
+        .filter((e) => e.idPerson === personId)
         .filter((w) => !!w.tag)
         .filter((p) => p.deleted === 0)
         .map((e) => e.tag),
-    [activeId, anwesenheitstage],
+    [personId, anwesenheitstage],
   )
   const myFunktionen = useMemo(
     () =>
       funktionen
-        .filter((e) => e.idPerson === activeId)
+        .filter((e) => e.idPerson === personId)
         .filter((w) => !!w.funktion)
         .filter((p) => p.deleted === 0)
         .map((e) => e.funktion),
-    [activeId, funktionen],
+    [personId, funktionen],
   )
   const myKaderFunktionen = useMemo(
     () =>
       kaderFunktionen
-        .filter((e) => e.idPerson === activeId)
+        .filter((e) => e.idPerson === personId)
         .filter((w) => !!w.funktion)
         .filter((p) => p.deleted === 0)
         .map((e) => e.funktion),
-    [activeId, kaderFunktionen],
+    [personId, kaderFunktionen],
   )
 
-  if (!activeId) return null
+  if (!personId) return null
 
-  const person = personen.find((p) => p.id === activeId) || {}
+  const person = personen.find((p) => p.id === personId) || {}
 
   const personVorgesetzt = personen.find((a) => a.id === person.vorgesetztId)
 
@@ -320,7 +323,7 @@ const PersonPrint = ({ activeId }) => {
                       />
                     </AreaPGeburtsdatum>
                     <AreaPTelefon>
-                      <Telefones activeId={activeId} />
+                      <Telefones activeId={personId} />
                     </AreaPTelefon>
                   </AreaPersonalien>
                   <AreaAnstellung>
@@ -408,9 +411,9 @@ const PersonPrint = ({ activeId }) => {
                       value={person.bemerkungen}
                       label="Bemerkun&shy;gen"
                     />
-                    <Links activeId={activeId} />
-                    <Schluessels activeId={activeId} />
-                    <MobileAbos activeId={activeId} />
+                    <Links activeId={personId} />
+                    <Schluessels activeId={personId} />
+                    <MobileAbos activeId={personId} />
                   </AreaVerzeichnis>
                   <AreaZuletzt>
                     {`Zuletzt geändert: ${
