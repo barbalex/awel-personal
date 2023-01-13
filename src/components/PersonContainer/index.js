@@ -8,9 +8,14 @@ import { Outlet, useParams } from 'react-router-dom'
 import ErrorBoundary from '../shared/ErrorBoundary'
 import List from './List'
 import storeContext from '../../storeContext'
-import Navbar from '../Navbar'
 import PersonPrint from './PersonPrint'
 import PersonMutationPrint from './PersonMutationPrint'
+import PersonPrintFunktionen from './PersonPrintFunktionen'
+import PersonPrintPensionierte from './PersonPrintPensionierte'
+import PersonPrintKader from './PersonPrintKader'
+import PersonPrintVerzTel from './PersonPrintVerzTel'
+import PersonPrintVerzMobiltel from './PersonPrintVerzMobiltel'
+import PersonPrintVerzKurzzeichen from './PersonPrintVerzKurzzeichen'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
@@ -32,6 +37,11 @@ const A4Portrait = createGlobalStyle`
     size: A4 portrait;
   }
 `
+const A4Landscape = createGlobalStyle`
+  @page {
+    size: A4 landscape;
+  }
+`
 
 const PersonContainer = () => {
   const { personId } = useParams()
@@ -48,51 +58,98 @@ const PersonContainer = () => {
     person?.fetch()
   }, [person])
 
-  if ((printing || isPrinting) && personId) {
-    if (activePrintForm === 'personalblatt') {
+  if (printing || isPrinting) {
+    if (personId) {
+      if (activePrintForm === 'personalblatt') {
+        return (
+          <>
+            <A4Portrait />
+            <PersonPrint />
+          </>
+        )
+      }
+      if (activePrintForm === 'personMutation') {
+        return (
+          <>
+            <A4Portrait />
+            <PersonMutationPrint />
+          </>
+        )
+      }
+    }
+    if (activePrintForm === 'personFunktionen') {
       return (
         <>
-          <A4Portrait />
-          <PersonPrint />
+          <A4Landscape />
+          <PersonPrintFunktionen />
         </>
       )
     }
-    if (activePrintForm === 'personMutation') {
+    if (activePrintForm === 'personPensionierte') {
       return (
         <>
-          <A4Portrait />
-          <PersonMutationPrint />
+          <A4Landscape />
+          <PersonPrintPensionierte />
+        </>
+      )
+    }
+    if (activePrintForm === 'personKader') {
+      return (
+        <>
+          <A4Landscape />
+          <PersonPrintKader />
+        </>
+      )
+    }
+    if (activePrintForm === 'personVerzTel') {
+      return (
+        <>
+          <A4Landscape />
+          <PersonPrintVerzTel />
+        </>
+      )
+    }
+    if (activePrintForm === 'personVerzMobiltel') {
+      return (
+        <>
+          <A4Landscape />
+          <PersonPrintVerzMobiltel />
+        </>
+      )
+    }
+    if (activePrintForm === 'personVerzKurzzeichen') {
+      return (
+        <>
+          <A4Landscape />
+          <PersonPrintVerzKurzzeichen />
         </>
       )
     }
   }
 
   return (
-    <>
-      <Navbar />
-      <Container>
-        <ErrorBoundary>
-          <ReflexContainer orientation="vertical">
-            <ReflexElement
-              flex={isPrinting ? 0 : 0.25}
-              propagateDimensions
-              propagateDimensionsRate={100}
-            >
-              <List activeId={personId} {...personJson} listRef={listRef} />
-            </ReflexElement>
-            <ReflexSplitter />
-            <StyledReflexElement
-              showfilter={showFilter}
-              propagateDimensions
-              propagateDimensionsRate={1000}
-              resizeHeight={false}
-            >
-              <Outlet listRef={listRef} />
-            </StyledReflexElement>
-          </ReflexContainer>
-        </ErrorBoundary>
-      </Container>
-    </>
+    <Container>
+      <ErrorBoundary>
+        <ReflexContainer orientation="vertical">
+          <ReflexElement
+            flex={isPrinting ? 0 : 0.25}
+            propagateDimensions
+            propagateDimensionsRate={100}
+          >
+            <List activeId={personId} {...personJson} listRef={listRef} />
+          </ReflexElement>
+          <ReflexSplitter />
+          <StyledReflexElement
+            showfilter={showFilter}
+            propagateDimensions
+            propagateDimensionsRate={1000}
+            resizeHeight={false}
+          >
+            <Outlet listRef={listRef} />
+          </StyledReflexElement>
+        </ReflexContainer>
+      </ErrorBoundary>
+    </Container>
   )
 }
 
