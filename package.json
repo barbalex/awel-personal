@@ -22,8 +22,7 @@
     "forge": "./forge.config.js"
   },
   "dependencies": {
-    "popper.js": "1.16.1",
-    "react-router-dom": "6.6.2"
+    "popper.js": "1.16.1"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",
@@ -79,6 +78,7 @@
     "react-json-view": "1.21.3",
     "react-linkify": "0.x",
     "react-reflex": "4.0.9",
+    "react-router-dom": "6.6.2",
     "react-select": "5.7.0",
     "react-window": "1.8.8",
     "reactstrap": "8.10.1",
