@@ -32,7 +32,7 @@ const Stammdaten = () => {
   const navigate = useNavigate()
   const { tableName, tableId } = useParams()
 
-  console.log('Stammdaten', { tableName, tableId }) 
+  // console.log('Stammdaten', { tableName, tableId })
 
   const store = useContext(storeContext)
   const { setDeletionMessage, setDeletionTitle, setDeletionCallback } = store
