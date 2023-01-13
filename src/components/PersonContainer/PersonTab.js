@@ -3,6 +3,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 import { observer } from 'mobx-react-lite'
 import classnames from 'classnames'
 import styled from 'styled-components'
+import { useOutletContext } from 'react-router-dom'
 
 import Person from './Person'
 import PersonPrint from './PersonPrint'
@@ -34,11 +35,10 @@ const StyledTabPane = styled(TabPane)`
   height: calc(100vh - 100px);
 `
 
-const PersonTab = ({ listRef, dimensions = {} }) => {
+const PersonTab = () => {
+  const [listRef] = useOutletContext()
   const store = useContext(storeContext)
   const { activePrintForm } = store
-
-  console.log('PersonTab', { dimensions, listRef })
 
   const [tab, setTab] = useState('datenblatt')
 
@@ -96,7 +96,7 @@ const PersonTab = ({ listRef, dimensions = {} }) => {
           <Person listRef={listRef} />
         </StyledTabPane>
         <StyledTabPane tabId="mutation">
-          <PersonMutation dimensions={dimensions} />
+          <PersonMutation />
         </StyledTabPane>
       </TabContent>
     </>

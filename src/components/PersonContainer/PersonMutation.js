@@ -28,22 +28,11 @@ import storeContext from '../../storeContext'
 const Container = styled.div`
   hyphens: auto;
   word-wrap: break-word;
+  container-type: size;
 `
-const StyledForm = styled(Form)``
-const WrapperNarrow = styled.div`
+const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(1, 100%);
   grid-template-rows: auto;
-  grid-template-areas: 'areaPerson' 'areaTel' 'areaIt' 'areaWeiterleiten';
-`
-const WrapperWide = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 50%);
-  grid-template-rows: auto;
-  grid-template-areas:
-    'areaPerson areaTel'
-    'areaPerson areaIt'
-    'areaWeiterleiten areaWeiterleiten';
 `
 const Title = styled.div`
   font-weight: 900;
@@ -114,7 +103,7 @@ const WRRightEditing = styled.div`
   justify-content: flex-end;
 `
 
-const PersonMutation = ({ dimensions }) => {
+const PersonMutation = () => {
   const { personId: personIdInUrl } = useParams()
 
   const store = useContext(storeContext)
@@ -361,15 +350,11 @@ const PersonMutation = ({ dimensions }) => {
   console.log('PersonMutation', { personId, showFilter, person })
   if (!showFilter && !personId) return null
 
-  const { width } = dimensions
-  const viewIsNarrow = width < 1500
-  const Wrapper = viewIsNarrow ? WrapperNarrow : WrapperWide
-
   return (
     <ErrorBoundary>
-      <Container showfilter={showFilter}>
-        <StyledForm>
-          <Wrapper>
+      <Container>
+        <Form>
+          <Wrapper id="person-mutation-wrapper">
             <AreaPerson>
               <Title>Person</Title>
               <Select
@@ -695,7 +680,7 @@ const PersonMutation = ({ dimensions }) => {
               </AreaWeiterleiten>
             )}
           </Wrapper>
-        </StyledForm>
+        </Form>
       </Container>
     </ErrorBoundary>
   )

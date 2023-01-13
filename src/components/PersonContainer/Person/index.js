@@ -725,12 +725,9 @@ const Person = ({ listRef }) => {
 
   return (
     <ErrorBoundary>
-      <Container data-showfilter={showFilter}>
+      <Container>
         <Form>
-          <Wrapper
-            data-showfilter={showFilter}
-            id={`person-form-wrapper${showFilter ? '-filter' : ''}`}
-          >
+          <Wrapper id={`person-form-wrapper${showFilter ? '-filter' : ''}`}>
             <AreaPersonalien>
               <AreaPAreaTitle>
                 <Title>Personalien</Title>

@@ -41,6 +41,22 @@ body {
   }
 }
 
+@container (max-width: 1500px) {
+  #person-mutation-wrapper {
+    grid-template-columns: repeat(1, 100%);
+    grid-template-areas: 'areaPerson' 'areaTel' 'areaIt' 'areaWeiterleiten';
+  }
+}
+@container (min-width: 1501px) {
+  #person-mutation-wrapper {
+    grid-template-columns: repeat(2, 50%);
+    grid-template-areas:
+      'areaPerson areaTel'
+      'areaPerson areaIt'
+      'areaWeiterleiten areaWeiterleiten';
+  }
+}
+
 @media print {
   /*
    * hide everything BUT what shall be printed

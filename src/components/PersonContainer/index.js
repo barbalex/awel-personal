@@ -155,7 +155,7 @@ const PersonContainer = () => {
               propagateDimensionsRate={1000}
               resizeHeight={false}
             >
-              <Outlet listRef={listRef} />
+              <Outlet context={[listRef]} />
             </StyledReflexElement>
           </ReflexContainer>
         </ErrorBoundary>
