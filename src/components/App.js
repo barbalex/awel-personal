@@ -41,7 +41,7 @@ const RouterComponent = () => (
       <Routes>
         <Route path="/" element={<Navigate to="/Personen" />} />
         <Route path="/Personen/*" element={<PersonContainer />}>
-          <Route path=":personId" element={<PersonTab />} />
+          <Route path=":personId/*" element={<PersonTab />} />
         </Route>
         <Route path="/Aemter/*" element={<AmtContainer />}>
           <Route path=":amtId" element={<Amt />} />
