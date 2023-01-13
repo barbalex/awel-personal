@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { UncontrolledTooltip } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 import { FaTimes } from 'react-icons/fa'
+import { useParams } from 'react-router-dom'
 
 import Select from '../Select'
 import Textarea from '../../../shared/Textarea'
@@ -13,7 +14,7 @@ import storeContext from '../../../../storeContext'
 
 const Row = styled.div`
   display: grid;
-  grid-template-columns: ${props =>
+  grid-template-columns: ${(props) =>
     props.nosymbol ? '180px 160px 1fr' : '180px 160px 1fr 20px'};
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
@@ -52,6 +53,8 @@ const Delete = styled.div`
 `
 
 const Telefon = ({ id }) => {
+  const { personId } = useParams()
+
   const store = useContext(storeContext)
   const {
     showFilter,
@@ -66,7 +69,7 @@ const Telefon = ({ id }) => {
   if (showFilter) {
     telefon = filterTelefon
   } else {
-    telefon = telefones.find(s => s.id === id)
+    telefon = telefones.find((s) => s.id === id)
   }
 
   const [errors, setErrors] = useState({})
@@ -75,8 +78,8 @@ const Telefon = ({ id }) => {
   }, [telefon.id])
 
   const telefoneTypOptions = sortBy(telefonTypWerte, ['sort', 'value'])
-    .filter(w => !!w.value)
-    .map(w => ({
+    .filter((w) => !!w.value)
+    .map((w) => ({
       label: w.value,
       value: w.value,
     }))
@@ -123,10 +126,10 @@ const Telefon = ({ id }) => {
     },
     [filterTelefon, id, setFilter, showFilter, updateField],
   )
-  const onClickDelete = useCallback(() => deleteTelefon(id), [
-    deleteTelefon,
-    id,
-  ])
+  const onClickDelete = useCallback(
+    () => deleteTelefon({ id, personId }),
+    [deleteTelefon, id, personId],
+  )
 
   return (
     <Row key={`${id}`} nosymbol={showFilter}>

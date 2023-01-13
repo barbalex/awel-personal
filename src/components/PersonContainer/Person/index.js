@@ -434,10 +434,10 @@ const Person = ({ dimensions, listRef }) => {
           value: { ...filterFunktion, ...{ funktion } },
         })
       } else {
-        store.addFunktion(funktion)
+        store.addFunktion({ funktion, personId })
       }
     },
-    [showFilter, setFilter, filterFunktion, store],
+    [showFilter, setFilter, filterFunktion, store, personId],
   )
   const deleteFunktion = useCallback(
     (funktion) => {
@@ -447,10 +447,10 @@ const Person = ({ dimensions, listRef }) => {
           value: { ...filterFunktion, ...{ funktion: null } },
         })
       } else {
-        store.deleteFunktion(funktion)
+        store.deleteFunktion({ funktion, personId })
       }
     },
-    [filterFunktion, setFilter, showFilter, store],
+    [filterFunktion, personId, setFilter, showFilter, store],
   )
   const setFilterFunktion = useCallback(
     ({ value }) => {

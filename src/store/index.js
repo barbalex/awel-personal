@@ -1168,7 +1168,7 @@ const store = () =>
           const idPerson = ifIsNumericAsNumber(location[1])
           self.updatePersonsMutation(idPerson)
         },
-        deleteTelefon(id) {
+        deleteTelefon({ id, personId }) {
           // write to db
           try {
             self.db.prepare('delete from telefones where id = ?').run(id)
@@ -1182,14 +1182,9 @@ const store = () =>
             1,
           )
           // set persons letzteMutation
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
-        addFunktion(funktion) {
-          // grab idPerson from location
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
+        addFunktion({ funktion, personId }) {
           // 1. create new funktion in db, returning id
           let info
           try {
@@ -1197,7 +1192,7 @@ const store = () =>
               .prepare(
                 'insert into funktionen (idPerson, funktion, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
               )
-              .run(idPerson, funktion, self.username, Date.now())
+              .run(personId, funktion, self.username, Date.now())
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1206,23 +1201,20 @@ const store = () =>
           self.funktionen.push({
             id: info.lastInsertRowid,
             funktion,
-            idPerson,
+            idPerson: personId,
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
           })
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
-        deleteFunktion(funktion) {
-          // grab idPerson from location
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
+        deleteFunktion({ funktion, personId }) {
           // write to db
           try {
             self.db
               .prepare(
                 'delete from funktionen where idPerson = ? and funktion = ?',
               )
-              .run(idPerson, funktion)
+              .run(personId, funktion)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1231,11 +1223,11 @@ const store = () =>
           self.funktionen.splice(
             findIndex(
               self.funktionen,
-              (e) => e.idPerson === idPerson && e.funktion === funktion,
+              (e) => e.idPerson === personId && e.funktion === funktion,
             ),
             1,
           )
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
         addKaderFunktion(funktion) {
           // grab idPerson from location
