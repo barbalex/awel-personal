@@ -3,9 +3,8 @@ import { NavItem, NavLink, Button, UncontrolledTooltip } from 'reactstrap'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { FaPlus, FaTrashAlt } from 'react-icons/fa'
-import { useNavigate, useLocation, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 
-import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import storeContext from '../../storeContext'
 
 const Sup = styled.sup`
@@ -13,7 +12,7 @@ const Sup = styled.sup`
 `
 const StyledNavItem = styled(NavItem)`
   display: flex;
-  border: ${props =>
+  border: ${(props) =>
     props.active ? '1px solid rgb(255, 255, 255, .5)' : 'unset'};
   border-radius: 0.25rem;
   margin-right: 5px;
@@ -25,6 +24,8 @@ const StyledButton = styled(Button)`
 
 const Bereich = () => {
   const navigate = useNavigate()
+  const { bereichId } = useParams()
+  const { pathname } = useLocation()
 
   const store = useContext(storeContext)
   const {
@@ -37,12 +38,9 @@ const Bereich = () => {
     setDeletionCallback,
     activePrintForm,
   } = store
-  const location = store.location.toJSON()
-  const activeLocation = location[0]
-  const activeId = ifIsNumericAsNumber(location[1])
 
   const showTab = useCallback(
-    e => {
+    (e) => {
       e.preventDefault()
       navigate(`/Bereiche`)
     },
@@ -50,12 +48,12 @@ const Bereich = () => {
   )
   // const addBereich = useCallback(() => addBereich())
   const deleteBereich = useCallback(() => {
-    const activeBereich = bereiche.find(p => p.id === activeId)
+    const activeBereich = bereiche.find((p) => p.id === bereichId)
     if (activeBereich.deleted === 1) {
       // bereich.deleted is already = 1
       // prepare true deletion
       setDeletionCallback(() => {
-        store.deleteBereich(activeId)
+        store.deleteBereich(bereichId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -72,7 +70,7 @@ const Bereich = () => {
       // do not true delete yet
       // only set bereich.deleted = 1
       setDeletionCallback(() => {
-        store.setBereichDeleted(activeId)
+        store.setBereichDeleted(bereichId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -84,7 +82,7 @@ const Bereich = () => {
       setDeletionTitle('Bereich löschen')
     }
   }, [
-    activeId,
+    bereichId,
     bereiche,
     setDeletionCallback,
     setDeletionMessage,
@@ -94,13 +92,13 @@ const Bereich = () => {
 
   const bereicheSum = showDeleted
     ? bereiche.length
-    : bereiche.filter(p => p.deleted === 0).length
+    : bereiche.filter((p) => p.deleted === 0).length
   const bereicheSumSup =
     bereicheFiltered.length !== bereicheSum
       ? `${bereicheFiltered.length}/${bereicheSum}`
       : bereicheFiltered.length
-  const active = activeLocation === 'Bereiche' && !activePrintForm
-  const existsActiveBereich = active && location[1]
+  const active = pathname.startsWith('/Bereiche') && !activePrintForm
+  const existsActiveBereich = active && !!bereichId
 
   return (
     <StyledNavItem active={active}>
@@ -108,7 +106,7 @@ const Bereich = () => {
         Bereiche
         {active && <Sup>{bereicheSumSup}</Sup>}
       </NavLink>
-      {activeLocation !== 'Bereiche' && (
+      {!pathname.startsWith('/Bereiche') && (
         <UncontrolledTooltip placement="bottom" target="Bereiche">
           Bereiche anzeigen
         </UncontrolledTooltip>

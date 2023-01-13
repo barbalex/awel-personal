@@ -8,7 +8,6 @@ import moment from 'moment'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import fetchMutations from '../../src/fetchMutations'
-import ifIsNumericAsNumber from '../../src/ifIsNumericAsNumber'
 import Filter from './Filter'
 import storeContext from '../../storeContext'
 import Row from './Row'
@@ -99,7 +98,6 @@ const getValueToShow = (value) => {
 const Mutations = () => {
   const store = useContext(storeContext)
   const { mutations: rawMutations, db } = store
-  const location = store.location.toJSON()
 
   const [zeitFilter, setZeitFilter] = useState(null)
   const [userFilter, setUserFilter] = useState(null)
@@ -152,7 +150,6 @@ const Mutations = () => {
     fetchMutations({ store })
   }, [db, store])
 
-  const activeId = location[1] ? ifIsNumericAsNumber(location[1]) : null
   const mutations = sortBy(rawMutations.slice(), 'id')
     .reverse()
     .map(
@@ -308,12 +305,7 @@ const Mutations = () => {
               width={window.innerWidth}
             >
               {({ index, style }) => (
-                <Row
-                  style={style}
-                  listIndex={index}
-                  mutations={mutations}
-                  activeId={activeId}
-                />
+                <Row style={style} listIndex={index} mutations={mutations} />
               )}
             </List>
           </ListDiv>
