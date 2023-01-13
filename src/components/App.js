@@ -1,7 +1,7 @@
 import React from 'react'
 // need to use HashRouter instead of BrowserRouter
 // https://stackoverflow.com/a/50404777/712005
-import { Routes, Route, HashRouter } from 'react-router-dom'
+import { Routes, Route, HashRouter, Navigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { registerLocale, setDefaultLocale } from 'react-datepicker'
 import { de } from 'date-fns/locale'
@@ -39,7 +39,7 @@ const RouterComponent = () => (
   <Container>
     <HashRouter>
       <Routes>
-        <Route path="/" element={<PersonContainer />} />
+        <Route path="/" element={<Navigate to="/Personen" />} />
         <Route path="/Personen/*" element={<PersonContainer />}>
           <Route path=":personId" element={<PersonTab />} />
         </Route>

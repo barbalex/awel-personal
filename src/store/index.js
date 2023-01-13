@@ -94,7 +94,6 @@ const store = () =>
       bereiche: types.array(Bereich),
       sektionen: types.array(Sektion),
       mutations: types.array(Mutation),
-      location: types.optional(types.array(types.string), ['Personen']),
       showDeleted: types.optional(types.boolean, false),
       showMutationNoetig: types.optional(types.boolean, false),
       statusWerte: types.array(StatusWert),
@@ -305,9 +304,6 @@ const store = () =>
           if (self.filterFulltext) self.filterFulltext = null
         },
         setFilterFulltext(value) {
-          if (value && !self.filterFulltext && self.location.length === 2) {
-            self.location.pop()
-          }
           self.filterFulltext = value
           // remove other filters
           if (value && self.existsFilter) self.emptyFilterButFulltext()

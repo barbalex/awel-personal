@@ -13,7 +13,7 @@ import {
   DropdownItem,
 } from 'reactstrap'
 import { FaTimes, FaEdit, FaFilter } from 'react-icons/fa'
-import { useLocation } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import storeContext from '../../storeContext'
@@ -57,7 +57,11 @@ const Filter = () => {
 
   const store = useContext(storeContext)
   const {
-    activeFilter,
+    filterPerson,
+    filterAbteilung,
+    filterSektion,
+    filterBereich,
+    filterAmt,
     showFilter,
     setShowFilter,
     filterFulltext,
@@ -82,9 +86,14 @@ const Filter = () => {
   )
   const onChangeFilterFulltext = useCallback(
     (e) => {
+      // TODO: test
       setFilterFulltext(e.target.value)
+      const activeNodeArray = pathname.split('/').filter((e) => e)
+      if (e.target.value && !filterFulltext && activeNodeArray.length === 2) {
+        Navigate(`/${activeNodeArray[0]}`)
+      }
     },
-    [setFilterFulltext],
+    [filterFulltext, pathname, setFilterFulltext],
   )
   const onBlurFilterFulltext = useCallback(
     (e) => {
@@ -134,9 +143,20 @@ const Filter = () => {
     [filterDropdownIsOpen],
   )
   const onClickAnstehendeMutationen = useCallback(() => {
-    setFilter({ model: 'filterPerson', value: { mutationNoetig: 1 } })
+    const model = pathname.startsWith('/Personen')
+      ? 'filterPerson'
+      : pathname.startsWith('/Abteilungen')
+      ? 'filterAbteilung'
+      : pathname.startsWith('/Bereiche')
+      ? 'filterBereich'
+      : pathname.startsWith('/Sektionen')
+      ? 'filterSektion'
+      : pathname.startsWith('/Aemter')
+      ? 'filterAmt'
+      : 'filterPerson'
+    setFilter({ model, value: { mutationNoetig: 1 } })
     setShowMutationNoetig(true)
-  }, [setFilter, setShowMutationNoetig])
+  }, [pathname, setFilter, setShowMutationNoetig])
   const onClickKader = useCallback(() => {
     setFilterPersonKader(true)
   }, [setFilterPersonKader])
@@ -208,7 +228,19 @@ const Filter = () => {
                 <DropdownMenu>
                   <DropdownItem header>vorbereitete Filter</DropdownItem>
                   <StyledDropdownItem
-                    active={!!activeFilter.mutationNoetig}
+                    active={
+                      pathname.startsWith('/Personen')
+                        ? filterPerson?.mutationNoetig === 1
+                        : pathname.startsWith('/Abteilungen')
+                        ? filterAbteilung?.mutationNoetig === 1
+                        : pathname.startsWith('/Bereiche')
+                        ? filterBereich?.mutationNoetig === 1
+                        : pathname.startsWith('/Sektionen')
+                        ? filterSektion?.mutationNoetig === 1
+                        : pathname.startsWith('/Aemter')
+                        ? filterAmt?.mutationNoetig === 1
+                        : false
+                    }
                     onClick={onClickAnstehendeMutationen}
                   >
                     Anstehende Mutationen

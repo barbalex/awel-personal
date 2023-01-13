@@ -68,6 +68,8 @@ const MyNavbar = () => {
     pathname.startsWith('/Sektionen') ||
     pathname.startsWith('/Bereiche')
 
+  console.log('Navbar', { pathname, showFilter })
+
   return (
     <ErrorBoundary>
       <StyledNavbar color="dark" dark expand="xl">
