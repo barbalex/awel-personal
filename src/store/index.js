@@ -939,10 +939,7 @@ const store = () =>
           )
           self.navigate(`/Sektionen`)
         },
-        addEtikett(etikett) {
-          // grab idPerson from location
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
+        addEtikett({ etikett, personId }) {
           // 1. create new etikett in db, returning id
           let info
           try {
@@ -950,7 +947,7 @@ const store = () =>
               .prepare(
                 'insert into etiketten (idPerson, etikett, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
               )
-              .run(idPerson, etikett, self.username, Date.now())
+              .run(personId, etikett, self.username, Date.now())
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -959,23 +956,20 @@ const store = () =>
           self.etiketten.push({
             id: info.lastInsertRowid,
             etikett,
-            idPerson,
+            idPerson: personId,
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
           })
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
-        deleteEtikett(etikett) {
-          // grab idPerson from location
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
+        deleteEtikett({ etikett, personId }) {
           // write to db
           try {
             self.db
               .prepare(
                 'delete from etiketten where idPerson = ? and etikett = ?',
               )
-              .run(idPerson, etikett)
+              .run(personId, etikett)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -984,11 +978,11 @@ const store = () =>
           self.etiketten.splice(
             findIndex(
               self.etiketten,
-              (e) => e.idPerson === idPerson && e.etikett === etikett,
+              (e) => e.idPerson === personId && e.etikett === etikett,
             ),
             1,
           )
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
         addAnwesenheitstag({ tag, personId }) {
           // 1. create new anwesenheitstag in db, returning id
@@ -1035,7 +1029,7 @@ const store = () =>
           )
           self.updatePersonsMutation(personId)
         },
-        addLink({url, personId}) {
+        addLink({ url, personId }) {
           // 1. create new link in db, returning id
           let info
           try {
@@ -1076,10 +1070,7 @@ const store = () =>
           const idPerson = ifIsNumericAsNumber(location[1])
           self.updatePersonsMutation(idPerson)
         },
-        addSchluessel() {
-          // grab idPerson from location
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
+        addSchluessel(personId) {
           // 1. create new link in db, returning id
           let info
           try {
@@ -1087,7 +1078,7 @@ const store = () =>
               .prepare(
                 'insert into schluessel (idPerson, letzteMutationUser, letzteMutationZeit) values (?,?,?)',
               )
-              .run(idPerson, self.username, Date.now())
+              .run(personId, self.username, Date.now())
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1095,11 +1086,11 @@ const store = () =>
           // 2. add to store
           self.schluessel.push({
             id: info.lastInsertRowid,
-            idPerson,
+            idPerson: personId,
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
           })
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
         deleteSchluessel(id) {
           // write to db

@@ -117,7 +117,11 @@ const SchluesselsComponent = ({ row = true }) => {
         />
       ))}
       {mayAddNew && (
-        <StyledButton title="neuer Schlüssel" onClick={addSchluessel} outline>
+        <StyledButton
+          title="neuer Schlüssel"
+          onClick={() => addSchluessel(personId)}
+          outline
+        >
           <PlusIcon id={`plusIconSchluessel${personId}`} />
         </StyledButton>
       )}

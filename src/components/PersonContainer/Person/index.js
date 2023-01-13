@@ -350,10 +350,10 @@ const Person = ({ dimensions, listRef }) => {
           value: { ...filterEtikett, ...{ etikett } },
         })
       } else {
-        store.addEtikett(etikett)
+        store.addEtikett({ etikett, personId })
       }
     },
-    [showFilter, setFilter, filterEtikett, store],
+    [showFilter, setFilter, filterEtikett, store, personId],
   )
   const deleteEtikett = useCallback(
     (etikett) => {
@@ -363,10 +363,10 @@ const Person = ({ dimensions, listRef }) => {
           value: { ...filterEtikett, ...{ etikett: null } },
         })
       } else {
-        store.deleteEtikett(etikett)
+        store.deleteEtikett({ etikett, personId })
       }
     },
-    [filterEtikett, setFilter, showFilter, store],
+    [filterEtikett, personId, setFilter, showFilter, store],
   )
   const saveToDbEtikett = useCallback(
     ({ value }) => {
