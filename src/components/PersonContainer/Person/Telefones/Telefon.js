@@ -100,10 +100,11 @@ const Telefon = ({ id }) => {
           value: newValue,
           id,
           setErrors,
+          personId,
         })
       }
     },
-    [filterTelefon, id, setFilter, showFilter, updateField],
+    [filterTelefon, id, personId, setFilter, showFilter, updateField],
   )
   const onChangeSelect = useCallback(
     ({ field, value }) => {
@@ -121,10 +122,11 @@ const Telefon = ({ id }) => {
           value: newValue,
           id,
           setErrors,
+          personId,
         })
       }
     },
-    [filterTelefon, id, setFilter, showFilter, updateField],
+    [filterTelefon, id, personId, setFilter, showFilter, updateField],
   )
   const onClickDelete = useCallback(
     () => deleteTelefon({ id, personId }),

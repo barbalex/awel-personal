@@ -92,10 +92,11 @@ const PersonImage = () => {
         field: 'bildUrl',
         value: files[0].path,
         id: person.id,
+        personId,
         setErrors,
       })
     },
-    [person.id, updateField],
+    [person.id, personId, updateField],
   )
   const onClickRemove = useCallback(
     (e) => {
@@ -105,11 +106,12 @@ const PersonImage = () => {
         field: 'bildUrl',
         value: null,
         id: person.id,
+        personId,
         setErrors,
       })
       e.preventDefault()
     },
-    [person.id, updateField],
+    [person.id, personId, updateField],
   )
 
   if (showFilter) return null

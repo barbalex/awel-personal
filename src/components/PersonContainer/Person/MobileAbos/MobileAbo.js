@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { UncontrolledTooltip } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 import { FaTimes } from 'react-icons/fa'
+import { useParams } from 'react-router-dom'
 
 import Select from '../Select'
 import ifIsNumericAsNumber from '../../../../src/ifIsNumericAsNumber'
@@ -13,7 +14,7 @@ import storeContext from '../../../../storeContext'
 const Row = styled.div`
   grid-column: 1;
   display: grid;
-  grid-template-columns: ${props =>
+  grid-template-columns: ${(props) =>
     props.nosymbol ? '1fr 1fr 1fr' : '1fr 1fr 1fr 20px'};
   grid-gap: 5px;
   border-bottom: thin solid #cccccc;
@@ -52,6 +53,8 @@ const Delete = styled.div`
 `
 
 const MobileAbo = ({ id }) => {
+  const { personId } = useParams()
+
   const store = useContext(storeContext)
   const {
     showFilter,
@@ -67,15 +70,17 @@ const MobileAbo = ({ id }) => {
   if (showFilter) {
     mobileAbo = filterMobileAbo
   } else {
-    mobileAbo = mobileAbos.find(s => s.id === id)
+    mobileAbo = mobileAbos.find((s) => s.id === id)
   }
 
   const [errors, setErrors] = useState({})
-  useEffect(() => { setErrors({}) }, [mobileAbo.id])
+  useEffect(() => {
+    setErrors({})
+  }, [mobileAbo.id])
 
   const mobileAboTypOptions = sortBy(mobileAboTypWerte, ['sort', 'value'])
-    .filter(w => !!w.value)
-    .map(w => ({
+    .filter((w) => !!w.value)
+    .map((w) => ({
       label: w.value,
       value: w.value,
     }))
@@ -83,8 +88,8 @@ const MobileAbo = ({ id }) => {
     'sort',
     'value',
   ])
-    .filter(w => !!w.value)
-    .map(w => ({
+    .filter((w) => !!w.value)
+    .map((w) => ({
       label: w.value,
       value: w.value,
     }))
@@ -105,10 +110,11 @@ const MobileAbo = ({ id }) => {
           value: newValue,
           id,
           setErrors,
+          personId,
         })
       }
     },
-    [filterMobileAbo, id, setFilter, showFilter, updateField],
+    [filterMobileAbo, id, personId, setFilter, showFilter, updateField],
   )
   const onChangeSelect = useCallback(
     ({ field, value }) => {
@@ -126,15 +132,16 @@ const MobileAbo = ({ id }) => {
           value: newValue,
           id,
           setErrors,
+          personId,
         })
       }
     },
-    [filterMobileAbo, id, setFilter, showFilter, updateField],
+    [filterMobileAbo, id, personId, setFilter, showFilter, updateField],
   )
-  const onClickDelete = useCallback(() => deleteMobileAbo(id), [
-    deleteMobileAbo,
-    id,
-  ])
+  const onClickDelete = useCallback(
+    () => deleteMobileAbo({ id, personId }),
+    [deleteMobileAbo, id, personId],
+  )
 
   return (
     <Row key={`${id}`} nosymbol={showFilter}>

@@ -109,10 +109,18 @@ const SchluesselComponent = ({ id }) => {
           value: newValue,
           id: schluessel.id,
           setErrors,
+          personId,
         })
       }
     },
-    [showFilter, setFilter, filterSchluessel, updateField, schluessel.id],
+    [
+      showFilter,
+      setFilter,
+      filterSchluessel,
+      updateField,
+      schluessel.id,
+      personId,
+    ],
   )
   const onChangeSelectSchluesselTyp = useCallback(
     ({ field, value }) => {
@@ -130,10 +138,11 @@ const SchluesselComponent = ({ id }) => {
           value: newValue,
           id,
           setErrors,
+          personId,
         })
       }
     },
-    [filterSchluessel, id, setFilter, showFilter, updateField],
+    [filterSchluessel, id, personId, setFilter, showFilter, updateField],
   )
   const onChangeSelectSchluesselAnlage = useCallback(
     ({ field, value }) => {
@@ -151,10 +160,11 @@ const SchluesselComponent = ({ id }) => {
           value: newValue,
           id,
           setErrors,
+          personId,
         })
       }
     },
-    [filterSchluessel, id, setFilter, showFilter, updateField],
+    [filterSchluessel, id, personId, setFilter, showFilter, updateField],
   )
   const onClickDelete = useCallback(
     () => deleteSchluessel({ id, personId }),

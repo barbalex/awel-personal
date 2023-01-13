@@ -226,7 +226,8 @@ const PersonMutation = ({ dimensions }) => {
           parentModel: 'personen',
           field,
           value: newValue,
-          id: person.id,
+          id: personId,
+          personId,
           setErrors,
         })
         if (field === 'amt') {
@@ -237,7 +238,8 @@ const PersonMutation = ({ dimensions }) => {
               parentModel: 'personen',
               field: 'abteilung',
               value: null,
-              id: person.id,
+              id: personId,
+              personId,
               setErrors,
             })
           }
@@ -248,7 +250,8 @@ const PersonMutation = ({ dimensions }) => {
               parentModel: 'personen',
               field: 'sektion',
               value: null,
-              id: person.id,
+              id: personId,
+              personId,
               setErrors,
             })
           }
@@ -260,7 +263,8 @@ const PersonMutation = ({ dimensions }) => {
             parentModel: 'personen',
             field: 'sektion',
             value: null,
-            id: person.id,
+            id: personId,
+            personId,
             setErrors,
           })
         }

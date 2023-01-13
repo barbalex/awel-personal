@@ -274,7 +274,8 @@ const Person = ({ dimensions, listRef }) => {
           parentModel: 'personen',
           field,
           value: newValue,
-          id: person.id,
+          id: personId,
+          personId,
           setErrors,
         })
         if (field === 'mutationFrist' && newValue && !person.mutationNoetig) {
@@ -284,7 +285,8 @@ const Person = ({ dimensions, listRef }) => {
             parentModel: 'personen',
             field: 'mutationNoetig',
             value: 1,
-            id: person.id,
+            id: personId,
+            personId,
           })
         }
         if (field === 'amt') {
@@ -295,7 +297,8 @@ const Person = ({ dimensions, listRef }) => {
               parentModel: 'personen',
               field: 'abteilung',
               value: null,
-              id: person.id,
+              id: personId,
+              personId,
               setErrors,
             })
           }
@@ -306,7 +309,8 @@ const Person = ({ dimensions, listRef }) => {
               parentModel: 'personen',
               field: 'sektion',
               value: null,
-              id: person.id,
+              id: personId,
+              personId,
               setErrors,
             })
           }
@@ -318,7 +322,8 @@ const Person = ({ dimensions, listRef }) => {
             parentModel: 'personen',
             field: 'sektion',
             value: null,
-            id: person.id,
+            id: personId,
+            personId,
             setErrors,
           })
         }
@@ -476,10 +481,10 @@ const Person = ({ dimensions, listRef }) => {
           value: { ...filterKaderFunktion, ...{ funktion } },
         })
       } else {
-        store.addKaderFunktion(funktion)
+        store.addKaderFunktion({ funktion, personId })
       }
     },
-    [showFilter, setFilter, filterKaderFunktion, store],
+    [showFilter, setFilter, filterKaderFunktion, store, personId],
   )
   const deleteKaderFunktion = useCallback(
     (funktion) => {
@@ -489,10 +494,10 @@ const Person = ({ dimensions, listRef }) => {
           value: { ...filterKaderFunktion, ...{ funktion: null } },
         })
       } else {
-        store.deleteKaderFunktion(funktion)
+        store.deleteKaderFunktion({ funktion, personId })
       }
     },
-    [filterKaderFunktion, setFilter, showFilter, store],
+    [filterKaderFunktion, personId, setFilter, showFilter, store],
   )
   const setFilterKaderFunktion = useCallback(
     ({ value }) => {

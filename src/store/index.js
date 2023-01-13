@@ -1150,7 +1150,7 @@ const store = () =>
           })
           self.updatePersonsMutation(personId)
         },
-        deleteMobileAbo(id) {
+        deleteMobileAbo({ id, personId }) {
           // write to db
           try {
             self.db.prepare('delete from mobileAbos where id = ?').run(id)
@@ -1164,9 +1164,7 @@ const store = () =>
             1,
           )
           // set persons letzteMutation
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
         deleteTelefon({ id, personId }) {
           // write to db
@@ -1229,10 +1227,7 @@ const store = () =>
           )
           self.updatePersonsMutation(personId)
         },
-        addKaderFunktion(funktion) {
-          // grab idPerson from location
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
+        addKaderFunktion({ funktion, personId }) {
           // 1. create new kaderFunktion in db, returning id
           let info
           try {
@@ -1240,7 +1235,7 @@ const store = () =>
               .prepare(
                 'insert into kaderFunktionen (idPerson, funktion, letzteMutationUser, letzteMutationZeit) values (?, ?, ?, ?)',
               )
-              .run(idPerson, funktion, self.username, Date.now())
+              .run(personId, funktion, self.username, Date.now())
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1249,23 +1244,20 @@ const store = () =>
           self.kaderFunktionen.push({
             id: info.lastInsertRowid,
             funktion,
-            idPerson,
+            idPerson: personId,
             letzteMutationUser: self.username,
             letzteMutationZeit: Date.now(),
           })
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
-        deleteKaderFunktion(funktion) {
-          // grab idPerson from location
-          const { location } = self
-          const idPerson = ifIsNumericAsNumber(location[1])
+        deleteKaderFunktion({ funktion, personId }) {
           // write to db
           try {
             self.db
               .prepare(
                 'delete from kaderFunktionen where idPerson = ? and funktion = ?',
               )
-              .run(idPerson, funktion)
+              .run(personId, funktion)
           } catch (error) {
             self.addError(error)
             return console.log(error)
@@ -1274,13 +1266,13 @@ const store = () =>
           self.kaderFunktionen.splice(
             findIndex(
               self.kaderFunktionen,
-              (e) => e.idPerson === idPerson && e.funktion === funktion,
+              (e) => e.idPerson === personId && e.funktion === funktion,
             ),
             1,
           )
-          self.updatePersonsMutation(idPerson)
+          self.updatePersonsMutation(personId)
         },
-        updateField({ table, parentModel, field, value, id, setErrors }) {
+        updateField({ table, parentModel, field, value, id, setErrors, personId }) {
           // 1. update in db
           try {
             self.db
@@ -1326,12 +1318,10 @@ const store = () =>
               'kaderFunktionen',
               'etiketten',
               'anwesenheitstage',
-            ].includes(parentModel)
+            ].includes(parentModel) && personId
           ) {
             // set persons letzteMutation
-            const { location } = self
-            const idPerson = ifIsNumericAsNumber(location[1])
-            self.updatePersonsMutation(idPerson)
+            self.updatePersonsMutation(personId)
           }
           if (['kostenstellen'].includes(parentModel)) {
             // set sektions letzteMutation
