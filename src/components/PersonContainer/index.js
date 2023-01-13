@@ -16,6 +16,7 @@ import PersonPrintKader from './PersonPrintKader'
 import PersonPrintVerzTel from './PersonPrintVerzTel'
 import PersonPrintVerzMobiltel from './PersonPrintVerzMobiltel'
 import PersonPrintVerzKurzzeichen from './PersonPrintVerzKurzzeichen'
+import Navbar from '../Navbar'
 
 // height: calc(100% - ${document.getElementsByClassName('navbar')[0].clientHeight});
 // above does not work
@@ -128,28 +129,31 @@ const PersonContainer = () => {
   }
 
   return (
-    <Container>
-      <ErrorBoundary>
-        <ReflexContainer orientation="vertical">
-          <ReflexElement
-            flex={isPrinting ? 0 : 0.25}
-            propagateDimensions
-            propagateDimensionsRate={100}
-          >
-            <List activeId={personId} {...personJson} listRef={listRef} />
-          </ReflexElement>
-          <ReflexSplitter />
-          <StyledReflexElement
-            showfilter={showFilter}
-            propagateDimensions
-            propagateDimensionsRate={1000}
-            resizeHeight={false}
-          >
-            <Outlet listRef={listRef} />
-          </StyledReflexElement>
-        </ReflexContainer>
-      </ErrorBoundary>
-    </Container>
+    <>
+      <Navbar />
+      <Container>
+        <ErrorBoundary>
+          <ReflexContainer orientation="vertical">
+            <ReflexElement
+              flex={isPrinting ? 0 : 0.25}
+              propagateDimensions
+              propagateDimensionsRate={100}
+            >
+              <List activeId={personId} {...personJson} listRef={listRef} />
+            </ReflexElement>
+            <ReflexSplitter />
+            <StyledReflexElement
+              showfilter={showFilter}
+              propagateDimensions
+              propagateDimensionsRate={1000}
+              resizeHeight={false}
+            >
+              <Outlet listRef={listRef} />
+            </StyledReflexElement>
+          </ReflexContainer>
+        </ErrorBoundary>
+      </Container>
+    </>
   )
 }
 

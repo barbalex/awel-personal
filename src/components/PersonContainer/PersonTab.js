@@ -3,7 +3,6 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 import { observer } from 'mobx-react-lite'
 import classnames from 'classnames'
 import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
 
 import Person from './Person'
 import PersonPrint from './PersonPrint'
@@ -36,18 +35,16 @@ const StyledTabPane = styled(TabPane)`
 `
 
 const PersonTab = ({ dimensions, listRef }) => {
-  const { personId } = useParams()
   const store = useContext(storeContext)
-  const { showFilter, activePrintForm } = store
-  const activeId = personId
+  const { activePrintForm } = store
 
   const [tab, setTab] = useState('datenblatt')
 
   if (activePrintForm === 'personalblatt') {
-    return <PersonPrint activeId={activeId} />
+    return <PersonPrint />
   }
   if (activePrintForm === 'personMutation') {
-    return <PersonMutationPrint activeId={activeId} />
+    return <PersonMutationPrint />
   }
   if (activePrintForm === 'personFunktionen') {
     return <PersonPrintFunktionen />
@@ -67,8 +64,6 @@ const PersonTab = ({ dimensions, listRef }) => {
   if (activePrintForm === 'personVerzKurzzeichen') {
     return <PersonPrintVerzKurzzeichen />
   }
-
-  if (!showFilter && !activeId) return null
 
   return (
     <>
@@ -96,14 +91,10 @@ const PersonTab = ({ dimensions, listRef }) => {
       </Nav>
       <TabContent activeTab={tab}>
         <StyledTabPane tabId="datenblatt">
-          <Person
-            activeId={activeId}
-            dimensions={dimensions}
-            listRef={listRef}
-          />
+          <Person dimensions={dimensions} listRef={listRef} />
         </StyledTabPane>
         <StyledTabPane tabId="mutation">
-          <PersonMutation activeId={activeId} dimensions={dimensions} />
+          <PersonMutation dimensions={dimensions} />
         </StyledTabPane>
       </TabContent>
     </>

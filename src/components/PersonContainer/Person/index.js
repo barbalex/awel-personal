@@ -11,6 +11,7 @@ import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
+import { useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../../shared/ErrorBoundary'
 import Input from '../../shared/Input'
@@ -169,7 +170,9 @@ const Title = styled.div`
   font-size: 18px;
 `
 
-const Person = ({ activeId, dimensions, listRef }) => {
+const Person = ({ dimensions, listRef }) => {
+  const { personId: personIdInUrl } = useParams()
+
   const store = useContext(storeContext)
   const {
     abteilungen,
@@ -207,7 +210,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
   if (showFilter) {
     person = filterPerson
   } else {
-    person = personen.find((p) => p.id === activeId) || {}
+    person = personen.find((p) => p.id === personIdInUrl) || {}
   }
   const personId = showFilter ? '' : person.id
 
@@ -224,7 +227,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
     ({ field, value }) => {
       // const person = personen.find(p => p.id === activeId)
       if (!person && !showFilter) {
-        throw new Error(`Person with id ${activeId} not found`)
+        throw new Error(`Person with id ${personId} not found`)
       }
       let newValue
       if (isDateField(field)) {
@@ -328,7 +331,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
     [
       person,
       showFilter,
-      activeId,
+      personId,
       setFilter,
       filterPerson,
       updateField,
@@ -669,7 +672,7 @@ const Person = ({ activeId, dimensions, listRef }) => {
   const myEtiketten = useMemo(
     () =>
       sortBy(
-        etiketten.filter((e) => e.idPerson === activeId),
+        etiketten.filter((e) => e.idPerson === personId),
         'etikett',
       )
         .filter((w) => !!w.etikett)
@@ -679,12 +682,12 @@ const Person = ({ activeId, dimensions, listRef }) => {
           value: e.etikett,
         })),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [activeId, JSON.stringify(etiketten)],
+    [personId, JSON.stringify(etiketten)],
   )
   const myAnwesenheitstage = useMemo(
     () =>
       sortBy(
-        anwesenheitstage.filter((e) => e.idPerson === activeId),
+        anwesenheitstage.filter((e) => e.idPerson === personId),
         (e) => {
           const awWert = anwesenheitstagWerte.find((w) => w.value === e.tag)
           if (awWert && awWert.sort) return awWert.sort
@@ -698,12 +701,12 @@ const Person = ({ activeId, dimensions, listRef }) => {
           value: e.tag,
         })),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [activeId, anwesenheitstagWerte, JSON.stringify(anwesenheitstage)],
+    [personId, anwesenheitstagWerte, JSON.stringify(anwesenheitstage)],
   )
   const myFunktionen = useMemo(
     () =>
       sortBy(
-        funktionen.filter((e) => e.idPerson === activeId),
+        funktionen.filter((e) => e.idPerson === personId),
         'funktion',
       )
         .filter((w) => !!w.funktion)
@@ -713,12 +716,12 @@ const Person = ({ activeId, dimensions, listRef }) => {
           value: e.funktion,
         })),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [activeId, JSON.stringify(funktionen)],
+    [personId, JSON.stringify(funktionen)],
   )
   const myKaderFunktionen = useMemo(
     () =>
       sortBy(
-        kaderFunktionen.filter((e) => e.idPerson === activeId),
+        kaderFunktionen.filter((e) => e.idPerson === personId),
         'funktion',
       )
         .filter((w) => !!w.funktion)
@@ -728,10 +731,10 @@ const Person = ({ activeId, dimensions, listRef }) => {
           value: e.funktion,
         })),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [activeId, JSON.stringify(kaderFunktionen)],
+    [personId, JSON.stringify(kaderFunktionen)],
   )
 
-  if (!showFilter && !activeId) return null
+  if (!showFilter && !personId) return null
 
   const { width } = dimensions
   const viewIsNarrow = width < 860
