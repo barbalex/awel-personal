@@ -152,43 +152,6 @@ const store = () =>
       navigate: undefined,
     }))
     .views((self) => ({
-      get activeFilterModel() {
-        const location = self.location.toJSON()
-        const activeLocation = location[0]
-
-        switch (activeLocation) {
-          case 'Aemter':
-            return 'filterAmt'
-          case 'Abteilungen':
-            return 'filterAbteilung'
-          case 'Sektionen':
-            return 'filterSektion'
-          case 'Bereiche':
-            return 'filterBereich'
-          case 'Personen':
-          default:
-            return 'filterPerson'
-        }
-      },
-      get activeFilter() {
-        const location = self.location.toJSON()
-        const activeLocation = location[0]
-        if (!activeLocation) return null
-
-        switch (activeLocation) {
-          case 'Aemter':
-            return self.filterAmt
-          case 'Abteilungen':
-            return self.filterAbteilung
-          case 'Sektionen':
-            return self.filterSektion
-          case 'Bereiche':
-            return self.filterBereich
-          case 'Personen':
-          default:
-            return self.filterPerson
-        }
-      },
       get existsFilter() {
         const {
           filterPerson,
