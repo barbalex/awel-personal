@@ -1121,7 +1121,7 @@ const Person = ({ listRef }) => {
                     row={true}
                   />
                 )}
-                <Zuletzt noBottomMargin={true} row={person} />
+                <Zuletzt padleft={13} row={person} />
               </AreaZuletzt>
             )}
           </Wrapper>
