@@ -38,7 +38,6 @@ import Person from './Person'
 import Mutation from './Mutation'
 import StatusWert from './StatusWert'
 import TagWert from './TagWert'
-import ifIsNumericAsNumber from '../src/ifIsNumericAsNumber'
 import PersonPages from './PersonPages'
 import PersonVerzeichnisPages from './PersonVerzeichnisPages'
 import personenFiltered from './personenFiltered'
@@ -53,7 +52,6 @@ import bereicheFilteredSortedByHandelsbedarf from './bereicheFilteredSortedByHan
 import sektionenFiltered from './sektionenFiltered'
 import sektionenFilteredSortedByHandelsbedarf from './sektionenFilteredSortedByHandelsbedarf'
 import revertMutation from './revertMutation'
-import addPerson from './addPerson'
 
 const store = () =>
   types
@@ -465,8 +463,8 @@ const store = () =>
         revertMutation(mutationId) {
           revertMutation({ self, mutationId })
         },
-        addPerson() {
-          addPerson({ store: self })
+        addPerson(val) {
+          self.personen.push(val)
         },
         addAmt() {
           // 1. create new Amt in db, returning id

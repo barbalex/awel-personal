@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { FaPlus, FaTrashAlt } from 'react-icons/fa'
 
 import storeContext from '../../storeContext'
+import addPerson from '../../src/addPerson'
 
 const Sup = styled.sup`
   padding-left: 3px;
@@ -32,7 +33,6 @@ const Person = () => {
     showDeleted,
     personenFiltered,
     personen,
-    addPerson,
     setDeletionMessage,
     setDeletionTitle,
     setDeletionCallback,
@@ -116,7 +116,10 @@ const Person = () => {
       )}
       {active && (
         <>
-          <StyledButton id="newPersonButton" onClick={addPerson}>
+          <StyledButton
+            id="newPersonButton"
+            onClick={() => addPerson({ store })}
+          >
             <FaPlus />
           </StyledButton>
           <UncontrolledTooltip placement="bottom" target="newPersonButton">
