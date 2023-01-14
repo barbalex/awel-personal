@@ -11,7 +11,7 @@ import { Form } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
 import moment from 'moment'
-import { useParams } from 'react-router-dom'
+import { useParams, useOutletContext } from 'react-router-dom'
 
 import ErrorBoundary from '../../shared/ErrorBoundary'
 import Input from '../../shared/Input'
@@ -28,8 +28,9 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Amt = ({ listRef }) => {
-  const { amtId: amtIdInUrl } = useParams()
+const Amt = () => {
+  const { amtId: amtIdInUrl = 0 } = useParams()
+  const [listRef] = useOutletContext()
 
   const store = useContext(storeContext)
   const {
@@ -51,10 +52,10 @@ const Amt = ({ listRef }) => {
   if (showFilter) {
     amt = filterAmt
   } else {
-    amt = aemter.find((p) => p.id === amtIdInUrl)
+    amt = aemter.find((p) => p.id === +amtIdInUrl)
     if (!amt) amt = {}
   }
-  const amtId = showFilter ? '' : amtIdInUrl
+  const amtId = showFilter ? '' : +amtIdInUrl
 
   const [errors, setErrors] = useState({})
   useEffect(() => {

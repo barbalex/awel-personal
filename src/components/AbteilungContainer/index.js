@@ -29,11 +29,11 @@ const StyledReflexElement = styled(ReflexElement)`
 `
 
 const AbteilungContainer = () => {
-  const { abteilungId } = useParams()
+  const { abteilungId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const { showFilter, abteilungen, db } = store
-  const abteilung = abteilungen.find((p) => p.id === abteilungId)
+  const abteilung = abteilungen.find((p) => p.id === +abteilungId)
   // pass list the active abteilung's props to enable instant updates
   const abteilungJson = abteilung ? abteilung.toJSON() : {}
 
@@ -65,7 +65,7 @@ const AbteilungContainer = () => {
             </ReflexElement>
             <ReflexSplitter />
             <StyledReflexElement showfilter={showFilter}>
-              {abteilungId && <Outlet listRef={listRef} />}
+              {abteilungId && <Outlet context={[listRef]} />}
             </StyledReflexElement>
           </ReflexContainer>
         </ErrorBoundary>

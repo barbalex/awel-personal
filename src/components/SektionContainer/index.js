@@ -30,11 +30,11 @@ const StyledReflexElement = styled(ReflexElement)`
 `
 
 const SektionContainer = () => {
-  const { sektionId } = useParams()
+  const { sektionId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const { showFilter, sektionen, db } = store
-  const sektion = sektionen.find((p) => p.id === sektionId)
+  const sektion = sektionen.find((p) => p.id === +sektionId)
   // pass list the active sektion's props to enable instant updates
   const sektionJson = sektion ? sektion.toJSON() : {}
 
@@ -67,7 +67,7 @@ const SektionContainer = () => {
             </ReflexElement>
             <ReflexSplitter />
             <StyledReflexElement showfilter={showFilter}>
-              {sektionId && <Outlet listRef={listRef} />}
+              {sektionId && <Outlet context={[listRef]} />}
             </StyledReflexElement>
           </ReflexContainer>
         </ErrorBoundary>

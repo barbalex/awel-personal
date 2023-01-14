@@ -28,10 +28,10 @@ const StyledReflexElement = styled(ReflexElement)`
 `
 
 const AmtContainer = () => {
-  const { amtId } = useParams()
+  const { amtId = 0 } = useParams()
   const store = useContext(storeContext)
   const { showFilter, aemter, db } = store
-  const amt = aemter.find((p) => p.id === amtId)
+  const amt = aemter.find((p) => p.id === +amtId)
   // pass list the active amt's props to enable instant updates
   const amtJson = amt ? amt.toJSON() : {}
 
@@ -62,7 +62,7 @@ const AmtContainer = () => {
             </ReflexElement>
             <ReflexSplitter />
             <StyledReflexElement showfilter={showFilter}>
-              {!!amtId && <Outlet listRef={listRef} />}
+              {!!amtId && <Outlet context={[listRef]} />}
             </StyledReflexElement>
           </ReflexContainer>
         </ErrorBoundary>

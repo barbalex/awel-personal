@@ -11,7 +11,7 @@ import { Form } from 'reactstrap'
 import moment from 'moment'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
-import { useParams } from 'react-router-dom'
+import { useParams, useOutletContext } from 'react-router-dom'
 
 import ErrorBoundary from '../../shared/ErrorBoundary'
 import Input from '../../shared/Input'
@@ -28,8 +28,9 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Sektion = ({ listRef }) => {
-  const { sektionId: sektionIdInUrl } = useParams()
+const Sektion = () => {
+  const { sektionId: sektionIdInUrl = 0 } = useParams()
+  const [listRef] = useOutletContext()
 
   const store = useContext(storeContext)
   const {
@@ -52,10 +53,10 @@ const Sektion = ({ listRef }) => {
   if (showFilter) {
     sektion = filterSektion
   } else {
-    sektion = sektionen.find((p) => p.id === sektionIdInUrl)
+    sektion = sektionen.find((p) => p.id === +sektionIdInUrl)
     if (!sektion) sektion = {}
   }
-  const sektionId = showFilter ? '' : sektionIdInUrl
+  const sektionId = showFilter ? '' : +sektionIdInUrl
 
   const [errors, setErrors] = useState({})
   useEffect(() => {

@@ -18,6 +18,7 @@ import Navbar from '../Navbar'
 // seems that navbar is not finished when BereichContainer is built
 const Container = styled.div`
   height: calc(100vh - 56px);
+  overflow: hidden;
 `
 // seems needed to prevent unnessecary scrollbars
 const StyledReflexElement = styled(ReflexElement)`
@@ -68,7 +69,7 @@ const BereichContainer = () => {
             </ReflexElement>
             <ReflexSplitter />
             <StyledReflexElement showfilter={showFilter}>
-              {!!bereichId && <Outlet listRef={listRef} />}
+              {!!bereichId && <Outlet context={[listRef]}/>}
             </StyledReflexElement>
           </ReflexContainer>
         </ErrorBoundary>

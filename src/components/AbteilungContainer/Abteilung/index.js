@@ -11,7 +11,7 @@ import { Form } from 'reactstrap'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
 import moment from 'moment'
-import { useParams } from 'react-router-dom'
+import { useParams, useOutletContext } from 'react-router-dom'
 
 import ErrorBoundary from '../../shared/ErrorBoundary'
 import Input from '../../shared/Input'
@@ -28,8 +28,9 @@ const StyledForm = styled(Form)`
   margin: 20px;
 `
 
-const Abteilung = ({ listRef }) => {
-  const { abteilungId: abteilungIdInUrl } = useParams()
+const Abteilung = () => {
+  const { abteilungId: abteilungIdInUrl = 0 } = useParams()
+  const [listRef] = useOutletContext()
 
   const store = useContext(storeContext)
   const {
@@ -52,10 +53,10 @@ const Abteilung = ({ listRef }) => {
   if (showFilter) {
     abteilung = filterAbteilung
   } else {
-    abteilung = abteilungen.find((p) => p.id === abteilungIdInUrl)
+    abteilung = abteilungen.find((p) => p.id === +abteilungIdInUrl)
     if (!abteilung) abteilung = {}
   }
-  const abteilungId = showFilter ? '' : abteilungIdInUrl
+  const abteilungId = showFilter ? '' : +abteilungIdInUrl
 
   const [errors, setErrors] = useState({})
   useEffect(() => {
