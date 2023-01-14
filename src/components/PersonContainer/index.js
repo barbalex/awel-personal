@@ -3,7 +3,7 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 import styled, { createGlobalStyle } from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import useDetectPrint from 'use-detect-print'
-import { Outlet, useParams, useLocation } from 'react-router-dom'
+import { Outlet, useParams } from 'react-router-dom'
 
 import ErrorBoundary from '../shared/ErrorBoundary'
 import List from './List'
@@ -52,7 +52,6 @@ const A4Landscape = createGlobalStyle`
 
 const PersonContainer = () => {
   const { personId: personidInUrl = 0 } = useParams()
-  const { pathname } = useLocation()
   const personId = personidInUrl ? +personidInUrl : undefined
 
   const store = useContext(storeContext)
@@ -61,8 +60,6 @@ const PersonContainer = () => {
   // pass list the active person's props to enable instant updates
   const personJson = person ? person.toJSON() : {}
   const isPrinting = useDetectPrint()
-
-  console.log('PersonContainer: ', { personId, person, pathname })
 
   const listRef = useRef(null)
 
@@ -138,8 +135,6 @@ const PersonContainer = () => {
       )
     }
   }
-
-  console.log('PersonContainer, will return form')
 
   return (
     <Container>
