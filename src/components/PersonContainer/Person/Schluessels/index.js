@@ -53,7 +53,7 @@ const StyledFormGroup = styled(FormGroup)`
 `
 
 const SchluesselsComponent = ({ row = true }) => {
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const {
@@ -69,7 +69,7 @@ const SchluesselsComponent = ({ row = true }) => {
   if (showFilter) {
     schluessels = [filterSchluessel]
   } else {
-    schluessels = store.schluessel.filter((s) => s.idPerson === personId)
+    schluessels = store.schluessel.filter((s) => s.idPerson === +personId)
   }
   const mayAddNew =
     !showFilter &&
@@ -119,7 +119,7 @@ const SchluesselsComponent = ({ row = true }) => {
       {mayAddNew && (
         <StyledButton
           title="neuer Schlüssel"
-          onClick={() => addSchluessel(personId)}
+          onClick={() => addSchluessel(+personId)}
           outline
         >
           <PlusIcon id={`plusIconSchluessel${personId}`} />

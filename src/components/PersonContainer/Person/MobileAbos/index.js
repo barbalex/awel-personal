@@ -43,7 +43,7 @@ const PlusIcon = styled(FaPlus)`
 `
 
 const MobileAbosComponent = ({ row = true }) => {
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const { showFilter, filterMobileAbo, addMobileAbo } = store
@@ -51,7 +51,7 @@ const MobileAbosComponent = ({ row = true }) => {
   if (showFilter) {
     mobileAbos = [filterMobileAbo]
   } else {
-    mobileAbos = store.mobileAbos.filter((s) => s.idPerson === personId)
+    mobileAbos = store.mobileAbos.filter((s) => s.idPerson === +personId)
   }
   const mayAddNew =
     !showFilter &&
@@ -77,7 +77,7 @@ const MobileAbosComponent = ({ row = true }) => {
       {mayAddNew && (
         <StyledButton
           title="neues mobile Abo"
-          onClick={() => addMobileAbo(personId)}
+          onClick={() => addMobileAbo(+personId)}
           outline
         >
           <PlusIcon id={`plusIconMobileAbo${personId}`} />

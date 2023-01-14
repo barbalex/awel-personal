@@ -31,7 +31,7 @@ const StammdatenContainer = () => {
   const { db } = store
 
   const data = store[tableName]
-  const dat = data.find((d) => d.id === tableId)
+  const dat = data.find((d) => d.id === +tableId)
 
   // pass list the active dat's props to enable instant updates
   const datJson = dat || {}
@@ -72,7 +72,7 @@ const StammdatenContainer = () => {
             </ReflexElement>
             <ReflexSplitter />
             <StyledReflexElement>
-              {tableId && <Data listRef={listRef} />}
+              {!!tableId && <Data listRef={listRef} />}
             </StyledReflexElement>
           </ReflexContainer>
         </ErrorBoundary>

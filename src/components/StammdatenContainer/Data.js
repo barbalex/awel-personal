@@ -24,7 +24,7 @@ const Data = ({ listRef }) => {
   const store = useContext(storeContext)
   const { showDeleted, updateField, setDirty } = store
 
-  const dat = tableId ? store[tableName].find((p) => p.id === tableId) : []
+  const dat = tableId ? store[tableName].find((p) => p.id === +tableId) : []
 
   const [errors, setErrors] = useState({})
   useEffect(() => {

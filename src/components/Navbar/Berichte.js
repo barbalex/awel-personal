@@ -28,7 +28,7 @@ const StyledButton = styled(Button)`
 
 const Berichte = () => {
   const navigate = useNavigate()
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const {
@@ -43,7 +43,7 @@ const Berichte = () => {
     setFilterPersonAktivJetztMitKurzzeichen,
     settings,
   } = store
-  const showPD = !!personId
+  const showPD = !!+personId
 
   const onClickPD = useCallback(
     () => setActivePrintForm('personalblatt'),
@@ -73,7 +73,7 @@ const Berichte = () => {
       marginsType: 0,
       printBackground: true,
     }
-    const isPersonMutation = !!personId && activePrintForm === 'personMutation'
+    const isPersonMutation = !!+personId && activePrintForm === 'personMutation'
     const dialogOptions = {
       title: 'pdf speichern',
       filters: [

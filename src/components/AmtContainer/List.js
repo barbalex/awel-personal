@@ -61,7 +61,7 @@ const MutationFrist = styled.div`
 `
 
 const AmtList = ({ dimensions, listRef }) => {
-  const { amtId } = useParams()
+  const { amtId = 0 } = useParams()
   const navigate = useNavigate()
 
   const store = useContext(storeContext)
@@ -93,7 +93,7 @@ const AmtList = ({ dimensions, listRef }) => {
                   navigate(`/Aemter/${row.id}`)
                   if (showFilter) setShowFilter(false)
                 }}
-                active={!showFilter && amtId === row.id}
+                active={!showFilter && +amtId === row.id}
               >
                 <RowContainer>
                   <Text>{`${row.name || ''}`}</Text>

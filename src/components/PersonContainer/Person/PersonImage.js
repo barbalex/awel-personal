@@ -65,11 +65,11 @@ const RemoveIcon = styled(FaTimes)`
 `
 
 const PersonImage = () => {
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const { showFilter, updateField, personen } = store
-  const person = personen.find((p) => p.id === personId) || {}
+  const person = personen.find((p) => p.id === +personId) || {}
 
   // eslint-disable-next-line no-unused-vars
   const [errors, setErrors] = useState({})
@@ -92,7 +92,7 @@ const PersonImage = () => {
         field: 'bildUrl',
         value: files[0].path,
         id: person.id,
-        personId,
+        personId: +personId,
         setErrors,
       })
     },
@@ -106,7 +106,7 @@ const PersonImage = () => {
         field: 'bildUrl',
         value: null,
         id: person.id,
-        personId,
+        personId: +personId,
         setErrors,
       })
       e.preventDefault()

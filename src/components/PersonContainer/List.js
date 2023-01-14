@@ -65,7 +65,7 @@ const MutationFrist = styled.div`
 
 const PersonList = ({ dimensions, listRef }) => {
   const navigate = useNavigate()
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const {
@@ -105,7 +105,7 @@ const PersonList = ({ dimensions, listRef }) => {
                   if (showFilter) setShowFilter(false)
                   if (activePrintForm) setActivePrintForm(null)
                 }}
-                active={!showFilter && personId === row.id}
+                active={!showFilter && +personId === row.id}
               >
                 <RowContainer>
                   <Text>{`${row.name || ''} ${row.vorname || ''}`}</Text>

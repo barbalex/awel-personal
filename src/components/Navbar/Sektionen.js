@@ -24,7 +24,7 @@ const StyledButton = styled(Button)`
 
 const Sektion = () => {
   const navigate = useNavigate()
-  const { sektionId } = useParams()
+  const { sektionId = 0 } = useParams()
   const { pathname } = useLocation()
 
   const store = useContext(storeContext)
@@ -48,12 +48,12 @@ const Sektion = () => {
   )
   // const addSektion = useCallback(() => addSektion())
   const deleteSektion = useCallback(() => {
-    const activeSektion = sektionen.find((p) => p.id === sektionId)
+    const activeSektion = sektionen.find((p) => p.id === +sektionId)
     if (activeSektion.deleted === 1) {
       // sektion.deleted is already = 1
       // prepare true deletion
       setDeletionCallback(() => {
-        store.deleteSektion(sektionId)
+        store.deleteSektion(+sektionId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -70,7 +70,7 @@ const Sektion = () => {
       // do not true delete yet
       // only set sektion.deleted = 1
       setDeletionCallback(() => {
-        store.setSektionDeleted(sektionId)
+        store.setSektionDeleted(+sektionId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -98,7 +98,7 @@ const Sektion = () => {
       ? `${sektionenFiltered.length}/${sektionenSum}`
       : sektionenFiltered.length
   const active = pathname.startsWith('/Sektionen') && !activePrintForm
-  const existsActiveSektion = active && sektionId
+  const existsActiveSektion = active && !!+sektionId
 
   return (
     <StyledNavItem active={active}>

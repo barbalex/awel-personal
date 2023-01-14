@@ -47,10 +47,10 @@ const Nr = styled.div`
 `
 
 const Schluessels = () => {
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
-  const schluessels = store.schluessel.filter((s) => s.idPerson === personId)
+  const schluessels = store.schluessel.filter((s) => s.idPerson === +personId)
 
   if (schluessels.length === 0) return null
 

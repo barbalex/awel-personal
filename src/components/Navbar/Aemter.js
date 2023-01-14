@@ -24,7 +24,7 @@ const StyledButton = styled(Button)`
 
 const Amt = () => {
   const navigate = useNavigate()
-  const { amtId } = useParams()
+  const { amtId = 0 } = useParams()
   const { pathname } = useLocation()
 
   const store = useContext(storeContext)
@@ -48,12 +48,12 @@ const Amt = () => {
   )
   // const addAmt = useCallback(() => addAmt())
   const deleteAmt = useCallback(() => {
-    const activeAmt = aemter.find((p) => p.id === amtId)
+    const activeAmt = aemter.find((p) => p.id === +amtId)
     if (activeAmt.deleted === 1) {
       // amt.deleted is already = 1
       // prepare true deletion
       setDeletionCallback(() => {
-        store.deleteAmt(amtId)
+        store.deleteAmt(+amtId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -68,7 +68,7 @@ const Amt = () => {
       // do not true delete yet
       // only set amt.deleted = 1
       setDeletionCallback(() => {
-        store.setAmtDeleted(amtId)
+        store.setAmtDeleted(+amtId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -96,7 +96,7 @@ const Amt = () => {
       ? `${aemterFiltered.length}/${aemterSum}`
       : aemterFiltered.length
   const active = pathname.startsWith('/Aemter') && !activePrintForm
-  const existsActiveAmt = active && amtId
+  const existsActiveAmt = active && +amtId
 
   return (
     <StyledNavItem active={active}>

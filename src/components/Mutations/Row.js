@@ -61,7 +61,7 @@ const RevertButton = styled(Button)`
 
 const MutationsRow = ({ style, listIndex, mutations }) => {
   const navigate = useNavigate()
-  const { mutationId } = useParams()
+  const { mutationId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const { revertMutation } = store
@@ -78,7 +78,7 @@ const MutationsRow = ({ style, listIndex, mutations }) => {
   }, [navigate, row.id])
 
   return (
-    <Row style={style} onClick={onClickRow} active={mutationId === id}>
+    <Row style={style} onClick={onClickRow} active={+mutationId === id}>
       <Time>{time}</Time>
       <User>{user}</User>
       <Op>{op}</Op>

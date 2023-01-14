@@ -41,13 +41,13 @@ const StyledA = styled.a`
 `
 
 const LinkComponent = ({ link }) => {
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const { deleteLink } = store
 
   const onClickRemove = useCallback(
-    () => deleteLink({ id: link.id, personId }),
+    () => deleteLink({ id: link.id, personId: +personId }),
     [deleteLink, link.id, personId],
   )
 

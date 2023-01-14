@@ -53,7 +53,7 @@ const Delete = styled.div`
 `
 
 const MobileAbo = ({ id }) => {
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const {
@@ -110,7 +110,7 @@ const MobileAbo = ({ id }) => {
           value: newValue,
           id,
           setErrors,
-          personId,
+          personId: +personId,
         })
       }
     },
@@ -132,14 +132,14 @@ const MobileAbo = ({ id }) => {
           value: newValue,
           id,
           setErrors,
-          personId,
+          personId: +personId,
         })
       }
     },
     [filterMobileAbo, id, personId, setFilter, showFilter, updateField],
   )
   const onClickDelete = useCallback(
-    () => deleteMobileAbo({ id, personId }),
+    () => deleteMobileAbo({ id, personId: +personId }),
     [deleteMobileAbo, id, personId],
   )
 

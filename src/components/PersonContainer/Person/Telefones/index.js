@@ -41,7 +41,7 @@ const PlusIcon = styled(FaPlus)`
 `
 
 const TelefonesComponent = ({ row = true }) => {
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const { showFilter, filterTelefon, addTelefon } = store
@@ -49,7 +49,7 @@ const TelefonesComponent = ({ row = true }) => {
   if (showFilter) {
     telefones = [filterTelefon]
   } else {
-    telefones = store.telefones.filter((s) => s.idPerson === personId)
+    telefones = store.telefones.filter((s) => s.idPerson === +personId)
   }
   const mayAddNew =
     !showFilter &&
@@ -71,7 +71,7 @@ const TelefonesComponent = ({ row = true }) => {
       {mayAddNew && (
         <StyledButton
           title="neues Telefon"
-          onClick={() => addTelefon(personId)}
+          onClick={() => addTelefon(+personId)}
           outline
         >
           <PlusIcon id={`plusIconTelefon${personId}`} />

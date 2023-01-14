@@ -30,7 +30,7 @@ const StyledButton = styled(Button)`
 
 const Stammdaten = () => {
   const navigate = useNavigate()
-  const { tableName, tableId } = useParams()
+  const { tableName, tableId = 0 } = useParams()
 
   // console.log('Stammdaten', { tableName, tableId })
 
@@ -40,18 +40,18 @@ const Stammdaten = () => {
   if (tableName?.includes('Werte')) {
     stammdatenCount = store[tableName].length
   }
-  const existsActiveWert = tableName?.includes('Werte') && !!tableId
+  const existsActiveWert = tableName?.includes('Werte') && !!+tableId
 
   const addWert = useCallback(() => {
     store.addWert(tableName)
   }, [tableName, store])
   const deleteWert = useCallback(() => {
-    const activeWert = store[tableName].find((p) => p.id === tableId)
+    const activeWert = store[tableName].find((p) => p.id === +tableId)
     if (activeWert.deleted === 1) {
       // deleted is already = 1
       // prepare true deletion
       setDeletionCallback(() => {
-        store.deleteWert({ id: tableId, table: tableName })
+        store.deleteWert({ id: +tableId, table: tableName })
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -66,7 +66,7 @@ const Stammdaten = () => {
       // do not true delete yet
       // only set deleted = 1
       setDeletionCallback(() => {
-        store.setWertDeleted({ id: tableId, table: tableName })
+        store.setWertDeleted({ id: +tableId, table: tableName })
         setDeletionMessage(null)
         setDeletionTitle(null)
       })

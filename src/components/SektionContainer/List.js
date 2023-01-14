@@ -95,7 +95,7 @@ const SektionList = ({ dimensions, listRef }) => {
                   navigate(`/Sektionen/${row.id}`)
                   if (showFilter) setShowFilter(false)
                 }}
-                active={!showFilter && sektionId === row.id}
+                active={!showFilter && +sektionId === row.id}
               >
                 <RowContainer>
                   <Text>{`${row.name || ''}`}</Text>

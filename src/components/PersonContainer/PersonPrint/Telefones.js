@@ -46,7 +46,7 @@ const Telefones = () => {
   const { personId } = useParams()
 
   const store = useContext(storeContext)
-  const telefones = store.telefones.filter((s) => s.idPerson === personId)
+  const telefones = store.telefones.filter((s) => s.idPerson === +personId)
 
   if (telefones.length === 0) return null
 

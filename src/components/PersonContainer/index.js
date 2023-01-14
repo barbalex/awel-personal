@@ -51,7 +51,7 @@ const A4Landscape = createGlobalStyle`
 `
 
 const PersonContainer = () => {
-  const { personId: personidInUrl } = useParams()
+  const { personId: personidInUrl = 0 } = useParams()
   const { pathname } = useLocation()
   const personId = personidInUrl ? +personidInUrl : undefined
 

@@ -18,11 +18,11 @@ const Row = styled.div`
 `
 
 const Links = () => {
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const { links } = store
-  const myLinks = links.filter((l) => l.idPerson === personId)
+  const myLinks = links.filter((l) => l.idPerson === +personId)
 
   if (myLinks.length === 0) return null
 

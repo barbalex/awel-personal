@@ -53,7 +53,7 @@ const Delete = styled.div`
 `
 
 const SchluesselComponent = ({ id }) => {
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const {
@@ -109,7 +109,7 @@ const SchluesselComponent = ({ id }) => {
           value: newValue,
           id: schluessel.id,
           setErrors,
-          personId,
+          personId: +personId,
         })
       }
     },
@@ -138,7 +138,7 @@ const SchluesselComponent = ({ id }) => {
           value: newValue,
           id,
           setErrors,
-          personId,
+          personId: +personId,
         })
       }
     },
@@ -160,14 +160,14 @@ const SchluesselComponent = ({ id }) => {
           value: newValue,
           id,
           setErrors,
-          personId,
+          personId: +personId,
         })
       }
     },
     [filterSchluessel, id, personId, setFilter, showFilter, updateField],
   )
   const onClickDelete = useCallback(
-    () => deleteSchluessel({ id, personId }),
+    () => deleteSchluessel({ id, personId: +personId }),
     [deleteSchluessel, id, personId],
   )
 

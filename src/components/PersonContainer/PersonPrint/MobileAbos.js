@@ -43,10 +43,10 @@ const Bemerkungen = styled.div`
 `
 
 const MobileAbos = () => {
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
-  const mobileAbos = store.mobileAbos.filter((s) => s.idPerson === personId)
+  const mobileAbos = store.mobileAbos.filter((s) => s.idPerson === +personId)
 
   if (mobileAbos.length === 0) return null
 

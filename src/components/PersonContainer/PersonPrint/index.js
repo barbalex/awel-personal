@@ -204,7 +204,7 @@ const LogoImg = styled.img`
 `
 
 const PersonPrint = () => {
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const {
@@ -222,7 +222,7 @@ const PersonPrint = () => {
   const myEtiketten = useMemo(
     () =>
       etiketten
-        .filter((e) => e.idPerson === personId)
+        .filter((e) => e.idPerson === +personId)
         .filter((w) => !!w.etikett)
         .filter((p) => p.deleted === 0)
         .map((e) => e.etikett),
@@ -231,7 +231,7 @@ const PersonPrint = () => {
   const myAnwesenheitstage = useMemo(
     () =>
       anwesenheitstage
-        .filter((e) => e.idPerson === personId)
+        .filter((e) => e.idPerson === +personId)
         .filter((w) => !!w.tag)
         .filter((p) => p.deleted === 0)
         .map((e) => e.tag),
@@ -240,7 +240,7 @@ const PersonPrint = () => {
   const myFunktionen = useMemo(
     () =>
       funktionen
-        .filter((e) => e.idPerson === personId)
+        .filter((e) => e.idPerson === +personId)
         .filter((w) => !!w.funktion)
         .filter((p) => p.deleted === 0)
         .map((e) => e.funktion),
@@ -249,7 +249,7 @@ const PersonPrint = () => {
   const myKaderFunktionen = useMemo(
     () =>
       kaderFunktionen
-        .filter((e) => e.idPerson === personId)
+        .filter((e) => e.idPerson === +personId)
         .filter((w) => !!w.funktion)
         .filter((p) => p.deleted === 0)
         .map((e) => e.funktion),
@@ -258,7 +258,7 @@ const PersonPrint = () => {
 
   if (!personId) return null
 
-  const person = personen.find((p) => p.id === personId) || {}
+  const person = personen.find((p) => p.id === +personId) || {}
 
   const personVorgesetzt = personen.find((a) => a.id === person.vorgesetztId)
 

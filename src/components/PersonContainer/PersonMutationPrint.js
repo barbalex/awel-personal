@@ -165,7 +165,7 @@ const Field = ({ label, value }) => (
 )
 
 const PersonMutationPrint = () => {
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const {
@@ -181,7 +181,7 @@ const PersonMutationPrint = () => {
 
   if (!showFilter && !personId) return null
 
-  const person = personen.find((p) => p.id === personId)
+  const person = personen.find((p) => p.id === +personId)
 
   const viewIsNarrow = true
   const Wrapper = viewIsNarrow ? WrapperNarrow : WrapperWide

@@ -24,7 +24,7 @@ const StyledButton = styled(Button)`
 
 const Person = () => {
   const navigate = useNavigate()
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
   const { pathname } = useLocation()
 
   const store = useContext(storeContext)
@@ -49,12 +49,12 @@ const Person = () => {
     [navigate, setActivePrintForm],
   )
   const deletePerson = useCallback(() => {
-    const activePerson = personen.find((p) => p.id === personId)
+    const activePerson = personen.find((p) => p.id === +personId)
     if (activePerson.deleted === 1) {
       // person.deleted is already = 1
       // prepare true deletion
       setDeletionCallback(() => {
-        store.deletePerson(personId)
+        store.deletePerson(+personId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -71,7 +71,7 @@ const Person = () => {
       // do not true delete yet
       // only set person.deleted = 1
       setDeletionCallback(() => {
-        store.setPersonDeleted(personId)
+        store.setPersonDeleted(+personId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -93,7 +93,7 @@ const Person = () => {
     store,
   ])
 
-  const existsActivePerson = pathname.startsWith('/Personen') && personId
+  const existsActivePerson = pathname.startsWith('/Personen') && !!+personId
   const personenSum = showDeleted
     ? personen.length
     : personen.filter((p) => p.deleted === 0).length

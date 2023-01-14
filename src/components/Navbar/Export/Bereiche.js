@@ -25,7 +25,7 @@ const StyledButton = styled(Button)`
 const Bereich = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const { bereichId } = useParams()
+  const { bereichId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const {
@@ -48,12 +48,12 @@ const Bereich = () => {
   )
   // const addBereich = useCallback(() => addBereich())
   const deleteBereich = useCallback(() => {
-    const activeBereich = bereiche.find((p) => p.id === bereichId)
+    const activeBereich = bereiche.find((p) => p.id === +bereichId)
     if (activeBereich.deleted === 1) {
       // bereich.deleted is already = 1
       // prepare true deletion
       setDeletionCallback(() => {
-        store.deleteBereich(bereichId)
+        store.deleteBereich(+bereichId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -70,7 +70,7 @@ const Bereich = () => {
       // do not true delete yet
       // only set bereich.deleted = 1
       setDeletionCallback(() => {
-        store.setBereichDeleted(bereichId)
+        store.setBereichDeleted(+bereichId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -90,7 +90,7 @@ const Bereich = () => {
     store,
   ])
 
-  const existsActiveBereich = active && !!bereichId
+  const existsActiveBereich = active && !!+bereichId
   const bereicheSum = showDeleted
     ? bereiche.length
     : bereiche.filter((p) => p.deleted === 0).length

@@ -23,7 +23,7 @@ const StyledButton = styled(Button)`
 `
 
 const Abteilung = () => {
-  const { abteilungId } = useParams()
+  const { abteilungId = 0 } = useParams()
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
@@ -48,12 +48,12 @@ const Abteilung = () => {
   )
   // const addAbteilung = useCallback(() => addAbteilung())
   const deleteAbteilung = useCallback(() => {
-    const activeAbteilung = abteilungen.find((p) => p.id === abteilungId)
+    const activeAbteilung = abteilungen.find((p) => p.id === +abteilungId)
     if (activeAbteilung.deleted === 1) {
       // abteilung.deleted is already = 1
       // prepare true deletion
       setDeletionCallback(() => {
-        store.deleteAbteilung(abteilungId)
+        store.deleteAbteilung(+abteilungId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -70,7 +70,7 @@ const Abteilung = () => {
       // do not true delete yet
       // only set abteilung.deleted = 1
       setDeletionCallback(() => {
-        store.setAbteilungDeleted(abteilungId)
+        store.setAbteilungDeleted(+abteilungId)
         setDeletionMessage(null)
         setDeletionTitle(null)
       })
@@ -100,7 +100,7 @@ const Abteilung = () => {
       ? `${abteilungenFiltered.length}/${abteilungenSum}`
       : abteilungenFiltered.length
   const active = pathname.startsWith('/Abteilungen') && !activePrintForm
-  const existsActiveAbteilung = active && !!abteilungId
+  const existsActiveAbteilung = active && !!+abteilungId
 
   return (
     <StyledNavItem active={active}>

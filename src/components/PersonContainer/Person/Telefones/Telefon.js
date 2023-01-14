@@ -53,7 +53,7 @@ const Delete = styled.div`
 `
 
 const Telefon = ({ id }) => {
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const {
@@ -100,7 +100,7 @@ const Telefon = ({ id }) => {
           value: newValue,
           id,
           setErrors,
-          personId,
+          personId: +personId,
         })
       }
     },
@@ -122,14 +122,14 @@ const Telefon = ({ id }) => {
           value: newValue,
           id,
           setErrors,
-          personId,
+          personId: +personId,
         })
       }
     },
     [filterTelefon, id, personId, setFilter, showFilter, updateField],
   )
   const onClickDelete = useCallback(
-    () => deleteTelefon({ id, personId }),
+    () => deleteTelefon({ id, personId: +personId }),
     [deleteTelefon, id, personId],
   )
 

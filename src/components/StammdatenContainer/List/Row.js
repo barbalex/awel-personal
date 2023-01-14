@@ -52,7 +52,7 @@ const StammdatenRow = ({ index, style }) => {
   )
 
   return (
-    <Row style={style} onClick={onClickRow} active={tableId === row.id}>
+    <Row style={style} onClick={onClickRow} active={+tableId === row.id}>
       {row.value || '(kein Wert)'}
       {row.deleted === 1 && (
         <>

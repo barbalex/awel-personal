@@ -40,16 +40,16 @@ const DropzoneInnerDiv = styled.div`
 `
 
 const LinksComponent = ({ row = true }) => {
-  const { personId } = useParams()
+  const { personId = 0 } = useParams()
 
   const store = useContext(storeContext)
   const { links, addLink } = store
-  const myLinks = links.filter((l) => l.idPerson === personId)
+  const myLinks = links.filter((l) => l.idPerson === +personId)
 
   const onDrop = useCallback(
     (files) => {
       console.log('files:', files)
-      addLink({ url: files[0].path, personId })
+      addLink({ url: files[0].path, personId: +personId })
     },
     [addLink, personId],
   )
