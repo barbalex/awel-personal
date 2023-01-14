@@ -22,15 +22,21 @@ import Navbar from '../Navbar'
 // above does not work
 // seems that navbar is not finished when PersonContainer is built
 const Container = styled.div`
-  height: calc(100vh - 56px);
+  /* height: calc(100vh - 58px); */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 `
 // seems needed to prevent unnessecary scrollbars
 const StyledReflexElement = styled(ReflexElement)`
   background-color: ${(props) =>
     props.showfilter ? '#f7f791' : 'rgba(0,0,0,0)'};
   overflow: hidden !important;
-  > div {
+  /* > div {
     height: unset !important;
+  } */
+  .tab-content {
+    height: calc(100% - 42px);
   }
 `
 const A4Portrait = createGlobalStyle`
@@ -136,31 +142,29 @@ const PersonContainer = () => {
   console.log('PersonContainer, will return form')
 
   return (
-    <>
+    <Container>
       <Navbar />
-      <Container>
-        <ErrorBoundary>
-          <ReflexContainer orientation="vertical">
-            <ReflexElement
-              flex={isPrinting ? 0 : 0.25}
-              propagateDimensions
-              propagateDimensionsRate={100}
-            >
-              <List {...personJson} listRef={listRef} />
-            </ReflexElement>
-            <ReflexSplitter />
-            <StyledReflexElement
-              showfilter={showFilter}
-              propagateDimensions
-              propagateDimensionsRate={1000}
-              resizeHeight={false}
-            >
-              <Outlet context={[listRef]} />
-            </StyledReflexElement>
-          </ReflexContainer>
-        </ErrorBoundary>
-      </Container>
-    </>
+      <ErrorBoundary>
+        <ReflexContainer orientation="vertical">
+          <ReflexElement
+            flex={isPrinting ? 0 : 0.25}
+            propagateDimensions
+            propagateDimensionsRate={100}
+          >
+            <List {...personJson} listRef={listRef} />
+          </ReflexElement>
+          <ReflexSplitter />
+          <StyledReflexElement
+            showfilter={showFilter}
+            propagateDimensions
+            propagateDimensionsRate={1000}
+            resizeHeight={false}
+          >
+            <Outlet context={[listRef]} />
+          </StyledReflexElement>
+        </ReflexContainer>
+      </ErrorBoundary>
+    </Container>
   )
 }
 

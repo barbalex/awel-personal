@@ -17,6 +17,12 @@ import PersonPrintVerzKurzzeichen from './PersonPrintVerzKurzzeichen'
 import PersonMutation from './PersonMutation'
 import storeContext from '../../storeContext'
 
+const Container = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  container-type: size;
+`
 const StyledNavItem = styled(NavItem)`
   cursor: default;
   a {
@@ -32,7 +38,7 @@ const StyledNavItem = styled(NavItem)`
 const StyledTabPane = styled(TabPane)`
   overflow-y: auto;
   overflow-x: hidden;
-  height: calc(100vh - 100px);
+  height: 100%;
 `
 
 const PersonTab = () => {
@@ -68,7 +74,7 @@ const PersonTab = () => {
   }
 
   return (
-    <>
+    <Container>
       <Nav tabs>
         <StyledNavItem tab={tab}>
           <NavLink
@@ -99,7 +105,7 @@ const PersonTab = () => {
           <PersonMutation />
         </StyledTabPane>
       </TabContent>
-    </>
+    </Container>
   )
 }
 

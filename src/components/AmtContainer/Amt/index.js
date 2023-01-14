@@ -19,7 +19,7 @@ import Select from '../../shared/Select'
 import SharedCheckbox from '../../shared/Checkbox_01'
 import Handlungsbedarf from '../../shared/Handlungsbedarf'
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
-import Zuletzt from './Zuletzt'
+import Zuletzt from '../../shared/Zuletzt'
 import storeContext from '../../../storeContext'
 import isDateField from '../../../src/isDateField'
 
@@ -245,7 +245,7 @@ const Amt = ({ listRef }) => {
               error={errors.deleted}
             />
           )}
-          {!showFilter && <Zuletzt amt={amt} />}
+          {!showFilter && <Zuletzt row={amt} />}
         </StyledForm>
       </Container>
     </ErrorBoundary>

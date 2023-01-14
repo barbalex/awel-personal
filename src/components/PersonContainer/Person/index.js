@@ -27,14 +27,14 @@ import Links from './Links'
 import Schluessels from './Schluessels'
 import MobileAbos from './MobileAbos'
 import Telefones from './Telefones'
-import Zuletzt from './Zuletzt'
+import Zuletzt from '../../shared/Zuletzt'
 import storeContext from '../../../storeContext'
 import PersonImage from './PersonImage'
 
 const Container = styled.div`
   hyphens: auto;
   word-wrap: break-word;
-  container-type: size;
+  overflow: hidden;
 `
 // ISSUE
 // styled-components do not allow container queries (yet?)
@@ -1121,7 +1121,7 @@ const Person = ({ listRef }) => {
                     row={true}
                   />
                 )}
-                <Zuletzt row={true} person={person} />
+                <Zuletzt noBottomMargin={true} row={person} />
               </AreaZuletzt>
             )}
           </Wrapper>
