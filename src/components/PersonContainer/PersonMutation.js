@@ -28,7 +28,7 @@ import storeContext from '../../storeContext'
 const Container = styled.div`
   hyphens: auto;
   word-wrap: break-word;
-  container-type: size;
+  padding-bottom: 15px;
 `
 const Wrapper = styled.div`
   display: grid;

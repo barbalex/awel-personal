@@ -20,7 +20,7 @@ import SharedCheckbox from '../../shared/Checkbox_01'
 import Handlungsbedarf from '../../shared/Handlungsbedarf'
 import ifIsNumericAsNumber from '../../../src/ifIsNumericAsNumber'
 import isDateField from '../../../src/isDateField'
-import Zuletzt from './Zuletzt'
+import Zuletzt from '../../shared/Zuletzt'
 import storeContext from '../../../storeContext'
 
 const Container = styled.div``
@@ -263,7 +263,7 @@ const Sektion = ({ listRef }) => {
               error={errors.deleted}
             />
           )}
-          {!showFilter && <Zuletzt sektion={sektion}/>}
+          {!showFilter && <Zuletzt row={sektion} />}
         </StyledForm>
       </Container>
     </ErrorBoundary>
